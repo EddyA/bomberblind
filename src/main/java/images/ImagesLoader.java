@@ -114,10 +114,10 @@ public class ImagesLoader {
         }
         bombMatrixRowIdx = rowIdx++;
 
-        // - flame.
+        // - Flame.
         for (int i = 0; i < NB_FLAME_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(BOMB_SKIN_DIR + "/flame/flame_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(BOMB_SKIN_DIR + "/Flame/flame_" + imageIdx + ".png");
         }
         flameMatrixRowIdx = rowIdx++;
 

@@ -1,20 +1,23 @@
 package map;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.util.Random;
+
+import images.ImagesLoader;
 
 public class RMapPoint {
 
     private int rowIdx;
     private int colIdx;
 
-    private boolean isAvailable; // is available?
+    private boolean isAvailable; // is available (empty case)?
     private boolean isPathway; // is a pathway?
     private boolean isMutable; // is a mutable?
 
     private Image image;
 
-    private Image[] images; // array of images for nimation.
+    private Image[] images; // array of images for animation.
     private int nbImages; // number of images of the animation.
     private int curImageIdx; // current image index of the animation.
     private int refreshTime; // refresh time of the animation (in ms).
@@ -26,8 +29,8 @@ public class RMapPoint {
         this.isAvailable = true;
     }
 
-    public void setAvailable(boolean isAvailable) {
-        this.isAvailable = isAvailable;
+    public void setAvailable(boolean available) {
+        this.isAvailable = available;
     }
 
     public void setPathway(boolean pathway) {
@@ -42,8 +45,8 @@ public class RMapPoint {
         this.image = image;
     }
 
-    public void setImages(Image[] imageArray, int nbImages) {
-        this.images = imageArray;
+    public void setImages(Image[] images, int nbImages) {
+        this.images = images;
         this.nbImages = nbImages;
         this.curImageIdx = new Random().nextInt(nbImages);
     }
@@ -73,6 +76,18 @@ public class RMapPoint {
     }
 
     /**
+     * If the object is a pathway or a mutable, the rMapPoint blowsUp.
+     * Else, nothing happen.
+     */
+    public void blowUp() {
+        if (isPathway || isMutable) {
+            isPathway = true;
+            isMutable = false;
+            image = ImagesLoader.imagesMatrix[ImagesLoader.boomMatrixRowIdx][0]; // update image.
+        }
+    }
+
+    /**
      * Update the image.
      *
      * @return the image to paint.
@@ -95,9 +110,9 @@ public class RMapPoint {
     /**
      * Paint the image.
      *
-     * @param g       the graphics context
-     * @param xScreen the screen abscissa
-     * @param yScreen the screen ordinate
+     * @param g the graphics context
+     * @param xScreen the abscissa on screen
+     * @param yScreen the ordinate on screen
      */
     public void paintBuffer(Graphics g, int xScreen, int yScreen) {
         g.drawImage(updateImage(), xScreen, yScreen, null);

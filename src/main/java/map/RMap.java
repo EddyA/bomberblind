@@ -1,11 +1,17 @@
 package map;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import bomb.Flame;
 import exceptions.MapException;
 import images.ImagesLoader;
-
-import java.awt.*;
-import java.util.*;
-import java.util.List;
 
 public class RMap {
 
@@ -17,6 +23,7 @@ public class RMap {
     private int screenWidth; // widht of the screen (expressed in pixel).
     private int screenHeight; // height of the screen (expressed in pixel).
     public RMapPoint[][] myMap;
+    public List<Flame> flamesList;
 
     public RMapPoint spCastleT1; // start point (north/west) of the castle of team 1.
     public RMapPoint spCastleT2; // start point (north/west) of the castle of team 2.
@@ -75,6 +82,7 @@ public class RMap {
                 myMap[rawIdx][colIdx] = new RMapPoint(rawIdx, colIdx);
             }
         }
+        flamesList = new ArrayList<>();
         generateMap();
     }
 
@@ -157,8 +165,8 @@ public class RMap {
         int nbEmptyPt = emptyPtList.size();
 
         // single elements.
-        int perSingleMutable = 30;
-        int perSingleObstacle = 10;
+        int perSingleMutable = 5;
+        int perSingleObstacle = 5;
 
         Random R = new Random();
         for (int i = 0; i < nbEmptyPt; i++) {
@@ -386,7 +394,7 @@ public class RMap {
         int startColIdx = xMap / ImagesLoader.IMAGE_SIZE;
         int startRowIdx = yMap / ImagesLoader.IMAGE_SIZE;
 
-        // paint the map.
+        // paint the scene.
         for (int rowIdx = startRowIdx;
              rowIdx <= startRowIdx + (screenHeight / ImagesLoader.IMAGE_SIZE) && rowIdx < mapHeight;
              rowIdx++) {
@@ -396,6 +404,17 @@ public class RMap {
                 myMap[rowIdx][colIdx].paintBuffer(g,
                         (colIdx - startColIdx) * ImagesLoader.IMAGE_SIZE - xMap % ImagesLoader.IMAGE_SIZE, // colIdx -> x
                         (rowIdx - startRowIdx) * ImagesLoader.IMAGE_SIZE - yMap % ImagesLoader.IMAGE_SIZE); // roxIdx -> y
+            }
+        }
+
+        // paint the flames.
+        for (Flame flame : flamesList) {
+            if ((flame.getRowIdx() > startRowIdx && flame.getRowIdx() < startRowIdx + (screenHeight / ImagesLoader.IMAGE_SIZE)) &&
+                    (flame.getColIdx() > startColIdx
+                            && flame.getColIdx() < startColIdx + (screenWidth / ImagesLoader.IMAGE_SIZE))) {
+                flame.paintBuffer(g,
+                        (flame.getColIdx() - startColIdx) * ImagesLoader.IMAGE_SIZE - xMap % ImagesLoader.IMAGE_SIZE,
+                        (flame.getRowIdx() - startRowIdx) * ImagesLoader.IMAGE_SIZE - yMap % ImagesLoader.IMAGE_SIZE);
             }
         }
     }

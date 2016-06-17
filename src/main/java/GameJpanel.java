@@ -1,4 +1,5 @@
 import bbman.BbMan;
+import bomb.Flame;
 import exceptions.MapException;
 import images.ImagesLoader;
 import map.RMap;
@@ -284,6 +285,10 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 }
                 case KeyEvent.VK_D: {
                     bbMan.setStatus(BbMan.STATUS.STATUS_DEATH);
+                    break;
+                }
+                case KeyEvent.VK_F: {
+                    rMap.flamesList.add(new Flame(10, 10));
                     break;
                 }
             }
