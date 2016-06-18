@@ -1,5 +1,5 @@
 import bbman.BbMan;
-import bomb.Flame;
+import bomb.FlameList;
 import exceptions.MapException;
 import images.ImagesLoader;
 import map.RMap;
@@ -20,7 +20,10 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     private RMap rMap;
     private BbMan bbMan;
-    private List<Long> listPressedKey;
+    private FlameList flameList;
+    private List<Long> pressedKeyList;
+
+    private boolean tmp = false;
 
     private int xBbManPosOnScreen;
     private int yBbManPosOnScreen;
@@ -34,12 +37,13 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         int xBbManOnMap = rMap.spCastleT1.getColIdx() * IMAGE_SIZE +
                 (rMap.castleT1.getWidth() * IMAGE_SIZE / 2);
         int yBbManOnMap = rMap.spCastleT1.getRowIdx() * IMAGE_SIZE +
-                (rMap.castleT1.getHeight() * IMAGE_SIZE) + (IMAGE_SIZE / 2); // to not stick the castle.
-        bbMan = new BbMan(xBbManOnMap, yBbManOnMap, ImagesLoader.bbManSprites1);
+                (rMap.castleT1.getHeight() * IMAGE_SIZE) + (IMAGE_SIZE / 2);
+        bbMan = new BbMan(xBbManOnMap, yBbManOnMap, ImagesLoader.bbManSprites1); // create the BbMan.
 
-        // create a list to handle pressed key.
-        listPressedKey = new ArrayList<>();
-        listPressedKey.add(0L);
+        flameList = new FlameList(rMap, widthScreen, heightScreen); // create a list of flames.
+
+        pressedKeyList = new ArrayList<>(); // create a list to handle pressed key.
+        pressedKeyList.add(0L);
 
         setFocusable(true);
         requestFocusInWindow();
@@ -97,24 +101,25 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         Graphics2D g2d = (Graphics2D) g;
         try {
             rMap.paintBuffer(g2d, new Point(xMapStartPosOnScreen, yMapStartPosOnScreen));
+            flameList.paintBuffer(g2d, new Point(xMapStartPosOnScreen, yMapStartPosOnScreen));
             bbMan.paintBuffer(g2d, new Point(xBbManPosOnScreen, yBbManPosOnScreen));
         } catch (Exception e) {
-            System.err.println("exception painting RMap: " + e.getMessage());
+            System.err.println("GameJPanel.paintComponent(): " + e.getMessage());
         }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         Long keyCode = Long.valueOf(e.getKeyCode());
-        Long lastKeyCode = listPressedKey.get(listPressedKey.size() - 1);
+        Long lastKeyCode = pressedKeyList.get(pressedKeyList.size() - 1);
         if (!keyCode.equals(lastKeyCode)) {
-            listPressedKey.add(Long.valueOf(e.getKeyCode()));
+            pressedKeyList.add(Long.valueOf(e.getKeyCode()));
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        listPressedKey.remove(Long.valueOf(e.getKeyCode()));
+        pressedKeyList.remove(Long.valueOf(e.getKeyCode()));
     }
 
     @Override
@@ -226,7 +231,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
             int xBbMan = (int) bbMan.getPointOnMap().getX();
             int yBbMan = (int) bbMan.getPointOnMap().getY();
 
-            switch (listPressedKey.get(listPressedKey.size() - 1).intValue()) {
+            switch (pressedKeyList.get(pressedKeyList.size() - 1).intValue()) {
                 case KeyEvent.VK_ESCAPE: {
                     System.exit(1);
                     break;
@@ -288,17 +293,20 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     break;
                 }
                 case KeyEvent.VK_F: {
-                    rMap.flamesList.add(new Flame(10, 10));
+                    if (!tmp)
+                        flameList.add(24, 24, 3, 5000);
+                    tmp = true;
                     break;
                 }
             }
-            updateBbManPosOnScreen();
             updateMapStartPosOnScreen();
+            updateBbManPosOnScreen();
+            flameList.clean(); // clean the list from dead flames.
             repaint();
             try {
                 Thread.sleep(4);
             } catch (InterruptedException e) {
-                e.getMessage();
+                System.err.println("GameJPanel.run(): " + e.getMessage());
             }
         }
     }

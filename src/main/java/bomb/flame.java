@@ -1,9 +1,10 @@
 package bomb;
 
-import java.awt.Graphics;
-import java.awt.Image;
-
 import images.ImagesLoader;
+
+import java.awt.*;
+
+import static images.ImagesLoader.IMAGE_SIZE;
 
 public class Flame {
     private int rowIdx;
@@ -14,17 +15,17 @@ public class Flame {
     private int curImageIdx; // current image index of the animation.
     private int refreshTime; // refresh time of the animation (in ms).
     private long lastRefreshTs; // last refresh timestamp.
-    private int nbAnimationFrame; // number of frames the animation must remain.
-    private int curNbAnimationFrame; // current number of frames of the animation.
+    private long startTs; // flame start time.
+    private int flameTime; // flame duration (in ms).
 
-    public Flame(int rowIdx, int colIdx) {
+    public Flame(int rowIdx, int colIdx, int flameTime) {
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
         this.images = ImagesLoader.imagesMatrix[ImagesLoader.flameMatrixRowIdx];
         this.nbImages = ImagesLoader.NB_FLAME_FRAME;
-        this.refreshTime = 75;
-        this.nbAnimationFrame = 25;
-        this.curNbAnimationFrame = 0;
+        this.refreshTime = 100;
+        this.startTs = System.currentTimeMillis(); // get the current time.
+        this.flameTime = flameTime;
     }
 
     public int getRowIdx() {
@@ -33,6 +34,10 @@ public class Flame {
 
     public int getColIdx() {
         return colIdx;
+    }
+
+    public boolean isDead() {
+        return System.currentTimeMillis() - startTs > flameTime;
     }
 
     /**
@@ -48,7 +53,6 @@ public class Flame {
             if (++curImageIdx == nbImages) {
                 curImageIdx = 0;
             }
-            curNbAnimationFrame++;
         }
         imageToPaint = images[curImageIdx];
         return imageToPaint;
@@ -62,10 +66,10 @@ public class Flame {
      * @param yScreen the ordinate on screen
      */
     public void paintBuffer(Graphics g, int xScreen, int yScreen) {
-        if (curNbAnimationFrame < nbAnimationFrame) {
+        if (!isDead()) {
             Image updatedImage = updateImage();
-            int xMap = xScreen - updatedImage.getWidth(null) / 2;
-            int yMap = yScreen - updatedImage.getHeight(null);
+            int xMap = xScreen + (IMAGE_SIZE / 2) - updatedImage.getWidth(null) / 2;
+            int yMap = yScreen + IMAGE_SIZE - updatedImage.getHeight(null);
             g.drawImage(updatedImage, xMap, yMap, null);
         }
     }

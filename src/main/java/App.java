@@ -33,7 +33,7 @@ public class App extends JFrame {
             setVisible(true);
 
         } catch (IOException | MapException e) {
-            System.err.println(e.getMessage());
+            System.err.println("App: " + e.getMessage());
         }
     }
 
