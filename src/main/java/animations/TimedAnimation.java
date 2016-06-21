@@ -1,31 +1,37 @@
-package bomb;
-
-import images.ImagesLoader;
+package animations;
 
 import java.awt.*;
 
 import static images.ImagesLoader.IMAGE_SIZE;
 
-public class Flame {
+/**
+ * Abstract class of a timed animation.
+ */
+abstract class TimedAnimation {
     private int rowIdx;
     private int colIdx;
 
     private Image[] images; // array of images for animation.
     private int nbImages; // number of images of the animation.
     private int curImageIdx; // current image index of the animation.
-    private int refreshTime; // refresh time of the animation (in ms).
+    private int duration; // animation duration (in ms).
+    private int refreshTime; // refresh duration of the animation (in ms).
     private long lastRefreshTs; // last refresh timestamp.
-    private long startTs; // flame start time.
-    private int flameTime; // flame duration (in ms).
+    private long startTs; // animation start duration.
 
-    public Flame(int rowIdx, int colIdx, int flameTime) {
+    public TimedAnimation(int rowIdx,
+                          int colIdx,
+                          Image[] images,
+                          int nbImages,
+                          int duration,
+                          int refreshTime) {
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
-        this.images = ImagesLoader.imagesMatrix[ImagesLoader.flameMatrixRowIdx];
-        this.nbImages = ImagesLoader.NB_FLAME_FRAME;
-        this.refreshTime = 100;
-        this.startTs = System.currentTimeMillis(); // get the current time.
-        this.flameTime = flameTime;
+        this.images = images;
+        this.nbImages = nbImages;
+        this.duration = duration;
+        this.refreshTime = refreshTime;
+        this.startTs = System.currentTimeMillis(); // get the current duration.
     }
 
     public int getRowIdx() {
@@ -37,18 +43,18 @@ public class Flame {
     }
 
     public boolean isDead() {
-        return System.currentTimeMillis() - startTs > flameTime;
+        return System.currentTimeMillis() - startTs > duration;
     }
 
     /**
-     * Update the image.
+     * Update image of the animation.
      *
-     * @return the image to paint.
+     * @return the updated image.
      */
     private Image updateImage() {
         Image imageToPaint;
-        long curTs = System.currentTimeMillis(); // get the current time.
-        if (curTs - lastRefreshTs > refreshTime) { // it is time to refresh.
+        long curTs = System.currentTimeMillis(); // get the current duration.
+        if (curTs - lastRefreshTs > refreshTime) { // it is duration to refresh.
             lastRefreshTs = curTs;
             if (++curImageIdx == nbImages) {
                 curImageIdx = 0;
@@ -59,7 +65,7 @@ public class Flame {
     }
 
     /**
-     * Paint the image.
+     * Paint current image of the animation.
      *
      * @param g       the graphics context
      * @param xScreen the abscissa on screen

@@ -1,11 +1,13 @@
 package map;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.util.Random;
-
 import images.ImagesLoader;
 
+import java.awt.*;
+import java.util.Random;
+
+/**
+ * A point of the map.
+ */
 public class RMapPoint {
 
     private int rowIdx;
@@ -23,22 +25,33 @@ public class RMapPoint {
     private int refreshTime; // refresh time of the animation (in ms).
     private long lastRefreshTs; // last refresh timestamp.
 
+    private boolean isBombing; // is bombed (bomb on case)?
+    private boolean isBurning; // is burning?
+
     public RMapPoint(int rowIdx, int colIdx) {
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
         this.isAvailable = true;
     }
 
-    public void setAvailable(boolean available) {
-        this.isAvailable = available;
+    public void setAvailable(boolean isAvailable) {
+        this.isAvailable = isAvailable;
     }
 
-    public void setPathway(boolean pathway) {
-        this.isPathway = pathway;
+    public void setPathway(boolean isPathway) {
+        this.isPathway = isPathway;
     }
 
-    public void setMutable(boolean mutable) {
-        this.isMutable = mutable;
+    public void setMutable(boolean isMutable) {
+        this.isMutable = isMutable;
+    }
+
+    public void setBombing(boolean isBombing) {
+        this.isBombing = isBombing;
+    }
+
+    public void setBurning(boolean isBurning) {
+        this.isBurning = isBurning;
     }
 
     public void setImage(Image image) {
@@ -75,16 +88,19 @@ public class RMapPoint {
         return isMutable;
     }
 
+    public boolean isBombing() {
+        return isBombing;
+    }
+
+    public boolean isBurning() {
+        return isBurning;
+    }
+
     /**
-     * If the object is a pathway or a mutable, the rMapPoint blowsUp.
-     * Else, nothing happen.
+     * Set the image to burned.
      */
-    public void blowUp() {
-        if (isPathway || isMutable) {
-            isPathway = true;
-            isMutable = false;
-            image = ImagesLoader.imagesMatrix[ImagesLoader.boomMatrixRowIdx][0]; // update image.
-        }
+    public void setImageAsBurned() {
+        image = ImagesLoader.imagesMatrix[ImagesLoader.boomMatrixRowIdx][0]; // update image.
     }
 
     /**
@@ -110,7 +126,7 @@ public class RMapPoint {
     /**
      * Paint the image.
      *
-     * @param g the graphics context
+     * @param g       the graphics context
      * @param xScreen the abscissa on screen
      * @param yScreen the ordinate on screen
      */

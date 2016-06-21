@@ -1,5 +1,7 @@
+import animations.Bomb;
+import animations.BombList;
 import bbman.BbMan;
-import bomb.FlameList;
+import animations.FlameList;
 import exceptions.MapException;
 import images.ImagesLoader;
 import map.RMap;
@@ -20,10 +22,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     private RMap rMap;
     private BbMan bbMan;
+    private BombList bombList;
     private FlameList flameList;
     private List<Long> pressedKeyList;
-
-    private boolean tmp = false;
 
     private int xBbManPosOnScreen;
     private int yBbManPosOnScreen;
@@ -41,6 +42,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         bbMan = new BbMan(xBbManOnMap, yBbManOnMap, ImagesLoader.bbManSprites1); // create the BbMan.
 
         flameList = new FlameList(rMap, widthScreen, heightScreen); // create a list of flames.
+        bombList = new BombList(rMap, flameList, widthScreen, heightScreen);  // create a list of bombs.
 
         pressedKeyList = new ArrayList<>(); // create a list to handle pressed key.
         pressedKeyList.add(0L);
@@ -102,6 +104,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         try {
             rMap.paintBuffer(g2d, new Point(xMapStartPosOnScreen, yMapStartPosOnScreen));
             flameList.paintBuffer(g2d, new Point(xMapStartPosOnScreen, yMapStartPosOnScreen));
+            bombList.paintBuffer(g2d, new Point(xMapStartPosOnScreen, yMapStartPosOnScreen));
             bbMan.paintBuffer(g2d, new Point(xBbManPosOnScreen, yBbManPosOnScreen));
         } catch (Exception e) {
             System.err.println("GameJPanel.paintComponent(): " + e.getMessage());
@@ -284,6 +287,10 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     }
                     break;
                 }
+                case KeyEvent.VK_B: {
+                    bombList.add(yBbMan/IMAGE_SIZE, xBbMan/IMAGE_SIZE, 5);
+                    break;
+                }
                 case KeyEvent.VK_W: {
                     bbMan.setStatus(BbMan.STATUS.STATUS_WIN);
                     break;
@@ -292,16 +299,11 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     bbMan.setStatus(BbMan.STATUS.STATUS_DEATH);
                     break;
                 }
-                case KeyEvent.VK_F: {
-                    if (!tmp)
-                        flameList.add(24, 24, 3, 5000);
-                    tmp = true;
-                    break;
-                }
             }
             updateMapStartPosOnScreen();
             updateBbManPosOnScreen();
-            flameList.clean(); // clean the list from dead flames.
+            bombList.clean();
+            flameList.clean();
             repaint();
             try {
                 Thread.sleep(4);

@@ -20,16 +20,12 @@ public class ImagesLoader {
     public static BbManSprites bbManSprites1; // bbman sprites for team 1.
 
     // images location.
-    private final static String BOMB_SKIN_DIR = "/images/bomb";
     private final static String CHAR_SKIN_DIR = "/images/bbman";
+    private final static String BOMB_SKIN_DIR = "/images/bomb";
+    private final static String FLAME_SKIN_DIR = "/images/flame";
     private final static String SCENE_SKIN_DIR = "/images/scene";
 
     // images information.
-    // - bomb.
-    public static int bombMatrixRowIdx;
-    public final static int NB_BOMB_FRAME = 4;
-    public static int flameMatrixRowIdx;
-    public final static int NB_FLAME_FRAME = 3;
 
     // - bbmans.
     public static int deathT1MatrixRowIdx;
@@ -43,6 +39,14 @@ public class ImagesLoader {
     public final static int NB_WALK_FRAME = 4;
     public static int winT1MatrixRowIdx;
     public final static int NB_WIN_FRAME = 8;
+
+    // - bomb.
+    public static int bombMatrixRowIdx;
+    public final static int NB_BOMB_FRAME = 4;
+
+    // - flame.
+    public static int flameMatrixRowIdx;
+    public final static int NB_FLAME_FRAME = 3;
 
     // - scene.
     public static int castleT1MatrixRowIdx;
@@ -106,21 +110,6 @@ public class ImagesLoader {
         int rowIdx = 0;
         imagesMatrix = new Image[NB_MATRIX_ROW][NB_MATRIX_COL];
 
-        // bomb:
-        // - bomb.
-        for (int i = 0; i < NB_BOMB_FRAME; i++) {
-            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(BOMB_SKIN_DIR + "/bomb/bomb_" + imageIdx + ".png");
-        }
-        bombMatrixRowIdx = rowIdx++;
-
-        // - Flame.
-        for (int i = 0; i < NB_FLAME_FRAME; i++) {
-            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(BOMB_SKIN_DIR + "/Flame/flame_" + imageIdx + ".png");
-        }
-        flameMatrixRowIdx = rowIdx++;
-
         // bbmans:
         // - death.
         for (int i = 0; i < NB_DEATH_FRAME; i++) {
@@ -171,6 +160,20 @@ public class ImagesLoader {
             imagesMatrix[rowIdx][i] = createImage(CHAR_SKIN_DIR + "/team_1/win_t1_" + imageIdx + ".png");
         }
         winT1MatrixRowIdx = rowIdx++;
+
+        // bomb:
+        for (int i = 0; i < NB_BOMB_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(BOMB_SKIN_DIR + "/bomb_" + imageIdx + ".png");
+        }
+        bombMatrixRowIdx = rowIdx++;
+
+        // flame:
+        for (int i = 0; i < NB_FLAME_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(FLAME_SKIN_DIR + "/flame_" + imageIdx + ".png");
+        }
+        flameMatrixRowIdx = rowIdx++;
 
         // scene:
         // - immutable elements.
