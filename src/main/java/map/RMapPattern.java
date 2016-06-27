@@ -1,6 +1,6 @@
 package map;
 
-import java.awt.Image;
+import java.awt.*;
 
 public class RMapPattern {
 
@@ -43,5 +43,7 @@ public class RMapPattern {
         return isMutable;
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 }

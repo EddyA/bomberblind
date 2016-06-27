@@ -1,19 +1,20 @@
-package animations;
+package sprites;
 
 import images.ImagesLoader;
 
 /**
- * An animated bomb.
+ * A timed bomb animation.
  */
-public class Bomb extends TimedAnimation {
+public class Bomb extends TimedSprite {
 
     private int flamesize;
 
     /**
-     * Create an animated bomb.
+     * Create a timed bomb animation.
      *
-     * @param rowIdx abscissa of the bomb
-     * @param colIdx ordinate of the bomb
+     * @param rowIdx    row index of the bomb
+     * @param colIdx    column index of the bomb
+     * @param flameSize size of flames
      */
     public Bomb(int rowIdx, int colIdx, int flameSize) {
         super(rowIdx,

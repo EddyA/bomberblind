@@ -26,7 +26,7 @@ public class RMapPoint {
     private long lastRefreshTs; // last refresh timestamp.
 
     private boolean isBombing; // is bombed (bomb on case)?
-    private boolean isBurning; // is burning?
+    private int nbFlames; // number of flames on that case (can be multiple because of crossing explosions).
 
     public RMapPoint(int rowIdx, int colIdx) {
         this.rowIdx = rowIdx;
@@ -50,8 +50,12 @@ public class RMapPoint {
         this.isBombing = isBombing;
     }
 
-    public void setBurning(boolean isBurning) {
-        this.isBurning = isBurning;
+    public void addFlame() {
+        this.nbFlames++;
+    }
+
+    public void removeFlame() {
+        this.nbFlames--;
     }
 
     public void setImage(Image image) {
@@ -93,14 +97,14 @@ public class RMapPoint {
     }
 
     public boolean isBurning() {
-        return isBurning;
+        return nbFlames > 0;
     }
 
     /**
      * Set the image to burned.
      */
     public void setImageAsBurned() {
-        image = ImagesLoader.imagesMatrix[ImagesLoader.boomMatrixRowIdx][0]; // update image.
+        image = ImagesLoader.imagesMatrix[ImagesLoader.singleBoomMatrixRowIdx][0]; // update image.
     }
 
     /**

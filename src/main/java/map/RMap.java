@@ -194,7 +194,7 @@ public class RMap {
      */
 
     private int generateRandomRowIdx(int patternHeight, int marginRange) {
-        Random R = new Random(); // init the random function.
+        Random R = new Random(); // initStatement the random function.
         return R.nextInt(mapHeight - 2 * marginRange - // north/south requiered margins.
                 patternHeight - // pattern height as we place the north/west point.
                 (ImagesLoader.EDGE_HEIGHT + ImagesLoader.TREE_HEIGHT)) + // egde + tree.
@@ -210,7 +210,7 @@ public class RMap {
      * @return the random rowIdx
      */
     private int generateRandomColIdx(int patternWidth, int marginRange) {
-        Random R = new Random(); // init the random function.
+        Random R = new Random(); // initStatement the random function.
         return R.nextInt(mapWidth - 2 * marginRange - // east/west requiered margins.
                 patternWidth) + // pattern width as we place the noth/west point.
                 marginRange; // re-add the margin to get the right range.
@@ -266,7 +266,7 @@ public class RMap {
      */
     private boolean placeSingleObstacleOnMap(RMapPoint rMapPoint) {
         if (rMapPoint.isAvailable()) {
-            Random R = new Random(); // init the random function.
+            Random R = new Random(); // initStatement the random function.
 
             // randomly choose an image.
             int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_OBSTABLE);
@@ -292,7 +292,7 @@ public class RMap {
      */
     private boolean placeSingleMutableOnMap(RMapPoint rMapPoint) {
         if (rMapPoint.isAvailable()) {
-            Random R = new Random(); // init the random function.
+            Random R = new Random(); // initStatement the random function.
 
             // randomly choose an image.
             int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_MUTABLE);
@@ -320,7 +320,7 @@ public class RMap {
         int perFlowers = 20;
 
         if (rMapPoint.isAvailable()) {
-            Random R = new Random(); // init the random function.
+            Random R = new Random(); // initStatement the random function.
             int randomPercent = Math.abs(R.nextInt(100)); // randomly choose a single element.
 
             if (randomPercent < perFlowers) { // animated flower
@@ -353,7 +353,7 @@ public class RMap {
     private void securePerimeter(RMapPoint rMapPoint, RMapPattern rMapPattern) {
         int startRowIdx = rMapPoint.getRowIdx();
         int startColIdx = rMapPoint.getColIdx();
-        Random R = new Random(); // init the random function.
+        Random R = new Random(); // initStatement the random function.
 
         for (int rowIdx = startRowIdx - 1; rowIdx <= startRowIdx + rMapPattern.getHeight(); rowIdx++) {
             for (int colIdx = startColIdx - 1; colIdx <= startColIdx + rMapPattern.getWidth(); colIdx++) {

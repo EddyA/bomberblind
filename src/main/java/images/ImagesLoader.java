@@ -11,79 +11,74 @@ import java.net.URL;
  */
 public class ImagesLoader {
 
-    public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
+    public final static int IMAGE_SIZE = 30; // size of an 'Image' in pixels (30*30).
+    public final static int NB_DEATH_FRAME = 10;
+    public final static int NB_WAIT_FRAME = 4;
+    public final static int NB_WALK_FRAME = 4;
+    public final static int NB_WIN_FRAME = 8;
+    public final static int NB_BOMB_FRAME = 4;
+    public final static int NB_FLAME_FRAME = 3;
+    public final static int NB_FLAME_END_FRAME = 9;
+    public final static int CASTLE_WIDTH = 6;
+
+    // images information.
+    public final static int CASTLE_HEIGHT = 5;
+    public final static int EDGE_WIDTH = 1;
+    public final static int EDGE_HEIGHT = 4;
+    public final static int TREE_WIDTH = 4;
+    public final static int TREE_HEIGHT = 4;
+    public final static int WOOD_WIDTH = 8;
+    public final static int WOOD_HEIGHT = 10;
+    public final static int NB_SINGLE_OBSTABLE = 2;
+    public final static int NB_FLOWER_FRAME = 3;
+    public final static int NB_SINGLE_BOOM = 1;
+    public final static int PUDDLE_WIDTH = 7;
+    public final static int PUDDLE_HEIGHT = 6;
+    public final static int NB_SINGLE_PATHWAY = 20;
+    public final static int FOOD_WIDTH = 5;
+    public final static int FOOD_HEIGHT = 3;
+    public final static int STONE_WIDTH = 5;
+    public final static int STONE_HEIGHT = 3;
+    public final static int NB_SINGLE_MUTABLE = 3;
     private final static int NB_MATRIX_ROW = 53;
     private final static int NB_MATRIX_COL = 80;
-
-    public final static int IMAGE_SIZE = 30; // size of an 'Image' in pixels (30*30).
-
-    public static BbManSprites bbManSprites1; // bbman sprites for team 1.
-
     // images location.
     private final static String CHAR_SKIN_DIR = "/images/bbman";
     private final static String BOMB_SKIN_DIR = "/images/bomb";
     private final static String FLAME_SKIN_DIR = "/images/flame";
     private final static String SCENE_SKIN_DIR = "/images/scene";
-
-    // images information.
-
+    public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
+    public static BbManSprites bbManSprites1; // bbman sprites for team 1.
     // - bbmans.
     public static int deathT1MatrixRowIdx;
-    public final static int NB_DEATH_FRAME = 10;
     public static int waitT1MatrixRowIdx;
-    public final static int NB_WAIT_FRAME = 4;
     public static int walkBackT1MatrixRowIdx;
     public static int walkFrontT1MatrixRowIdx;
     public static int walkLeftT1MatrixRowIdx;
     public static int walkRightT1MatrixRowIdx;
-    public final static int NB_WALK_FRAME = 4;
     public static int winT1MatrixRowIdx;
-    public final static int NB_WIN_FRAME = 8;
-
     // - bomb.
     public static int bombMatrixRowIdx;
-    public final static int NB_BOMB_FRAME = 4;
-
     // - flame.
     public static int flameMatrixRowIdx;
-    public final static int NB_FLAME_FRAME = 3;
-
+    public static int flameEndMatrixRowIdx;
     // - scene.
     public static int castleT1MatrixRowIdx;
     public static int castleT2MatrixRowIdx;
-    public final static int CASTLE_WIDTH = 6;
-    public final static int CASTLE_HEIGHT = 5;
     public static int edgeMatrixRowIdx;
-    public final static int EDGE_WIDTH = 1;
-    public final static int EDGE_HEIGHT = 4;
     public static int tree1MatrixRowIdx;
     public static int tree2MatrixRowIdx;
-    public final static int TREE_WIDTH = 4;
-    public final static int TREE_HEIGHT = 4;
     public static int wood1MatrixRowIdx;
     public static int wood2MatrixRowIdx;
-    public final static int WOOD_WIDTH = 8;
-    public final static int WOOD_HEIGHT = 10;
     public static int singleObstacleMatrixRowIdx;
-    public final static int NB_SINGLE_OBSTABLE = 2;
     public static int flowerMatrixRowIdx;
-    public final static int NB_FLOWER_FRAME = 3;
-    public static int boomMatrixRowIdx;
-    public final static int NB_BOOM = 1;
+    public static int singleBoomMatrixRowIdx;
     public static int puddle1MatrixRowIdx;
     public static int puddle2MatrixRowIdx;
-    public final static int PUDDLE_WIDTH = 7;
-    public final static int PUDDLE_HEIGHT = 6;
     public static int singlePathwayMatrixRowIdx;
-    public final static int NB_SINGLE_PATHWAY = 20;
     public static int foodMatrixRowIdx;
-    public final static int FOOD_WIDTH = 5;
-    public final static int FOOD_HEIGHT = 3;
     public static int stoneMatrixRowIdx;
-    public final static int STONE_WIDTH = 5;
-    public final static int STONE_HEIGHT = 3;
     public static int singleMutableMatrixRowIdx;
-    public final static int NB_SINGLE_MUTABLE = 3;
 
     /**
      * Create an 'Image' based to a relative path (from 'resources' folder).
@@ -169,11 +164,19 @@ public class ImagesLoader {
         bombMatrixRowIdx = rowIdx++;
 
         // flame:
+        // - blazing.
         for (int i = 0; i < NB_FLAME_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(FLAME_SKIN_DIR + "/flame_" + imageIdx + ".png");
         }
         flameMatrixRowIdx = rowIdx++;
+
+        // - ending.
+        for (int i = 0; i < NB_FLAME_END_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(FLAME_SKIN_DIR + "/flame_end_" + imageIdx + ".png");
+        }
+        flameEndMatrixRowIdx = rowIdx++;
 
         // scene:
         // - immutable elements.
@@ -228,11 +231,11 @@ public class ImagesLoader {
         singleObstacleMatrixRowIdx = rowIdx++;
 
         // -- boom (1*1).
-        for (int i = 0; i < NB_BOOM; i++) {
+        for (int i = 0; i < NB_SINGLE_BOOM; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(SCENE_SKIN_DIR + "/immutable/pathway/boom/boom_" + imageIdx + ".png");
         }
-        boomMatrixRowIdx = rowIdx++;
+        singleBoomMatrixRowIdx = rowIdx++;
 
         // -- flower (animated).
         for (int i = 0; i < NB_FLOWER_FRAME; i++) {

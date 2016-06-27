@@ -1,17 +1,17 @@
-package animations;
+package sprites;
 
 import images.ImagesLoader;
 
 /**
- * An animated flame.
+ * A timed flame sprite.
  */
-public class Flame extends TimedAnimation {
+public class Flame extends TimedSprite {
 
     /**
-     * Create an animated flame.
+     * Create a timed flame sprite.
      *
-     * @param rowIdx abscissa of the flame
-     * @param colIdx ordinate of the bomb
+     * @param rowIdx row index of the flame
+     * @param colIdx column index of the flame
      */
     public Flame(int rowIdx, int colIdx) {
         super(rowIdx,

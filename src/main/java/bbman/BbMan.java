@@ -23,6 +23,7 @@ public class BbMan {
 
     private STATUS status; // status (walking, waiting, etc.).
     private STATUS lastStatus; // last status.
+    private Point initPointOnMap; // initial position on the map.
     private Point pointOnMap; // position on the map.
 
     private BbManSprites bBManImages; // set of images.
@@ -30,13 +31,23 @@ public class BbMan {
     private int refreshTime; // refresh time of the animation (in ms).
     private long lastRefreshTs; // last refresh timestamp.
     private boolean mustLoop; // is the current animation must loop?
+    private boolean endOfAnimation; // is at the end of the animation (e.g death, win)?
 
     public BbMan(int x, int y, BbManSprites bBManImages) {
-        this.status = STATUS_WAIT;
-        this.lastStatus = STATUS_WAIT;
+        this.initPointOnMap = new Point(x, y);
         this.pointOnMap = new Point(x, y);
         this.bBManImages = bBManImages;
         this.refreshTime = 100;
+        this.initStatement();
+    }
+
+    /**
+     * This function is mainly used to re-init the BbMan after he died.
+     */
+    public void initStatement() {
+        this.status = STATUS_WAIT;
+        this.pointOnMap.setLocation(this.initPointOnMap);
+        this.endOfAnimation = false;
     }
 
     public void setStatus(STATUS status) {
@@ -47,8 +58,16 @@ public class BbMan {
         this.pointOnMap.setLocation(x, y);
     }
 
+    public STATUS getStatus() {
+        return status;
+    }
+
     public Point getPointOnMap() {
         return pointOnMap;
+    }
+
+    public boolean getEndOfAnimation() {
+        return endOfAnimation;
     }
 
     /**
@@ -117,6 +136,7 @@ public class BbMan {
                         curImageIdx = 0; // back to the begining of the animation.
                     } else {
                         curImageIdx--; // keep the last image.
+                        endOfAnimation = true;
                     }
                 }
             }
@@ -127,7 +147,7 @@ public class BbMan {
     /**
      * Paint the image.
      *
-     * @param g          the graphics context
+     * @param g             the graphics context
      * @param bbManPosition the start point (abscissa and ordinate of the BbMan).
      */
     public void paintBuffer(Graphics g, Point bbManPosition) {

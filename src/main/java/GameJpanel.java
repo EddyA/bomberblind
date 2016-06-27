@@ -1,7 +1,4 @@
-import animations.Bomb;
-import animations.BombList;
 import bbman.BbMan;
-import animations.FlameList;
 import exceptions.MapException;
 import images.ImagesLoader;
 import map.RMap;
@@ -22,8 +19,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     private RMap rMap;
     private BbMan bbMan;
-    private BombList bombList;
-    private FlameList flameList;
+    private SpriteList spriteList;
     private List<Long> pressedKeyList;
 
     private int xBbManPosOnScreen;
@@ -41,8 +37,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 (rMap.castleT1.getHeight() * IMAGE_SIZE) + (IMAGE_SIZE / 2);
         bbMan = new BbMan(xBbManOnMap, yBbManOnMap, ImagesLoader.bbManSprites1); // create the BbMan.
 
-        flameList = new FlameList(rMap, widthScreen, heightScreen); // create a list of flames.
-        bombList = new BombList(rMap, flameList, widthScreen, heightScreen);  // create a list of bombs.
+        spriteList = new SpriteList(rMap, widthScreen, heightScreen);  // create a list of sprites.
 
         pressedKeyList = new ArrayList<>(); // create a list to handle pressed key.
         pressedKeyList.add(0L);
@@ -103,8 +98,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         Graphics2D g2d = (Graphics2D) g;
         try {
             rMap.paintBuffer(g2d, new Point(xMapStartPosOnScreen, yMapStartPosOnScreen));
-            flameList.paintBuffer(g2d, new Point(xMapStartPosOnScreen, yMapStartPosOnScreen));
-            bombList.paintBuffer(g2d, new Point(xMapStartPosOnScreen, yMapStartPosOnScreen));
+            spriteList.paintBuffer(g2d, new Point(xMapStartPosOnScreen, yMapStartPosOnScreen));
             bbMan.paintBuffer(g2d, new Point(xBbManPosOnScreen, yBbManPosOnScreen));
         } catch (Exception e) {
             System.err.println("GameJPanel.paintComponent(): " + e.getMessage());
@@ -134,9 +128,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
      *
      * @param xBbMan BbMan abscissa
      * @param yBbMan BbMan ordinate
-     * @return true if the BbMan is crossing a map limit, false if not
+     * @return true if the BbMan is crossing a map limit, false otherwise
      */
-    private boolean isCrossingMapLimit(int xBbMan, int yBbMan) {
+    private boolean isBbManCrossingMapLimit(int xBbMan, int yBbMan) {
         boolean isCrossing = false;
         if (xBbMan - (IMAGE_SIZE / 2) < 0 ||
                 xBbMan + (IMAGE_SIZE / 2) > rMap.mapWidth * IMAGE_SIZE) {
@@ -154,9 +148,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
      *
      * @param xBbMan BbMan abscissa
      * @param yBbMan BbMan ordinate
-     * @return true if BbMan is crossing an obstacle, false if not
+     * @return true if BbMan is crossing an obstacle, false otherwise
      */
-    private boolean isCrossingObstacle(int xBbMan, int yBbMan) {
+    private boolean isBbManCrossingObstacle(int xBbMan, int yBbMan) {
         boolean isCrossing = false;
         if (!rMap.myMap[(yBbMan - (IMAGE_SIZE / 2)) / IMAGE_SIZE][(xBbMan - IMAGE_SIZE / 2) / IMAGE_SIZE].isPathway() ||
                 !rMap.myMap[(yBbMan - (IMAGE_SIZE / 2)) / IMAGE_SIZE][(xBbMan + IMAGE_SIZE / 2 - 1) / IMAGE_SIZE].isPathway() ||
@@ -165,6 +159,24 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
             isCrossing = true;
         }
         return isCrossing;
+    }
+
+    /**
+     * Is the BbMan Dying?
+     *
+     * @param xBbMan BbMan abscissa
+     * @param yBbMan BbMan ordinate
+     * @return true if BbMan is dying, false otherwise
+     */
+    private boolean isBbManDying(int xBbMan, int yBbMan) {
+        boolean isDying = false;
+        if (rMap.myMap[(yBbMan - (IMAGE_SIZE / 2)) / IMAGE_SIZE][(xBbMan - IMAGE_SIZE / 2) / IMAGE_SIZE].isBurning() ||
+                rMap.myMap[(yBbMan - (IMAGE_SIZE / 2)) / IMAGE_SIZE][(xBbMan + IMAGE_SIZE / 2 - 1) / IMAGE_SIZE].isBurning() ||
+                rMap.myMap[yBbMan / IMAGE_SIZE][(xBbMan - IMAGE_SIZE / 2) / IMAGE_SIZE].isBurning() ||
+                rMap.myMap[yBbMan / IMAGE_SIZE][(xBbMan + IMAGE_SIZE / 2 - 1) / IMAGE_SIZE].isBurning()) {
+            isDying = true;
+        }
+        return isDying;
     }
 
     /**
@@ -234,76 +246,82 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
             int xBbMan = (int) bbMan.getPointOnMap().getX();
             int yBbMan = (int) bbMan.getPointOnMap().getY();
 
-            switch (pressedKeyList.get(pressedKeyList.size() - 1).intValue()) {
-                case KeyEvent.VK_ESCAPE: {
-                    System.exit(1);
-                    break;
+            if (bbMan.getStatus() == BbMan.STATUS.STATUS_DEATH) {
+                if (bbMan.getEndOfAnimation()) {
+                    bbMan.initStatement();
                 }
-                case 0: {
-                    bbMan.setStatus(BbMan.STATUS.STATUS_WAIT);
-                    break;
-                }
-                case KeyEvent.VK_UP: {
-                    bbMan.setStatus(BbMan.STATUS.STATUS_WALK_BACK);
-                    if (!isCrossingMapLimit(xBbMan, yBbMan - 1)) {
-                        if (!isCrossingObstacle(xBbMan, yBbMan - 1)) {
-                            bbMan.setPointOnMap(xBbMan, yBbMan - 1);
-                        } else {
-                            shiftBbManIfPossible(KeyEvent.VK_UP);
-                        }
+            } else {
+
+                switch (pressedKeyList.get(pressedKeyList.size() - 1).intValue()) {
+                    case KeyEvent.VK_ESCAPE: {
+                        System.exit(1);
+                        break;
                     }
-                    break;
-                }
-                case KeyEvent.VK_DOWN: {
-                    bbMan.setStatus(BbMan.STATUS.STATUS_WALK_FRONT);
-                    if (!isCrossingMapLimit(xBbMan, yBbMan + 1)) {
-                        if (!isCrossingObstacle(xBbMan, yBbMan + 1)) {
-                            bbMan.setPointOnMap(xBbMan, yBbMan + 1);
-                        } else {
-                            shiftBbManIfPossible(KeyEvent.VK_DOWN);
-                        }
+                    case 0: {
+                        bbMan.setStatus(BbMan.STATUS.STATUS_WAIT);
+                        break;
                     }
-                    break;
-                }
-                case KeyEvent.VK_LEFT: {
-                    bbMan.setStatus(BbMan.STATUS.STATUS_WALK_LEFT);
-                    if (!isCrossingMapLimit(xBbMan - 1, yBbMan)) {
-                        if (!isCrossingObstacle(xBbMan - 1, yBbMan)) {
-                            bbMan.setPointOnMap(xBbMan - 1, yBbMan);
-                        } else {
-                            shiftBbManIfPossible(KeyEvent.VK_LEFT);
+                    case KeyEvent.VK_UP: {
+                        bbMan.setStatus(BbMan.STATUS.STATUS_WALK_BACK);
+                        if (!isBbManCrossingMapLimit(xBbMan, yBbMan - 1)) {
+                            if (!isBbManCrossingObstacle(xBbMan, yBbMan - 1)) {
+                                bbMan.setPointOnMap(xBbMan, yBbMan - 1);
+                            } else {
+                                shiftBbManIfPossible(KeyEvent.VK_UP);
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
-                case KeyEvent.VK_RIGHT: {
-                    bbMan.setStatus(BbMan.STATUS.STATUS_WALK_RIGHT);
-                    if (!isCrossingMapLimit(xBbMan + 1, yBbMan)) {
-                        if (!isCrossingObstacle(xBbMan + 1, yBbMan)) {
-                            bbMan.setPointOnMap(xBbMan + 1, yBbMan);
-                        } else {
-                            shiftBbManIfPossible(KeyEvent.VK_RIGHT);
+                    case KeyEvent.VK_DOWN: {
+                        bbMan.setStatus(BbMan.STATUS.STATUS_WALK_FRONT);
+                        if (!isBbManCrossingMapLimit(xBbMan, yBbMan + 1)) {
+                            if (!isBbManCrossingObstacle(xBbMan, yBbMan + 1)) {
+                                bbMan.setPointOnMap(xBbMan, yBbMan + 1);
+                            } else {
+                                shiftBbManIfPossible(KeyEvent.VK_DOWN);
+                            }
                         }
+                        break;
                     }
-                    break;
+                    case KeyEvent.VK_LEFT: {
+                        bbMan.setStatus(BbMan.STATUS.STATUS_WALK_LEFT);
+                        if (!isBbManCrossingMapLimit(xBbMan - 1, yBbMan)) {
+                            if (!isBbManCrossingObstacle(xBbMan - 1, yBbMan)) {
+                                bbMan.setPointOnMap(xBbMan - 1, yBbMan);
+                            } else {
+                                shiftBbManIfPossible(KeyEvent.VK_LEFT);
+                            }
+                        }
+                        break;
+                    }
+                    case KeyEvent.VK_RIGHT: {
+                        bbMan.setStatus(BbMan.STATUS.STATUS_WALK_RIGHT);
+                        if (!isBbManCrossingMapLimit(xBbMan + 1, yBbMan)) {
+                            if (!isBbManCrossingObstacle(xBbMan + 1, yBbMan)) {
+                                bbMan.setPointOnMap(xBbMan + 1, yBbMan);
+                            } else {
+                                shiftBbManIfPossible(KeyEvent.VK_RIGHT);
+                            }
+                        }
+                        break;
+                    }
+                    case KeyEvent.VK_B: {
+                        spriteList.addBomb(yBbMan / IMAGE_SIZE, xBbMan / IMAGE_SIZE, 5);
+                        break;
+                    }
+                    case KeyEvent.VK_W: {
+                        bbMan.setStatus(BbMan.STATUS.STATUS_WIN);
+                        break;
+                    }
                 }
-                case KeyEvent.VK_B: {
-                    bombList.add(yBbMan/IMAGE_SIZE, xBbMan/IMAGE_SIZE, 5);
-                    break;
-                }
-                case KeyEvent.VK_W: {
-                    bbMan.setStatus(BbMan.STATUS.STATUS_WIN);
-                    break;
-                }
-                case KeyEvent.VK_D: {
+                updateMapStartPosOnScreen();
+                updateBbManPosOnScreen();
+                if (isBbManDying(xBbMan, yBbMan)) {
                     bbMan.setStatus(BbMan.STATUS.STATUS_DEATH);
-                    break;
                 }
             }
-            updateMapStartPosOnScreen();
-            updateBbManPosOnScreen();
-            bombList.clean();
-            flameList.clean();
+
+            spriteList.clean();
             repaint();
             try {
                 Thread.sleep(4);
