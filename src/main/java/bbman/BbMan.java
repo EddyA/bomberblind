@@ -5,6 +5,7 @@ import images.BbManSprites;
 import java.awt.*;
 
 import static bbman.BbMan.STATUS.STATUS_WAIT;
+import static images.ImagesLoader.IMAGE_SIZE;
 
 public class BbMan {
 
@@ -64,6 +65,34 @@ public class BbMan {
 
     public Point getPointOnMap() {
         return pointOnMap;
+    }
+
+    /**
+     * Return the rowIdx of the top point of the BbMan if its ordinate equals a certain value.
+     */
+    public static int getTopRowIdxIfOrdIs(int yBbMan) {
+        return (yBbMan - (IMAGE_SIZE / 2)) / IMAGE_SIZE;
+    }
+
+    /**
+     * Return the rowIdx of the lowest point of the BbMan if its ordinate equals a certain value.
+     */
+    public static int getLowestRowIdxIfOrdIs(int yBbMan) {
+        return yBbMan / IMAGE_SIZE;
+    }
+
+    /**
+     * Return the colIdx of the most left point of the BbMan if its abscissa equals a certain value.
+     */
+    public static int getMostLeftColIdxIfAbsIs(int xBbMan) {
+        return (xBbMan - IMAGE_SIZE / 2) / IMAGE_SIZE;
+    }
+
+    /**
+     * Return the colIdx of the most right point of the BbMan if its abscissa equals a certain value.
+     */
+    public static int getMostRightColIdxIfAbsIs(int xBbMan) {
+        return (xBbMan + IMAGE_SIZE / 2 - 1) / IMAGE_SIZE;
     }
 
     public boolean getEndOfAnimation() {

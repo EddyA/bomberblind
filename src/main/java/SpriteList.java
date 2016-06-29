@@ -46,6 +46,7 @@ public class SpriteList extends LinkedList<Sprite> {
     private void addBomb(LinkedList<Sprite> list, int rowIdx, int colIdx, int flameSize) {
         if (!rMap.myMap[rowIdx][colIdx].isBombing()) {
             rMap.myMap[rowIdx][colIdx].setBombing(true);
+            rMap.myMap[rowIdx][colIdx].setPathway(false);
             list.add(new Bomb(rowIdx, colIdx, flameSize));
         }
     }
@@ -59,7 +60,7 @@ public class SpriteList extends LinkedList<Sprite> {
      * @return true if the flame can be propagated, false it is stopped
      */
     private boolean addFlame(LinkedList<Sprite> list, int rowIdx, int colIdx) {
-        if (rMap.myMap[rowIdx][colIdx].isPathway()) {
+        if (rMap.myMap[rowIdx][colIdx].isPathway() || rMap.myMap[rowIdx][colIdx].isBombing()) {
             rMap.myMap[rowIdx][colIdx].addFlame();
             rMap.myMap[rowIdx][colIdx].setImageAsBurned();
             list.add(new Flame(rowIdx, colIdx));
@@ -158,6 +159,8 @@ public class SpriteList extends LinkedList<Sprite> {
             if (sprite.getClass().getSimpleName().equals("Bomb")) { // it is a bomb.
                 if (rMap.myMap[sprite.getRowIdx()][sprite.getColIdx()].isBurning()) {
                     addFlames(tmpList, sprite.getRowIdx(), sprite.getColIdx(), ((Bomb) sprite).getFlameSize());
+                    rMap.myMap[sprite.getRowIdx()][sprite.getColIdx()].setBombing(false);
+                    rMap.myMap[sprite.getRowIdx()][sprite.getColIdx()].setPathway(true);
                     iterator.remove(); // remove the sprite from the list.
                 }
             }
@@ -167,6 +170,7 @@ public class SpriteList extends LinkedList<Sprite> {
                 if (sprite.getClass().getSimpleName().equals("Bomb")) { // it is a bomb.
                     addFlames(tmpList, sprite.getRowIdx(), sprite.getColIdx(), ((Bomb) sprite).getFlameSize());
                     rMap.myMap[sprite.getRowIdx()][sprite.getColIdx()].setBombing(false);
+                    rMap.myMap[sprite.getRowIdx()][sprite.getColIdx()].setPathway(true);
                 }
                 if (sprite.getClass().getSimpleName().equals("Flame")) { // it is a flame.
                     addFlameEnd(tmpList, sprite.getRowIdx(), sprite.getColIdx());

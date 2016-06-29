@@ -145,35 +145,50 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     /**
      * Is the BbMan crossing an obstacle?
+     * If the
      *
      * @param xBbMan BbMan abscissa
      * @param yBbMan BbMan ordinate
      * @return true if BbMan is crossing an obstacle, false otherwise
      */
     private boolean isBbManCrossingObstacle(int xBbMan, int yBbMan) {
+        int crtXBbMan = (int) bbMan.getPointOnMap().getX();
+        int crtYBbMan = (int) bbMan.getPointOnMap().getY();
         boolean isCrossing = false;
-        if (!rMap.myMap[(yBbMan - (IMAGE_SIZE / 2)) / IMAGE_SIZE][(xBbMan - IMAGE_SIZE / 2) / IMAGE_SIZE].isPathway() ||
-                !rMap.myMap[(yBbMan - (IMAGE_SIZE / 2)) / IMAGE_SIZE][(xBbMan + IMAGE_SIZE / 2 - 1) / IMAGE_SIZE].isPathway() ||
-                !rMap.myMap[yBbMan / IMAGE_SIZE][(xBbMan - IMAGE_SIZE / 2) / IMAGE_SIZE].isPathway() ||
-                !rMap.myMap[yBbMan / IMAGE_SIZE][(xBbMan + IMAGE_SIZE / 2 - 1) / IMAGE_SIZE].isPathway()) {
+        if ((!rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isPathway() &&
+                (!rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isBombing() ||
+                        BbMan.getTopRowIdxIfOrdIs(yBbMan) != BbMan.getTopRowIdxIfOrdIs(crtYBbMan) ||
+                        BbMan.getMostLeftColIdxIfAbsIs(xBbMan) != BbMan.getMostLeftColIdxIfAbsIs(crtXBbMan))
+        ) || (!rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isPathway() &&
+                (!rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isBombing() ||
+                        BbMan.getTopRowIdxIfOrdIs(yBbMan) != BbMan.getTopRowIdxIfOrdIs(crtYBbMan) ||
+                        BbMan.getMostRightColIdxIfAbsIs(xBbMan) != BbMan.getMostRightColIdxIfAbsIs(crtXBbMan))
+        ) || (!rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isPathway() &&
+                (!rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isBombing() ||
+                        BbMan.getLowestRowIdxIfOrdIs(yBbMan) != BbMan.getLowestRowIdxIfOrdIs(crtYBbMan) ||
+                        BbMan.getMostLeftColIdxIfAbsIs(xBbMan) != BbMan.getMostLeftColIdxIfAbsIs(crtXBbMan))
+        ) || (!rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isPathway() &&
+                (!rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isBombing() ||
+                        BbMan.getLowestRowIdxIfOrdIs(yBbMan) != BbMan.getLowestRowIdxIfOrdIs(crtYBbMan) ||
+                        BbMan.getMostRightColIdxIfAbsIs(xBbMan) != BbMan.getMostRightColIdxIfAbsIs(crtXBbMan)))) {
             isCrossing = true;
         }
         return isCrossing;
     }
 
     /**
-     * Is the BbMan Dying?
+     * Should the BbMan Die?
      *
      * @param xBbMan BbMan abscissa
      * @param yBbMan BbMan ordinate
-     * @return true if BbMan is dying, false otherwise
+     * @return true if BbMan should die, false otherwise
      */
-    private boolean isBbManDying(int xBbMan, int yBbMan) {
+    private boolean shouldBbManDie(int xBbMan, int yBbMan) {
         boolean isDying = false;
-        if (rMap.myMap[(yBbMan - (IMAGE_SIZE / 2)) / IMAGE_SIZE][(xBbMan - IMAGE_SIZE / 2) / IMAGE_SIZE].isBurning() ||
-                rMap.myMap[(yBbMan - (IMAGE_SIZE / 2)) / IMAGE_SIZE][(xBbMan + IMAGE_SIZE / 2 - 1) / IMAGE_SIZE].isBurning() ||
-                rMap.myMap[yBbMan / IMAGE_SIZE][(xBbMan - IMAGE_SIZE / 2) / IMAGE_SIZE].isBurning() ||
-                rMap.myMap[yBbMan / IMAGE_SIZE][(xBbMan + IMAGE_SIZE / 2 - 1) / IMAGE_SIZE].isBurning()) {
+        if (rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isBurning() ||
+                rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isBurning() ||
+                rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isBurning() ||
+                rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isBurning()) {
             isDying = true;
         }
         return isDying;
@@ -316,7 +331,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 }
                 updateMapStartPosOnScreen();
                 updateBbManPosOnScreen();
-                if (isBbManDying(xBbMan, yBbMan)) {
+                if (shouldBbManDie(xBbMan, yBbMan)) {
                     bbMan.setStatus(BbMan.STATUS.STATUS_DEATH);
                 }
             }
