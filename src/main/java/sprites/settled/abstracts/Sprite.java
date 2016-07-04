@@ -1,16 +1,17 @@
-package sprites;
+package sprites.settled.abstracts;
 
 import java.awt.*;
 
 import static images.ImagesLoader.IMAGE_SIZE;
 
 /**
- * Abstract class defining a sprite.
+ * Abstract class of a sprite.
+ * The sprite loops until isFinished() return true.
  */
 public abstract class Sprite {
 
-    private int rowIdx; // map row index of the sprite.
-    private int colIdx; // map column index of the sprite.
+    private final int rowIdx; // map row index of the sprite.
+    private final int colIdx; // map column index of the sprite.
 
     public Sprite(int rowIdx,
                   int colIdx) {
@@ -38,22 +39,22 @@ public abstract class Sprite {
     public abstract boolean isFinished();
 
     /**
-     * Update image of the animation.
+     * Update the sprite image.
      *
      * @return the updated image.
      */
-    abstract public Image updateImage();
+    public abstract Image updateImage();
 
     /**
-     * Paint current image of the animation.
+     * Paint current image of the sprite.
      *
      * @param g       the graphics context
-     * @param xScreen the abscissa on screen
-     * @param yScreen the ordinate on screen
+     * @param xScreen the abscissa on the screen
+     * @param yScreen the ordinate on the screen
      */
     public synchronized void paintBuffer(Graphics g, int xScreen, int yScreen) {
+        Image updatedImage = updateImage();
         if (!isFinished()) {
-            Image updatedImage = updateImage();
             int xMap = xScreen + (IMAGE_SIZE / 2) - updatedImage.getWidth(null) / 2;
             int yMap = yScreen + IMAGE_SIZE - updatedImage.getHeight(null);
             g.drawImage(updatedImage, xMap, yMap, null);

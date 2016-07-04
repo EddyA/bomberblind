@@ -1,7 +1,8 @@
-import bbman.BbMan;
+
 import exceptions.MapException;
 import images.ImagesLoader;
 import map.RMap;
+import sprites.nomad.abstracts.BbMan;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,7 +36,20 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 (rMap.castleT1.getWidth() * IMAGE_SIZE / 2);
         int yBbManOnMap = rMap.spCastleT1.getRowIdx() * IMAGE_SIZE +
                 (rMap.castleT1.getHeight() * IMAGE_SIZE) + (IMAGE_SIZE / 2);
-        bbMan = new BbMan(xBbManOnMap, yBbManOnMap, ImagesLoader.bbManSprites1); // create the BbMan.
+        bbMan = new BbMan(xBbManOnMap,
+                yBbManOnMap,
+                ImagesLoader.imagesMatrix[ImagesLoader.deathT1MatrixRowIdx],
+                ImagesLoader.NB_DEATH_FRAME,
+                ImagesLoader.imagesMatrix[ImagesLoader.waitT1MatrixRowIdx],
+                ImagesLoader.NB_WAIT_FRAME,
+                ImagesLoader.imagesMatrix[ImagesLoader.walkBackT1MatrixRowIdx],
+                ImagesLoader.imagesMatrix[ImagesLoader.walkFrontT1MatrixRowIdx],
+                ImagesLoader.imagesMatrix[ImagesLoader.walkLeftT1MatrixRowIdx],
+                ImagesLoader.imagesMatrix[ImagesLoader.walkRightT1MatrixRowIdx],
+                ImagesLoader.NB_WALK_FRAME,
+                ImagesLoader.imagesMatrix[ImagesLoader.winT1MatrixRowIdx],
+                ImagesLoader.NB_WIN_FRAME,
+                100); // create the BbMan.
 
         spriteList = new SpriteList(rMap, widthScreen, heightScreen);  // create a list of sprites.
 
@@ -55,19 +69,19 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
      * Update the BbMap position on screen function of the BbMan map position.
      */
     private void updateBbManPosOnScreen() {
-        if (bbMan.getPointOnMap().getX() < getWidth() / 2) { // left side.
-            xBbManPosOnScreen = (int) bbMan.getPointOnMap().getX();
-        } else if (bbMan.getPointOnMap().getX() > (MAP_WIDTH * IMAGE_SIZE) - (getWidth() / 2)) { // right side.
+        if (bbMan.getXMap() < getWidth() / 2) { // left side.
+            xBbManPosOnScreen = (int) bbMan.getXMap();
+        } else if (bbMan.getXMap() > (MAP_WIDTH * IMAGE_SIZE) - (getWidth() / 2)) { // right side.
             xBbManPosOnScreen = getWidth() - ((MAP_WIDTH * IMAGE_SIZE) -
-                    (int) bbMan.getPointOnMap().getX());
+                    (int) bbMan.getXMap());
         } else { // standard case.
             xBbManPosOnScreen = getWidth() / 2;
         }
-        if (bbMan.getPointOnMap().getY() < getHeight() / 2) { // upper side.
-            yBbManPosOnScreen = (int) bbMan.getPointOnMap().getY();
-        } else if (bbMan.getPointOnMap().getY() > (MAP_HEIGHT * IMAGE_SIZE) - (getHeight() / 2)) { // lower case.
+        if (bbMan.getYMap() < getHeight() / 2) { // upper side.
+            yBbManPosOnScreen = (int) bbMan.getYMap();
+        } else if (bbMan.getYMap() > (MAP_HEIGHT * IMAGE_SIZE) - (getHeight() / 2)) { // lower case.
             yBbManPosOnScreen = getHeight() - ((MAP_HEIGHT * IMAGE_SIZE) -
-                    (int) bbMan.getPointOnMap().getY());
+                    (int) bbMan.getYMap());
         } else { // standard case.
             yBbManPosOnScreen = getHeight() / 2;
         }
@@ -77,19 +91,19 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
      * Update the RMap start position on screen function of the BbMan map position.
      */
     private void updateMapStartPosOnScreen() {
-        if (bbMan.getPointOnMap().getX() < getWidth() / 2) {
+        if (bbMan.getXMap() < getWidth() / 2) {
             xMapStartPosOnScreen = 0;
-        } else if (bbMan.getPointOnMap().getX() > (MAP_WIDTH * IMAGE_SIZE) - (getWidth() / 2)) {
+        } else if (bbMan.getXMap() > (MAP_WIDTH * IMAGE_SIZE) - (getWidth() / 2)) {
             xMapStartPosOnScreen = (MAP_WIDTH * IMAGE_SIZE) - getWidth();
         } else {
-            xMapStartPosOnScreen = (int) bbMan.getPointOnMap().getX() - (getWidth() / 2);
+            xMapStartPosOnScreen = (int) bbMan.getXMap() - (getWidth() / 2);
         }
-        if (bbMan.getPointOnMap().getY() < getHeight() / 2) {
+        if (bbMan.getYMap() < getHeight() / 2) {
             yMapStartPosOnScreen = 0;
-        } else if (bbMan.getPointOnMap().getY() > (MAP_HEIGHT * IMAGE_SIZE) - (getHeight() / 2)) {
+        } else if (bbMan.getYMap() > (MAP_HEIGHT * IMAGE_SIZE) - (getHeight() / 2)) {
             yMapStartPosOnScreen = (MAP_HEIGHT * IMAGE_SIZE) - getHeight();
         } else {
-            yMapStartPosOnScreen = (int) bbMan.getPointOnMap().getY() - (getHeight() / 2);
+            yMapStartPosOnScreen = (int) bbMan.getYMap() - (getHeight() / 2);
         }
     }
 
@@ -97,9 +111,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         try {
-            rMap.paintBuffer(g2d, new Point(xMapStartPosOnScreen, yMapStartPosOnScreen));
-            spriteList.paintBuffer(g2d, new Point(xMapStartPosOnScreen, yMapStartPosOnScreen));
-            bbMan.paintBuffer(g2d, new Point(xBbManPosOnScreen, yBbManPosOnScreen));
+            rMap.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
+            spriteList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
+            bbMan.paintBuffer(g2d, xBbManPosOnScreen, yBbManPosOnScreen);
         } catch (Exception e) {
             System.err.println("GameJPanel.paintComponent(): " + e.getMessage());
         }
@@ -152,25 +166,23 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
      * @return true if BbMan is crossing an obstacle, false otherwise
      */
     private boolean isBbManCrossingObstacle(int xBbMan, int yBbMan) {
-        int crtXBbMan = (int) bbMan.getPointOnMap().getX();
-        int crtYBbMan = (int) bbMan.getPointOnMap().getY();
         boolean isCrossing = false;
         if ((!rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isPathway() &&
                 (!rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isBombing() ||
-                        BbMan.getTopRowIdxIfOrdIs(yBbMan) != BbMan.getTopRowIdxIfOrdIs(crtYBbMan) ||
-                        BbMan.getMostLeftColIdxIfAbsIs(xBbMan) != BbMan.getMostLeftColIdxIfAbsIs(crtXBbMan))
+                        BbMan.getTopRowIdxIfOrdIs(yBbMan) != BbMan.getTopRowIdxIfOrdIs(bbMan.getYMap()) ||
+                        BbMan.getMostLeftColIdxIfAbsIs(xBbMan) != BbMan.getMostLeftColIdxIfAbsIs(bbMan.getXMap()))
         ) || (!rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isPathway() &&
                 (!rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isBombing() ||
-                        BbMan.getTopRowIdxIfOrdIs(yBbMan) != BbMan.getTopRowIdxIfOrdIs(crtYBbMan) ||
-                        BbMan.getMostRightColIdxIfAbsIs(xBbMan) != BbMan.getMostRightColIdxIfAbsIs(crtXBbMan))
+                        BbMan.getTopRowIdxIfOrdIs(yBbMan) != BbMan.getTopRowIdxIfOrdIs(bbMan.getYMap()) ||
+                        BbMan.getMostRightColIdxIfAbsIs(xBbMan) != BbMan.getMostRightColIdxIfAbsIs(bbMan.getXMap()))
         ) || (!rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isPathway() &&
                 (!rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isBombing() ||
-                        BbMan.getLowestRowIdxIfOrdIs(yBbMan) != BbMan.getLowestRowIdxIfOrdIs(crtYBbMan) ||
-                        BbMan.getMostLeftColIdxIfAbsIs(xBbMan) != BbMan.getMostLeftColIdxIfAbsIs(crtXBbMan))
+                        BbMan.getLowestRowIdxIfOrdIs(yBbMan) != BbMan.getLowestRowIdxIfOrdIs(bbMan.getYMap()) ||
+                        BbMan.getMostLeftColIdxIfAbsIs(xBbMan) != BbMan.getMostLeftColIdxIfAbsIs(bbMan.getXMap()))
         ) || (!rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isPathway() &&
                 (!rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isBombing() ||
-                        BbMan.getLowestRowIdxIfOrdIs(yBbMan) != BbMan.getLowestRowIdxIfOrdIs(crtYBbMan) ||
-                        BbMan.getMostRightColIdxIfAbsIs(xBbMan) != BbMan.getMostRightColIdxIfAbsIs(crtXBbMan)))) {
+                        BbMan.getLowestRowIdxIfOrdIs(yBbMan) != BbMan.getLowestRowIdxIfOrdIs(bbMan.getYMap()) ||
+                        BbMan.getMostRightColIdxIfAbsIs(xBbMan) != BbMan.getMostRightColIdxIfAbsIs(bbMan.getXMap())))) {
             isCrossing = true;
         }
         return isCrossing;
@@ -200,18 +212,18 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
      * @param pressedKey the pressed key
      */
     private void shiftBbManIfPossible(int pressedKey) {
-        int bbManRowIdx = (int) bbMan.getPointOnMap().getY() / IMAGE_SIZE;
-        int bbManColIdx = (int) bbMan.getPointOnMap().getX() / IMAGE_SIZE;
-        int bbManRowShift = (int) bbMan.getPointOnMap().getY() % IMAGE_SIZE;
-        int bbManColShift = (int) bbMan.getPointOnMap().getX() % IMAGE_SIZE;
+        int bbManRowIdx = bbMan.getYMap() / IMAGE_SIZE;
+        int bbManColIdx = bbMan.getXMap() / IMAGE_SIZE;
+        int bbManRowShift = bbMan.getYMap() % IMAGE_SIZE;
+        int bbManColShift = bbMan.getXMap() % IMAGE_SIZE;
 
         switch (pressedKey) {
             case KeyEvent.VK_UP: {
                 if (rMap.myMap[bbManRowIdx - 1][bbManColIdx].isPathway()) { // the upper case is a pathway.
                     if (bbManColShift < IMAGE_SIZE / 2) { // bbMan on left side of its case.
-                        bbMan.setPointOnMap((int) bbMan.getPointOnMap().getX() + 1, (int) bbMan.getPointOnMap().getY());
+                        bbMan.setXMap(bbMan.getXMap() + 1);
                     } else if (bbManColShift > IMAGE_SIZE / 2) { // bbMan on right side of its case.
-                        bbMan.setPointOnMap((int) bbMan.getPointOnMap().getX() - 1, (int) bbMan.getPointOnMap().getY());
+                        bbMan.setXMap(bbMan.getXMap() - 1);
                     }
                 }
                 break;
@@ -219,9 +231,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
             case KeyEvent.VK_DOWN: {
                 if (rMap.myMap[bbManRowIdx + 1][bbManColIdx].isPathway()) { // the lower case is a pathway.
                     if (bbManColShift < IMAGE_SIZE / 2) { // bbMan on left side of its case.
-                        bbMan.setPointOnMap((int) bbMan.getPointOnMap().getX() + 1, (int) bbMan.getPointOnMap().getY());
+                        bbMan.setXMap(bbMan.getXMap() + 1);
                     } else if (bbManColShift > IMAGE_SIZE / 2) { // bbMan on right side of its case.
-                        bbMan.setPointOnMap((int) bbMan.getPointOnMap().getX() - 1, (int) bbMan.getPointOnMap().getY());
+                        bbMan.setXMap(bbMan.getXMap() - 1);
                     }
                 }
                 break;
@@ -229,12 +241,12 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
             case KeyEvent.VK_LEFT: {
                 if (rMap.myMap[bbManRowIdx][bbManColIdx - 1].isPathway()) { // the left case is a pathway.
                     if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
-                        bbMan.setPointOnMap((int) bbMan.getPointOnMap().getX(), (int) bbMan.getPointOnMap().getY() + 1);
+                        bbMan.setYMap(bbMan.getYMap() + 1);
                     }
                 }
                 if (rMap.myMap[bbManRowIdx - 1][bbManColIdx - 1].isPathway()) { // the upper/left case is a pathway.
                     if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
-                        bbMan.setPointOnMap((int) bbMan.getPointOnMap().getX(), (int) bbMan.getPointOnMap().getY() - 1);
+                        bbMan.setYMap(bbMan.getYMap() - 1);
                     }
                 }
                 break;
@@ -242,12 +254,12 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
             case KeyEvent.VK_RIGHT: {
                 if (rMap.myMap[bbManRowIdx][bbManColIdx + 1].isPathway()) { // the right case is a pathway.
                     if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
-                        bbMan.setPointOnMap((int) bbMan.getPointOnMap().getX(), (int) bbMan.getPointOnMap().getY() + 1);
+                        bbMan.setYMap(bbMan.getYMap() + 1);
                     }
                 }
                 if (rMap.myMap[bbManRowIdx - 1][bbManColIdx + 1].isPathway()) { // the upper/right case is a pathway.
                     if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
-                        bbMan.setPointOnMap((int) bbMan.getPointOnMap().getX(), (int) bbMan.getPointOnMap().getY() - 1);
+                        bbMan.setYMap(bbMan.getYMap() - 1);
                     }
                 }
                 break;
@@ -258,15 +270,11 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     @Override
     public void run() {
         while (true) {
-            int xBbMan = (int) bbMan.getPointOnMap().getX();
-            int yBbMan = (int) bbMan.getPointOnMap().getY();
-
-            if (bbMan.getStatus() == BbMan.STATUS.STATUS_DEATH) {
-                if (bbMan.getEndOfAnimation()) {
+            if (bbMan.getStatus() == BbMan.STATUS.STATUS_DEAD) {
+                if (bbMan.isFinished()) {
                     bbMan.initStatement();
                 }
             } else {
-
                 switch (pressedKeyList.get(pressedKeyList.size() - 1).intValue()) {
                     case KeyEvent.VK_ESCAPE: {
                         System.exit(1);
@@ -278,9 +286,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     }
                     case KeyEvent.VK_UP: {
                         bbMan.setStatus(BbMan.STATUS.STATUS_WALK_BACK);
-                        if (!isBbManCrossingMapLimit(xBbMan, yBbMan - 1)) {
-                            if (!isBbManCrossingObstacle(xBbMan, yBbMan - 1)) {
-                                bbMan.setPointOnMap(xBbMan, yBbMan - 1);
+                        if (!isBbManCrossingMapLimit(bbMan.getXMap(), bbMan.getYMap() - 1)) {
+                            if (!isBbManCrossingObstacle(bbMan.getXMap(), bbMan.getYMap() - 1)) {
+                                bbMan.setYMap(bbMan.getYMap() - 1);
                             } else {
                                 shiftBbManIfPossible(KeyEvent.VK_UP);
                             }
@@ -289,9 +297,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     }
                     case KeyEvent.VK_DOWN: {
                         bbMan.setStatus(BbMan.STATUS.STATUS_WALK_FRONT);
-                        if (!isBbManCrossingMapLimit(xBbMan, yBbMan + 1)) {
-                            if (!isBbManCrossingObstacle(xBbMan, yBbMan + 1)) {
-                                bbMan.setPointOnMap(xBbMan, yBbMan + 1);
+                        if (!isBbManCrossingMapLimit(bbMan.getXMap(), bbMan.getYMap() + 1)) {
+                            if (!isBbManCrossingObstacle(bbMan.getXMap(), bbMan.getYMap() + 1)) {
+                                bbMan.setYMap(bbMan.getYMap() + 1);
                             } else {
                                 shiftBbManIfPossible(KeyEvent.VK_DOWN);
                             }
@@ -300,9 +308,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     }
                     case KeyEvent.VK_LEFT: {
                         bbMan.setStatus(BbMan.STATUS.STATUS_WALK_LEFT);
-                        if (!isBbManCrossingMapLimit(xBbMan - 1, yBbMan)) {
-                            if (!isBbManCrossingObstacle(xBbMan - 1, yBbMan)) {
-                                bbMan.setPointOnMap(xBbMan - 1, yBbMan);
+                        if (!isBbManCrossingMapLimit(bbMan.getXMap() - 1, bbMan.getYMap())) {
+                            if (!isBbManCrossingObstacle(bbMan.getXMap() - 1, bbMan.getYMap())) {
+                                bbMan.setXMap(bbMan.getXMap() - 1);
                             } else {
                                 shiftBbManIfPossible(KeyEvent.VK_LEFT);
                             }
@@ -311,9 +319,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     }
                     case KeyEvent.VK_RIGHT: {
                         bbMan.setStatus(BbMan.STATUS.STATUS_WALK_RIGHT);
-                        if (!isBbManCrossingMapLimit(xBbMan + 1, yBbMan)) {
-                            if (!isBbManCrossingObstacle(xBbMan + 1, yBbMan)) {
-                                bbMan.setPointOnMap(xBbMan + 1, yBbMan);
+                        if (!isBbManCrossingMapLimit(bbMan.getXMap() + 1, bbMan.getYMap())) {
+                            if (!isBbManCrossingObstacle(bbMan.getXMap() + 1, bbMan.getYMap())) {
+                                bbMan.setXMap(bbMan.getXMap() + 1);
                             } else {
                                 shiftBbManIfPossible(KeyEvent.VK_RIGHT);
                             }
@@ -321,7 +329,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         break;
                     }
                     case KeyEvent.VK_B: {
-                        spriteList.addBomb(yBbMan / IMAGE_SIZE, xBbMan / IMAGE_SIZE, 5);
+                        spriteList.addBomb(bbMan.getYMap() / IMAGE_SIZE, bbMan.getXMap() / IMAGE_SIZE, 5);
                         break;
                     }
                     case KeyEvent.VK_W: {
@@ -331,11 +339,10 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 }
                 updateMapStartPosOnScreen();
                 updateBbManPosOnScreen();
-                if (shouldBbManDie(xBbMan, yBbMan)) {
-                    bbMan.setStatus(BbMan.STATUS.STATUS_DEATH);
+                if (shouldBbManDie(bbMan.getXMap(), bbMan.getYMap())) {
+                    bbMan.setStatus(BbMan.STATUS.STATUS_DEAD);
                 }
             }
-
             spriteList.clean();
             repaint();
             try {

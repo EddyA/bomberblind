@@ -371,16 +371,13 @@ public class RMap {
     }
 
     /**
-     * Paint a fragment of map from a point (expressed in pixel).
-     * note 1: the start point is expressed in pixel - and not in RMapPoint - to allow smooth move.
-     * note 2: the map is sized mapWidth*ImagesLoader.IMAGE_SIZE x mapHeight*ImagesLoader.IMAGE_SIZE.
+     * Paint visible elements of the map.
      *
-     * @param g          the graphics context
-     * @param startPoint the start point (abscissa and ordinate of a RMapPoint).
+     * @param g    the graphics context
+     * @param xMap the map abscissa from which painting elements
+     * @param yMap the map ordinate from which painting elements
      */
-    public void paintBuffer(Graphics g, Point startPoint) {
-        int xMap = (int) startPoint.getX();
-        int yMap = (int) startPoint.getY();
+    public void paintBuffer(Graphics g, int xMap, int yMap) {
 
         // get the starting RMapPoint concerned.
         int startColIdx = xMap / ImagesLoader.IMAGE_SIZE;

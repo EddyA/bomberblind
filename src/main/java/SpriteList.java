@@ -1,14 +1,17 @@
 import images.ImagesLoader;
 import map.RMap;
-import sprites.Bomb;
-import sprites.Flame;
-import sprites.FlameEnd;
-import sprites.Sprite;
+import sprites.settled.Bomb;
+import sprites.settled.Flame;
+import sprites.settled.FlameEnd;
+import sprites.settled.abstracts.Sprite;
 
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+/**
+ * List of sprites.
+ */
 public class SpriteList extends LinkedList<Sprite> {
 
     // create a temporary list to manage addings and avoid concurent accesses.
@@ -25,11 +28,11 @@ public class SpriteList extends LinkedList<Sprite> {
     }
 
     /**
-     * Add a bomb to a list.
+     * Add a bomb to the list.
      *
      * @param rowIdx    the map row index of the bomb
      * @param colIdx    the map column index of the bomb
-     * @param flameSize size of flames of the bomb
+     * @param flameSize the flame size of the bomb
      */
     public synchronized void addBomb(int rowIdx, int colIdx, int flameSize) {
         addBomb(this, rowIdx, colIdx, flameSize);
@@ -41,7 +44,7 @@ public class SpriteList extends LinkedList<Sprite> {
      * @param list      the list into which putting the bomb
      * @param rowIdx    the map row index of the bomb
      * @param colIdx    the map column index of the bomb
-     * @param flameSize size of flames of the bomb
+     * @param flameSize the flame size of the bomb
      */
     private void addBomb(LinkedList<Sprite> list, int rowIdx, int colIdx, int flameSize) {
         if (!rMap.myMap[rowIdx][colIdx].isBombing()) {
@@ -78,12 +81,12 @@ public class SpriteList extends LinkedList<Sprite> {
     }
 
     /**
-     * Add a set of flames to a depict a bomb explosion.
+     * Add a set of flames to represent a bomb explosion.
      *
      * @param list          the list into which putting the flames
      * @param centralRowIdx the map row index of the central flame
      * @param centralColIdx the map column index of the central flame
-     * @param flameSize     size of flames
+     * @param flameSize     the flame size
      */
     private void addFlames(LinkedList<Sprite> list, int centralRowIdx, int centralColIdx, int flameSize) {
 
@@ -110,10 +113,10 @@ public class SpriteList extends LinkedList<Sprite> {
         for (int i = 1, j = centralRowIdx - 1;
              i <= flameSize && j >= 0;
              i++, j--) { // from center to upper.
-            if (rMap.myMap[centralRowIdx - i][centralColIdx].isPathway()) {
+            if (rMap.myMap[centralRowIdx - i][centralColIdx].isPathway() ||
+                    rMap.myMap[centralRowIdx - i][centralColIdx].isBombing()) {
                 // as a pathway, this case must burn -> check the following one.
                 rowIdx++;
-                continue;
             } else if (rMap.myMap[centralRowIdx - i][centralColIdx].isMutable()) {
                 // as a mutable, this case must burn -> stop here.
                 rowIdx++;
@@ -148,58 +151,65 @@ public class SpriteList extends LinkedList<Sprite> {
     }
 
     /**
-     * Detonate imminent bombs, create flames and clean dead bombs from the list.
+     * 1. Detonate bombs, if
+     * - it is on a burning case,
+     * - it is finished.
+     * 2. Create flames and clean dead sprites from the list.
      */
     public synchronized void clean() {
 
         for (ListIterator<Sprite> iterator = this.listIterator(); iterator.hasNext(); ) {
             Sprite sprite = iterator.next();
 
-            // if the current sprite is a bomb, check if it is on a burning case.
+            // is the current sprite a bomb?
             if (sprite.getClass().getSimpleName().equals("Bomb")) { // it is a bomb.
-                if (rMap.myMap[sprite.getRowIdx()][sprite.getColIdx()].isBurning()) {
-                    addFlames(tmpList, sprite.getRowIdx(), sprite.getColIdx(), ((Bomb) sprite).getFlameSize());
-                    rMap.myMap[sprite.getRowIdx()][sprite.getColIdx()].setBombing(false);
-                    rMap.myMap[sprite.getRowIdx()][sprite.getColIdx()].setPathway(true);
-                    iterator.remove(); // remove the sprite from the list.
-                }
-            }
 
-            // if the sprite is finished, perfomed actions and remove it from the list.
-            if (sprite.isFinished()) {
-                if (sprite.getClass().getSimpleName().equals("Bomb")) { // it is a bomb.
+                // is it finished?
+                // is it on a burning case?
+                if (sprite.isFinished() ||
+                        rMap.myMap[sprite.getRowIdx()][sprite.getColIdx()].isBurning()) {
+                    // create flames.
                     addFlames(tmpList, sprite.getRowIdx(), sprite.getColIdx(), ((Bomb) sprite).getFlameSize());
                     rMap.myMap[sprite.getRowIdx()][sprite.getColIdx()].setBombing(false);
                     rMap.myMap[sprite.getRowIdx()][sprite.getColIdx()].setPathway(true);
+                    iterator.remove(); // remove it from the list.
                 }
-                if (sprite.getClass().getSimpleName().equals("Flame")) { // it is a flame.
+                // is the current sprite a flame?
+            } else if (sprite.getClass().getSimpleName().equals("Flame")) {
+                // is it finished?
+                if (sprite.isFinished()) {
+                    // create conclusion flames.
                     addFlameEnd(tmpList, sprite.getRowIdx(), sprite.getColIdx());
                     rMap.myMap[sprite.getRowIdx()][sprite.getColIdx()].removeFlame();
+                    iterator.remove(); // remove it from the list.
                 }
-                iterator.remove(); // remove the sprite from the list.
+            } else { // for all the other sprites.
+                // is the current sprite finished?
+                if (sprite.isFinished()) {
+                    iterator.remove(); // remove it from the list.
+                }
             }
         }
-        this.addAll(tmpList); // add sprites of the temporary list to the main one.
-        tmpList.clear(); // clear the temporary list.
+        if (!tmpList.isEmpty()) {
+            this.addAll(tmpList); // add sprites from the temporary list to the main one.
+            tmpList.clear(); // clear the temporary list.
+        }
     }
 
     /**
-     * Paint a fragment of the list from a point (expressed in pixel).
-     * note 1: the start point is expressed in pixel - and not in RMapPoint.
-     * note 2: the map is sized mapWidth*ImagesLoader.IMAGE_SIZE x mapHeight*ImagesLoader.IMAGE_SIZE.
+     * Paint the visible sprites on screen.
      *
-     * @param g          the graphics context
-     * @param startPoint the start point (abscissa and ordinate of a RMapPoint).
+     * @param g    the graphics context
+     * @param xMap the map abscissa from which painting sprites
+     * @param yMap the map ordinate from which painting sprites
      */
-    public synchronized void paintBuffer(Graphics g, Point startPoint) {
-        int xMap = (int) startPoint.getX();
-        int yMap = (int) startPoint.getY();
+    public synchronized void paintBuffer(Graphics g, int xMap, int yMap) {
 
-        // get the starting RMapPoint concerned.
+        // get the relative starting RMapPoint.
         int startColIdx = xMap / ImagesLoader.IMAGE_SIZE;
         int startRowIdx = yMap / ImagesLoader.IMAGE_SIZE;
 
-        // paint the bombs.
+        // paint sprites.
         for (Sprite sprite : this) {
             if ((sprite.getRowIdx() >= startRowIdx &&
                     sprite.getRowIdx() < startRowIdx + (screenHeight / ImagesLoader.IMAGE_SIZE) + 1) &&

@@ -3,9 +3,9 @@ package images;
 import java.awt.*;
 
 /**
- * Attach a collection of images to a BbMan to manage sprites.
+ * Collection of character sprite.
  */
-public class BbManSprites {
+public class CharacterSprites {
 
     public final Image[] deathImages;
     public final int nbDeathFrame;
@@ -19,17 +19,17 @@ public class BbManSprites {
     public final Image[] winImages;
     public final int nbWinFrame;
 
-    public BbManSprites(Image[] deathImages,
-                        int nbDeathFrame,
-                        Image[] waitImages,
-                        int nbWaitFrame,
-                        Image[] walkBackImages,
-                        Image[] walkFrontImages,
-                        Image[] walkLeftImages,
-                        Image[] walkRightImages,
-                        int nbWalkFrame,
-                        Image[] winImages,
-                        int nbWinFrame) {
+    public CharacterSprites(Image[] deathImages,
+                            int nbDeathFrame,
+                            Image[] waitImages,
+                            int nbWaitFrame,
+                            Image[] walkBackImages,
+                            Image[] walkFrontImages,
+                            Image[] walkLeftImages,
+                            Image[] walkRightImages,
+                            int nbWalkFrame,
+                            Image[] winImages,
+                            int nbWinFrame) {
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
         this.waitImages = waitImages;

@@ -1,17 +1,18 @@
-package sprites;
+package sprites.settled;
 
 import images.ImagesLoader;
+import sprites.settled.abstracts.TSprite;
 
 /**
- * A timed flame sprite.
+ * A flame.
  */
-public class Flame extends TimedSprite {
+public class Flame extends TSprite {
 
     /**
-     * Create a timed flame sprite.
+     * Create a flame.
      *
-     * @param rowIdx row index of the flame
-     * @param colIdx column index of the flame
+     * @param rowIdx the map row index of the flame
+     * @param colIdx the map column index of the flame
      */
     public Flame(int rowIdx, int colIdx) {
         super(rowIdx,

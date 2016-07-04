@@ -42,13 +42,15 @@ public class ImagesLoader {
     public final static int NB_SINGLE_MUTABLE = 3;
     private final static int NB_MATRIX_ROW = 53;
     private final static int NB_MATRIX_COL = 80;
+
     // images location.
     private final static String CHAR_SKIN_DIR = "/images/bbman";
     private final static String BOMB_SKIN_DIR = "/images/bomb";
     private final static String FLAME_SKIN_DIR = "/images/flame";
     private final static String SCENE_SKIN_DIR = "/images/scene";
     public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
-    public static BbManSprites bbManSprites1; // bbman sprites for team 1.
+    public static CharacterSprites bbManSprites1; // bbman sprites for team 1.
+
     // - bbmans.
     public static int deathT1MatrixRowIdx;
     public static int waitT1MatrixRowIdx;
@@ -57,8 +59,10 @@ public class ImagesLoader {
     public static int walkLeftT1MatrixRowIdx;
     public static int walkRightT1MatrixRowIdx;
     public static int winT1MatrixRowIdx;
+
     // - bomb.
     public static int bombMatrixRowIdx;
+
     // - flame.
     public static int flameMatrixRowIdx;
     public static int flameEndMatrixRowIdx;
@@ -291,7 +295,7 @@ public class ImagesLoader {
     public static void setBbManSprites() {
 
         // BbMan of the team 1.
-        bbManSprites1 = new BbManSprites(
+        bbManSprites1 = new CharacterSprites(
                 imagesMatrix[deathT1MatrixRowIdx],
                 NB_DEATH_FRAME,
                 imagesMatrix[waitT1MatrixRowIdx],

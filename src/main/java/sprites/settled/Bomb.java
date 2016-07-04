@@ -1,20 +1,21 @@
-package sprites;
+package sprites.settled;
 
 import images.ImagesLoader;
+import sprites.settled.abstracts.TSprite;
 
 /**
- * A timed bomb animation.
+ * A bomb.
  */
-public class Bomb extends TimedSprite {
+public class Bomb extends TSprite {
 
     private int flamesize;
 
     /**
-     * Create a timed bomb animation.
+     * Create a bomb.
      *
-     * @param rowIdx    row index of the bomb
-     * @param colIdx    column index of the bomb
-     * @param flameSize size of flames
+     * @param rowIdx    the map row index of the bomb
+     * @param colIdx    the map column index of the bomb
+     * @param flameSize the flame size of the bomb
      */
     public Bomb(int rowIdx, int colIdx, int flameSize) {
         super(rowIdx,
