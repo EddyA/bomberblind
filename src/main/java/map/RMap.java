@@ -25,20 +25,20 @@ public class RMap {
     // - x cases from the left/right sides of the map,
     // - a minimum of y cases from the top/bottom of the map.
 
-    private int marginX = 2;
-    private int marginY = 2;
+    private final static int MARGIN_X = 2;
+    private final static int MARGIN_Y = 2;
 
     // we create pattern for all the graphical elements (except for simple pathway - 1*1).
     // these patterns will be used to dynamically create the map.
 
-    // immutables
-    // - castles
+    // immutables:
+    // - castles.
     public RMapPattern castleT1 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.castleT1MatrixRowIdx],
             ImagesLoader.CASTLE_WIDTH, ImagesLoader.CASTLE_HEIGHT, false, false, "castleT1");
     public RMapPattern castleT2 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.castleT2MatrixRowIdx],
             ImagesLoader.CASTLE_WIDTH, ImagesLoader.CASTLE_HEIGHT, false, false, "castleT2");
 
-    // - obstacles
+    // - obstacles.
     private RMapPattern edge = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.edgeMatrixRowIdx],
             ImagesLoader.EDGE_WIDTH, ImagesLoader.EDGE_HEIGHT, false, false, "edge");
     private RMapPattern tree1 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.tree1MatrixRowIdx],
@@ -50,17 +50,11 @@ public class RMap {
     private RMapPattern wood2 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.wood2MatrixRowIdx],
             ImagesLoader.WOOD_WIDTH, ImagesLoader.WOOD_HEIGHT, false, false, "wood2");
 
-    // - pathways
+    // - pathways.
     private RMapPattern puddle1 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.puddle1MatrixRowIdx],
             ImagesLoader.PUDDLE_WIDTH, ImagesLoader.PUDDLE_HEIGHT, true, false, "puddle1");
     private RMapPattern puddle2 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.puddle2MatrixRowIdx],
             ImagesLoader.PUDDLE_WIDTH, ImagesLoader.PUDDLE_HEIGHT, true, false, "puddle2");
-
-    // - ressources
-    private RMapPattern food = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.foodMatrixRowIdx],
-            ImagesLoader.FOOD_WIDTH, ImagesLoader.FOOD_HEIGHT, false, false, "food");
-    private RMapPattern stone = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.stoneMatrixRowIdx],
-            ImagesLoader.STONE_WIDTH, ImagesLoader.STONE_HEIGHT, false, false, "stone");
 
     public RMap(int mapWidth, int mapHeight, int screenWidth, int screenHeight) throws MapException {
         this.mapWidth = mapWidth;
@@ -100,8 +94,8 @@ public class RMap {
         }
 
         // castles of team 1.
-        int xSpCastleT1 = marginX;
-        int ySpCastleT1 = generateRandomRowIdx(ImagesLoader.CASTLE_HEIGHT, marginY);
+        int xSpCastleT1 = MARGIN_X;
+        int ySpCastleT1 = generateRandomRowIdx(ImagesLoader.CASTLE_HEIGHT, MARGIN_Y);
         if (!placePatternOnMap(myMap[ySpCastleT1][xSpCastleT1], castleT1)) {
             throw new MapException("not able to create the castle of team 1.");
         }
@@ -109,8 +103,8 @@ public class RMap {
         spCastleT1 = myMap[ySpCastleT1][xSpCastleT1];
 
         // castles of team 2.
-        int xSpCastleT2 = mapWidth - marginX - ImagesLoader.CASTLE_WIDTH;
-        int ySpCastleT2 = generateRandomRowIdx(ImagesLoader.CASTLE_HEIGHT, marginY);
+        int xSpCastleT2 = mapWidth - MARGIN_X - ImagesLoader.CASTLE_WIDTH;
+        int ySpCastleT2 = generateRandomRowIdx(ImagesLoader.CASTLE_HEIGHT, MARGIN_Y);
         if (!placePatternOnMap(myMap[ySpCastleT2][xSpCastleT2], castleT2)) {
             throw new MapException("not able to create the castle of team 2.");
         }
@@ -192,7 +186,6 @@ public class RMap {
      * @param marginRange   the margin range
      * @return the random rowIdx
      */
-
     private int generateRandomRowIdx(int patternHeight, int marginRange) {
         Random R = new Random(); // initStatement the random function.
         return R.nextInt(mapHeight - 2 * marginRange - // north/south requiered margins.

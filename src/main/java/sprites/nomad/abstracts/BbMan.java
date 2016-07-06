@@ -3,15 +3,18 @@ package sprites.nomad.abstracts;
 import java.awt.*;
 
 import static images.ImagesLoader.IMAGE_SIZE;
-import static sprites.nomad.abstracts.BbMan.STATUS.STATUS_DEAD;
-import static sprites.nomad.abstracts.BbMan.STATUS.STATUS_WAIT;
+import static sprites.nomad.abstracts.BbMan.status.STATUS_DEAD;
+import static sprites.nomad.abstracts.BbMan.status.STATUS_WAIT;
 
-public class BbMan extends Character {
+/**
+ * Abstract class of a BbMan.
+ */
+public abstract class BbMan extends Character {
 
     /**
      * enum the different available status of a bbman.
      */
-    public enum STATUS {
+    public enum status {
         STATUS_DEAD,
         STATUS_WAIT,
         STATUS_WALK_BACK,
@@ -21,8 +24,8 @@ public class BbMan extends Character {
         STATUS_WIN
     }
 
-    private STATUS status; // status.
-    private STATUS lastStatus; // last status.
+    private BbMan.status status; // status.
+    private BbMan.status lastStatus; // last status.
 
     private int initialXMap; // initial abscissa on map.
     private int initialYMap; // initial ordinate on map.
@@ -87,11 +90,11 @@ public class BbMan extends Character {
         this.isFinished = false;
     }
 
-    public void setStatus(STATUS status) {
+    public void setStatus(BbMan.status status) {
         this.status = status;
     }
 
-    public STATUS getStatus() {
+    public BbMan.status getStatus() {
         return status;
     }
 
@@ -193,4 +196,3 @@ public class BbMan extends Character {
         return images[curImageIdx];
     }
 }
-

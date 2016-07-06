@@ -2,12 +2,16 @@ package sprites.nomad.abstracts;
 
 import java.awt.*;
 
+import static sprites.nomad.abstracts.Enemy.status.NO_STATUS;
+import static sprites.nomad.abstracts.Enemy.status.STATUS_DEAD;
+
 public abstract class Enemy extends Character {
 
     /**
      * enum the different status of an enemy.
      */
-    public enum STATUS {
+    public enum status {
+        STATUS_DEAD,
         STATUS_WALK_BACK,
         STATUS_WALK_FRONT,
         STATUS_WALK_LEFT,
@@ -15,8 +19,8 @@ public abstract class Enemy extends Character {
         NO_STATUS
     }
 
-    private Enemy.STATUS status; // status.
-    private Enemy.STATUS lastStatus; // last status.
+    private Enemy.status status; // status.
+    private Enemy.status lastStatus; // last status.
 
     private final Image[] walkBackImages; // array of images of the "walk back" sprite.
     private final Image[] walkFrontImages; // array of images of the "walk front" sprite.
@@ -27,6 +31,8 @@ public abstract class Enemy extends Character {
     private int refreshTime; // refresh time (in ms).
     private long lastRefreshTs; // last refresh timestamp.
 
+    private boolean isFinished; // is the BbMan dead and the sprite finished?
+
     public Enemy(int xMap,
                  int yMap,
                  Image[] walkBackImages,
@@ -36,8 +42,8 @@ public abstract class Enemy extends Character {
                  int nbWalkFrame,
                  int refreshTime) {
         super(xMap, yMap);
-        this.status = STATUS.NO_STATUS;
-        this.lastStatus = STATUS.NO_STATUS;
+        this.status = NO_STATUS;
+        this.lastStatus = NO_STATUS;
         this.walkBackImages = walkBackImages;
         this.walkFrontImages = walkFrontImages;
         this.walkLeftImages = walkLeftImages;
@@ -46,14 +52,17 @@ public abstract class Enemy extends Character {
         this.refreshTime = refreshTime;
     }
 
-    public void setStatus(STATUS status) {
+    public void setStatus(Enemy.status status) {
         this.status = status;
     }
 
-    public STATUS getStatus() {
+    public Enemy.status getStatus() {
         return status;
     }
 
+    public boolean isFinished() {
+        return (status == STATUS_DEAD  && isFinished);
+    }
     /**
      * Update the image.
      *

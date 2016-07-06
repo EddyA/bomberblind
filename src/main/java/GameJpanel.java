@@ -1,7 +1,7 @@
 
 import exceptions.MapException;
-import images.ImagesLoader;
 import map.RMap;
+import sprites.nomad.BbManBlue;
 import sprites.nomad.abstracts.BbMan;
 
 import javax.swing.*;
@@ -19,7 +19,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private final int MAP_HEIGHT = 32;
 
     private RMap rMap;
-    private BbMan bbMan;
+    private BbManBlue bbMan;
     private SpriteList spriteList;
     private List<Long> pressedKeyList;
 
@@ -36,24 +36,15 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 (rMap.castleT1.getWidth() * IMAGE_SIZE / 2);
         int yBbManOnMap = rMap.spCastleT1.getRowIdx() * IMAGE_SIZE +
                 (rMap.castleT1.getHeight() * IMAGE_SIZE) + (IMAGE_SIZE / 2);
-        bbMan = new BbMan(xBbManOnMap,
-                yBbManOnMap,
-                ImagesLoader.imagesMatrix[ImagesLoader.deathT1MatrixRowIdx],
-                ImagesLoader.NB_DEATH_FRAME,
-                ImagesLoader.imagesMatrix[ImagesLoader.waitT1MatrixRowIdx],
-                ImagesLoader.NB_WAIT_FRAME,
-                ImagesLoader.imagesMatrix[ImagesLoader.walkBackT1MatrixRowIdx],
-                ImagesLoader.imagesMatrix[ImagesLoader.walkFrontT1MatrixRowIdx],
-                ImagesLoader.imagesMatrix[ImagesLoader.walkLeftT1MatrixRowIdx],
-                ImagesLoader.imagesMatrix[ImagesLoader.walkRightT1MatrixRowIdx],
-                ImagesLoader.NB_WALK_FRAME,
-                ImagesLoader.imagesMatrix[ImagesLoader.winT1MatrixRowIdx],
-                ImagesLoader.NB_WIN_FRAME,
-                100); // create the BbMan.
 
-        spriteList = new SpriteList(rMap, widthScreen, heightScreen);  // create a list of sprites.
+        // create the  BbMan.
+        bbMan = new BbManBlue(xBbManOnMap, yBbManOnMap);
 
-        pressedKeyList = new ArrayList<>(); // create a list to handle pressed key.
+        // create a list of sprites.
+        spriteList = new SpriteList(rMap, widthScreen, heightScreen);
+
+        // create a list to handle pressed key.
+        pressedKeyList = new ArrayList<>();
         pressedKeyList.add(0L);
 
         setFocusable(true);
@@ -70,18 +61,16 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
      */
     private void updateBbManPosOnScreen() {
         if (bbMan.getXMap() < getWidth() / 2) { // left side.
-            xBbManPosOnScreen = (int) bbMan.getXMap();
+            xBbManPosOnScreen = bbMan.getXMap();
         } else if (bbMan.getXMap() > (MAP_WIDTH * IMAGE_SIZE) - (getWidth() / 2)) { // right side.
-            xBbManPosOnScreen = getWidth() - ((MAP_WIDTH * IMAGE_SIZE) -
-                    (int) bbMan.getXMap());
+            xBbManPosOnScreen = getWidth() - ((MAP_WIDTH * IMAGE_SIZE) - bbMan.getXMap());
         } else { // standard case.
             xBbManPosOnScreen = getWidth() / 2;
         }
         if (bbMan.getYMap() < getHeight() / 2) { // upper side.
-            yBbManPosOnScreen = (int) bbMan.getYMap();
+            yBbManPosOnScreen = bbMan.getYMap();
         } else if (bbMan.getYMap() > (MAP_HEIGHT * IMAGE_SIZE) - (getHeight() / 2)) { // lower case.
-            yBbManPosOnScreen = getHeight() - ((MAP_HEIGHT * IMAGE_SIZE) -
-                    (int) bbMan.getYMap());
+            yBbManPosOnScreen = getHeight() - ((MAP_HEIGHT * IMAGE_SIZE) - bbMan.getYMap());
         } else { // standard case.
             yBbManPosOnScreen = getHeight() / 2;
         }
@@ -96,14 +85,14 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         } else if (bbMan.getXMap() > (MAP_WIDTH * IMAGE_SIZE) - (getWidth() / 2)) {
             xMapStartPosOnScreen = (MAP_WIDTH * IMAGE_SIZE) - getWidth();
         } else {
-            xMapStartPosOnScreen = (int) bbMan.getXMap() - (getWidth() / 2);
+            xMapStartPosOnScreen = bbMan.getXMap() - (getWidth() / 2);
         }
         if (bbMan.getYMap() < getHeight() / 2) {
             yMapStartPosOnScreen = 0;
         } else if (bbMan.getYMap() > (MAP_HEIGHT * IMAGE_SIZE) - (getHeight() / 2)) {
             yMapStartPosOnScreen = (MAP_HEIGHT * IMAGE_SIZE) - getHeight();
         } else {
-            yMapStartPosOnScreen = (int) bbMan.getYMap() - (getHeight() / 2);
+            yMapStartPosOnScreen = bbMan.getYMap() - (getHeight() / 2);
         }
     }
 
@@ -270,7 +259,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     @Override
     public void run() {
         while (true) {
-            if (bbMan.getStatus() == BbMan.STATUS.STATUS_DEAD) {
+            if (bbMan.getStatus() == BbMan.status.STATUS_DEAD) {
                 if (bbMan.isFinished()) {
                     bbMan.initStatement();
                 }
@@ -281,11 +270,11 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         break;
                     }
                     case 0: {
-                        bbMan.setStatus(BbMan.STATUS.STATUS_WAIT);
+                        bbMan.setStatus(BbMan.status.STATUS_WAIT);
                         break;
                     }
                     case KeyEvent.VK_UP: {
-                        bbMan.setStatus(BbMan.STATUS.STATUS_WALK_BACK);
+                        bbMan.setStatus(BbMan.status.STATUS_WALK_BACK);
                         if (!isBbManCrossingMapLimit(bbMan.getXMap(), bbMan.getYMap() - 1)) {
                             if (!isBbManCrossingObstacle(bbMan.getXMap(), bbMan.getYMap() - 1)) {
                                 bbMan.setYMap(bbMan.getYMap() - 1);
@@ -296,7 +285,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         break;
                     }
                     case KeyEvent.VK_DOWN: {
-                        bbMan.setStatus(BbMan.STATUS.STATUS_WALK_FRONT);
+                        bbMan.setStatus(BbMan.status.STATUS_WALK_FRONT);
                         if (!isBbManCrossingMapLimit(bbMan.getXMap(), bbMan.getYMap() + 1)) {
                             if (!isBbManCrossingObstacle(bbMan.getXMap(), bbMan.getYMap() + 1)) {
                                 bbMan.setYMap(bbMan.getYMap() + 1);
@@ -307,7 +296,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         break;
                     }
                     case KeyEvent.VK_LEFT: {
-                        bbMan.setStatus(BbMan.STATUS.STATUS_WALK_LEFT);
+                        bbMan.setStatus(BbMan.status.STATUS_WALK_LEFT);
                         if (!isBbManCrossingMapLimit(bbMan.getXMap() - 1, bbMan.getYMap())) {
                             if (!isBbManCrossingObstacle(bbMan.getXMap() - 1, bbMan.getYMap())) {
                                 bbMan.setXMap(bbMan.getXMap() - 1);
@@ -318,7 +307,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         break;
                     }
                     case KeyEvent.VK_RIGHT: {
-                        bbMan.setStatus(BbMan.STATUS.STATUS_WALK_RIGHT);
+                        bbMan.setStatus(BbMan.status.STATUS_WALK_RIGHT);
                         if (!isBbManCrossingMapLimit(bbMan.getXMap() + 1, bbMan.getYMap())) {
                             if (!isBbManCrossingObstacle(bbMan.getXMap() + 1, bbMan.getYMap())) {
                                 bbMan.setXMap(bbMan.getXMap() + 1);
@@ -333,14 +322,14 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         break;
                     }
                     case KeyEvent.VK_W: {
-                        bbMan.setStatus(BbMan.STATUS.STATUS_WIN);
+                        bbMan.setStatus(BbMan.status.STATUS_WIN);
                         break;
                     }
                 }
                 updateMapStartPosOnScreen();
                 updateBbManPosOnScreen();
                 if (shouldBbManDie(bbMan.getXMap(), bbMan.getYMap())) {
-                    bbMan.setStatus(BbMan.STATUS.STATUS_DEAD);
+                    bbMan.setStatus(BbMan.status.STATUS_DEAD);
                 }
             }
             spriteList.clean();

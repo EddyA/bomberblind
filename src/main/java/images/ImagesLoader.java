@@ -10,78 +10,80 @@ import java.net.URL;
  * The 'Image' are loaded in a 'MediaTracker' to speed up the displaying and avoid sparkling.
  */
 public class ImagesLoader {
-
     public final static int IMAGE_SIZE = 30; // size of an 'Image' in pixels (30*30).
-    public final static int NB_DEATH_FRAME = 10;
-    public final static int NB_WAIT_FRAME = 4;
-    public final static int NB_WALK_FRAME = 4;
-    public final static int NB_WIN_FRAME = 8;
-    public final static int NB_BOMB_FRAME = 4;
-    public final static int NB_FLAME_FRAME = 3;
-    public final static int NB_FLAME_END_FRAME = 9;
-    public final static int CASTLE_WIDTH = 6;
 
-    // images information.
-    public final static int CASTLE_HEIGHT = 5;
-    public final static int EDGE_WIDTH = 1;
-    public final static int EDGE_HEIGHT = 4;
-    public final static int TREE_WIDTH = 4;
-    public final static int TREE_HEIGHT = 4;
-    public final static int WOOD_WIDTH = 8;
-    public final static int WOOD_HEIGHT = 10;
-    public final static int NB_SINGLE_OBSTABLE = 2;
-    public final static int NB_FLOWER_FRAME = 3;
-    public final static int NB_SINGLE_BOOM = 1;
-    public final static int PUDDLE_WIDTH = 7;
-    public final static int PUDDLE_HEIGHT = 6;
-    public final static int NB_SINGLE_PATHWAY = 20;
-    public final static int FOOD_WIDTH = 5;
-    public final static int FOOD_HEIGHT = 3;
-    public final static int STONE_WIDTH = 5;
-    public final static int STONE_HEIGHT = 3;
-    public final static int NB_SINGLE_MUTABLE = 3;
-    private final static int NB_MATRIX_ROW = 53;
+    public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
+    private final static int NB_MATRIX_ROW = 55;
     private final static int NB_MATRIX_COL = 80;
 
     // images location.
-    private final static String CHAR_SKIN_DIR = "/images/bbman";
+    private final static String BBMAN_SKIN_DIR = "/images/characters/bbman";
+    private final static String ENEMY_SKIN_DIR = "/images/characters/enemy";
     private final static String BOMB_SKIN_DIR = "/images/bomb";
     private final static String FLAME_SKIN_DIR = "/images/flame";
     private final static String SCENE_SKIN_DIR = "/images/scene";
-    public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
-    public static CharacterSprites bbManSprites1; // bbman sprites for team 1.
 
-    // - bbmans.
-    public static int deathT1MatrixRowIdx;
-    public static int waitT1MatrixRowIdx;
-    public static int walkBackT1MatrixRowIdx;
-    public static int walkFrontT1MatrixRowIdx;
-    public static int walkLeftT1MatrixRowIdx;
-    public static int walkRightT1MatrixRowIdx;
-    public static int winT1MatrixRowIdx;
+    // bbmans:
+    public final static int NB_BBMAN_DEATH_FRAME = 10;
+    public final static int NB_BBMAN_WAIT_FRAME = 4;
+    public final static int NB_BBMAN_WALK_FRAME = 4;
+    public final static int NB_BBMAN_WIN_FRAME = 8;
 
-    // - bomb.
+    // - blue BbMan.
+    public static int blueBbManDeathMatrixRowIdx;
+    public static int blueBbManWaitMatrixRowIdx;
+    public static int blueBbManWalkBackMatrixRowIdx;
+    public static int blueBbManWalkFrontMatrixRowIdx;
+    public static int blueBbManWalkLeftMatrixRowIdx;
+    public static int blueBbManWalkRightMatrixRowIdx;
+    public static int blueBbManWinMatrixRowIdx;
+
+    // enemies:
+    public final static int NB_ENEMY_WALK_FRAME = 4;
+
+    // - cloaked skeleton.
+    public static int cloakedSkeletonWalkBackMatrixRowIdx;
+    public static int cloakedSkeletonWalkFrontMatrixRowIdx;
+    public static int cloakedSkeletonWalkLeftMatrixRowIdx;
+    public static int cloakedSkeletonWalkRightMatrixRowIdx;
+
+    // sprites:
+    public final static int NB_BOMB_FRAME = 4;
     public static int bombMatrixRowIdx;
-
-    // - flame.
+    public final static int NB_FLAME_FRAME = 3;
     public static int flameMatrixRowIdx;
+    public final static int NB_FLAME_END_FRAME = 9;
     public static int flameEndMatrixRowIdx;
-    // - scene.
+
+    // scene elements:
+    public final static int CASTLE_WIDTH = 6;
+    public final static int CASTLE_HEIGHT = 5;
     public static int castleT1MatrixRowIdx;
     public static int castleT2MatrixRowIdx;
+    public final static int EDGE_WIDTH = 1;
+    public final static int EDGE_HEIGHT = 4;
     public static int edgeMatrixRowIdx;
+    public final static int TREE_WIDTH = 4;
+    public final static int TREE_HEIGHT = 4;
     public static int tree1MatrixRowIdx;
     public static int tree2MatrixRowIdx;
+    public final static int WOOD_WIDTH = 8;
+    public final static int WOOD_HEIGHT = 10;
     public static int wood1MatrixRowIdx;
     public static int wood2MatrixRowIdx;
+    public final static int NB_SINGLE_OBSTABLE = 2;
     public static int singleObstacleMatrixRowIdx;
+    public final static int NB_FLOWER_FRAME = 3;
     public static int flowerMatrixRowIdx;
+    public final static int NB_SINGLE_BOOM = 1;
     public static int singleBoomMatrixRowIdx;
+    public final static int PUDDLE_WIDTH = 7;
+    public final static int PUDDLE_HEIGHT = 6;
     public static int puddle1MatrixRowIdx;
     public static int puddle2MatrixRowIdx;
+    public final static int NB_SINGLE_PATHWAY = 20;
     public static int singlePathwayMatrixRowIdx;
-    public static int foodMatrixRowIdx;
-    public static int stoneMatrixRowIdx;
+    public final static int NB_SINGLE_MUTABLE = 3;
     public static int singleMutableMatrixRowIdx;
 
     /**
@@ -110,72 +112,77 @@ public class ImagesLoader {
         imagesMatrix = new Image[NB_MATRIX_ROW][NB_MATRIX_COL];
 
         // bbmans:
-        // - death.
-        for (int i = 0; i < NB_DEATH_FRAME; i++) {
+        // - blue BbMan.
+        for (int i = 0; i < NB_BBMAN_DEATH_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(CHAR_SKIN_DIR + "/team_1/death_t1_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(BBMAN_SKIN_DIR + "/blue/death_" + imageIdx + ".png");
         }
-        deathT1MatrixRowIdx = rowIdx++;
-
-        // - wait.
-        for (int i = 0; i < NB_WAIT_FRAME; i++) {
+        blueBbManDeathMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_BBMAN_WAIT_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(CHAR_SKIN_DIR + "/team_1/wait_t1_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(BBMAN_SKIN_DIR + "/blue/wait_" + imageIdx + ".png");
         }
-        waitT1MatrixRowIdx = rowIdx++;
-
-        // - walk.
-        // -- back.
-        for (int i = 0; i < NB_WALK_FRAME; i++) {
+        blueBbManWaitMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_BBMAN_WALK_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(CHAR_SKIN_DIR + "/team_1/walk_back_t1_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(BBMAN_SKIN_DIR + "/blue/walk_back_" + imageIdx + ".png");
         }
-        walkBackT1MatrixRowIdx = rowIdx++;
-
-        // -- front.
-        for (int i = 0; i < NB_WALK_FRAME; i++) {
+        blueBbManWalkBackMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_BBMAN_WALK_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(CHAR_SKIN_DIR + "/team_1/walk_front_t1_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(BBMAN_SKIN_DIR + "/blue/walk_front_" + imageIdx + ".png");
         }
-        walkFrontT1MatrixRowIdx = rowIdx++;
-
-        // -- left.
-        for (int i = 0; i < NB_WALK_FRAME; i++) {
+        blueBbManWalkFrontMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_BBMAN_WALK_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(CHAR_SKIN_DIR + "/team_1/walk_left_t1_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(BBMAN_SKIN_DIR + "/blue/walk_left_" + imageIdx + ".png");
         }
-        walkLeftT1MatrixRowIdx = rowIdx++;
-
-        // -- right.
-        for (int i = 0; i < NB_WALK_FRAME; i++) {
+        blueBbManWalkLeftMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_BBMAN_WALK_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(CHAR_SKIN_DIR + "/team_1/walk_right_t1_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(BBMAN_SKIN_DIR + "/blue/walk_right_" + imageIdx + ".png");
         }
-        walkRightT1MatrixRowIdx = rowIdx++;
-
-        // - win.
-        for (int i = 0; i < NB_WIN_FRAME; i++) {
+        blueBbManWalkRightMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_BBMAN_WIN_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(CHAR_SKIN_DIR + "/team_1/win_t1_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(BBMAN_SKIN_DIR + "/blue/win_" + imageIdx + ".png");
         }
-        winT1MatrixRowIdx = rowIdx++;
+        blueBbManWinMatrixRowIdx = rowIdx++;
 
-        // bomb:
+        // enemies:
+        // - cloaked skeleton.
+        for (int i = 0; i < NB_ENEMY_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/cloaked_skeleton/walk_back_" + imageIdx + ".png");
+        }
+        cloakedSkeletonWalkBackMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_ENEMY_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/cloaked_skeleton/walk_front_" + imageIdx + ".png");
+        }
+        cloakedSkeletonWalkFrontMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_ENEMY_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/cloaked_skeleton/walk_left_" + imageIdx + ".png");
+        }
+        cloakedSkeletonWalkLeftMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_ENEMY_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/cloaked_skeleton/walk_right_" + imageIdx + ".png");
+        }
+        cloakedSkeletonWalkRightMatrixRowIdx = rowIdx++;
+
+        // sprites:
         for (int i = 0; i < NB_BOMB_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(BOMB_SKIN_DIR + "/bomb_" + imageIdx + ".png");
         }
         bombMatrixRowIdx = rowIdx++;
-
-        // flame:
-        // - blazing.
         for (int i = 0; i < NB_FLAME_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(FLAME_SKIN_DIR + "/flame_" + imageIdx + ".png");
         }
         flameMatrixRowIdx = rowIdx++;
-
-        // - ending.
         for (int i = 0; i < NB_FLAME_END_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(FLAME_SKIN_DIR + "/flame_end_" + imageIdx + ".png");
@@ -267,45 +274,11 @@ public class ImagesLoader {
         }
         singlePathwayMatrixRowIdx = rowIdx++;
 
-        // -- food.
-        for (int i = 0; i < FOOD_WIDTH * FOOD_HEIGHT; i++) {
-            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(SCENE_SKIN_DIR + "/immutable/resource/food/food_" + imageIdx + ".png");
-        }
-        foodMatrixRowIdx = rowIdx++;
-
-        // -- stone.
-        for (int i = 0; i < STONE_WIDTH * STONE_HEIGHT; i++) {
-            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(SCENE_SKIN_DIR + "/immutable/resource/stone/stone_" + imageIdx + ".png");
-        }
-        stoneMatrixRowIdx = rowIdx++;
-
         // single mutable (1*1).
         for (int i = 0; i < NB_SINGLE_MUTABLE; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(SCENE_SKIN_DIR + "/mutable/mutable_" + imageIdx + ".png");
         }
         singleMutableMatrixRowIdx = rowIdx;
-    }
-
-    /**
-     * Set collections if images for the BbMan sprites.
-     */
-    public static void setBbManSprites() {
-
-        // BbMan of the team 1.
-        bbManSprites1 = new CharacterSprites(
-                imagesMatrix[deathT1MatrixRowIdx],
-                NB_DEATH_FRAME,
-                imagesMatrix[waitT1MatrixRowIdx],
-                NB_WAIT_FRAME,
-                imagesMatrix[walkBackT1MatrixRowIdx],
-                imagesMatrix[walkFrontT1MatrixRowIdx],
-                imagesMatrix[walkLeftT1MatrixRowIdx],
-                imagesMatrix[walkRightT1MatrixRowIdx],
-                NB_WALK_FRAME,
-                imagesMatrix[winT1MatrixRowIdx],
-                NB_WIN_FRAME);
     }
 }

@@ -20,7 +20,6 @@ public class App extends JFrame {
         try {
             System.out.println("- load images ... ");
             ImagesLoader.fillImagesMatrix();
-            ImagesLoader.setBbManSprites();
 
             System.out.println("- create and set JFrame ... ");
             setJframe();
