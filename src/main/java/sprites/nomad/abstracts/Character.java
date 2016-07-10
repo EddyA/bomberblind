@@ -2,6 +2,9 @@ package sprites.nomad.abstracts;
 
 import java.awt.*;
 
+/**
+ * Abstract class of a character.
+ */
 public abstract class Character {
 
     private int xMap; // abscissa on the map.
@@ -61,7 +64,7 @@ public abstract class Character {
      */
     public void paintBuffer(Graphics g, int xScreen, int yScreen) {
         Image updatedImage = updateImage();
-        if (!isFinished()) {
+        if ((updatedImage != null) && !isFinished()) {
             int xImage = xScreen - updatedImage.getWidth(null) / 2;
             int yImage = yScreen - updatedImage.getHeight(null);
             g.drawImage(updatedImage, xImage, yImage, null);

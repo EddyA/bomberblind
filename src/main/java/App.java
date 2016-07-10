@@ -10,7 +10,7 @@ public class App extends JFrame {
     private final int SCREEN_WIDTH = 1200;
     private final int SCREEN_HEIGHT = 720;
     private final String PACKAGE_NAME = "Bomberblind";
-    private final String PACKAGE_VERSION = "0.2";
+    private final String PACKAGE_VERSION = "1.0-SNAPSHOT";
 
     private GameJpanel gameJpanel;
 

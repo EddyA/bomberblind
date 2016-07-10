@@ -77,7 +77,7 @@ public class RMap {
      *
      * @throws MapException if the map could not be created
      */
-    private void generateMap() throws MapException {
+    public void generateMap() throws MapException {
 
         // north edge.
         for (int col = 0; col < mapWidth; col += tree1.getWidth()) {
@@ -114,11 +114,11 @@ public class RMap {
         // complex elements.
         Map<RMapPattern, Integer> eltConfMap = new HashMap<>();
         eltConfMap.put(wood1, 2);
-        eltConfMap.put(wood2, 1);
-        eltConfMap.put(tree1, 2);
-        eltConfMap.put(tree2, 2);
-        eltConfMap.put(puddle1, 2);
-        eltConfMap.put(puddle2, 2);
+        eltConfMap.put(wood2, 2);
+        eltConfMap.put(tree1, 4);
+        eltConfMap.put(tree2, 4);
+        eltConfMap.put(puddle1, 1);
+        eltConfMap.put(puddle2, 1);
 
         for (Map.Entry<RMapPattern, Integer> eltConf : eltConfMap.entrySet()) {
             for (int eltIdx = 0; eltIdx < eltConf.getValue(); eltIdx++) {

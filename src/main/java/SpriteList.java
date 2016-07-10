@@ -49,7 +49,6 @@ public class SpriteList extends LinkedList<Sprite> {
     private void addBomb(LinkedList<Sprite> list, int rowIdx, int colIdx, int flameSize) {
         if (!rMap.myMap[rowIdx][colIdx].isBombing()) {
             rMap.myMap[rowIdx][colIdx].setBombing(true);
-            rMap.myMap[rowIdx][colIdx].setPathway(false);
             list.add(new Bomb(rowIdx, colIdx, flameSize));
         }
     }
@@ -63,12 +62,12 @@ public class SpriteList extends LinkedList<Sprite> {
      * @return true if the flame can be propagated, false it is stopped
      */
     private boolean addFlame(LinkedList<Sprite> list, int rowIdx, int colIdx) {
-        if (rMap.myMap[rowIdx][colIdx].isPathway() || rMap.myMap[rowIdx][colIdx].isBombing()) {
+        if (rMap.myMap[rowIdx][colIdx].isPathway()) {
             rMap.myMap[rowIdx][colIdx].addFlame();
             rMap.myMap[rowIdx][colIdx].setImageAsBurned();
             list.add(new Flame(rowIdx, colIdx));
             return true; // the next case can burn.
-        } else if (rMap.myMap[rowIdx][colIdx].isMutable()) {
+        } else if (rMap.myMap[rowIdx][colIdx].isMutable() || rMap.myMap[rowIdx][colIdx].isBombing()) {
             rMap.myMap[rowIdx][colIdx].setPathway(true);
             rMap.myMap[rowIdx][colIdx].setMutable(false);
             rMap.myMap[rowIdx][colIdx].addFlame();
@@ -113,11 +112,11 @@ public class SpriteList extends LinkedList<Sprite> {
         for (int i = 1, j = centralRowIdx - 1;
              i <= flameSize && j >= 0;
              i++, j--) { // from center to upper.
-            if (rMap.myMap[centralRowIdx - i][centralColIdx].isPathway() ||
-                    rMap.myMap[centralRowIdx - i][centralColIdx].isBombing()) {
+            if (rMap.myMap[centralRowIdx - i][centralColIdx].isPathway()) {
                 // as a pathway, this case must burn -> check the following one.
                 rowIdx++;
-            } else if (rMap.myMap[centralRowIdx - i][centralColIdx].isMutable()) {
+            } else if (rMap.myMap[centralRowIdx - i][centralColIdx].isMutable() ||
+                    rMap.myMap[centralRowIdx - i][centralColIdx].isBombing()) {
                 // as a mutable, this case must burn -> stop here.
                 rowIdx++;
                 break;
@@ -165,13 +164,12 @@ public class SpriteList extends LinkedList<Sprite> {
             if (sprite.getClass().getSimpleName().equals("Bomb")) { // it is a bomb.
 
                 // is it finished?
-                // is it on a burning case?
                 if (sprite.isFinished() ||
+                        // OR is it on a burning case?
                         rMap.myMap[sprite.getRowIdx()][sprite.getColIdx()].isBurning()) {
                     // create flames.
                     addFlames(tmpList, sprite.getRowIdx(), sprite.getColIdx(), ((Bomb) sprite).getFlameSize());
                     rMap.myMap[sprite.getRowIdx()][sprite.getColIdx()].setBombing(false);
-                    rMap.myMap[sprite.getRowIdx()][sprite.getColIdx()].setPathway(true);
                     iterator.remove(); // remove it from the list.
                 }
                 // is the current sprite a flame?

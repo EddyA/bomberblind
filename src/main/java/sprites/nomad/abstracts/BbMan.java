@@ -2,12 +2,12 @@ package sprites.nomad.abstracts;
 
 import java.awt.*;
 
-import static images.ImagesLoader.IMAGE_SIZE;
 import static sprites.nomad.abstracts.BbMan.status.STATUS_DEAD;
 import static sprites.nomad.abstracts.BbMan.status.STATUS_WAIT;
 
 /**
  * Abstract class of a BbMan.
+ * The sprite loops until isFinished() return true.
  */
 public abstract class BbMan extends Character {
 
@@ -42,8 +42,12 @@ public abstract class BbMan extends Character {
     private final Image[] winImages;
     private final int nbWinFrame;
     private int curImageIdx; // current image index of the animation.
-    private int refreshTime; // refresh time of the animation (in ms).
+    private int refreshTime; // refresh time of the sprite (in ms).
     private long lastRefreshTs; // last refresh timestamp.
+
+    private boolean isInvincible; // is the BbMan invincible?
+    private int invincibilityTime; // invincibility time (in ms).
+    private long lastInvincibilityTs; // last invincibility timestamp.
 
     private boolean isFinished; // is the BbMan dead and the sprite finished?
 
@@ -60,7 +64,8 @@ public abstract class BbMan extends Character {
                  int nbWalkFrame,
                  Image[] winImages,
                  int nbWinFrame,
-                 int refreshTime) {
+                 int refreshTime,
+                 int invincibleTime) {
         super(xMap, yMap);
         this.initialXMap = xMap;
         this.initialYMap = yMap;
@@ -78,6 +83,7 @@ public abstract class BbMan extends Character {
         this.winImages = winImages;
         this.nbWinFrame = nbWinFrame;
         this.refreshTime = refreshTime;
+        this.invincibilityTime = invincibleTime;
     }
 
     /**
@@ -88,6 +94,8 @@ public abstract class BbMan extends Character {
         super.setXMap(initialXMap);
         super.setYMap(initialYMap);
         this.isFinished = false;
+        this.isInvincible = true;
+        this.lastInvincibilityTs = System.currentTimeMillis(); // get the current time.
     }
 
     public void setStatus(BbMan.status status) {
@@ -102,32 +110,8 @@ public abstract class BbMan extends Character {
         return (status == STATUS_DEAD && isFinished);
     }
 
-    /**
-     * Return the rowIdx of the BbMan top point given an map ordinate.
-     */
-    public static int getTopRowIdxIfOrdIs(int yBbMan) {
-        return (yBbMan - (IMAGE_SIZE / 2)) / IMAGE_SIZE;
-    }
-
-    /**
-     * Return the rowIdx of the BbMan lowest point given a map ordinate.
-     */
-    public static int getLowestRowIdxIfOrdIs(int yBbMan) {
-        return yBbMan / IMAGE_SIZE;
-    }
-
-    /**
-     * Return the colIdx of the BbMan most left point given a map abscissa.
-     */
-    public static int getMostLeftColIdxIfAbsIs(int xBbMan) {
-        return (xBbMan - IMAGE_SIZE / 2) / IMAGE_SIZE;
-    }
-
-    /**
-     * Return the colIdx of the BbMap most right point given a map abscissa.
-     */
-    public static int getMostRightColIdxIfAbsIs(int xBbMan) {
-        return (xBbMan + IMAGE_SIZE / 2 - 1) / IMAGE_SIZE;
+    public boolean isInvincible() {
+        return isInvincible;
     }
 
     /**
@@ -137,6 +121,7 @@ public abstract class BbMan extends Character {
      */
     public Image updateImage() {
         long curTs = System.currentTimeMillis(); // get the current time.
+        boolean shouldPrint = true;
 
         int nbFrames = 0;
         Image[] images = null;
@@ -184,7 +169,8 @@ public abstract class BbMan extends Character {
         } else {
             if (curTs - lastRefreshTs > refreshTime) { // it is time to refresh.
                 lastRefreshTs = curTs;
-                if (++curImageIdx == nbFrames) { // at the end of the sprite.
+                curImageIdx++;
+                if (curImageIdx == nbFrames) { // at the end of the sprite.
                     if (status == STATUS_DEAD) {
                         isFinished = true;
                     } else {
@@ -192,7 +178,14 @@ public abstract class BbMan extends Character {
                     }
                 }
             }
+            if (isInvincible) {
+                if (curTs - lastInvincibilityTs > invincibilityTime) { // stop invincibility?
+                    isInvincible = false;
+                } else if (curImageIdx % 2 == 0) { // print every two images.
+                    shouldPrint = false;
+                }
+            }
         }
-        return images[curImageIdx];
+        return shouldPrint ? images[curImageIdx] : null;
     }
 }

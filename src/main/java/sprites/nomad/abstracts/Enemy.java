@@ -5,6 +5,9 @@ import java.awt.*;
 import static sprites.nomad.abstracts.Enemy.status.NO_STATUS;
 import static sprites.nomad.abstracts.Enemy.status.STATUS_DEAD;
 
+/**
+ * Abstract class of an enemy.
+ */
 public abstract class Enemy extends Character {
 
     /**
@@ -61,8 +64,9 @@ public abstract class Enemy extends Character {
     }
 
     public boolean isFinished() {
-        return (status == STATUS_DEAD  && isFinished);
+        return (status == STATUS_DEAD && isFinished);
     }
+
     /**
      * Update the image.
      *

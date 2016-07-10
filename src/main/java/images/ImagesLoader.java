@@ -13,8 +13,8 @@ public class ImagesLoader {
     public final static int IMAGE_SIZE = 30; // size of an 'Image' in pixels (30*30).
 
     public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
-    private final static int NB_MATRIX_ROW = 55;
-    private final static int NB_MATRIX_COL = 80;
+    protected final static int NB_MATRIX_ROW = 28;
+    protected final static int NB_MATRIX_COL = 80;
 
     // images location.
     private final static String BBMAN_SKIN_DIR = "/images/characters/bbman";
@@ -24,7 +24,7 @@ public class ImagesLoader {
     private final static String SCENE_SKIN_DIR = "/images/scene";
 
     // bbmans:
-    public final static int NB_BBMAN_DEATH_FRAME = 10;
+    public final static int NB_BBMAN_DEATH_FRAME = 9;
     public final static int NB_BBMAN_WAIT_FRAME = 4;
     public final static int NB_BBMAN_WALK_FRAME = 4;
     public final static int NB_BBMAN_WIN_FRAME = 8;
@@ -86,6 +86,8 @@ public class ImagesLoader {
     public final static int NB_SINGLE_MUTABLE = 3;
     public static int singleMutableMatrixRowIdx;
 
+    public static int lastRowIdx; // for test purpose.
+
     /**
      * Create an 'Image' based to a relative path (from 'resources' folder).
      *
@@ -93,12 +95,12 @@ public class ImagesLoader {
      * @return the created 'Image'
      * @throws IOException if the file does not exist
      */
-    private static Image createImage(String relativePath) throws IOException {
+    protected static Image createImage(String relativePath) throws IOException {
         URL imageURL = ImagesLoader.class.getResource(relativePath);
         if (imageURL != null) {
             return ImageIO.read(imageURL);
         } else {
-            throw new IOException("\nfile not found: " + relativePath + "\n");
+            throw new IOException("file not found: " + relativePath);
         }
     }
 
@@ -280,5 +282,6 @@ public class ImagesLoader {
             imagesMatrix[rowIdx][i] = createImage(SCENE_SKIN_DIR + "/mutable/mutable_" + imageIdx + ".png");
         }
         singleMutableMatrixRowIdx = rowIdx;
+        lastRowIdx = rowIdx;
     }
 }

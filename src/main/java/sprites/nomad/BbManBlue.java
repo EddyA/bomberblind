@@ -29,6 +29,7 @@ public class BbManBlue extends BbMan {
                 ImagesLoader.NB_BBMAN_WALK_FRAME,
                 ImagesLoader.imagesMatrix[ImagesLoader.blueBbManWinMatrixRowIdx],
                 ImagesLoader.NB_BBMAN_WIN_FRAME,
-                100); // create the BbMan.
+                100,
+                2500); // create the BbMan.
     }
 }

@@ -3,6 +3,9 @@ package sprites.nomad;
 import images.ImagesLoader;
 import sprites.nomad.abstracts.Enemy;
 
+/**
+ * A cloaked skeleton.
+ */
 public class CloakedSkeleton extends Enemy {
 
     /**

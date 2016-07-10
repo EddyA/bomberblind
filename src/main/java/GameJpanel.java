@@ -1,4 +1,5 @@
 
+import map.RMapUtils;
 import exceptions.MapException;
 import map.RMap;
 import sprites.nomad.BbManBlue;
@@ -127,75 +128,6 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     }
 
     /**
-     * Is the BbMan crossing a map limit?
-     *
-     * @param xBbMan BbMan abscissa
-     * @param yBbMan BbMan ordinate
-     * @return true if the BbMan is crossing a map limit, false otherwise
-     */
-    private boolean isBbManCrossingMapLimit(int xBbMan, int yBbMan) {
-        boolean isCrossing = false;
-        if (xBbMan - (IMAGE_SIZE / 2) < 0 ||
-                xBbMan + (IMAGE_SIZE / 2) > rMap.mapWidth * IMAGE_SIZE) {
-            isCrossing = true;
-        }
-        if (yBbMan < 0 ||
-                yBbMan > rMap.mapHeight * IMAGE_SIZE) {
-            isCrossing = true;
-        }
-        return isCrossing;
-    }
-
-    /**
-     * Is the BbMan crossing an obstacle?
-     * If the
-     *
-     * @param xBbMan BbMan abscissa
-     * @param yBbMan BbMan ordinate
-     * @return true if BbMan is crossing an obstacle, false otherwise
-     */
-    private boolean isBbManCrossingObstacle(int xBbMan, int yBbMan) {
-        boolean isCrossing = false;
-        if ((!rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isPathway() &&
-                (!rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isBombing() ||
-                        BbMan.getTopRowIdxIfOrdIs(yBbMan) != BbMan.getTopRowIdxIfOrdIs(bbMan.getYMap()) ||
-                        BbMan.getMostLeftColIdxIfAbsIs(xBbMan) != BbMan.getMostLeftColIdxIfAbsIs(bbMan.getXMap()))
-        ) || (!rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isPathway() &&
-                (!rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isBombing() ||
-                        BbMan.getTopRowIdxIfOrdIs(yBbMan) != BbMan.getTopRowIdxIfOrdIs(bbMan.getYMap()) ||
-                        BbMan.getMostRightColIdxIfAbsIs(xBbMan) != BbMan.getMostRightColIdxIfAbsIs(bbMan.getXMap()))
-        ) || (!rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isPathway() &&
-                (!rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isBombing() ||
-                        BbMan.getLowestRowIdxIfOrdIs(yBbMan) != BbMan.getLowestRowIdxIfOrdIs(bbMan.getYMap()) ||
-                        BbMan.getMostLeftColIdxIfAbsIs(xBbMan) != BbMan.getMostLeftColIdxIfAbsIs(bbMan.getXMap()))
-        ) || (!rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isPathway() &&
-                (!rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isBombing() ||
-                        BbMan.getLowestRowIdxIfOrdIs(yBbMan) != BbMan.getLowestRowIdxIfOrdIs(bbMan.getYMap()) ||
-                        BbMan.getMostRightColIdxIfAbsIs(xBbMan) != BbMan.getMostRightColIdxIfAbsIs(bbMan.getXMap())))) {
-            isCrossing = true;
-        }
-        return isCrossing;
-    }
-
-    /**
-     * Should the BbMan Die?
-     *
-     * @param xBbMan BbMan abscissa
-     * @param yBbMan BbMan ordinate
-     * @return true if BbMan should die, false otherwise
-     */
-    private boolean shouldBbManDie(int xBbMan, int yBbMan) {
-        boolean isDying = false;
-        if (rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isBurning() ||
-                rMap.myMap[BbMan.getTopRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isBurning() ||
-                rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostLeftColIdxIfAbsIs(xBbMan)].isBurning() ||
-                rMap.myMap[BbMan.getLowestRowIdxIfOrdIs(yBbMan)][BbMan.getMostRightColIdxIfAbsIs(xBbMan)].isBurning()) {
-            isDying = true;
-        }
-        return isDying;
-    }
-
-    /**
      * Shift BbMan of a pixel to help him finding the way (if possible).
      *
      * @param pressedKey the pressed key
@@ -275,8 +207,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     }
                     case KeyEvent.VK_UP: {
                         bbMan.setStatus(BbMan.status.STATUS_WALK_BACK);
-                        if (!isBbManCrossingMapLimit(bbMan.getXMap(), bbMan.getYMap() - 1)) {
-                            if (!isBbManCrossingObstacle(bbMan.getXMap(), bbMan.getYMap() - 1)) {
+                        if (!RMapUtils.isCharacterCrossingMapLimit(rMap, bbMan.getXMap(), bbMan.getYMap() - 1)) {
+                            if (!RMapUtils.isCharacterCrossingObstacle(rMap, bbMan.getXMap(), bbMan.getYMap() - 1) &&
+                                    !RMapUtils.isCharacterCrossingBomb(rMap, bbMan.getXMap(), bbMan.getYMap() - 1)) {
                                 bbMan.setYMap(bbMan.getYMap() - 1);
                             } else {
                                 shiftBbManIfPossible(KeyEvent.VK_UP);
@@ -286,8 +219,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     }
                     case KeyEvent.VK_DOWN: {
                         bbMan.setStatus(BbMan.status.STATUS_WALK_FRONT);
-                        if (!isBbManCrossingMapLimit(bbMan.getXMap(), bbMan.getYMap() + 1)) {
-                            if (!isBbManCrossingObstacle(bbMan.getXMap(), bbMan.getYMap() + 1)) {
+                        if (!RMapUtils.isCharacterCrossingMapLimit(rMap, bbMan.getXMap(), bbMan.getYMap() + 1)) {
+                            if (!RMapUtils.isCharacterCrossingObstacle(rMap, bbMan.getXMap(), bbMan.getYMap() + 1) &&
+                                    !RMapUtils.isCharacterCrossingBomb(rMap, bbMan.getXMap(), bbMan.getYMap() + 1)) {
                                 bbMan.setYMap(bbMan.getYMap() + 1);
                             } else {
                                 shiftBbManIfPossible(KeyEvent.VK_DOWN);
@@ -297,8 +231,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     }
                     case KeyEvent.VK_LEFT: {
                         bbMan.setStatus(BbMan.status.STATUS_WALK_LEFT);
-                        if (!isBbManCrossingMapLimit(bbMan.getXMap() - 1, bbMan.getYMap())) {
-                            if (!isBbManCrossingObstacle(bbMan.getXMap() - 1, bbMan.getYMap())) {
+                        if (!RMapUtils.isCharacterCrossingMapLimit(rMap, bbMan.getXMap() - 1, bbMan.getYMap())) {
+                            if (!RMapUtils.isCharacterCrossingObstacle(rMap, bbMan.getXMap() - 1, bbMan.getYMap()) &&
+                                    !RMapUtils.isCharacterCrossingBomb(rMap, bbMan.getXMap() - 1, bbMan.getYMap())) {
                                 bbMan.setXMap(bbMan.getXMap() - 1);
                             } else {
                                 shiftBbManIfPossible(KeyEvent.VK_LEFT);
@@ -308,8 +243,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     }
                     case KeyEvent.VK_RIGHT: {
                         bbMan.setStatus(BbMan.status.STATUS_WALK_RIGHT);
-                        if (!isBbManCrossingMapLimit(bbMan.getXMap() + 1, bbMan.getYMap())) {
-                            if (!isBbManCrossingObstacle(bbMan.getXMap() + 1, bbMan.getYMap())) {
+                        if (!RMapUtils.isCharacterCrossingMapLimit(rMap, bbMan.getXMap() + 1, bbMan.getYMap())) {
+                            if (!RMapUtils.isCharacterCrossingObstacle(rMap, bbMan.getXMap() + 1, bbMan.getYMap()) &&
+                                    !RMapUtils.isCharacterCrossingBomb(rMap, bbMan.getXMap() + 1, bbMan.getYMap())) {
                                 bbMan.setXMap(bbMan.getXMap() + 1);
                             } else {
                                 shiftBbManIfPossible(KeyEvent.VK_RIGHT);
@@ -328,7 +264,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 }
                 updateMapStartPosOnScreen();
                 updateBbManPosOnScreen();
-                if (shouldBbManDie(bbMan.getXMap(), bbMan.getYMap())) {
+                if (RMapUtils.shouldCharacterDie(rMap, bbMan.isInvincible(), bbMan.getXMap(), bbMan.getYMap())) {
                     bbMan.setStatus(BbMan.status.STATUS_DEAD);
                 }
             }
