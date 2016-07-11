@@ -31,6 +31,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     GameJpanel(int widthScreen, int heightScreen) throws MapException {
         rMap = new RMap(MAP_WIDTH, MAP_HEIGHT, widthScreen, heightScreen);
+        rMap.createPatterns();
+        rMap.generateMap();
 
         // compute the position of the BbMan on the map.
         int xBbManOnMap = rMap.spCastleT1.getColIdx() * IMAGE_SIZE +

@@ -1,6 +1,5 @@
 package images;
 
-import images.ImagesLoader;
 import org.junit.Test;
 
 import java.io.IOException;

@@ -28,33 +28,23 @@ public class RMap {
     private final static int MARGIN_X = 2;
     private final static int MARGIN_Y = 2;
 
-    // we create pattern for all the graphical elements (except for simple pathway - 1*1).
-    // these patterns will be used to dynamically create the map.
+    // Declare pattern for all the graphical elements (except for simple pathway - 1*1).
 
     // immutables:
     // - castles.
-    public RMapPattern castleT1 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.castleT1MatrixRowIdx],
-            ImagesLoader.CASTLE_WIDTH, ImagesLoader.CASTLE_HEIGHT, false, false, "castleT1");
-    public RMapPattern castleT2 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.castleT2MatrixRowIdx],
-            ImagesLoader.CASTLE_WIDTH, ImagesLoader.CASTLE_HEIGHT, false, false, "castleT2");
+    public RMapPattern castleT1;
+    public RMapPattern castleT2;
 
     // - obstacles.
-    private RMapPattern edge = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.edgeMatrixRowIdx],
-            ImagesLoader.EDGE_WIDTH, ImagesLoader.EDGE_HEIGHT, false, false, "edge");
-    private RMapPattern tree1 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.tree1MatrixRowIdx],
-            ImagesLoader.TREE_WIDTH, ImagesLoader.TREE_HEIGHT, false, false, "tree1");
-    private RMapPattern tree2 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.tree2MatrixRowIdx],
-            ImagesLoader.TREE_WIDTH, ImagesLoader.TREE_HEIGHT, false, false, "tree2");
-    private RMapPattern wood1 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.wood1MatrixRowIdx],
-            ImagesLoader.WOOD_WIDTH, ImagesLoader.WOOD_HEIGHT, false, false, "wood1");
-    private RMapPattern wood2 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.wood2MatrixRowIdx],
-            ImagesLoader.WOOD_WIDTH, ImagesLoader.WOOD_HEIGHT, false, false, "wood2");
+    private RMapPattern edge;
+    private RMapPattern tree1;
+    private RMapPattern tree2;
+    private RMapPattern wood1;
+    private RMapPattern wood2;
 
     // - pathways.
-    private RMapPattern puddle1 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.puddle1MatrixRowIdx],
-            ImagesLoader.PUDDLE_WIDTH, ImagesLoader.PUDDLE_HEIGHT, true, false, "puddle1");
-    private RMapPattern puddle2 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.puddle2MatrixRowIdx],
-            ImagesLoader.PUDDLE_WIDTH, ImagesLoader.PUDDLE_HEIGHT, true, false, "puddle2");
+    private RMapPattern puddle1;
+    private RMapPattern puddle2;
 
     public RMap(int mapWidth, int mapHeight, int screenWidth, int screenHeight) throws MapException {
         this.mapWidth = mapWidth;
@@ -69,7 +59,38 @@ public class RMap {
                 myMap[rawIdx][colIdx] = new RMapPoint(rawIdx, colIdx);
             }
         }
-        generateMap();
+    }
+
+    /**
+     * Create pattern for all the graphical elements (except for simple pathway - 1*1).
+     * these patterns will be used to dynamically generate the map.
+     */
+    public void createPatterns() {
+
+        // immutables:
+        // - castles.
+        castleT1 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.castleT1MatrixRowIdx],
+                ImagesLoader.CASTLE_WIDTH, ImagesLoader.CASTLE_HEIGHT, false, false, "castleT1");
+        castleT2 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.castleT2MatrixRowIdx],
+                ImagesLoader.CASTLE_WIDTH, ImagesLoader.CASTLE_HEIGHT, false, false, "castleT2");
+
+        // - obstacles.
+        edge = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.edgeMatrixRowIdx],
+                ImagesLoader.EDGE_WIDTH, ImagesLoader.EDGE_HEIGHT, false, false, "edge");
+        tree1 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.tree1MatrixRowIdx],
+                ImagesLoader.TREE_WIDTH, ImagesLoader.TREE_HEIGHT, false, false, "tree1");
+        tree2 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.tree2MatrixRowIdx],
+                ImagesLoader.TREE_WIDTH, ImagesLoader.TREE_HEIGHT, false, false, "tree2");
+        wood1 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.wood1MatrixRowIdx],
+                ImagesLoader.WOOD_WIDTH, ImagesLoader.WOOD_HEIGHT, false, false, "wood1");
+        wood2 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.wood2MatrixRowIdx],
+                ImagesLoader.WOOD_WIDTH, ImagesLoader.WOOD_HEIGHT, false, false, "wood2");
+
+        // - pathways.
+        puddle1 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.puddle1MatrixRowIdx],
+                ImagesLoader.PUDDLE_WIDTH, ImagesLoader.PUDDLE_HEIGHT, true, false, "puddle1");
+        puddle2 = new RMapPattern(ImagesLoader.imagesMatrix[ImagesLoader.puddle2MatrixRowIdx],
+                ImagesLoader.PUDDLE_WIDTH, ImagesLoader.PUDDLE_HEIGHT, true, false, "puddle2");
     }
 
     /**
