@@ -8,7 +8,7 @@ public class RMapUtils {
      * Return the top rowIdx of a character given its map ordinate.
      */
     protected static int getTopRowIdxIfOrdIs(int yCharacter) {
-        return (yCharacter - IMAGE_SIZE / 2) / IMAGE_SIZE;
+        return (yCharacter - IMAGE_SIZE / 2) < 0 ? -1 : (yCharacter - IMAGE_SIZE / 2) / IMAGE_SIZE;
     }
 
     /**
@@ -22,7 +22,7 @@ public class RMapUtils {
      * Return the most left colIdx of a character given its map abscissa.
      */
     protected static int getMostLeftColIdxIfAbsIs(int xCharacter) {
-        return (xCharacter - IMAGE_SIZE / 2) / IMAGE_SIZE;
+        return (xCharacter - IMAGE_SIZE / 2) < 0 ? -1 : (xCharacter - IMAGE_SIZE / 2) / IMAGE_SIZE;
     }
 
     /**
@@ -31,7 +31,6 @@ public class RMapUtils {
     protected static int getMostRightColIdxIfAbsIs(int xCharacter) {
         return (xCharacter + IMAGE_SIZE / 2 - 1) / IMAGE_SIZE;
     }
-
 
     /**
      * Is the character crossing a map limit?
@@ -42,13 +41,14 @@ public class RMapUtils {
      * @return true if the character is crossing a map limit, false otherwise
      */
     public static boolean isCharacterCrossingMapLimit(RMap rMap, int xCharacter, int yCharacter) {
+        int topRowIdx = getTopRowIdxIfOrdIs(yCharacter);
+        int bottomRowIdx = getBottomRowIdxIfOrdIs(yCharacter);
+        int mostLeftColIdx = getMostLeftColIdxIfAbsIs(xCharacter);
+        int mostRightColIdx = getMostRightColIdxIfAbsIs(xCharacter);
         boolean isCrossing = false;
-        if (xCharacter - (IMAGE_SIZE / 2) < 0 ||
-                xCharacter + (IMAGE_SIZE / 2) > rMap.mapWidth * IMAGE_SIZE) {
-            isCrossing = true;
-        }
-        if (yCharacter - (IMAGE_SIZE / 2) < 0 ||
-                yCharacter > rMap.mapHeight * IMAGE_SIZE) {
+
+        if (topRowIdx < 0 || bottomRowIdx >= rMap.mapHeight ||
+                mostLeftColIdx < 0 || mostRightColIdx >= rMap.mapWidth) {
             isCrossing = true;
         }
         return isCrossing;
@@ -63,11 +63,20 @@ public class RMapUtils {
      * @return true if the character is crossing an obstacle, false otherwise
      */
     public static boolean isCharacterCrossingObstacle(RMap rMap, int xCharacter, int yCharacter) {
+        int topRowIdx = getTopRowIdxIfOrdIs(yCharacter);
+        int bottomRowIdx = getBottomRowIdxIfOrdIs(yCharacter);
+        int mostLeftColIdx = getMostLeftColIdxIfAbsIs(xCharacter);
+        int mostRightColIdx = getMostRightColIdxIfAbsIs(xCharacter);
+
         boolean isCrossing = false;
-        if (!rMap.myMap[getTopRowIdxIfOrdIs(yCharacter)][getMostLeftColIdxIfAbsIs(xCharacter)].isPathway() ||
-                !rMap.myMap[getTopRowIdxIfOrdIs(yCharacter)][getMostRightColIdxIfAbsIs(xCharacter)].isPathway() ||
-                !rMap.myMap[getBottomRowIdxIfOrdIs(yCharacter)][getMostLeftColIdxIfAbsIs(xCharacter)].isPathway() ||
-                !rMap.myMap[getBottomRowIdxIfOrdIs(yCharacter)][getMostRightColIdxIfAbsIs(xCharacter)].isPathway()) {
+        if (topRowIdx < 0 ||
+                bottomRowIdx > (rMap.mapHeight - 1) ||
+                mostLeftColIdx < 0 ||
+                mostRightColIdx > (rMap.mapWidth - 1) ||
+                !rMap.myMap[topRowIdx][mostLeftColIdx].isPathway() ||
+                !rMap.myMap[topRowIdx][mostRightColIdx].isPathway() ||
+                !rMap.myMap[bottomRowIdx][mostLeftColIdx].isPathway() ||
+                !rMap.myMap[bottomRowIdx][mostRightColIdx].isPathway()) {
             isCrossing = true;
         }
         return isCrossing;
@@ -82,12 +91,17 @@ public class RMapUtils {
      * @return true if the character should die, false otherwise
      */
     public static boolean shouldCharacterDie(RMap rMap, boolean isInvincible, int xCharacter, int yCharacter) {
+        int topRowIdx = getTopRowIdxIfOrdIs(yCharacter);
+        int bottomRowIdx = getBottomRowIdxIfOrdIs(yCharacter);
+        int mostLeftColIdx = getMostLeftColIdxIfAbsIs(xCharacter);
+        int mostRightColIdx = getMostRightColIdxIfAbsIs(xCharacter);
         boolean isDying = false;
+
         if (!isInvincible &&
-                (rMap.myMap[getTopRowIdxIfOrdIs(yCharacter)][getMostLeftColIdxIfAbsIs(xCharacter)].isBurning() ||
-                rMap.myMap[getTopRowIdxIfOrdIs(yCharacter)][getMostRightColIdxIfAbsIs(xCharacter)].isBurning() ||
-                rMap.myMap[getBottomRowIdxIfOrdIs(yCharacter)][getMostLeftColIdxIfAbsIs(xCharacter)].isBurning() ||
-                rMap.myMap[getBottomRowIdxIfOrdIs(yCharacter)][getMostRightColIdxIfAbsIs(xCharacter)].isBurning())) {
+                (rMap.myMap[topRowIdx][mostLeftColIdx].isBurning() ||
+                        rMap.myMap[topRowIdx][mostRightColIdx].isBurning() ||
+                        rMap.myMap[bottomRowIdx][mostLeftColIdx].isBurning() ||
+                        rMap.myMap[bottomRowIdx][mostRightColIdx].isBurning())) {
             isDying = true;
         }
         return isDying;
@@ -103,19 +117,24 @@ public class RMapUtils {
      * @return true if the character is crossing a bomb, false otherwise
      */
     public static boolean isCharacterCrossingBomb(RMap rMap, int xCharacter, int yCharacter) {
+        int topRowIdx = getTopRowIdxIfOrdIs(yCharacter);
+        int bottomRowIdx = getBottomRowIdxIfOrdIs(yCharacter);
+        int mostLeftColIdx = getMostLeftColIdxIfAbsIs(xCharacter);
+        int mostRightColIdx = getMostRightColIdxIfAbsIs(xCharacter);
+
         boolean isCrossing = false;
-        /*if ((rMap.myMap[getTopRowIdxIfOrdIs(yCharacter)][getMostLeftColIdxIfAbsIs(xCharacter)].isBombing() &&
-                getTopRowIdxIfOrdIs(yCharacter) != getTopRowIdxIfOrdIs(bbMan.getYMap()) &&
-                getMostLeftColIdxIfAbsIs(xCharacter) != getMostLeftColIdxIfAbsIs(bbMan.getXMap())
-        ) || (rMap.myMap[getTopRowIdxIfOrdIs(yCharacter)][getMostRightColIdxIfAbsIs(xCharacter)].isBombing() &&
-                getTopRowIdxIfOrdIs(yCharacter) != getTopRowIdxIfOrdIs(bbMan.getYMap()) &&
-                getMostRightColIdxIfAbsIs(xCharacter) != getMostRightColIdxIfAbsIs(bbMan.getXMap())
-        ) || (rMap.myMap[getBottomRowIdxIfOrdIs(yCharacter)][getMostLeftColIdxIfAbsIs(xCharacter)].isBombing() &&
-                getBottomRowIdxIfOrdIs(yCharacter) != getBottomRowIdxIfOrdIs(bbMan.getYMap()) &&
-                getMostLeftColIdxIfAbsIs(xCharacter) != getMostLeftColIdxIfAbsIs(bbMan.getXMap())
-        ) || (rMap.myMap[getBottomRowIdxIfOrdIs(yCharacter)][getMostRightColIdxIfAbsIs(xCharacter)].isBombing() &&
-                getBottomRowIdxIfOrdIs(yCharacter) != getBottomRowIdxIfOrdIs(bbMan.getYMap()) &&
-                getMostRightColIdxIfAbsIs(xCharacter) != getMostRightColIdxIfAbsIs(bbMan.getXMap()))) {
+        /*if ((rMap.myMap[topRowIdx][mostLeftColIdx].isBombing() &&
+                topRowIdx != getTopRowIdxIfOrdIs(bbMan.getYMap()) &&
+                mostLeftColIdx != getMostLeftColIdxIfAbsIs(bbMan.getXMap())
+        ) || (rMap.myMap[topRowIdx][mostRightColIdx].isBombing() &&
+                topRowIdx != getTopRowIdxIfOrdIs(bbMan.getYMap()) &&
+                mostRightColIdx != getMostRightColIdxIfAbsIs(bbMan.getXMap())
+        ) || (rMap.myMap[bottomRowIdx][mostLeftColIdx].isBombing() &&
+                bottomRowIdx != getBottomRowIdxIfOrdIs(bbMan.getYMap()) &&
+                mostLeftColIdx != getMostLeftColIdxIfAbsIs(bbMan.getXMap())
+        ) || (rMap.myMap[bottomRowIdx][mostRightColIdx].isBombing() &&
+                bottomRowIdx != getBottomRowIdxIfOrdIs(bbMan.getYMap()) &&
+                mostRightColIdx != getMostRightColIdxIfAbsIs(bbMan.getXMap()))) {
             isCrossing = true;
         }*/
         return isCrossing;

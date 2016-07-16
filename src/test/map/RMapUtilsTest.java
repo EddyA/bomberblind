@@ -1,6 +1,5 @@
 package map;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import static images.ImagesLoader.IMAGE_SIZE;
@@ -13,7 +12,9 @@ public class RMapUtilsTest {
 
     @Test
     public void getTopRowIdxIfOrdIsShouldReturnTheAppropriateValue() {
-        Assertions.assertThat(RMapUtils.getTopRowIdxIfOrdIs(20)).isEqualTo(0); // standard case.
+        assertThat(RMapUtils.getTopRowIdxIfOrdIs(10)).isEqualTo(-1); // negative  case.
+        assertThat(RMapUtils.getTopRowIdxIfOrdIs(14)).isEqualTo(-1); // limit before negative  case.
+        assertThat(RMapUtils.getTopRowIdxIfOrdIs(20)).isEqualTo(0); // standard case.
         assertThat(RMapUtils.getTopRowIdxIfOrdIs(44)).isEqualTo(0); // limit before moving to another case.
         assertThat(RMapUtils.getTopRowIdxIfOrdIs(45)).isEqualTo(1); // moving to another case.
     }
@@ -28,6 +29,8 @@ public class RMapUtilsTest {
 
     @Test
     public void getMostLeftRowIdxIfOrdIsShouldReturnTheAppropriateValue() {
+        assertThat(RMapUtils.getMostLeftColIdxIfAbsIs(10)).isEqualTo(-1); // negative  case.
+        assertThat(RMapUtils.getMostLeftColIdxIfAbsIs(14)).isEqualTo(-1); // limit before negative  case.
         assertThat(RMapUtils.getMostLeftColIdxIfAbsIs(30)).isEqualTo(0); // standard case.
         assertThat(RMapUtils.getMostLeftColIdxIfAbsIs(44)).isEqualTo(0); // limit before moving to another case.
         assertThat(RMapUtils.getMostLeftColIdxIfAbsIs(45)).isEqualTo(1); // moving to another case.
@@ -42,33 +45,50 @@ public class RMapUtilsTest {
 
     @Test
     public void isCharacterCrossingMapLimitShouldReturnTheAppropriateValue() throws Exception {
+
+        // set map.
         RMap rMap = new RMap(MAP_WIDTH, MAP_HEIGHT, 0, 0);
 
-        // define map limits.
-        int topLimit = IMAGE_SIZE / 2;
-        int bottomLimit = MAP_HEIGHT * IMAGE_SIZE;
-        int leftLimit = IMAGE_SIZE / 2;
-        int rightLimit = MAP_WIDTH * IMAGE_SIZE - IMAGE_SIZE / 2;
+        // compute character map limits according to the character gabarit.
+        // ex: RMap(20, 10) = W=600px * H=300px.
+        // - yChar < 15px should fail
+        // - yChar > 299px should fail
+        // - xChar < 15px should fail
+        // - xChar > 685px should fail
 
-        // top/left corner.
-        assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, leftLimit, topLimit)).isFalse();
-        assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, leftLimit - 1, topLimit)).isTrue();
-        assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, leftLimit, topLimit - 1)).isTrue();
+        int topMapLimit = IMAGE_SIZE / 2; // 15px.
+        int bottomMapLimit = MAP_HEIGHT * IMAGE_SIZE - 1; // 299px.
+        int leftMapLimit = IMAGE_SIZE / 2; // 15px.
+        int rightMapLimit = MAP_WIDTH * IMAGE_SIZE - IMAGE_SIZE / 2; // 685px.
 
-        // top/right corner.
-        assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, rightLimit, topLimit)).isFalse();
-        assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, rightLimit + 1, topLimit)).isTrue();
-        assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, rightLimit, topLimit - 1)).isTrue();
-
-        // bottom/right corner.
-        assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, rightLimit, bottomLimit)).isFalse();
-        assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, rightLimit + 1, bottomLimit)).isTrue();
-        assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, rightLimit, bottomLimit + 1)).isTrue();
-
-        // bottom/left corner.
-        assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, leftLimit, bottomLimit)).isFalse();
-        assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, leftLimit - 1, bottomLimit)).isTrue();
-        assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, leftLimit, bottomLimit + 1)).isTrue();
+        // tests.
+        for (int xChar = 0; xChar < MAP_WIDTH * IMAGE_SIZE; xChar++) {
+            for (int yChar = 0; yChar < MAP_HEIGHT * IMAGE_SIZE; yChar++) {
+                if ((xChar < leftMapLimit) || (xChar > rightMapLimit) ||
+                        (yChar < topMapLimit) || (yChar > bottomMapLimit)) {
+                    assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, xChar, yChar)).isTrue(); // crossing.
+                } else {
+                    assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, xChar, yChar)).isFalse(); // not crossing.
+                }
+            }
+        }
     }
 
+    @Test
+    public void isCharacterCrossingObstacleShouldReturnTheAppropriateValue() throws Exception {
+
+        // set the map.
+        RMap rMap = new RMap(MAP_WIDTH, MAP_HEIGHT, 0, 0);
+        for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
+            for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
+                rMap.myMap[rowIdx][colIdx].setPathway(true);
+            }
+        }
+        int obsRowIdx = 1;
+        int obsColIdx = 2;
+        rMap.myMap[obsRowIdx][obsColIdx].setPathway(false);
+
+        // ToDo: test.
+        assertThat(true).isTrue();
+    }
 }
