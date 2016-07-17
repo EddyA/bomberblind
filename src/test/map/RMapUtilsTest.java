@@ -51,9 +51,9 @@ public class RMapUtilsTest {
 
         // compute character map limits according to the character gabarit.
         // ex: RMap(20, 10) = W=600px * H=300px.
-        // - yChar < 15px should fail
-        // - yChar > 299px should fail
-        // - xChar < 15px should fail
+        // - yChar < 15px ||
+        // - yChar > 299px ||
+        // - xChar < 15px ||
         // - xChar > 685px should fail
 
         int topMapLimit = IMAGE_SIZE / 2; // 15px.
@@ -88,7 +88,29 @@ public class RMapUtilsTest {
         int obsColIdx = 2;
         rMap.myMap[obsRowIdx][obsColIdx].setPathway(false);
 
-        // ToDo: test.
-        assertThat(true).isTrue();
+        // compute character map limits according to the character gabarit.
+        // ex: Obs(1, 2) -> x=60px, y=30px.
+        // - yChar > 29px &&
+        // - yChar < 75px &&
+        // - xChar > 45px &&
+        // - xChar < 105px should fail
+
+        int topObsLimit = obsRowIdx * IMAGE_SIZE - 1; // 30px.
+        int bottomObsLimit = (obsRowIdx + 1) * IMAGE_SIZE + IMAGE_SIZE / 2; // 60px.
+        int leftObsLimit = obsColIdx * IMAGE_SIZE - IMAGE_SIZE / 2; // 45px.
+        int rightObsLimit = (obsColIdx + 1) * IMAGE_SIZE + IMAGE_SIZE / 2; // 105px.
+
+        // test.
+        for (int xChar = 0; xChar < MAP_WIDTH * IMAGE_SIZE; xChar++) {
+            for (int yChar = 0; yChar < MAP_HEIGHT * IMAGE_SIZE; yChar++) {
+                if (!RMapUtils.isCharacterCrossingMapLimit(rMap, xChar, yChar)) // should be called to only get obstacle.
+                    if ((xChar > leftObsLimit) && (xChar < rightObsLimit) &&
+                            (yChar > topObsLimit) && (yChar < bottomObsLimit)) {
+                        assertThat(RMapUtils.isCharacterCrossingObstacle(rMap, xChar, yChar)).isTrue(); // crossing.
+                    } else {
+                        assertThat(RMapUtils.isCharacterCrossingObstacle(rMap, xChar, yChar)).isFalse(); // not crossing.
+                    }
+            }
+        }
     }
 }
