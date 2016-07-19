@@ -17,13 +17,13 @@ public class RMapPoint {
     private boolean isPathway; // is a pathway?
     private boolean isMutable; // is a mutable?
 
-    private Image image;
+    protected Image image;
 
-    private Image[] images; // array of images for animation.
-    private int nbImages; // number of images of the animation.
+    protected Image[] images; // array of images for animation.
+    protected int nbImages; // number of images of the animation.
     private int curImageIdx; // current image index of the animation.
-    private int refreshTime; // refresh time of the animation (in ms).
-    private long lastRefreshTs; // last refresh timestamp.
+    protected int refreshTime; // refresh time of the animation (in ms).
+    protected long lastRefreshTs; // last refresh timestamp.
 
     private boolean isBombing; // is bombed (bomb on case)?
     private int nbFlames; // number of flames on that case (can be multiple because of crossing explosions).
@@ -112,7 +112,7 @@ public class RMapPoint {
      *
      * @return the image to paint.
      */
-    private Image updateImage() {
+    protected Image updateImage() {
         Image imageToPaint;
         if (image != null) {
             imageToPaint = image;
