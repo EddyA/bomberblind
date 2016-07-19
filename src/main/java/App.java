@@ -1,4 +1,4 @@
-import exceptions.MapException;
+import exceptions.CannotCreateRMapElementException;
 import images.ImagesLoader;
 
 import javax.imageio.ImageIO;
@@ -31,7 +31,7 @@ public class App extends JFrame {
             System.out.println("- run game. ");
             setVisible(true);
 
-        } catch (IOException | MapException e) {
+        } catch (IOException | CannotCreateRMapElementException e) {
             System.err.println("App: " + e.getMessage());
         }
     }

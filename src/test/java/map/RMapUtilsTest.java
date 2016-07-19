@@ -1,9 +1,11 @@
 package map;
 
-import org.junit.Test;
-
 import static images.ImagesLoader.IMAGE_SIZE;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.Test;
+
+import exceptions.OutOfRMapBoundsException;
 
 public class RMapUtilsTest {
 
@@ -49,7 +51,7 @@ public class RMapUtilsTest {
         // set map.
         RMap rMap = new RMap(MAP_WIDTH, MAP_HEIGHT, 0, 0);
 
-        // compute character map limits according to the character gabarit.
+        // compute the character limits according to the map dimensions.
         // ex: RMap(20, 10) = W=600px * H=300px.
         // - yChar < 15px ||
         // - yChar > 299px ||
@@ -88,7 +90,7 @@ public class RMapUtilsTest {
         int obsColIdx = 2;
         rMap.myMap[obsRowIdx][obsColIdx].setPathway(false);
 
-        // compute character map limits according to the character gabarit.
+        // compute the character limits according to the obstacle position.
         // ex: Obs(1, 2) -> x=60px, y=30px.
         // - yChar > 29px &&
         // - yChar < 75px &&
@@ -103,13 +105,67 @@ public class RMapUtilsTest {
         // test.
         for (int xChar = 0; xChar < MAP_WIDTH * IMAGE_SIZE; xChar++) {
             for (int yChar = 0; yChar < MAP_HEIGHT * IMAGE_SIZE; yChar++) {
-                if (!RMapUtils.isCharacterCrossingMapLimit(rMap, xChar, yChar)) // should be called to only get obstacle.
+                try {
                     if ((xChar > leftObsLimit) && (xChar < rightObsLimit) &&
                             (yChar > topObsLimit) && (yChar < bottomObsLimit)) {
-                        assertThat(RMapUtils.isCharacterCrossingObstacle(rMap, xChar, yChar)).isTrue(); // crossing.
+
+                        // assert that the character is crossing an obstacle.
+                        assertThat(RMapUtils.isCharacterCrossingObstacle(rMap, xChar, yChar)).isTrue();
                     } else {
-                        assertThat(RMapUtils.isCharacterCrossingObstacle(rMap, xChar, yChar)).isFalse(); // not crossing.
+
+                        // assert that the character is not crossing an obstacle.
+                        assertThat(RMapUtils.isCharacterCrossingObstacle(rMap, xChar, yChar)).isFalse();
                     }
+                } catch (OutOfRMapBoundsException e) {
+
+                    // assert that an exception has been thrown because the character is crossing the map limits.
+                    assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, xChar, yChar)).isTrue();
+                }
+            }
+        }
+    }
+
+    @Test
+    public void shouldCharacterDieShouldReturnTheAppropriateValue() throws Exception {
+
+        // set the map.
+        RMap rMap = new RMap(MAP_WIDTH, MAP_HEIGHT, 0, 0);
+
+        int flameRowIdx = 1;
+        int flameColIdx = 2;
+        rMap.myMap[flameRowIdx][flameColIdx].addFlame();
+
+        // compute the character limits according to the flame position.
+        // ex: Flame(1, 2) -> x=60px, y=30px.
+        // - yChar > 29px &&
+        // - yChar < 75px &&
+        // - xChar > 45px &&
+        // - xChar < 105px should fail
+
+        int topFlameLimit = flameRowIdx * IMAGE_SIZE - 1; // 30px.
+        int bottomFlameLimit = (flameRowIdx + 1) * IMAGE_SIZE + IMAGE_SIZE / 2; // 60px.
+        int leftFlameLimit = flameColIdx * IMAGE_SIZE - IMAGE_SIZE / 2; // 45px.
+        int rightFlameLimit = (flameColIdx + 1) * IMAGE_SIZE + IMAGE_SIZE / 2; // 105px.
+
+        // test.
+        for (int xChar = 0; xChar < MAP_WIDTH * IMAGE_SIZE; xChar++) {
+            for (int yChar = 0; yChar < MAP_HEIGHT * IMAGE_SIZE; yChar++) {
+                try {
+                    if ((xChar > leftFlameLimit) && (xChar < rightFlameLimit) &&
+                            (yChar > topFlameLimit) && (yChar < bottomFlameLimit)) {
+
+                        // assert that the character is crossing a flame.
+                        assertThat(RMapUtils.isCharacterBurning(rMap, xChar, yChar)).isTrue();
+                    } else {
+
+                        // assert that the character is not crossing a flame.
+                        assertThat(RMapUtils.isCharacterBurning(rMap, xChar, yChar)).isFalse();
+                    }
+                } catch (OutOfRMapBoundsException e) {
+
+                    // assert that an exception has been thrown because the character is crossing the map limits.
+                    assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, xChar, yChar)).isTrue();
+                }
             }
         }
     }

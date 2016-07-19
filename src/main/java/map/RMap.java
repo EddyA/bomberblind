@@ -1,6 +1,6 @@
 package map;
 
-import exceptions.MapException;
+import exceptions.CannotCreateRMapElementException;
 import images.ImagesLoader;
 
 import java.awt.*;
@@ -46,7 +46,8 @@ public class RMap {
     private RMapPattern puddle1;
     private RMapPattern puddle2;
 
-    public RMap(int mapWidth, int mapHeight, int screenWidth, int screenHeight) throws MapException {
+    public RMap(int mapWidth, int mapHeight, int screenWidth, int screenHeight) throws
+            CannotCreateRMapElementException {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         this.screenWidth = screenWidth;
@@ -96,21 +97,21 @@ public class RMap {
     /**
      * Randomly generate a map.
      *
-     * @throws MapException if the map could not be created
+     * @throws CannotCreateRMapElementException if the map could not be created
      */
-    public void generateMap() throws MapException {
+    public void generateMap() throws CannotCreateRMapElementException {
 
         // north edge.
         for (int col = 0; col < mapWidth; col += tree1.getWidth()) {
             if (!placePatternOnMap(myMap[0][col], tree1)) {
-                throw new MapException("not able to create the north edge (mapWidth % tree1.getWidth() != 0).");
+                throw new CannotCreateRMapElementException("not able to create the north edge (mapWidth % tree1.getWidth() != 0).");
             }
         }
 
         // south edge.
         for (int col = 0; col < mapWidth; col += edge.getWidth()) {
             if (!placePatternOnMap(myMap[mapHeight - edge.getHeight()][col], edge)) {
-                throw new MapException("not able to create the south edge (mapWidth % edge.getWidth() != 0).");
+                throw new CannotCreateRMapElementException("not able to create the south edge (mapWidth % edge.getWidth() != 0).");
             }
         }
 
@@ -118,7 +119,7 @@ public class RMap {
         int xSpCastleT1 = MARGIN_X;
         int ySpCastleT1 = generateRandomRowIdx(ImagesLoader.CASTLE_HEIGHT, MARGIN_Y);
         if (!placePatternOnMap(myMap[ySpCastleT1][xSpCastleT1], castleT1)) {
-            throw new MapException("not able to create the castle of team 1.");
+            throw new CannotCreateRMapElementException("not able to create the castle of team 1.");
         }
         securePerimeter(myMap[ySpCastleT1][xSpCastleT1], castleT1);
         spCastleT1 = myMap[ySpCastleT1][xSpCastleT1];
@@ -127,7 +128,7 @@ public class RMap {
         int xSpCastleT2 = mapWidth - MARGIN_X - ImagesLoader.CASTLE_WIDTH;
         int ySpCastleT2 = generateRandomRowIdx(ImagesLoader.CASTLE_HEIGHT, MARGIN_Y);
         if (!placePatternOnMap(myMap[ySpCastleT2][xSpCastleT2], castleT2)) {
-            throw new MapException("not able to create the castle of team 2.");
+            throw new CannotCreateRMapElementException("not able to create the castle of team 2.");
         }
         securePerimeter(myMap[ySpCastleT2][xSpCastleT2], castleT2);
         spCastleT2 = myMap[ySpCastleT2][xSpCastleT2];
@@ -183,16 +184,16 @@ public class RMap {
 
             if (randomPercent < perSingleObstacle) {
                 if (!placeSingleObstacleOnMap(rMapPoint)) {
-                    throw new MapException("not able to create a single obstacle.");
+                    throw new CannotCreateRMapElementException("not able to create a single obstacle.");
                 }
 
             } else if (randomPercent < perSingleObstacle + perSingleMutable) {
                 if (!placeSingleMutableOnMap(rMapPoint)) {
-                    throw new MapException("not able to create a single mutable.");
+                    throw new CannotCreateRMapElementException("not able to create a single mutable.");
                 }
             } else {
                 if (!placeSinglePathwayOnMap(rMapPoint)) {
-                    throw new MapException("not able to create a single pathway.");
+                    throw new CannotCreateRMapElementException("not able to create a single pathway.");
                 }
             }
             emptyPtList.remove(ptIdx);
