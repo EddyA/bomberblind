@@ -1,13 +1,16 @@
 package map;
 
-import images.ImagesLoader;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+
+import java.awt.Image;
+import java.time.Instant;
+
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import images.ImagesLoader;
+import utils.CurrentTimeSupplier;
 
 public class RMapPointTest {
 
@@ -65,7 +68,7 @@ public class RMapPointTest {
     @Test
     public void setImageShouldSetTheMemberWithTheAppropriateValue() throws Exception {
         RMapPoint rMapPoint = new RMapPoint(5, 10);
-        Image img = ImageIO.read(ImagesLoader.class.getResource("/images/bomb_01.png"));
+        Image img = ImagesLoader.createImage("/images/icon.gif");
         rMapPoint.setImage(img);
         assertThat(rMapPoint.image).isEqualTo(img);
     }
@@ -86,21 +89,52 @@ public class RMapPointTest {
     }
 
     @Test
+    public void setImageAsBurnedShouldSetTheMemberWithAnImage() throws Exception {
+        Image img = ImagesLoader.createImage("/images/icon.gif");
+
+        RMapPoint rMapPoint = mock(RMapPoint.class);
+        Mockito.doAnswer((t) -> {
+            rMapPoint.image = img;
+            return null;
+        }).when(rMapPoint).setImageAsBurned();
+
+        rMapPoint.setImageAsBurned();
+        assertThat(rMapPoint.image).isEqualTo(img);
+    }
+
+    @Test
     public void updateImageShouldSetTheMemberWithTheAppropriateValue() throws Exception {
+
+        // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.
+        CurrentTimeSupplier currentTimeSupplier = mock(CurrentTimeSupplier.class);
+        Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(1000L));
+
         RMapPoint rMapPoint = new RMapPoint(5, 10);
-        rMapPoint.setRefreshTime(100); // set the refresh time to 100ms.
+        rMapPoint.setRefreshTime(100); // set the refresh time to 120s.
+        rMapPoint.currentTimeSupplier = currentTimeSupplier;
 
         Image[] imgArray = new Image[4];
-        imgArray[0] = ImageIO.read(ImagesLoader.class.getResource("/images/bomb_01.png"));
-        imgArray[1] = ImageIO.read(ImagesLoader.class.getResource("/images/bomb_02.png"));
-        imgArray[2] = ImageIO.read(ImagesLoader.class.getResource("/images/bomb_03.png"));
-        imgArray[3] = ImageIO.read(ImagesLoader.class.getResource("/images/bomb_04.png"));
+        imgArray[0] = ImagesLoader.createImage("/images/icon.gif");
+        imgArray[1] = ImagesLoader.createImage("/images/icon.gif");
+        imgArray[2] = ImagesLoader.createImage("/images/icon.gif");
+        imgArray[3] = ImagesLoader.createImage("/images/icon.gif");
         rMapPoint.setImages(imgArray, 4);
+        rMapPoint.curImageIdx = 1; // fix it as it is randomly init.
 
-        Mockito.mock(System.class);
-        Mockito.when(System.currentTimeMillis()).thenReturn(1000L); // set the current timestamp.
+        // should not change.
+        rMapPoint.lastRefreshTs = 1000L;
+        assertThat(rMapPoint.updateImage()).isEqualTo(imgArray[1]);
 
-        rMapPoint.lastRefreshTs = 1080L;
+        // should increase by 1.
+        rMapPoint.lastRefreshTs = 800L;
+        assertThat(rMapPoint.updateImage()).isEqualTo(imgArray[2]);
+
+        // should increase by 1.
+        rMapPoint.lastRefreshTs = 800L;
+        assertThat(rMapPoint.updateImage()).isEqualTo(imgArray[3]);
+
+        // should reset to 0.
+        rMapPoint.lastRefreshTs = 800L;
         assertThat(rMapPoint.updateImage()).isEqualTo(imgArray[0]);
     }
 }

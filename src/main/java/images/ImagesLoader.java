@@ -95,7 +95,7 @@ public class ImagesLoader {
      * @return the created 'Image'
      * @throws IOException if the file does not exist
      */
-    protected static Image createImage(String relativePath) throws IOException {
+    public static Image createImage(String relativePath) throws IOException {
         URL imageURL = ImagesLoader.class.getResource(relativePath);
         if (imageURL != null) {
             return ImageIO.read(imageURL);

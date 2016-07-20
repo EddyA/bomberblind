@@ -1,8 +1,10 @@
 package map;
 
 import images.ImagesLoader;
+import utils.CurrentTimeSupplier;
 
 import java.awt.*;
+import java.time.Instant;
 import java.util.Random;
 
 /**
@@ -21,9 +23,11 @@ public class RMapPoint {
 
     protected Image[] images; // array of images for animation.
     protected int nbImages; // number of images of the animation.
-    private int curImageIdx; // current image index of the animation.
+    protected int curImageIdx; // current image index of the animation.
     protected int refreshTime; // refresh time of the animation (in ms).
     protected long lastRefreshTs; // last refresh timestamp.
+
+    protected CurrentTimeSupplier currentTimeSupplier; // for testing purpose.
 
     private boolean isBombing; // is bombed (bomb on case)?
     private int nbFlames; // number of flames on that case (can be multiple because of crossing explosions).
@@ -117,7 +121,7 @@ public class RMapPoint {
         if (image != null) {
             imageToPaint = image;
         } else {
-            long curTs = System.currentTimeMillis(); // get the current time.
+            long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
             if (curTs - lastRefreshTs > refreshTime) { // if it is time to refresh.
                 lastRefreshTs = curTs;
                 if (++curImageIdx == nbImages) curImageIdx = 0; // update the image to display.
