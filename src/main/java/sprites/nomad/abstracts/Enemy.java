@@ -1,14 +1,17 @@
 package sprites.nomad.abstracts;
 
-import java.awt.*;
-
 import static sprites.nomad.abstracts.Enemy.status.NO_STATUS;
 import static sprites.nomad.abstracts.Enemy.status.STATUS_DEAD;
+
+import java.awt.Image;
+
+import utils.CurrentTimeSupplier;
 
 /**
  * Abstract class of an enemy.
  */
 public abstract class Enemy extends Character {
+    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
     /**
      * enum the different status of an enemy.
@@ -73,7 +76,7 @@ public abstract class Enemy extends Character {
      * @return the image to paint.
      */
     public Image updateImage() {
-        long curTs = System.currentTimeMillis(); // get the current time.
+        long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
 
         int nbFrames = 0;
         Image[] images = null;

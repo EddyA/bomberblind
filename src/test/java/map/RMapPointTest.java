@@ -110,7 +110,7 @@ public class RMapPointTest {
         Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(1000L));
 
         RMapPoint rMapPoint = new RMapPoint(5, 10);
-        rMapPoint.setRefreshTime(100); // set the refresh time to 120s.
+        rMapPoint.setRefreshTime(100); // set the refresh time to 100ms.
         rMapPoint.currentTimeSupplier = currentTimeSupplier;
 
         Image[] imgArray = new Image[4];
@@ -121,20 +121,13 @@ public class RMapPointTest {
         rMapPoint.setImages(imgArray, 4);
         rMapPoint.curImageIdx = 1; // fix it as it is randomly init.
 
-        // should not change.
-        rMapPoint.lastRefreshTs = 1000L;
+        rMapPoint.lastRefreshTs = 1000L; // current time - last refresh time < 100ms -> image no change.
         assertThat(rMapPoint.updateImage()).isEqualTo(imgArray[1]);
-
-        // should increase by 1.
-        rMapPoint.lastRefreshTs = 800L;
+        rMapPoint.lastRefreshTs = 800L; // current time - last refresh time > 100ms -> image change.
         assertThat(rMapPoint.updateImage()).isEqualTo(imgArray[2]);
-
-        // should increase by 1.
-        rMapPoint.lastRefreshTs = 800L;
+        rMapPoint.lastRefreshTs = 800L; // current time - last refresh time > 100ms -> image change.
         assertThat(rMapPoint.updateImage()).isEqualTo(imgArray[3]);
-
-        // should reset to 0.
-        rMapPoint.lastRefreshTs = 800L;
+        rMapPoint.lastRefreshTs = 800L; // current time - last refresh time > 100ms -> image change.
         assertThat(rMapPoint.updateImage()).isEqualTo(imgArray[0]);
     }
 }

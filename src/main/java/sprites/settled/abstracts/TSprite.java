@@ -1,12 +1,15 @@
 package sprites.settled.abstracts;
 
-import java.awt.*;
+import java.awt.Image;
+
+import utils.CurrentTimeSupplier;
 
 /**
  * Abstract class of a timed sprites.
  * The sprite loops during a certain time.
  */
 public abstract class TSprite extends Sprite {
+    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
     private final Image[] images; // array of images of the sprite.
     private final int nbImages; // number of images of the sprite.
@@ -27,14 +30,14 @@ public abstract class TSprite extends Sprite {
         this.nbImages = nbImages;
         this.duration = duration;
         this.refreshTime = refreshTime;
-        this.startTs = System.currentTimeMillis(); // get the current time.
+        this.startTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
     }
 
     /**
      * @return true if the sprite is finished, false otherwise.
      */
     public boolean isFinished() {
-        return System.currentTimeMillis() - startTs > duration;
+        return currentTimeSupplier.get().toEpochMilli() - startTs > duration;
     }
 
     /**
@@ -44,7 +47,7 @@ public abstract class TSprite extends Sprite {
      */
     public Image updateImage() {
         Image imageToPaint;
-        long curTs = System.currentTimeMillis(); // get the current time.
+        long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         if (curTs - lastRefreshTs > refreshTime) { // it is time to refresh.
             lastRefreshTs = curTs;
             if (++curImageIdx == nbImages) {

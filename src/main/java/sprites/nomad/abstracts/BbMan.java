@@ -1,15 +1,18 @@
 package sprites.nomad.abstracts;
 
-import java.awt.*;
-
 import static sprites.nomad.abstracts.BbMan.status.STATUS_DEAD;
 import static sprites.nomad.abstracts.BbMan.status.STATUS_WAIT;
+
+import java.awt.Image;
+
+import utils.CurrentTimeSupplier;
 
 /**
  * Abstract class of a BbMan.
  * The sprite loops until isFinished() return true.
  */
 public abstract class BbMan extends Character {
+    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
     /**
      * enum the different available status of a bbman.
@@ -95,7 +98,7 @@ public abstract class BbMan extends Character {
         super.setYMap(initialYMap);
         this.isFinished = false;
         this.isInvincible = true;
-        this.lastInvincibilityTs = System.currentTimeMillis(); // get the current time.
+        this.lastInvincibilityTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
     }
 
     public void setStatus(BbMan.status status) {
@@ -120,7 +123,7 @@ public abstract class BbMan extends Character {
      * @return the image to paint.
      */
     public Image updateImage() {
-        long curTs = System.currentTimeMillis(); // get the current time.
+        long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         boolean shouldPrint = true;
 
         int nbFrames = 0;

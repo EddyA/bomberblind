@@ -1,16 +1,17 @@
 package map;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.util.Random;
+
 import images.ImagesLoader;
 import utils.CurrentTimeSupplier;
-
-import java.awt.*;
-import java.time.Instant;
-import java.util.Random;
 
 /**
  * A point of the map.
  */
 public class RMapPoint {
+    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
     private int rowIdx;
     private int colIdx;
@@ -26,8 +27,6 @@ public class RMapPoint {
     protected int curImageIdx; // current image index of the animation.
     protected int refreshTime; // refresh time of the animation (in ms).
     protected long lastRefreshTs; // last refresh timestamp.
-
-    protected CurrentTimeSupplier currentTimeSupplier; // for testing purpose.
 
     private boolean isBombing; // is bombed (bomb on case)?
     private int nbFlames; // number of flames on that case (can be multiple because of crossing explosions).

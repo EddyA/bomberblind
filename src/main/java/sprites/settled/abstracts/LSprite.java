@@ -1,12 +1,15 @@
 package sprites.settled.abstracts;
 
-import java.awt.*;
+import java.awt.Image;
+
+import utils.CurrentTimeSupplier;
 
 /**
  * Abstract class of a looped sprites.
  * The sprite loops a certain number of times.
  */
 public abstract class LSprite extends Sprite {
+    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
     private final Image[] images; // array of images of the sprite.
     private final int nbImages; // number of images of the sprite.
@@ -43,7 +46,7 @@ public abstract class LSprite extends Sprite {
      */
     public Image updateImage() {
         Image imageToPaint;
-        long curTs = System.currentTimeMillis(); // get the current time.
+        long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         if (curTs - lastRefreshTs > refreshTime) { // it is time to refresh.
             lastRefreshTs = curTs;
             if (++curImageIdx == nbImages) {
