@@ -1,25 +1,29 @@
 package map;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import exceptions.CannotCreateRMapElementException;
 import images.ImagesLoader;
-
-import java.awt.*;
-import java.util.*;
-import java.util.List;
 
 public class RMap {
 
     private final int MAX_NB_TRY = 10;
 
     // map & screen information.
-    public int mapWidth; // widht of the map (expressed in RMapPoint).
-    public int mapHeight; // height of the map (expressed in RMapPoint).
+    private int mapWidth; // widht of the map (expressed in RMapPoint).
+    private int mapHeight; // height of the map (expressed in RMapPoint).
     private int screenWidth; // widht of the screen (expressed in pixel).
     private int screenHeight; // height of the screen (expressed in pixel).
-    public RMapPoint[][] myMap;
+    private RMapPoint[][] rMapPointMatrix;
 
-    public RMapPoint spCastleT1; // start point (north/west) of the castle of team 1.
-    public RMapPoint spCastleT2; // start point (north/west) of the castle of team 2.
+    private RMapPoint spCastleT1; // start point (north/west) of the castle of team 1.
+    private RMapPoint spCastleT2; // start point (north/west) of the castle of team 2.
 
     // the following values allow put castles & ressources at:
     // - x cases from the left/right sides of the map,
@@ -32,8 +36,8 @@ public class RMap {
 
     // immutables:
     // - castles.
-    public RMapPattern castleT1;
-    public RMapPattern castleT2;
+    private RMapPattern castleT1;
+    private RMapPattern castleT2;
 
     // - obstacles.
     private RMapPattern edge;
@@ -46,20 +50,56 @@ public class RMap {
     private RMapPattern puddle1;
     private RMapPattern puddle2;
 
-    public RMap(int mapWidth, int mapHeight, int screenWidth, int screenHeight) throws
-            CannotCreateRMapElementException {
+    public RMap(int mapWidth, int mapHeight, int screenWidth, int screenHeight)
+            throws CannotCreateRMapElementException {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
         // Create a map of mapHeight*mapWidth cases.
-        myMap = new RMapPoint[mapHeight][mapWidth];
+        rMapPointMatrix = new RMapPoint[mapHeight][mapWidth];
         for (int rawIdx = 0; rawIdx < mapHeight; rawIdx++) {
             for (int colIdx = 0; colIdx < mapWidth; colIdx++) {
-                myMap[rawIdx][colIdx] = new RMapPoint(rawIdx, colIdx);
+                rMapPointMatrix[rawIdx][colIdx] = new RMapPoint(rawIdx, colIdx);
             }
         }
+    }
+
+    public int getMapWidth() {
+        return mapWidth;
+    }
+
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
+    public RMapPoint getRMapPoint(int rowIdx, int colIdx) {
+        return rMapPointMatrix[rowIdx][colIdx];
+    }
+
+    public RMapPoint getSpCastleT1() {
+        return spCastleT1;
+    }
+
+    public RMapPoint getSpCastleT2() {
+        return spCastleT2;
+    }
+
+    public RMapPattern getCastleT1() {
+        return castleT1;
+    }
+
+    public RMapPattern getCastleT2() {
+        return castleT2;
     }
 
     /**
@@ -103,14 +143,14 @@ public class RMap {
 
         // north edge.
         for (int col = 0; col < mapWidth; col += tree1.getWidth()) {
-            if (!placePatternOnMap(myMap[0][col], tree1)) {
+            if (!placePatternOnMap(rMapPointMatrix[0][col], tree1)) {
                 throw new CannotCreateRMapElementException("not able to create the north edge (mapWidth % tree1.getWidth() != 0).");
             }
         }
 
         // south edge.
         for (int col = 0; col < mapWidth; col += edge.getWidth()) {
-            if (!placePatternOnMap(myMap[mapHeight - edge.getHeight()][col], edge)) {
+            if (!placePatternOnMap(rMapPointMatrix[mapHeight - edge.getHeight()][col], edge)) {
                 throw new CannotCreateRMapElementException("not able to create the south edge (mapWidth % edge.getWidth() != 0).");
             }
         }
@@ -118,20 +158,20 @@ public class RMap {
         // castles of team 1.
         int xSpCastleT1 = MARGIN_X;
         int ySpCastleT1 = generateRandomRowIdx(ImagesLoader.CASTLE_HEIGHT, MARGIN_Y);
-        if (!placePatternOnMap(myMap[ySpCastleT1][xSpCastleT1], castleT1)) {
+        if (!placePatternOnMap(rMapPointMatrix[ySpCastleT1][xSpCastleT1], castleT1)) {
             throw new CannotCreateRMapElementException("not able to create the castle of team 1.");
         }
-        securePerimeter(myMap[ySpCastleT1][xSpCastleT1], castleT1);
-        spCastleT1 = myMap[ySpCastleT1][xSpCastleT1];
+        securePerimeter(rMapPointMatrix[ySpCastleT1][xSpCastleT1], castleT1);
+        spCastleT1 = rMapPointMatrix[ySpCastleT1][xSpCastleT1];
 
         // castles of team 2.
         int xSpCastleT2 = mapWidth - MARGIN_X - ImagesLoader.CASTLE_WIDTH;
         int ySpCastleT2 = generateRandomRowIdx(ImagesLoader.CASTLE_HEIGHT, MARGIN_Y);
-        if (!placePatternOnMap(myMap[ySpCastleT2][xSpCastleT2], castleT2)) {
+        if (!placePatternOnMap(rMapPointMatrix[ySpCastleT2][xSpCastleT2], castleT2)) {
             throw new CannotCreateRMapElementException("not able to create the castle of team 2.");
         }
-        securePerimeter(myMap[ySpCastleT2][xSpCastleT2], castleT2);
-        spCastleT2 = myMap[ySpCastleT2][xSpCastleT2];
+        securePerimeter(rMapPointMatrix[ySpCastleT2][xSpCastleT2], castleT2);
+        spCastleT2 = rMapPointMatrix[ySpCastleT2][xSpCastleT2];
 
         // complex elements.
         Map<RMapPattern, Integer> eltConfMap = new HashMap<>();
@@ -148,7 +188,7 @@ public class RMap {
                 while (true) {
                     int xSpElt = generateRandomColIdx(eltConf.getKey().getWidth(), 0);
                     int ySpElt = generateRandomRowIdx(eltConf.getKey().getHeight(), 0);
-                    if (!placePatternOnMap(myMap[ySpElt][xSpElt], eltConf.getKey())) {
+                    if (!placePatternOnMap(rMapPointMatrix[ySpElt][xSpElt], eltConf.getKey())) {
                         if (nbTry < MAX_NB_TRY) {
                             nbTry++;
                         } else {
@@ -165,16 +205,16 @@ public class RMap {
         List<RMapPoint> emptyPtList = new ArrayList<>();
         for (int rawIdx = 0; rawIdx < mapHeight; rawIdx++) {
             for (int colIdx = 0; colIdx < mapWidth; colIdx++) {
-                if (myMap[rawIdx][colIdx].isAvailable()) {
-                    emptyPtList.add(myMap[rawIdx][colIdx]);
+                if (rMapPointMatrix[rawIdx][colIdx].isAvailable()) {
+                    emptyPtList.add(rMapPointMatrix[rawIdx][colIdx]);
                 }
             }
         }
         int nbEmptyPt = emptyPtList.size();
 
         // single elements.
-        int perSingleMutable = 30;
-        int perSingleObstacle = 15;
+        int perSingleMutable = 25;
+        int perSingleObstacle = 10;
 
         Random R = new Random();
         for (int i = 0; i < nbEmptyPt; i++) {
@@ -253,7 +293,7 @@ public class RMap {
         // then, check if the pattern do not cross a placed element.
         for (int rowIdx = startRowIdx; rowIdx < startRowIdx + rMapPattern.getHeight(); rowIdx++) {
             for (int colIdx = startColIdx; colIdx < startColIdx + rMapPattern.getWidth(); colIdx++) {
-                if (!this.myMap[rowIdx][colIdx].isAvailable()) {
+                if (!this.rMapPointMatrix[rowIdx][colIdx].isAvailable()) {
                     return false;
                 }
             }
@@ -262,11 +302,11 @@ public class RMap {
         // finally, we create the element.
         for (int rowIdx = 0; rowIdx < rMapPattern.getHeight(); rowIdx++) {
             for (int colIdx = 0; colIdx < rMapPattern.getWidth(); colIdx++) {
-                this.myMap[startRowIdx + rowIdx][startColIdx + colIdx]
+                this.rMapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx]
                         .setImage(rMapPattern.getImageArray()[(colIdx * rMapPattern.getHeight()) + rowIdx]);
-                this.myMap[startRowIdx + rowIdx][startColIdx + colIdx].setPathway(rMapPattern.isPathway());
-                this.myMap[startRowIdx + rowIdx][startColIdx + colIdx].setMutable(rMapPattern.isMutable());
-                this.myMap[startRowIdx + rowIdx][startColIdx + colIdx].setAvailable(false);
+                this.rMapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setPathway(rMapPattern.isPathway());
+                this.rMapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setMutable(rMapPattern.isMutable());
+                this.rMapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setAvailable(false);
             }
         }
         return true;
@@ -372,14 +412,14 @@ public class RMap {
 
         for (int rowIdx = startRowIdx - 1; rowIdx <= startRowIdx + rMapPattern.getHeight(); rowIdx++) {
             for (int colIdx = startColIdx - 1; colIdx <= startColIdx + rMapPattern.getWidth(); colIdx++) {
-                if (this.myMap[rowIdx][colIdx].isAvailable()) {
+                if (this.rMapPointMatrix[rowIdx][colIdx].isAvailable()) {
                     int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_PATHWAY); // get a random single pathway image.
                     Image image = ImagesLoader.imagesMatrix[ImagesLoader.singlePathwayMatrixRowIdx][imageIdx];
 
-                    this.myMap[rowIdx][colIdx].setImage(image);
-                    this.myMap[rowIdx][colIdx].setPathway(true);
-                    this.myMap[rowIdx][colIdx].setMutable(false);
-                    this.myMap[rowIdx][colIdx].setAvailable(false);
+                    this.rMapPointMatrix[rowIdx][colIdx].setImage(image);
+                    this.rMapPointMatrix[rowIdx][colIdx].setPathway(true);
+                    this.rMapPointMatrix[rowIdx][colIdx].setMutable(false);
+                    this.rMapPointMatrix[rowIdx][colIdx].setAvailable(false);
                 }
             }
         }
@@ -405,7 +445,7 @@ public class RMap {
             for (int colIdx = startColIdx;
                  colIdx <= startColIdx + (screenWidth / ImagesLoader.IMAGE_SIZE) && colIdx < mapWidth;
                  colIdx++) {
-                myMap[rowIdx][colIdx].paintBuffer(g,
+                rMapPointMatrix[rowIdx][colIdx].paintBuffer(g,
                         (colIdx - startColIdx) * ImagesLoader.IMAGE_SIZE - xMap % ImagesLoader.IMAGE_SIZE, // colIdx -> x
                         (rowIdx - startRowIdx) * ImagesLoader.IMAGE_SIZE - yMap % ImagesLoader.IMAGE_SIZE); // roxIdx -> y
             }

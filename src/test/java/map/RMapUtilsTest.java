@@ -86,12 +86,12 @@ public class RMapUtilsTest {
         RMap rMap = new RMap(MAP_WIDTH, MAP_HEIGHT, 0, 0);
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
-                rMap.myMap[rowIdx][colIdx].setPathway(true);
+                rMap.getRMapPoint(rowIdx, colIdx).setPathway(true);
             }
         }
         int obsRowIdx = 1;
         int obsColIdx = 2;
-        rMap.myMap[obsRowIdx][obsColIdx].setPathway(false);
+        rMap.getRMapPoint(obsRowIdx, obsColIdx).setPathway(false);
 
         // compute the character limits according to the obstacle position.
         // ex: Obs(1, 2) -> x=60px, y=30px.
@@ -136,7 +136,7 @@ public class RMapUtilsTest {
 
         int flameRowIdx = 1;
         int flameColIdx = 2;
-        rMap.myMap[flameRowIdx][flameColIdx].addFlame();
+        rMap.getRMapPoint(flameRowIdx, flameColIdx).addFlame();
 
         // compute the character limits according to the flame position.
         // ex: Flame(1, 2) -> x=60px, y=30px.
@@ -181,7 +181,7 @@ public class RMapUtilsTest {
 
         int bombRowIdx = 1;
         int bombColIdx = 2;
-        rMap.myMap[bombRowIdx][bombColIdx].setBombing(true);
+        rMap.getRMapPoint(bombRowIdx, bombColIdx).setBombing(true);
 
         // compute the character limits according to the bomb position.
         // ex: Bomb(1, 2) -> x=60px, y=30px.

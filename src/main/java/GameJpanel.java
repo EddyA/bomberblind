@@ -38,10 +38,10 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         rMap.generateMap();
 
         // compute the position of the BbMan on the map.
-        int xBbManOnMap = rMap.spCastleT1.getColIdx() * IMAGE_SIZE +
-                (rMap.castleT1.getWidth() * IMAGE_SIZE / 2);
-        int yBbManOnMap = rMap.spCastleT1.getRowIdx() * IMAGE_SIZE +
-                (rMap.castleT1.getHeight() * IMAGE_SIZE) + (IMAGE_SIZE / 2);
+        int xBbManOnMap = rMap.getSpCastleT1().getColIdx() * IMAGE_SIZE +
+                (rMap.getCastleT1().getWidth() * IMAGE_SIZE / 2);
+        int yBbManOnMap = rMap.getSpCastleT1().getRowIdx() * IMAGE_SIZE +
+                (rMap.getCastleT1().getHeight() * IMAGE_SIZE) + (IMAGE_SIZE / 2);
 
         // create the BbMan.
         bbMan = new BbManBlue(xBbManOnMap, yBbManOnMap);
@@ -145,8 +145,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
         switch (pressedKey) {
         case KeyEvent.VK_UP: {
-            if (rMap.myMap[bbManRowIdx - 1][bbManColIdx].isPathway() &&
-                    !rMap.myMap[bbManRowIdx - 1][bbManColIdx].isBombing()) { // the upper case is a pathway && !bombing.
+            if (rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx).isPathway() &&
+                    !rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx).isBombing()) { // the upper case is a pathway && !bombing.
                 if (bbManColShift < IMAGE_SIZE / 2) { // bbMan on left side of its case.
                     bbMan.setXMap(bbMan.getXMap() + 1);
                 } else if (bbManColShift > IMAGE_SIZE / 2) { // bbMan on right side of its case.
@@ -156,8 +156,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
             break;
         }
         case KeyEvent.VK_DOWN: {
-            if (rMap.myMap[bbManRowIdx + 1][bbManColIdx].isPathway() &&
-                    !rMap.myMap[bbManRowIdx + 1][bbManColIdx].isBombing()) { // the lower case is a pathway && !bombing.
+            if (rMap.getRMapPoint(bbManRowIdx + 1, bbManColIdx).isPathway() &&
+                    !rMap.getRMapPoint(bbManRowIdx + 1, bbManColIdx).isBombing()) { // the lower case is a pathway && !bombing.
                 if (bbManColShift < IMAGE_SIZE / 2) { // bbMan on left side of its case.
                     bbMan.setXMap(bbMan.getXMap() + 1);
                 } else if (bbManColShift > IMAGE_SIZE / 2) { // bbMan on right side of its case.
@@ -167,14 +167,14 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
             break;
         }
         case KeyEvent.VK_LEFT: {
-            if (rMap.myMap[bbManRowIdx][bbManColIdx - 1].isPathway() &&
-                    !rMap.myMap[bbManRowIdx][bbManColIdx - 1].isBombing()) { // the left case is a pathway && !bombing.
+            if (rMap.getRMapPoint(bbManRowIdx, bbManColIdx - 1).isPathway() &&
+                    !rMap.getRMapPoint(bbManRowIdx, bbManColIdx - 1).isBombing()) { // the left case is a pathway && !bombing.
                 if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
                     bbMan.setYMap(bbMan.getYMap() + 1);
                 }
             }
-            if (rMap.myMap[bbManRowIdx - 1][bbManColIdx - 1].isPathway() &&
-                    !rMap.myMap[bbManRowIdx - 1][bbManColIdx - 1].isBombing()) { // the upper/left case is a pathway &&
+            if (rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx - 1).isPathway() &&
+                    !rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx - 1).isBombing()) { // the upper/left case is a pathway &&
                                                                                  // !bombing.
                 if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
                     bbMan.setYMap(bbMan.getYMap() - 1);
@@ -183,14 +183,14 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
             break;
         }
         case KeyEvent.VK_RIGHT: {
-            if (rMap.myMap[bbManRowIdx][bbManColIdx + 1].isPathway() &&
-                    !rMap.myMap[bbManRowIdx][bbManColIdx + 1].isBombing()) { // the right case is a pathway && !bombing.
+            if (rMap.getRMapPoint(bbManRowIdx, bbManColIdx + 1).isPathway() &&
+                    !rMap.getRMapPoint(bbManRowIdx, bbManColIdx + 1).isBombing()) { // the right case is a pathway && !bombing.
                 if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
                     bbMan.setYMap(bbMan.getYMap() + 1);
                 }
             }
-            if (rMap.myMap[bbManRowIdx - 1][bbManColIdx + 1].isPathway() &&
-                    !rMap.myMap[bbManRowIdx - 1][bbManColIdx + 1].isBombing()) { // the upper/right case is a pathway &&
+            if (rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx + 1).isPathway() &&
+                    !rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx + 1).isBombing()) { // the upper/right case is a pathway &&
                                                                                  // !bombing.
                 if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
                     bbMan.setYMap(bbMan.getYMap() - 1);

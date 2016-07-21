@@ -51,8 +51,8 @@ public class RMapUtils {
         int mostRightColIdx = getMostRightColIdxIfAbsIs(xChar);
 
         boolean isCrossing = false;
-        if (topRowIdx < 0 || bottomRowIdx >= rMap.mapHeight ||
-                mostLeftColIdx < 0 || mostRightColIdx >= rMap.mapWidth) {
+        if (topRowIdx < 0 || bottomRowIdx >= rMap.getMapHeight() ||
+                mostLeftColIdx < 0 || mostRightColIdx >= rMap.getMapWidth()) {
             isCrossing = true;
         }
         return isCrossing;
@@ -80,10 +80,10 @@ public class RMapUtils {
         int mostRightColIdx = getMostRightColIdxIfAbsIs(xChar);
 
         boolean isCrossing = false;
-        if (!rMap.myMap[topRowIdx][mostLeftColIdx].isPathway() ||
-                !rMap.myMap[topRowIdx][mostRightColIdx].isPathway() ||
-                !rMap.myMap[bottomRowIdx][mostLeftColIdx].isPathway() ||
-                !rMap.myMap[bottomRowIdx][mostRightColIdx].isPathway()) {
+        if (!rMap.getRMapPoint(topRowIdx, mostLeftColIdx).isPathway() ||
+                !rMap.getRMapPoint(topRowIdx, mostRightColIdx).isPathway() ||
+                !rMap.getRMapPoint(bottomRowIdx, mostLeftColIdx).isPathway() ||
+                !rMap.getRMapPoint(bottomRowIdx, mostRightColIdx).isPathway()) {
             isCrossing = true;
         }
         return isCrossing;
@@ -112,10 +112,10 @@ public class RMapUtils {
         int mostRightColIdx = getMostRightColIdxIfAbsIs(xChar);
 
         boolean isBurning = false;
-        if (rMap.myMap[topRowIdx][mostLeftColIdx].isBurning() ||
-                rMap.myMap[topRowIdx][mostRightColIdx].isBurning() ||
-                rMap.myMap[bottomRowIdx][mostLeftColIdx].isBurning() ||
-                rMap.myMap[bottomRowIdx][mostRightColIdx].isBurning()) {
+        if (rMap.getRMapPoint(topRowIdx, mostLeftColIdx).isBurning() ||
+                rMap.getRMapPoint(topRowIdx, mostRightColIdx).isBurning() ||
+                rMap.getRMapPoint(bottomRowIdx, mostLeftColIdx).isBurning() ||
+                rMap.getRMapPoint(bottomRowIdx, mostRightColIdx).isBurning()) {
             isBurning = true;
         }
         return isBurning;
@@ -147,32 +147,32 @@ public class RMapUtils {
         boolean isCrossing = false;
         switch (keyEvent) {
         case KeyEvent.VK_UP: {
-            if ((rMap.myMap[topRowIdx][mostLeftColIdx].isBombing() ||
-                    rMap.myMap[topRowIdx][mostRightColIdx].isBombing()) &&
+            if ((rMap.getRMapPoint(topRowIdx, mostLeftColIdx).isBombing() ||
+                    rMap.getRMapPoint(topRowIdx, mostRightColIdx).isBombing()) &&
                     topRowIdx != getTopRowIdxIfOrdIs(yChar + 1)) {
                 isCrossing = true;
             }
             break;
         }
         case KeyEvent.VK_DOWN: {
-            if ((rMap.myMap[bottomRowIdx][mostLeftColIdx].isBombing() ||
-                    rMap.myMap[bottomRowIdx][mostRightColIdx].isBombing()) &&
+            if ((rMap.getRMapPoint(bottomRowIdx, mostLeftColIdx).isBombing() ||
+                    rMap.getRMapPoint(bottomRowIdx, mostRightColIdx).isBombing()) &&
                     bottomRowIdx != getBottomRowIdxIfOrdIs(yChar - 1)) {
                 isCrossing = true;
             }
             break;
         }
         case KeyEvent.VK_LEFT: {
-            if ((rMap.myMap[topRowIdx][mostLeftColIdx].isBombing() ||
-                    rMap.myMap[bottomRowIdx][mostLeftColIdx].isBombing()) &&
+            if ((rMap.getRMapPoint(topRowIdx, mostLeftColIdx).isBombing() ||
+                    rMap.getRMapPoint(bottomRowIdx, mostLeftColIdx).isBombing()) &&
                     mostLeftColIdx != getMostLeftColIdxIfAbsIs(xChar + 1)) {
                 isCrossing = true;
             }
             break;
         }
         case KeyEvent.VK_RIGHT: {
-            if ((rMap.myMap[topRowIdx][mostRightColIdx].isBombing() ||
-                    rMap.myMap[bottomRowIdx][mostRightColIdx].isBombing()) &&
+            if ((rMap.getRMapPoint(topRowIdx, mostRightColIdx).isBombing() ||
+                    rMap.getRMapPoint(bottomRowIdx, mostRightColIdx).isBombing()) &&
                     mostRightColIdx != getMostRightColIdxIfAbsIs(xChar - 1)) {
                 isCrossing = true;
             }
