@@ -1,10 +1,10 @@
 package map;
 
-import static images.ImagesLoader.IMAGE_SIZE;
+import exceptions.OutOfRMapBoundsException;
 
 import java.awt.event.KeyEvent;
 
-import exceptions.OutOfRMapBoundsException;
+import static images.ImagesLoader.IMAGE_SIZE;
 
 public class RMapUtils {
 
@@ -39,7 +39,7 @@ public class RMapUtils {
     /**
      * Is the character crossing a map limit?
      *
-     * @param rMap the relative map
+     * @param rMap  the relative map
      * @param xChar the character abscissa
      * @param yChar the character ordinate
      * @return true if the character is crossing a map limit, false otherwise
@@ -61,11 +61,10 @@ public class RMapUtils {
     /**
      * Is the character crossing an obstacle?
      *
-     * @param rMap the relative map
+     * @param rMap  the relative map
      * @param xChar the character abscissa
      * @param yChar the character ordinate
      * @return true if the character is crossing an obstacle, false otherwise
-     * 
      * @throws OutOfRMapBoundsException if the character is crossing map limits
      */
     public static boolean isCharacterCrossingObstacle(RMap rMap, int xChar, int yChar)
@@ -93,11 +92,10 @@ public class RMapUtils {
      * Is the character burning?
      * i.e. is there a burning case adjoining the character?
      *
-     * @param rMap the relative map
+     * @param rMap  the relative map
      * @param xChar the character abscissa
      * @param yChar the character ordinate
      * @return true if the character is burning, false otherwise
-     *
      * @throws OutOfRMapBoundsException if the character is crossing map limits
      */
     public static boolean isCharacterBurning(RMap rMap, int xChar, int yChar)
@@ -126,11 +124,10 @@ public class RMapUtils {
      * note: we can't just use the isCharacterCrossingObstacle() algorithm as the character can already be
      * on a bombing case - when it just put a bomb - and this particular case cannot be processed the same way.
      *
-     * @param rMap the relative map
+     * @param rMap  the relative map
      * @param xChar the character abscissa
      * @param yChar the character ordinate
      * @return true if the character is crossing a bomb, false otherwise
-     *
      * @throws OutOfRMapBoundsException if the character is crossing map limits
      */
     public static boolean isCharacterCrossingBomb(RMap rMap, int xChar, int yChar, int keyEvent)
@@ -146,39 +143,39 @@ public class RMapUtils {
 
         boolean isCrossing = false;
         switch (keyEvent) {
-        case KeyEvent.VK_UP: {
-            if ((rMap.getRMapPoint(topRowIdx, mostLeftColIdx).isBombing() ||
-                    rMap.getRMapPoint(topRowIdx, mostRightColIdx).isBombing()) &&
-                    topRowIdx != getTopRowIdxIfOrdIs(yChar + 1)) {
-                isCrossing = true;
+            case KeyEvent.VK_UP: {
+                if ((rMap.getRMapPoint(topRowIdx, mostLeftColIdx).isBombing() ||
+                        rMap.getRMapPoint(topRowIdx, mostRightColIdx).isBombing()) &&
+                        topRowIdx != getTopRowIdxIfOrdIs(yChar + 1)) {
+                    isCrossing = true;
+                }
+                break;
             }
-            break;
-        }
-        case KeyEvent.VK_DOWN: {
-            if ((rMap.getRMapPoint(bottomRowIdx, mostLeftColIdx).isBombing() ||
-                    rMap.getRMapPoint(bottomRowIdx, mostRightColIdx).isBombing()) &&
-                    bottomRowIdx != getBottomRowIdxIfOrdIs(yChar - 1)) {
-                isCrossing = true;
+            case KeyEvent.VK_DOWN: {
+                if ((rMap.getRMapPoint(bottomRowIdx, mostLeftColIdx).isBombing() ||
+                        rMap.getRMapPoint(bottomRowIdx, mostRightColIdx).isBombing()) &&
+                        bottomRowIdx != getBottomRowIdxIfOrdIs(yChar - 1)) {
+                    isCrossing = true;
+                }
+                break;
             }
-            break;
-        }
-        case KeyEvent.VK_LEFT: {
-            if ((rMap.getRMapPoint(topRowIdx, mostLeftColIdx).isBombing() ||
-                    rMap.getRMapPoint(bottomRowIdx, mostLeftColIdx).isBombing()) &&
-                    mostLeftColIdx != getMostLeftColIdxIfAbsIs(xChar + 1)) {
-                isCrossing = true;
+            case KeyEvent.VK_LEFT: {
+                if ((rMap.getRMapPoint(topRowIdx, mostLeftColIdx).isBombing() ||
+                        rMap.getRMapPoint(bottomRowIdx, mostLeftColIdx).isBombing()) &&
+                        mostLeftColIdx != getMostLeftColIdxIfAbsIs(xChar + 1)) {
+                    isCrossing = true;
+                }
+                break;
             }
-            break;
-        }
-        case KeyEvent.VK_RIGHT: {
-            if ((rMap.getRMapPoint(topRowIdx, mostRightColIdx).isBombing() ||
-                    rMap.getRMapPoint(bottomRowIdx, mostRightColIdx).isBombing()) &&
-                    mostRightColIdx != getMostRightColIdxIfAbsIs(xChar - 1)) {
-                isCrossing = true;
+            case KeyEvent.VK_RIGHT: {
+                if ((rMap.getRMapPoint(topRowIdx, mostRightColIdx).isBombing() ||
+                        rMap.getRMapPoint(bottomRowIdx, mostRightColIdx).isBombing()) &&
+                        mostRightColIdx != getMostRightColIdxIfAbsIs(xChar - 1)) {
+                    isCrossing = true;
+                }
+                break;
             }
-            break;
-        }
-        default: // bad key, nothing to do.
+            default: // bad key, nothing to do.
         }
         return isCrossing;
     }

@@ -1,33 +1,27 @@
 package map;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.util.Random;
-
 import images.ImagesLoader;
 import utils.CurrentTimeSupplier;
+
+import java.awt.*;
+import java.util.Random;
 
 /**
  * A point of the map.
  */
 public class RMapPoint {
     protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
-
-    private int rowIdx;
-    private int colIdx;
-
-    private boolean isAvailable; // is available (empty case)?
-    private boolean isPathway; // is a pathway?
-    private boolean isMutable; // is a mutable?
-
     protected Image image;
-
     protected Image[] images; // array of images for animation.
     protected int nbImages; // number of images of the animation.
     protected int curImageIdx; // current image index of the animation.
     protected int refreshTime; // refresh time of the animation (in ms).
     protected long lastRefreshTs; // last refresh timestamp.
-
+    private int rowIdx;
+    private int colIdx;
+    private boolean isAvailable; // is available (empty case)?
+    private boolean isPathway; // is a pathway?
+    private boolean isMutable; // is a mutable?
     private boolean isBombing; // is bombed (bomb on case)?
     private int nbFlames; // number of flames on that case (can be multiple because of crossing explosions).
 
@@ -35,22 +29,6 @@ public class RMapPoint {
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
         this.isAvailable = true;
-    }
-
-    public void setAvailable(boolean isAvailable) {
-        this.isAvailable = isAvailable;
-    }
-
-    public void setPathway(boolean isPathway) {
-        this.isPathway = isPathway;
-    }
-
-    public void setMutable(boolean isMutable) {
-        this.isMutable = isMutable;
-    }
-
-    public void setBombing(boolean isBombing) {
-        this.isBombing = isBombing;
     }
 
     public void addFlame() {
@@ -87,16 +65,32 @@ public class RMapPoint {
         return isAvailable;
     }
 
+    public void setAvailable(boolean isAvailable) {
+        this.isAvailable = isAvailable;
+    }
+
     public boolean isPathway() {
         return isPathway;
+    }
+
+    public void setPathway(boolean isPathway) {
+        this.isPathway = isPathway;
     }
 
     public boolean isMutable() {
         return isMutable;
     }
 
+    public void setMutable(boolean isMutable) {
+        this.isMutable = isMutable;
+    }
+
     public boolean isBombing() {
         return isBombing;
+    }
+
+    public void setBombing(boolean isBombing) {
+        this.isBombing = isBombing;
     }
 
     public boolean isBurning() {

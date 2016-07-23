@@ -36,6 +36,10 @@ public class App extends JFrame {
         }
     }
 
+    public static void main(String[] args) {
+        new App();
+    }
+
     private void setJframe() throws IOException {
         setTitle(PACKAGE_NAME + " v" + PACKAGE_VERSION);
         setSize(SCREEN_WIDTH + 8, SCREEN_HEIGHT + 25); // offset borders and title bars.
@@ -43,9 +47,5 @@ public class App extends JFrame {
         setIconImage(ImageIO.read(App.class.getResource("/images/icon.gif")));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
-    }
-
-    public static void main(String[] args) {
-        new App();
     }
 }

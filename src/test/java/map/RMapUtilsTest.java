@@ -2,6 +2,7 @@ package map;
 
 import exceptions.OutOfRMapBoundsException;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -12,8 +13,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class RMapUtilsTest {
 
-    private final int MAP_WIDTH = 20;
-    private final int MAP_HEIGHT = 10;
+    // use small values to avoid heap overflow using Mockito.
+    private final int MAP_WIDTH = 4;
+    private final int MAP_HEIGHT = 3;
+    private final int SCREEN_WIDTH = 0;
+    private final int SCREEN_HEIGHT = 0;
 
     @Test
     public void getTopRowIdxIfOrdIsShouldReturnTheAppropriateValue() throws Exception {
@@ -51,8 +55,14 @@ public class RMapUtilsTest {
     @Test
     public void isCharacterCrossingMapLimitShouldReturnTheAppropriateValue() throws Exception {
 
-        // set map.
-        RMap rMap = new RMap(MAP_WIDTH, MAP_HEIGHT, 0, 0);
+        // mock the RMapSetting class.
+        RMapSetting rMapSetting = Mockito.mock(RMapSetting.class);
+        Mockito.when(rMapSetting.getMapWidth()).thenReturn(MAP_WIDTH);
+        Mockito.when(rMapSetting.getMapHeight()).thenReturn(MAP_HEIGHT);
+
+        // create the RMap and set the RMapSetting with mocked instance.
+        RMap rMap = new RMap(SCREEN_WIDTH, SCREEN_HEIGHT);
+        rMap.rMapSetting = rMapSetting;
 
         // compute the character limits according to the map dimensions.
         // ex: RMap(20, 10) = W=600px * H=300px.
@@ -82,8 +92,16 @@ public class RMapUtilsTest {
     @Test
     public void isCharacterCrossingObstacleShouldReturnTheAppropriateValue() throws Exception {
 
+        // mock the RMapSetting class.
+        RMapSetting rMapSetting = Mockito.mock(RMapSetting.class);
+        Mockito.when(rMapSetting.getMapHeight()).thenReturn(MAP_HEIGHT);
+        Mockito.when(rMapSetting.getMapWidth()).thenReturn(MAP_WIDTH);
+
+        // create the RMap and set the RMapSetting with mocked instance.
+        RMap rMap = new RMap(SCREEN_WIDTH, SCREEN_HEIGHT);
+        rMap.rMapSetting = rMapSetting;
+
         // set the map.
-        RMap rMap = new RMap(MAP_WIDTH, MAP_HEIGHT, 0, 0);
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
                 rMap.getRMapPoint(rowIdx, colIdx).setPathway(true);
@@ -131,9 +149,16 @@ public class RMapUtilsTest {
     @Test
     public void isCharacterBurningShouldReturnTheAppropriateValue() throws Exception {
 
-        // set the map.
-        RMap rMap = new RMap(MAP_WIDTH, MAP_HEIGHT, 0, 0);
+        // mock the RMapSetting class.
+        RMapSetting rMapSetting = Mockito.mock(RMapSetting.class);
+        Mockito.when(rMapSetting.getMapHeight()).thenReturn(MAP_HEIGHT);
+        Mockito.when(rMapSetting.getMapWidth()).thenReturn(MAP_WIDTH);
 
+        // create the RMap and set the RMapSetting with mocked instance.
+        RMap rMap = new RMap(SCREEN_WIDTH, SCREEN_HEIGHT);
+        rMap.rMapSetting = rMapSetting;
+
+        // set the map.
         int flameRowIdx = 1;
         int flameColIdx = 2;
         rMap.getRMapPoint(flameRowIdx, flameColIdx).addFlame();
@@ -176,9 +201,16 @@ public class RMapUtilsTest {
     @Test
     public void isCharacterCrossingBombShouldReturnTheAppropriateValue() throws Exception {
 
-        // set the map.
-        RMap rMap = new RMap(MAP_WIDTH, MAP_HEIGHT, 0, 0);
+        // mock the RMapSetting class.
+        RMapSetting rMapSetting = Mockito.mock(RMapSetting.class);
+        Mockito.when(rMapSetting.getMapWidth()).thenReturn(MAP_WIDTH);
+        Mockito.when(rMapSetting.getMapHeight()).thenReturn(MAP_HEIGHT);
 
+        // create the RMap and set the RMapSetting with mocked instance.
+        RMap rMap = new RMap(SCREEN_WIDTH, SCREEN_HEIGHT);
+        rMap.rMapSetting = rMapSetting;
+
+        // set the map.
         int bombRowIdx = 1;
         int bombColIdx = 2;
         rMap.getRMapPoint(bombRowIdx, bombColIdx).setBombing(true);

@@ -1,21 +1,18 @@
-
-import static images.ImagesLoader.IMAGE_SIZE;
-
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JPanel;
-
 import exceptions.CannotCreateRMapElementException;
 import exceptions.OutOfRMapBoundsException;
 import map.RMap;
 import map.RMapUtils;
 import sprites.nomad.BbManBlue;
 import sprites.nomad.abstracts.BbMan;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import static images.ImagesLoader.IMAGE_SIZE;
 
 public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
@@ -33,7 +30,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private int yMapStartPosOnScreen;
 
     GameJpanel(int widthScreen, int heightScreen) throws CannotCreateRMapElementException {
-        rMap = new RMap(MAP_WIDTH, MAP_HEIGHT, widthScreen, heightScreen);
+        rMap = new RMap(widthScreen, heightScreen);
         rMap.createPatterns();
         rMap.generateMap();
 
@@ -144,60 +141,60 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         int bbManColShift = bbMan.getXMap() % IMAGE_SIZE;
 
         switch (pressedKey) {
-        case KeyEvent.VK_UP: {
-            if (rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx).isPathway() &&
-                    !rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx).isBombing()) { // the upper case is a pathway && !bombing.
-                if (bbManColShift < IMAGE_SIZE / 2) { // bbMan on left side of its case.
-                    bbMan.setXMap(bbMan.getXMap() + 1);
-                } else if (bbManColShift > IMAGE_SIZE / 2) { // bbMan on right side of its case.
-                    bbMan.setXMap(bbMan.getXMap() - 1);
+            case KeyEvent.VK_UP: {
+                if (rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx).isPathway() &&
+                        !rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx).isBombing()) { // the upper case is a pathway && !bombing.
+                    if (bbManColShift < IMAGE_SIZE / 2) { // bbMan on left side of its case.
+                        bbMan.setXMap(bbMan.getXMap() + 1);
+                    } else if (bbManColShift > IMAGE_SIZE / 2) { // bbMan on right side of its case.
+                        bbMan.setXMap(bbMan.getXMap() - 1);
+                    }
                 }
+                break;
             }
-            break;
-        }
-        case KeyEvent.VK_DOWN: {
-            if (rMap.getRMapPoint(bbManRowIdx + 1, bbManColIdx).isPathway() &&
-                    !rMap.getRMapPoint(bbManRowIdx + 1, bbManColIdx).isBombing()) { // the lower case is a pathway && !bombing.
-                if (bbManColShift < IMAGE_SIZE / 2) { // bbMan on left side of its case.
-                    bbMan.setXMap(bbMan.getXMap() + 1);
-                } else if (bbManColShift > IMAGE_SIZE / 2) { // bbMan on right side of its case.
-                    bbMan.setXMap(bbMan.getXMap() - 1);
+            case KeyEvent.VK_DOWN: {
+                if (rMap.getRMapPoint(bbManRowIdx + 1, bbManColIdx).isPathway() &&
+                        !rMap.getRMapPoint(bbManRowIdx + 1, bbManColIdx).isBombing()) { // the lower case is a pathway && !bombing.
+                    if (bbManColShift < IMAGE_SIZE / 2) { // bbMan on left side of its case.
+                        bbMan.setXMap(bbMan.getXMap() + 1);
+                    } else if (bbManColShift > IMAGE_SIZE / 2) { // bbMan on right side of its case.
+                        bbMan.setXMap(bbMan.getXMap() - 1);
+                    }
                 }
+                break;
             }
-            break;
-        }
-        case KeyEvent.VK_LEFT: {
-            if (rMap.getRMapPoint(bbManRowIdx, bbManColIdx - 1).isPathway() &&
-                    !rMap.getRMapPoint(bbManRowIdx, bbManColIdx - 1).isBombing()) { // the left case is a pathway && !bombing.
-                if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
-                    bbMan.setYMap(bbMan.getYMap() + 1);
+            case KeyEvent.VK_LEFT: {
+                if (rMap.getRMapPoint(bbManRowIdx, bbManColIdx - 1).isPathway() &&
+                        !rMap.getRMapPoint(bbManRowIdx, bbManColIdx - 1).isBombing()) { // the left case is a pathway && !bombing.
+                    if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
+                        bbMan.setYMap(bbMan.getYMap() + 1);
+                    }
                 }
-            }
-            if (rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx - 1).isPathway() &&
-                    !rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx - 1).isBombing()) { // the upper/left case is a pathway &&
-                                                                                 // !bombing.
-                if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
-                    bbMan.setYMap(bbMan.getYMap() - 1);
+                if (rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx - 1).isPathway() &&
+                        !rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx - 1).isBombing()) { // the upper/left case is a pathway &&
+                    // !bombing.
+                    if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
+                        bbMan.setYMap(bbMan.getYMap() - 1);
+                    }
                 }
+                break;
             }
-            break;
-        }
-        case KeyEvent.VK_RIGHT: {
-            if (rMap.getRMapPoint(bbManRowIdx, bbManColIdx + 1).isPathway() &&
-                    !rMap.getRMapPoint(bbManRowIdx, bbManColIdx + 1).isBombing()) { // the right case is a pathway && !bombing.
-                if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
-                    bbMan.setYMap(bbMan.getYMap() + 1);
+            case KeyEvent.VK_RIGHT: {
+                if (rMap.getRMapPoint(bbManRowIdx, bbManColIdx + 1).isPathway() &&
+                        !rMap.getRMapPoint(bbManRowIdx, bbManColIdx + 1).isBombing()) { // the right case is a pathway && !bombing.
+                    if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
+                        bbMan.setYMap(bbMan.getYMap() + 1);
+                    }
                 }
-            }
-            if (rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx + 1).isPathway() &&
-                    !rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx + 1).isBombing()) { // the upper/right case is a pathway &&
-                                                                                 // !bombing.
-                if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
-                    bbMan.setYMap(bbMan.getYMap() - 1);
+                if (rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx + 1).isPathway() &&
+                        !rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx + 1).isBombing()) { // the upper/right case is a pathway &&
+                    // !bombing.
+                    if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
+                        bbMan.setYMap(bbMan.getYMap() - 1);
+                    }
                 }
+                break;
             }
-            break;
-        }
         }
     }
 
@@ -211,74 +208,74 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     }
                 } else {
                     switch (pressedKeyList.get(pressedKeyList.size() - 1).intValue()) {
-                    case KeyEvent.VK_ESCAPE: {
-                        System.exit(1);
-                        break;
-                    }
-                    case 0: {
-                        bbMan.setStatus(BbMan.status.STATUS_WAIT);
-                        break;
-                    }
-                    case KeyEvent.VK_UP: {
-                        bbMan.setStatus(BbMan.status.STATUS_WALK_BACK);
-                        if (!RMapUtils.isCharacterCrossingMapLimit(rMap, bbMan.getXMap(), bbMan.getYMap() - 1)) {
-                            if (!RMapUtils.isCharacterCrossingObstacle(rMap, bbMan.getXMap(), bbMan.getYMap() - 1) &&
-                                    !RMapUtils.isCharacterCrossingBomb(rMap, bbMan.getXMap(), bbMan.getYMap() - 1,
-                                            KeyEvent.VK_UP)) {
-                                bbMan.setYMap(bbMan.getYMap() - 1);
-                            } else {
-                                shiftBbManIfPossible(KeyEvent.VK_UP);
-                            }
+                        case KeyEvent.VK_ESCAPE: {
+                            System.exit(1);
+                            break;
                         }
-                        break;
-                    }
-                    case KeyEvent.VK_DOWN: {
-                        bbMan.setStatus(BbMan.status.STATUS_WALK_FRONT);
-                        if (!RMapUtils.isCharacterCrossingMapLimit(rMap, bbMan.getXMap(), bbMan.getYMap() + 1)) {
-                            if (!RMapUtils.isCharacterCrossingObstacle(rMap, bbMan.getXMap(), bbMan.getYMap() + 1) &&
-                                    !RMapUtils.isCharacterCrossingBomb(rMap, bbMan.getXMap(), bbMan.getYMap() + 1,
-                                            KeyEvent.VK_DOWN)) {
-                                bbMan.setYMap(bbMan.getYMap() + 1);
-                            } else {
-                                shiftBbManIfPossible(KeyEvent.VK_DOWN);
-                            }
+                        case 0: {
+                            bbMan.setStatus(BbMan.status.STATUS_WAIT);
+                            break;
                         }
-                        break;
-                    }
-                    case KeyEvent.VK_LEFT: {
-                        bbMan.setStatus(BbMan.status.STATUS_WALK_LEFT);
-                        if (!RMapUtils.isCharacterCrossingMapLimit(rMap, bbMan.getXMap() - 1, bbMan.getYMap())) {
-                            if (!RMapUtils.isCharacterCrossingObstacle(rMap, bbMan.getXMap() - 1, bbMan.getYMap()) &&
-                                    !RMapUtils.isCharacterCrossingBomb(rMap, bbMan.getXMap() - 1, bbMan.getYMap(),
-                                            KeyEvent.VK_LEFT)) {
-                                bbMan.setXMap(bbMan.getXMap() - 1);
-                            } else {
-                                shiftBbManIfPossible(KeyEvent.VK_LEFT);
+                        case KeyEvent.VK_UP: {
+                            bbMan.setStatus(BbMan.status.STATUS_WALK_BACK);
+                            if (!RMapUtils.isCharacterCrossingMapLimit(rMap, bbMan.getXMap(), bbMan.getYMap() - 1)) {
+                                if (!RMapUtils.isCharacterCrossingObstacle(rMap, bbMan.getXMap(), bbMan.getYMap() - 1) &&
+                                        !RMapUtils.isCharacterCrossingBomb(rMap, bbMan.getXMap(), bbMan.getYMap() - 1,
+                                                KeyEvent.VK_UP)) {
+                                    bbMan.setYMap(bbMan.getYMap() - 1);
+                                } else {
+                                    shiftBbManIfPossible(KeyEvent.VK_UP);
+                                }
                             }
+                            break;
                         }
-                        break;
-                    }
-                    case KeyEvent.VK_RIGHT: {
-                        bbMan.setStatus(BbMan.status.STATUS_WALK_RIGHT);
-                        if (!RMapUtils.isCharacterCrossingMapLimit(rMap, bbMan.getXMap() + 1, bbMan.getYMap())) {
-                            if (!RMapUtils.isCharacterCrossingObstacle(rMap, bbMan.getXMap() + 1, bbMan.getYMap()) &&
-                                    !RMapUtils.isCharacterCrossingBomb(rMap, bbMan.getXMap() + 1, bbMan.getYMap(),
-                                            KeyEvent.VK_RIGHT)) {
-                                bbMan.setXMap(bbMan.getXMap() + 1);
-                            } else {
-                                shiftBbManIfPossible(KeyEvent.VK_RIGHT);
+                        case KeyEvent.VK_DOWN: {
+                            bbMan.setStatus(BbMan.status.STATUS_WALK_FRONT);
+                            if (!RMapUtils.isCharacterCrossingMapLimit(rMap, bbMan.getXMap(), bbMan.getYMap() + 1)) {
+                                if (!RMapUtils.isCharacterCrossingObstacle(rMap, bbMan.getXMap(), bbMan.getYMap() + 1) &&
+                                        !RMapUtils.isCharacterCrossingBomb(rMap, bbMan.getXMap(), bbMan.getYMap() + 1,
+                                                KeyEvent.VK_DOWN)) {
+                                    bbMan.setYMap(bbMan.getYMap() + 1);
+                                } else {
+                                    shiftBbManIfPossible(KeyEvent.VK_DOWN);
+                                }
                             }
+                            break;
                         }
-                        break;
-                    }
-                    case KeyEvent.VK_B: {
-                        spriteList.addBomb(bbMan.getYMap() / IMAGE_SIZE, bbMan.getXMap() / IMAGE_SIZE, 5);
-                        break;
-                    }
-                    case KeyEvent.VK_W: {
-                        bbMan.setStatus(BbMan.status.STATUS_WIN);
-                        break;
-                    }
+                        case KeyEvent.VK_LEFT: {
+                            bbMan.setStatus(BbMan.status.STATUS_WALK_LEFT);
+                            if (!RMapUtils.isCharacterCrossingMapLimit(rMap, bbMan.getXMap() - 1, bbMan.getYMap())) {
+                                if (!RMapUtils.isCharacterCrossingObstacle(rMap, bbMan.getXMap() - 1, bbMan.getYMap()) &&
+                                        !RMapUtils.isCharacterCrossingBomb(rMap, bbMan.getXMap() - 1, bbMan.getYMap(),
+                                                KeyEvent.VK_LEFT)) {
+                                    bbMan.setXMap(bbMan.getXMap() - 1);
+                                } else {
+                                    shiftBbManIfPossible(KeyEvent.VK_LEFT);
+                                }
+                            }
+                            break;
+                        }
+                        case KeyEvent.VK_RIGHT: {
+                            bbMan.setStatus(BbMan.status.STATUS_WALK_RIGHT);
+                            if (!RMapUtils.isCharacterCrossingMapLimit(rMap, bbMan.getXMap() + 1, bbMan.getYMap())) {
+                                if (!RMapUtils.isCharacterCrossingObstacle(rMap, bbMan.getXMap() + 1, bbMan.getYMap()) &&
+                                        !RMapUtils.isCharacterCrossingBomb(rMap, bbMan.getXMap() + 1, bbMan.getYMap(),
+                                                KeyEvent.VK_RIGHT)) {
+                                    bbMan.setXMap(bbMan.getXMap() + 1);
+                                } else {
+                                    shiftBbManIfPossible(KeyEvent.VK_RIGHT);
+                                }
+                            }
+                            break;
+                        }
+                        case KeyEvent.VK_B: {
+                            spriteList.addBomb(bbMan.getYMap() / IMAGE_SIZE, bbMan.getXMap() / IMAGE_SIZE, 5);
+                            break;
+                        }
+                        case KeyEvent.VK_W: {
+                            bbMan.setStatus(BbMan.status.STATUS_WIN);
+                            break;
+                        }
                     }
                     updateMapStartPosOnScreen();
                     updateBbManPosOnScreen();

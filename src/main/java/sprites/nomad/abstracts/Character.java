@@ -16,20 +16,6 @@ public abstract class Character {
     }
 
     /**
-     * Set the character abscissa on the map.
-     */
-    public void setXMap(int xMap) {
-        this.xMap = xMap;
-    }
-
-    /**
-     * Set the character ordinate on the map.
-     */
-    public void setYMap(int yMap) {
-        this.yMap = yMap;
-    }
-
-    /**
      * @return the character abscissa on the map.
      */
     public int getXMap() {
@@ -37,10 +23,24 @@ public abstract class Character {
     }
 
     /**
+     * Set the character abscissa on the map.
+     */
+    public void setXMap(int xMap) {
+        this.xMap = xMap;
+    }
+
+    /**
      * @return the character ordinate on the map.
      */
     public int getYMap() {
         return yMap;
+    }
+
+    /**
+     * Set the character ordinate on the map.
+     */
+    public void setYMap(int yMap) {
+        this.yMap = yMap;
     }
 
     /**

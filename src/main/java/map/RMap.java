@@ -1,39 +1,30 @@
 package map;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import exceptions.CannotCreateRMapElementException;
 import images.ImagesLoader;
 
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+
 public class RMap {
 
+    private final static int MARGIN_X = 2;
+    private final static int MARGIN_Y = 2;
     private final int MAX_NB_TRY = 10;
-
-    // map & screen information.
-    private int mapWidth; // widht of the map (expressed in RMapPoint).
-    private int mapHeight; // height of the map (expressed in RMapPoint).
+    protected RMapSetting rMapSetting;
+    private RMapPoint[][] rMapPointMatrix;
+    // screen information.
     private int screenWidth; // widht of the screen (expressed in pixel).
     private int screenHeight; // height of the screen (expressed in pixel).
-    private RMapPoint[][] rMapPointMatrix;
-
-    private RMapPoint spCastleT1; // start point (north/west) of the castle of team 1.
-    private RMapPoint spCastleT2; // start point (north/west) of the castle of team 2.
 
     // the following values allow put castles & ressources at:
     // - x cases from the left/right sides of the map,
     // - a minimum of y cases from the top/bottom of the map.
-
-    private final static int MARGIN_X = 2;
-    private final static int MARGIN_Y = 2;
+    private RMapPoint spCastleT1; // start point (north/west) of the castle of team 1.
+    private RMapPoint spCastleT2; // start point (north/west) of the castle of team 2.
 
     // Declare pattern for all the graphical elements (except for simple pathway - 1*1).
-
     // immutables:
     // - castles.
     private RMapPattern castleT1;
@@ -50,28 +41,27 @@ public class RMap {
     private RMapPattern puddle1;
     private RMapPattern puddle2;
 
-    public RMap(int mapWidth, int mapHeight, int screenWidth, int screenHeight)
+    public RMap(int screenWidth, int screenHeight)
             throws CannotCreateRMapElementException {
-        this.mapWidth = mapWidth;
-        this.mapHeight = mapHeight;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
         // Create a map of mapHeight*mapWidth cases.
-        rMapPointMatrix = new RMapPoint[mapHeight][mapWidth];
-        for (int rawIdx = 0; rawIdx < mapHeight; rawIdx++) {
-            for (int colIdx = 0; colIdx < mapWidth; colIdx++) {
+        rMapSetting = new RMapSetting();
+        rMapPointMatrix = new RMapPoint[rMapSetting.getMapHeight()][rMapSetting.getMapWidth()];
+        for (int rawIdx = 0; rawIdx < rMapSetting.getMapHeight(); rawIdx++) {
+            for (int colIdx = 0; colIdx < rMapSetting.getMapWidth(); colIdx++) {
                 rMapPointMatrix[rawIdx][colIdx] = new RMapPoint(rawIdx, colIdx);
             }
         }
     }
 
     public int getMapWidth() {
-        return mapWidth;
+        return rMapSetting.getMapWidth();
     }
 
     public int getMapHeight() {
-        return mapHeight;
+        return rMapSetting.getMapHeight();
     }
 
     public int getScreenWidth() {
@@ -142,15 +132,15 @@ public class RMap {
     public void generateMap() throws CannotCreateRMapElementException {
 
         // north edge.
-        for (int col = 0; col < mapWidth; col += tree1.getWidth()) {
+        for (int col = 0; col < rMapSetting.getMapWidth(); col += tree1.getWidth()) {
             if (!placePatternOnMap(rMapPointMatrix[0][col], tree1)) {
                 throw new CannotCreateRMapElementException("not able to create the north edge (mapWidth % tree1.getWidth() != 0).");
             }
         }
 
         // south edge.
-        for (int col = 0; col < mapWidth; col += edge.getWidth()) {
-            if (!placePatternOnMap(rMapPointMatrix[mapHeight - edge.getHeight()][col], edge)) {
+        for (int col = 0; col < rMapSetting.getMapWidth(); col += edge.getWidth()) {
+            if (!placePatternOnMap(rMapPointMatrix[rMapSetting.getMapHeight() - edge.getHeight()][col], edge)) {
                 throw new CannotCreateRMapElementException("not able to create the south edge (mapWidth % edge.getWidth() != 0).");
             }
         }
@@ -165,7 +155,7 @@ public class RMap {
         spCastleT1 = rMapPointMatrix[ySpCastleT1][xSpCastleT1];
 
         // castles of team 2.
-        int xSpCastleT2 = mapWidth - MARGIN_X - ImagesLoader.CASTLE_WIDTH;
+        int xSpCastleT2 = rMapSetting.getMapWidth() - MARGIN_X - ImagesLoader.CASTLE_WIDTH;
         int ySpCastleT2 = generateRandomRowIdx(ImagesLoader.CASTLE_HEIGHT, MARGIN_Y);
         if (!placePatternOnMap(rMapPointMatrix[ySpCastleT2][xSpCastleT2], castleT2)) {
             throw new CannotCreateRMapElementException("not able to create the castle of team 2.");
@@ -175,12 +165,12 @@ public class RMap {
 
         // complex elements.
         Map<RMapPattern, Integer> eltConfMap = new HashMap<>();
-        eltConfMap.put(wood1, 2);
-        eltConfMap.put(wood2, 2);
-        eltConfMap.put(tree1, 4);
-        eltConfMap.put(tree2, 4);
-        eltConfMap.put(puddle1, 1);
-        eltConfMap.put(puddle2, 1);
+        eltConfMap.put(wood1, rMapSetting.getNbWood1());
+        eltConfMap.put(wood2, rMapSetting.getNbWood2());
+        eltConfMap.put(tree1, rMapSetting.getNbTree1());
+        eltConfMap.put(tree2, rMapSetting.getNbTree2());
+        eltConfMap.put(puddle1, rMapSetting.getNbPuddle1());
+        eltConfMap.put(puddle2, rMapSetting.getNbPuddle2());
 
         for (Map.Entry<RMapPattern, Integer> eltConf : eltConfMap.entrySet()) {
             for (int eltIdx = 0; eltIdx < eltConf.getValue(); eltIdx++) {
@@ -203,18 +193,18 @@ public class RMap {
 
         // create list of empty cases.
         List<RMapPoint> emptyPtList = new ArrayList<>();
-        for (int rawIdx = 0; rawIdx < mapHeight; rawIdx++) {
-            for (int colIdx = 0; colIdx < mapWidth; colIdx++) {
-                if (rMapPointMatrix[rawIdx][colIdx].isAvailable()) {
-                    emptyPtList.add(rMapPointMatrix[rawIdx][colIdx]);
+        for (int rowIdx = 0; rowIdx < rMapSetting.getMapHeight(); rowIdx++) {
+            for (int colIdx = 0; colIdx < rMapSetting.getMapWidth(); colIdx++) {
+                if (rMapPointMatrix[rowIdx][colIdx].isAvailable()) {
+                    emptyPtList.add(rMapPointMatrix[rowIdx][colIdx]);
                 }
             }
         }
         int nbEmptyPt = emptyPtList.size();
 
         // single elements.
-        int perSingleMutable = 25;
-        int perSingleObstacle = 10;
+        int perSingleMutable = rMapSetting.getPerSingleMutable();
+        int perSingleObstacle = rMapSetting.getPerSingleObstacle();
 
         Random R = new Random();
         for (int i = 0; i < nbEmptyPt; i++) {
@@ -250,7 +240,7 @@ public class RMap {
      */
     private int generateRandomRowIdx(int patternHeight, int marginRange) {
         Random R = new Random(); // initStatement the random function.
-        return R.nextInt(mapHeight - 2 * marginRange - // north/south requiered margins.
+        return R.nextInt(rMapSetting.getMapHeight() - 2 * marginRange - // north/south requiered margins.
                 patternHeight - // pattern height as we place the north/west point.
                 (ImagesLoader.EDGE_HEIGHT + ImagesLoader.TREE_HEIGHT)) + // egde + tree.
                 ImagesLoader.TREE_HEIGHT + marginRange; // re-add tree height + margin to get the right range.
@@ -266,7 +256,7 @@ public class RMap {
      */
     private int generateRandomColIdx(int patternWidth, int marginRange) {
         Random R = new Random(); // initStatement the random function.
-        return R.nextInt(mapWidth - 2 * marginRange - // east/west requiered margins.
+        return R.nextInt(rMapSetting.getMapWidth() - 2 * marginRange - // east/west requiered margins.
                 patternWidth) + // pattern width as we place the noth/west point.
                 marginRange; // re-add the margin to get the right range.
     }
@@ -285,8 +275,8 @@ public class RMap {
         int startColIdx = rMapPoint.getColIdx();
 
         // firstly, check if the pattern is not outsized.
-        if (startRowIdx + rMapPattern.getHeight() > this.mapHeight ||
-                startColIdx + rMapPattern.getWidth() > this.mapWidth) {
+        if (startRowIdx + rMapPattern.getHeight() > rMapSetting.getMapHeight() ||
+                startColIdx + rMapPattern.getWidth() > rMapSetting.getMapWidth()) {
             return false;
         }
 
@@ -372,13 +362,11 @@ public class RMap {
      * @return If the RMapPoint is available, create the element and return true, else, return false.
      */
     private boolean placeSinglePathwayOnMap(RMapPoint rMapPoint) {
-        int perFlowers = 20;
-
         if (rMapPoint.isAvailable()) {
             Random R = new Random(); // initStatement the random function.
             int randomPercent = Math.abs(R.nextInt(100)); // randomly choose a single element.
 
-            if (randomPercent < perFlowers) { // animated flower
+            if (randomPercent < rMapSetting.getPerSingleFlowerPathway()) { // animated flower
                 rMapPoint.setImages(ImagesLoader.imagesMatrix[ImagesLoader.flowerMatrixRowIdx],
                         ImagesLoader.NB_FLOWER_FRAME);
                 rMapPoint.setRefreshTime(100);
@@ -440,10 +428,10 @@ public class RMap {
 
         // paint the map.
         for (int rowIdx = startRowIdx;
-             rowIdx <= startRowIdx + (screenHeight / ImagesLoader.IMAGE_SIZE) && rowIdx < mapHeight;
+             rowIdx <= startRowIdx + (screenHeight / ImagesLoader.IMAGE_SIZE) && rowIdx < rMapSetting.getMapHeight();
              rowIdx++) {
             for (int colIdx = startColIdx;
-                 colIdx <= startColIdx + (screenWidth / ImagesLoader.IMAGE_SIZE) && colIdx < mapWidth;
+                 colIdx <= startColIdx + (screenWidth / ImagesLoader.IMAGE_SIZE) && colIdx < rMapSetting.getMapWidth();
                  colIdx++) {
                 rMapPointMatrix[rowIdx][colIdx].paintBuffer(g,
                         (colIdx - startColIdx) * ImagesLoader.IMAGE_SIZE - xMap % ImagesLoader.IMAGE_SIZE, // colIdx -> x
