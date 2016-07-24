@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 
 import static images.ImagesLoader.IMAGE_SIZE;
 
-public class RMapUtils {
+public class CharacterMethods {
 
     /**
      * Return the top rowIdx of a character given its map ordinate.
@@ -69,6 +69,8 @@ public class RMapUtils {
      */
     public static boolean isCharacterCrossingObstacle(RMap rMap, int xChar, int yChar)
             throws OutOfRMapBoundsException {
+
+        // ToDo: Do not check map limit and add an impLSpec as in PatternMethods class.
         if (isCharacterCrossingMapLimit(rMap, xChar, yChar)) {
             throw new OutOfRMapBoundsException(
                     "rMap out of bounds with the following coordinates: xChar=" + xChar + ", yChar=" + yChar);

@@ -7,20 +7,25 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+import static map.PatternMethods.*;
+
 public class RMap {
 
+    private final int MAX_NB_TRY = 10;
+
+    // the following values allow put castles at:
+    // - x cases from the left/right sides of the map,
+    // - a minimum of y cases from the top/bottom of the map.
     private final static int MARGIN_X = 2;
     private final static int MARGIN_Y = 2;
-    private final int MAX_NB_TRY = 10;
+
     protected RMapSetting rMapSetting;
     private RMapPoint[][] rMapPointMatrix;
+
     // screen information.
     private int screenWidth; // widht of the screen (expressed in pixel).
     private int screenHeight; // height of the screen (expressed in pixel).
 
-    // the following values allow put castles & ressources at:
-    // - x cases from the left/right sides of the map,
-    // - a minimum of y cases from the top/bottom of the map.
     private RMapPoint spCastleT1; // start point (north/west) of the castle of team 1.
     private RMapPoint spCastleT2; // start point (north/west) of the castle of team 2.
 
@@ -130,37 +135,21 @@ public class RMap {
      * @throws CannotCreateRMapElementException if the map could not be created
      */
     public void generateMap() throws CannotCreateRMapElementException {
+        placeNorthEdgeOnMap(rMapPointMatrix, rMapSetting.getMapWidth(), rMapSetting.getMapHeight(), tree1);
+        placeSouthEdgeOnMap(rMapPointMatrix, rMapSetting.getMapWidth(), rMapSetting.getMapHeight(), edge);
 
-        // north edge.
-        for (int col = 0; col < rMapSetting.getMapWidth(); col += tree1.getWidth()) {
-            if (!placePatternOnMap(rMapPointMatrix[0][col], tree1)) {
-                throw new CannotCreateRMapElementException("not able to create the north edge (mapWidth % tree1.getWidth() != 0).");
-            }
-        }
-
-        // south edge.
-        for (int col = 0; col < rMapSetting.getMapWidth(); col += edge.getWidth()) {
-            if (!placePatternOnMap(rMapPointMatrix[rMapSetting.getMapHeight() - edge.getHeight()][col], edge)) {
-                throw new CannotCreateRMapElementException("not able to create the south edge (mapWidth % edge.getWidth() != 0).");
-            }
-        }
-
-        // castles of team 1.
+        // 1st castle.
         int xSpCastleT1 = MARGIN_X;
         int ySpCastleT1 = generateRandomRowIdx(ImagesLoader.CASTLE_HEIGHT, MARGIN_Y);
-        if (!placePatternOnMap(rMapPointMatrix[ySpCastleT1][xSpCastleT1], castleT1)) {
-            throw new CannotCreateRMapElementException("not able to create the castle of team 1.");
-        }
-        securePerimeter(rMapPointMatrix[ySpCastleT1][xSpCastleT1], castleT1);
+        placeCastleOnMap(rMapPointMatrix, rMapSetting.getMapWidth(), rMapSetting.getMapHeight(),
+                castleT1, ySpCastleT1, xSpCastleT1);
         spCastleT1 = rMapPointMatrix[ySpCastleT1][xSpCastleT1];
 
-        // castles of team 2.
+        // 2nd castle.
         int xSpCastleT2 = rMapSetting.getMapWidth() - MARGIN_X - ImagesLoader.CASTLE_WIDTH;
         int ySpCastleT2 = generateRandomRowIdx(ImagesLoader.CASTLE_HEIGHT, MARGIN_Y);
-        if (!placePatternOnMap(rMapPointMatrix[ySpCastleT2][xSpCastleT2], castleT2)) {
-            throw new CannotCreateRMapElementException("not able to create the castle of team 2.");
-        }
-        securePerimeter(rMapPointMatrix[ySpCastleT2][xSpCastleT2], castleT2);
+        placeCastleOnMap(rMapPointMatrix, rMapSetting.getMapWidth(), rMapSetting.getMapHeight(),
+                castleT2, ySpCastleT2, xSpCastleT2);
         spCastleT2 = rMapPointMatrix[ySpCastleT2][xSpCastleT2];
 
         // complex elements.
@@ -178,7 +167,8 @@ public class RMap {
                 while (true) {
                     int xSpElt = generateRandomColIdx(eltConf.getKey().getWidth(), 0);
                     int ySpElt = generateRandomRowIdx(eltConf.getKey().getHeight(), 0);
-                    if (!placePatternOnMap(rMapPointMatrix[ySpElt][xSpElt], eltConf.getKey())) {
+                    if (!placePatternOnMap(rMapPointMatrix, rMapSetting.getMapWidth(), rMapSetting.getMapHeight(),
+                            eltConf.getKey(), ySpElt, xSpElt)) {
                         if (nbTry < MAX_NB_TRY) {
                             nbTry++;
                         } else {
@@ -222,7 +212,7 @@ public class RMap {
                     throw new CannotCreateRMapElementException("not able to create a single mutable.");
                 }
             } else {
-                if (!placeSinglePathwayOnMap(rMapPoint)) {
+                if (!placeSinglePathwayOnMap(rMapPoint, rMapSetting.getPerSingleFlowerPathway())) {
                     throw new CannotCreateRMapElementException("not able to create a single pathway.");
                 }
             }
@@ -259,158 +249,6 @@ public class RMap {
         return R.nextInt(rMapSetting.getMapWidth() - 2 * marginRange - // east/west requiered margins.
                 patternWidth) + // pattern width as we place the noth/west point.
                 marginRange; // re-add the margin to get the right range.
-    }
-
-    /**
-     * Try to place an element (based on its pattern) on the map.
-     * The pointed out rMapPoint corresponds to the north/west corner of the pattern.
-     * If the pattern is eligible, create the element and return true, else, return false.
-     *
-     * @param rMapPoint   the point of the map
-     * @param rMapPattern the pattern of the element to place
-     * @return If the pattern is eligible, create the element on the map and return true, else, return false.
-     */
-    private boolean placePatternOnMap(RMapPoint rMapPoint, RMapPattern rMapPattern) {
-        int startRowIdx = rMapPoint.getRowIdx();
-        int startColIdx = rMapPoint.getColIdx();
-
-        // firstly, check if the pattern is not outsized.
-        if (startRowIdx + rMapPattern.getHeight() > rMapSetting.getMapHeight() ||
-                startColIdx + rMapPattern.getWidth() > rMapSetting.getMapWidth()) {
-            return false;
-        }
-
-        // then, check if the pattern do not cross a placed element.
-        for (int rowIdx = startRowIdx; rowIdx < startRowIdx + rMapPattern.getHeight(); rowIdx++) {
-            for (int colIdx = startColIdx; colIdx < startColIdx + rMapPattern.getWidth(); colIdx++) {
-                if (!this.rMapPointMatrix[rowIdx][colIdx].isAvailable()) {
-                    return false;
-                }
-            }
-        }
-
-        // finally, we create the element.
-        for (int rowIdx = 0; rowIdx < rMapPattern.getHeight(); rowIdx++) {
-            for (int colIdx = 0; colIdx < rMapPattern.getWidth(); colIdx++) {
-                this.rMapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx]
-                        .setImage(rMapPattern.getImageArray()[(colIdx * rMapPattern.getHeight()) + rowIdx]);
-                this.rMapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setPathway(rMapPattern.isPathway());
-                this.rMapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setMutable(rMapPattern.isMutable());
-                this.rMapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setAvailable(false);
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Try to place a single obstacle on the map.
-     * If the RMapPoint is available, create the element and return true, else, return false.
-     *
-     * @param rMapPoint the point of the map
-     * @return If the RMapPoint is available, create the element and return true, else, return false.
-     */
-    private boolean placeSingleObstacleOnMap(RMapPoint rMapPoint) {
-        if (rMapPoint.isAvailable()) {
-            Random R = new Random(); // initStatement the random function.
-
-            // randomly choose an image.
-            int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_OBSTABLE);
-            Image image = ImagesLoader.imagesMatrix[ImagesLoader.singleObstacleMatrixRowIdx][imageIdx];
-
-            // set rMapPoint.
-            rMapPoint.setImage(image);
-            rMapPoint.setMutable(false);
-            rMapPoint.setPathway(false);
-            rMapPoint.setAvailable(false);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Try to place a single mutable on the map.
-     * If the RMapPoint is available, create the element and return true, else, return false.
-     *
-     * @param rMapPoint the point of the map
-     * @return If the RMapPoint is available, create the element and return true, else, return false.
-     */
-    private boolean placeSingleMutableOnMap(RMapPoint rMapPoint) {
-        if (rMapPoint.isAvailable()) {
-            Random R = new Random(); // initStatement the random function.
-
-            // randomly choose an image.
-            int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_MUTABLE);
-            Image image = ImagesLoader.imagesMatrix[ImagesLoader.singleMutableMatrixRowIdx][imageIdx];
-
-            // set rMapPoint.
-            rMapPoint.setImage(image);
-            rMapPoint.setMutable(true);
-            rMapPoint.setPathway(false);
-            rMapPoint.setAvailable(false);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Try to place a single pathway on the map.
-     * If the RMapPoint is available, create the element and return true, else, return false.
-     *
-     * @param rMapPoint the point of the map
-     * @return If the RMapPoint is available, create the element and return true, else, return false.
-     */
-    private boolean placeSinglePathwayOnMap(RMapPoint rMapPoint) {
-        if (rMapPoint.isAvailable()) {
-            Random R = new Random(); // initStatement the random function.
-            int randomPercent = Math.abs(R.nextInt(100)); // randomly choose a single element.
-
-            if (randomPercent < rMapSetting.getPerSingleFlowerPathway()) { // animated flower
-                rMapPoint.setImages(ImagesLoader.imagesMatrix[ImagesLoader.flowerMatrixRowIdx],
-                        ImagesLoader.NB_FLOWER_FRAME);
-                rMapPoint.setRefreshTime(100);
-            } else {
-
-                // randomly choose an image.
-                int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_PATHWAY);
-                Image image = ImagesLoader.imagesMatrix[ImagesLoader.singlePathwayMatrixRowIdx][imageIdx];
-                rMapPoint.setImage(image);
-            }
-            rMapPoint.setMutable(false);
-            rMapPoint.setPathway(true);
-            rMapPoint.setAvailable(false);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Secure the perimeter of an element putting single pathways around it.
-     * If some cases are used, they are ignored.
-     *
-     * @param rMapPoint   the start point of the element to secure
-     * @param rMapPattern the pattern of the element to secure
-     */
-    private void securePerimeter(RMapPoint rMapPoint, RMapPattern rMapPattern) {
-        int startRowIdx = rMapPoint.getRowIdx();
-        int startColIdx = rMapPoint.getColIdx();
-        Random R = new Random(); // initStatement the random function.
-
-        for (int rowIdx = startRowIdx - 1; rowIdx <= startRowIdx + rMapPattern.getHeight(); rowIdx++) {
-            for (int colIdx = startColIdx - 1; colIdx <= startColIdx + rMapPattern.getWidth(); colIdx++) {
-                if (this.rMapPointMatrix[rowIdx][colIdx].isAvailable()) {
-                    int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_PATHWAY); // get a random single pathway image.
-                    Image image = ImagesLoader.imagesMatrix[ImagesLoader.singlePathwayMatrixRowIdx][imageIdx];
-
-                    this.rMapPointMatrix[rowIdx][colIdx].setImage(image);
-                    this.rMapPointMatrix[rowIdx][colIdx].setPathway(true);
-                    this.rMapPointMatrix[rowIdx][colIdx].setMutable(false);
-                    this.rMapPointMatrix[rowIdx][colIdx].setAvailable(false);
-                }
-            }
-        }
     }
 
     /**

@@ -11,7 +11,7 @@ import java.util.List;
 import static images.ImagesLoader.IMAGE_SIZE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RMapUtilsTest {
+public class CharacterMethodsTest {
 
     // use small values to avoid heap overflow using Mockito.
     private final int MAP_WIDTH = 4;
@@ -21,35 +21,35 @@ public class RMapUtilsTest {
 
     @Test
     public void getTopRowIdxIfOrdIsShouldReturnTheAppropriateValue() throws Exception {
-        assertThat(RMapUtils.getTopRowIdxIfOrdIs(10)).isEqualTo(-1); // negative  case.
-        assertThat(RMapUtils.getTopRowIdxIfOrdIs(14)).isEqualTo(-1); // limit before negative  case.
-        assertThat(RMapUtils.getTopRowIdxIfOrdIs(20)).isEqualTo(0); // standard case.
-        assertThat(RMapUtils.getTopRowIdxIfOrdIs(44)).isEqualTo(0); // limit before moving to another case.
-        assertThat(RMapUtils.getTopRowIdxIfOrdIs(45)).isEqualTo(1); // moving to another case.
+        assertThat(CharacterMethods.getTopRowIdxIfOrdIs(10)).isEqualTo(-1); // negative  case.
+        assertThat(CharacterMethods.getTopRowIdxIfOrdIs(14)).isEqualTo(-1); // limit before negative  case.
+        assertThat(CharacterMethods.getTopRowIdxIfOrdIs(20)).isEqualTo(0); // standard case.
+        assertThat(CharacterMethods.getTopRowIdxIfOrdIs(44)).isEqualTo(0); // limit before moving to another case.
+        assertThat(CharacterMethods.getTopRowIdxIfOrdIs(45)).isEqualTo(1); // moving to another case.
     }
 
     @Test
     public void getBottomRowIdxIfOrdIsShouldReturnTheAppropriateValue() throws Exception {
-        assertThat(RMapUtils.getBottomRowIdxIfOrdIs(20)).isEqualTo(0); // standard case.
-        assertThat(RMapUtils.getBottomRowIdxIfOrdIs(29)).isEqualTo(0); // limit before moving to another case.
-        assertThat(RMapUtils.getBottomRowIdxIfOrdIs(30)).isEqualTo(1); // moving to another case.
+        assertThat(CharacterMethods.getBottomRowIdxIfOrdIs(20)).isEqualTo(0); // standard case.
+        assertThat(CharacterMethods.getBottomRowIdxIfOrdIs(29)).isEqualTo(0); // limit before moving to another case.
+        assertThat(CharacterMethods.getBottomRowIdxIfOrdIs(30)).isEqualTo(1); // moving to another case.
 
     }
 
     @Test
     public void getMostLeftRowIdxIfOrdIsShouldReturnTheAppropriateValue() throws Exception {
-        assertThat(RMapUtils.getMostLeftColIdxIfAbsIs(10)).isEqualTo(-1); // negative  case.
-        assertThat(RMapUtils.getMostLeftColIdxIfAbsIs(14)).isEqualTo(-1); // limit before negative  case.
-        assertThat(RMapUtils.getMostLeftColIdxIfAbsIs(30)).isEqualTo(0); // standard case.
-        assertThat(RMapUtils.getMostLeftColIdxIfAbsIs(44)).isEqualTo(0); // limit before moving to another case.
-        assertThat(RMapUtils.getMostLeftColIdxIfAbsIs(45)).isEqualTo(1); // moving to another case.
+        assertThat(CharacterMethods.getMostLeftColIdxIfAbsIs(10)).isEqualTo(-1); // negative  case.
+        assertThat(CharacterMethods.getMostLeftColIdxIfAbsIs(14)).isEqualTo(-1); // limit before negative  case.
+        assertThat(CharacterMethods.getMostLeftColIdxIfAbsIs(30)).isEqualTo(0); // standard case.
+        assertThat(CharacterMethods.getMostLeftColIdxIfAbsIs(44)).isEqualTo(0); // limit before moving to another case.
+        assertThat(CharacterMethods.getMostLeftColIdxIfAbsIs(45)).isEqualTo(1); // moving to another case.
     }
 
     @Test
     public void getMostRightRowIdxIfOrdIsShouldReturnTheAppropriateValue() throws Exception {
-        assertThat(RMapUtils.getMostRightColIdxIfAbsIs(30)).isEqualTo(1); // standard case.
-        assertThat(RMapUtils.getMostRightColIdxIfAbsIs(45)).isEqualTo(1); // limit before moving to another case.
-        assertThat(RMapUtils.getMostRightColIdxIfAbsIs(46)).isEqualTo(2); // moving to another case.
+        assertThat(CharacterMethods.getMostRightColIdxIfAbsIs(30)).isEqualTo(1); // standard case.
+        assertThat(CharacterMethods.getMostRightColIdxIfAbsIs(45)).isEqualTo(1); // limit before moving to another case.
+        assertThat(CharacterMethods.getMostRightColIdxIfAbsIs(46)).isEqualTo(2); // moving to another case.
     }
 
     @Test
@@ -81,9 +81,9 @@ public class RMapUtilsTest {
             for (int yChar = 0; yChar < MAP_HEIGHT * IMAGE_SIZE; yChar++) {
                 if ((xChar < leftMapLimit) || (xChar > rightMapLimit) ||
                         (yChar < topMapLimit) || (yChar > bottomMapLimit)) {
-                    assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, xChar, yChar)).isTrue(); // crossing.
+                    assertThat(CharacterMethods.isCharacterCrossingMapLimit(rMap, xChar, yChar)).isTrue(); // crossing.
                 } else {
-                    assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, xChar, yChar)).isFalse(); // not crossing.
+                    assertThat(CharacterMethods.isCharacterCrossingMapLimit(rMap, xChar, yChar)).isFalse(); // not crossing.
                 }
             }
         }
@@ -131,16 +131,16 @@ public class RMapUtilsTest {
                             (yChar > topObsLimit) && (yChar < bottomObsLimit)) {
 
                         // assert that the character is crossing an obstacle.
-                        assertThat(RMapUtils.isCharacterCrossingObstacle(rMap, xChar, yChar)).isTrue();
+                        assertThat(CharacterMethods.isCharacterCrossingObstacle(rMap, xChar, yChar)).isTrue();
                     } else {
 
                         // assert that the character is not crossing an obstacle.
-                        assertThat(RMapUtils.isCharacterCrossingObstacle(rMap, xChar, yChar)).isFalse();
+                        assertThat(CharacterMethods.isCharacterCrossingObstacle(rMap, xChar, yChar)).isFalse();
                     }
                 } catch (OutOfRMapBoundsException e) {
 
                     // assert that an exception has been thrown because the character is crossing the map limits.
-                    assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, xChar, yChar)).isTrue();
+                    assertThat(CharacterMethods.isCharacterCrossingMapLimit(rMap, xChar, yChar)).isTrue();
                 }
             }
         }
@@ -183,16 +183,16 @@ public class RMapUtilsTest {
                             (yChar > topFlameLimit) && (yChar < bottomFlameLimit)) {
 
                         // assert that the character is crossing a flame.
-                        assertThat(RMapUtils.isCharacterBurning(rMap, xChar, yChar)).isTrue();
+                        assertThat(CharacterMethods.isCharacterBurning(rMap, xChar, yChar)).isTrue();
                     } else {
 
                         // assert that the character is not crossing a flame.
-                        assertThat(RMapUtils.isCharacterBurning(rMap, xChar, yChar)).isFalse();
+                        assertThat(CharacterMethods.isCharacterBurning(rMap, xChar, yChar)).isFalse();
                     }
                 } catch (OutOfRMapBoundsException e) {
 
                     // assert that an exception has been thrown because the character is crossing the map limits.
-                    assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, xChar, yChar)).isTrue();
+                    assertThat(CharacterMethods.isCharacterCrossingMapLimit(rMap, xChar, yChar)).isTrue();
                 }
             }
         }
@@ -248,16 +248,16 @@ public class RMapUtilsTest {
                                         (xChar == leftBombLimit + 1) && keyEvent == KeyEvent.VK_RIGHT) ||
                                 ((yChar > topBombLimit) && (yChar < bottomBombLimit) &&
                                         (xChar == rightBombLimit - 1) && keyEvent == KeyEvent.VK_LEFT)) {
-                            assertThat(RMapUtils.isCharacterCrossingBomb(rMap, xChar, yChar, keyEvent)).isTrue();
+                            assertThat(CharacterMethods.isCharacterCrossingBomb(rMap, xChar, yChar, keyEvent)).isTrue();
                         } else {
 
                             // assert that the character is not crossing a flame.
-                            assertThat(RMapUtils.isCharacterCrossingBomb(rMap, xChar, yChar, keyEvent)).isFalse();
+                            assertThat(CharacterMethods.isCharacterCrossingBomb(rMap, xChar, yChar, keyEvent)).isFalse();
                         }
                     } catch (OutOfRMapBoundsException e) {
 
                         // assert that an exception has been thrown because the character is crossing the map limits.
-                        assertThat(RMapUtils.isCharacterCrossingMapLimit(rMap, xChar, yChar)).isTrue();
+                        assertThat(CharacterMethods.isCharacterCrossingMapLimit(rMap, xChar, yChar)).isTrue();
                     }
                 }
             }
