@@ -21,8 +21,8 @@ public class PatternMethods {
     public static boolean isPatternCrossingMapLimit(int mapWidth, int mapHeight,
                                                     RMapPattern rMapPattern, int startRowIdx, int startColIdx) {
         boolean isCrossing = false;
-        if (startRowIdx < 0 || startRowIdx + rMapPattern.getHeight() > mapHeight ||
-                startColIdx < 0 || startColIdx + rMapPattern.getWidth() > mapWidth) {
+        if (startRowIdx < 0 || startRowIdx + rMapPattern.getHeight() >= mapHeight ||
+                startColIdx < 0 || startColIdx + rMapPattern.getWidth() >= mapWidth) {
             isCrossing = true;
         }
         return isCrossing;

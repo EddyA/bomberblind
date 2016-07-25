@@ -1,18 +1,20 @@
+import static images.ImagesLoader.IMAGE_SIZE;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JPanel;
+
 import exceptions.CannotCreateRMapElementException;
 import exceptions.OutOfRMapBoundsException;
 import map.CharacterMethods;
 import map.RMap;
 import sprites.nomad.BbManBlue;
 import sprites.nomad.abstracts.BbMan;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import java.util.List;
-
-import static images.ImagesLoader.IMAGE_SIZE;
 
 public class GameJpanel extends JPanel implements Runnable, KeyListener {
 

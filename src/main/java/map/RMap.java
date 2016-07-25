@@ -54,9 +54,9 @@ public class RMap {
         // Create a map of mapHeight*mapWidth cases.
         rMapSetting = new RMapSetting();
         rMapPointMatrix = new RMapPoint[rMapSetting.getMapHeight()][rMapSetting.getMapWidth()];
-        for (int rawIdx = 0; rawIdx < rMapSetting.getMapHeight(); rawIdx++) {
+        for (int rowIdx = 0; rowIdx < rMapSetting.getMapHeight(); rowIdx++) {
             for (int colIdx = 0; colIdx < rMapSetting.getMapWidth(); colIdx++) {
-                rMapPointMatrix[rawIdx][colIdx] = new RMapPoint(rawIdx, colIdx);
+                rMapPointMatrix[rowIdx][colIdx] = new RMapPoint(rowIdx, colIdx);
             }
         }
     }
