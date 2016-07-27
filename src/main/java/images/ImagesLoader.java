@@ -1,9 +1,13 @@
 package images;
 
+import utils.Triple;
+
 import javax.imageio.ImageIO;
+import javax.xml.ws.WebEndpoint;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 
 /**
  * Load the images of the game in a matrix of type 'Image'.
@@ -11,42 +15,24 @@ import java.net.URL;
  */
 public class ImagesLoader {
     public final static int IMAGE_SIZE = 30; // size of an 'Image' in pixels (30*30).
-    // bbmans:
-    public final static int NB_BBMAN_DEATH_FRAME = 9;
-    public final static int NB_BBMAN_WAIT_FRAME = 4;
-    public final static int NB_BBMAN_WALK_FRAME = 4;
-    public final static int NB_BBMAN_WIN_FRAME = 8;
-    // enemies:
-    public final static int NB_ENEMY_WALK_FRAME = 4;
-    // sprites:
-    public final static int NB_BOMB_FRAME = 4;
-    public final static int NB_FLAME_FRAME = 3;
-    public final static int NB_FLAME_END_FRAME = 9;
-    // scene elements:
-    public final static int CASTLE_WIDTH = 6;
-    public final static int CASTLE_HEIGHT = 5;
-    public final static int EDGE_WIDTH = 1;
-    public final static int EDGE_HEIGHT = 4;
-    public final static int TREE_WIDTH = 4;
-    public final static int TREE_HEIGHT = 4;
-    public final static int WOOD_WIDTH = 8;
-    public final static int WOOD_HEIGHT = 10;
-    public final static int NB_SINGLE_OBSTABLE = 2;
-    public final static int NB_FLOWER_FRAME = 3;
-    public final static int NB_SINGLE_BOOM = 1;
-    public final static int PUDDLE_WIDTH = 7;
-    public final static int PUDDLE_HEIGHT = 6;
-    public final static int NB_SINGLE_PATHWAY = 20;
-    public final static int NB_SINGLE_MUTABLE = 3;
+
+    public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
     protected final static int NB_MATRIX_ROW = 28;
     protected final static int NB_MATRIX_COL = 80;
+
     // images location.
     private final static String BBMAN_SKIN_DIR = "/images/characters/bbman";
     private final static String ENEMY_SKIN_DIR = "/images/characters/enemy";
     private final static String BOMB_SKIN_DIR = "/images/bomb";
     private final static String FLAME_SKIN_DIR = "/images/flame";
     private final static String SCENE_SKIN_DIR = "/images/scene";
-    public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
+
+    // bbmans:
+    public final static int NB_BBMAN_DEATH_FRAME = 9;
+    public final static int NB_BBMAN_WAIT_FRAME = 4;
+    public final static int NB_BBMAN_WALK_FRAME = 4;
+    public final static int NB_BBMAN_WIN_FRAME = 8;
+
     // - blue BbMan.
     public static int blueBbManDeathMatrixRowIdx;
     public static int blueBbManWaitMatrixRowIdx;
@@ -55,27 +41,53 @@ public class ImagesLoader {
     public static int blueBbManWalkLeftMatrixRowIdx;
     public static int blueBbManWalkRightMatrixRowIdx;
     public static int blueBbManWinMatrixRowIdx;
+
+    // enemies:
+    public final static int NB_ENEMY_WALK_FRAME = 4;
+
     // - cloaked skeleton.
     public static int cloakedSkeletonWalkBackMatrixRowIdx;
     public static int cloakedSkeletonWalkFrontMatrixRowIdx;
     public static int cloakedSkeletonWalkLeftMatrixRowIdx;
     public static int cloakedSkeletonWalkRightMatrixRowIdx;
+
+    // sprites:
+    public final static int NB_BOMB_FRAME = 4;
     public static int bombMatrixRowIdx;
+    public final static int NB_FLAME_FRAME = 3;
     public static int flameMatrixRowIdx;
+    public final static int NB_FLAME_END_FRAME = 9;
     public static int flameEndMatrixRowIdx;
+
+    // scene elements:
+    public final static int CASTLE_WIDTH = 6;
+    public final static int CASTLE_HEIGHT = 5;
     public static int castleT1MatrixRowIdx;
     public static int castleT2MatrixRowIdx;
+    public final static int EDGE_WIDTH = 1;
+    public final static int EDGE_HEIGHT = 4;
     public static int edgeMatrixRowIdx;
+    public final static int TREE_WIDTH = 4;
+    public final static int TREE_HEIGHT = 4;
     public static int tree1MatrixRowIdx;
     public static int tree2MatrixRowIdx;
+    public final static int WOOD_WIDTH = 8;
+    public final static int WOOD_HEIGHT = 10;
     public static int wood1MatrixRowIdx;
     public static int wood2MatrixRowIdx;
+    public final static int NB_SINGLE_OBSTABLE = 2;
     public static int singleObstacleMatrixRowIdx;
+    public final static int NB_FLOWER_FRAME = 3;
     public static int flowerMatrixRowIdx;
+    public final static int NB_SINGLE_BOOM = 1;
     public static int singleBoomMatrixRowIdx;
+    public final static int PUDDLE_WIDTH = 7;
+    public final static int PUDDLE_HEIGHT = 6;
     public static int puddle1MatrixRowIdx;
     public static int puddle2MatrixRowIdx;
+    public final static int NB_SINGLE_PATHWAY = 20;
     public static int singlePathwayMatrixRowIdx;
+    public final static int NB_SINGLE_MUTABLE = 3;
     public static int singleMutableMatrixRowIdx;
 
     public static int lastRowIdx; // for test purpose.
@@ -275,5 +287,42 @@ public class ImagesLoader {
         }
         singleMutableMatrixRowIdx = rowIdx;
         lastRowIdx = rowIdx;
+    }
+
+
+    /**
+     * @return a random single static pathway image.
+     */
+    public static Image getRandomSingleStaticPathway() {
+        Random R = new Random(); // initStatement the random function.
+        int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_PATHWAY);
+        return ImagesLoader.imagesMatrix[ImagesLoader.singlePathwayMatrixRowIdx][imageIdx];
+    }
+
+    /**
+     * @return a random single dynamic pathway image.
+     */
+    @SuppressWarnings("unchecked")
+    public static Triple<Image[], Integer, Integer> getRandomSingleDynamicPathway() {
+        return new Triple(ImagesLoader.imagesMatrix[ImagesLoader.flowerMatrixRowIdx],
+                ImagesLoader.NB_FLOWER_FRAME, 100);
+    }
+
+    /**
+     * @return a random single mutable image.
+     */
+    public static Image getRandomSingleMutable() {
+        Random R = new Random(); // initStatement the random function.
+        int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_MUTABLE);
+        return ImagesLoader.imagesMatrix[ImagesLoader.singleMutableMatrixRowIdx][imageIdx];
+    }
+
+    /**
+     * @return a random single obstacle image.
+     */
+    public static Image getRandomSingleObstacle() {
+        Random R = new Random(); // initStatement the random function.
+        int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_OBSTABLE);
+        return ImagesLoader.imagesMatrix[ImagesLoader.singleObstacleMatrixRowIdx][imageIdx];
     }
 }

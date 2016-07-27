@@ -9,13 +9,14 @@ import java.awt.*;
  * The sprite loops during a certain time.
  */
 public abstract class TSprite extends Sprite {
+    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
+
     private final Image[] images; // array of images of the sprite.
     private final int nbImages; // number of images of the sprite.
+    private int curImageIdx; // current image index of the sprite.
     private final int duration; // duration (in ms).
     private final long startTs; // start timestamp.
     private final int refreshTime; // refresh time (in ms).
-    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
-    private int curImageIdx; // current image index of the sprite.
     private long lastRefreshTs; // last refresh timestamp.
 
     public TSprite(int rowIdx,

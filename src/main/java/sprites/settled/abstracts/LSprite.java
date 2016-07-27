@@ -9,13 +9,14 @@ import java.awt.*;
  * The sprite loops a certain number of times.
  */
 public abstract class LSprite extends Sprite {
+    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
+
     private final Image[] images; // array of images of the sprite.
     private final int nbImages; // number of images of the sprite.
-    private final int refreshTime; // refresh time (in ms).
-    private final int maxNbTimes; // number of times the sprite should be painted.
-    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
     private int curImageIdx; // current image index of the sprite.
+    private final int refreshTime; // refresh time (in ms).
     private long lastRefreshTs; // last refresh timestamp.
+    private final int maxNbTimes; // number of times the sprite should be painted.
     private int curNbTimes; // current number of times.
 
     public LSprite(int rowIdx,

@@ -2,6 +2,7 @@ package map;
 
 import exceptions.CannotCreateRMapElementException;
 import images.ImagesLoader;
+import utils.Triple;
 
 import java.awt.*;
 import java.util.Random;
@@ -18,11 +19,11 @@ public class PatternMethods {
      * @param startColIdx the column index of the north/west pattern corner
      * @return true if the pattern is crossing a map limit, false otherwise
      */
-    public static boolean isPatternCrossingMapLimit(int mapWidth, int mapHeight,
-                                                    RMapPattern rMapPattern, int startRowIdx, int startColIdx) {
+    public static boolean isPatternCrossingMapLimit(int mapWidth, int mapHeight, RMapPattern rMapPattern,
+                                                    int startRowIdx, int startColIdx) {
         boolean isCrossing = false;
-        if (startRowIdx < 0 || startRowIdx + rMapPattern.getHeight() >= mapHeight ||
-                startColIdx < 0 || startColIdx + rMapPattern.getWidth() >= mapWidth) {
+        if (startRowIdx < 0 || startRowIdx + rMapPattern.getHeight() > mapHeight ||
+                startColIdx < 0 || startColIdx + rMapPattern.getWidth() > mapWidth) {
             isCrossing = true;
         }
         return isCrossing;
@@ -49,6 +50,32 @@ public class PatternMethods {
             }
         }
         return isCrossing;
+    }
+
+    /**
+     * Secure the perimeter of an element (based on its pattern) putting single pathways around it.
+     * The pointed out case (startRowIdx, startColIdx) corresponds to the north/west corner of the pattern.
+     * If a case is not available, go to the next case.
+     *
+     * @param rMapPointMatrix the map (represented by its matrix of RMapPoint)
+     * @param mapWidth        the map width
+     * @param mapHeight       the map height
+     * @param rMapPattern     the pattern of the element
+     * @param startRowIdx     the row index of the north/west pattern corner
+     * @param startColIdx     the column index of the north/west pattern corner
+     */
+    public static void securePerimeter(RMapPoint[][] rMapPointMatrix, int mapWidth, int mapHeight,
+                                       RMapPattern rMapPattern, int startRowIdx, int startColIdx,
+                                       int perDynamicElt) {
+        for (int rowIdx = Math.max(0, startRowIdx - 1);
+             rowIdx <= Math.min(mapHeight - 1, startRowIdx + rMapPattern.getHeight()); rowIdx++) {
+            for (int colIdx = Math.max(0, startColIdx - 1);
+                 colIdx <= Math.min(mapWidth - 1, startColIdx + rMapPattern.getWidth()); colIdx++) {
+                if (rMapPointMatrix[rowIdx][colIdx].isAvailable()) {
+                    placeSinglePathwayOnMap(rMapPointMatrix[rowIdx][colIdx], perDynamicElt);
+                }
+            }
+        }
     }
 
     /**
@@ -84,39 +111,6 @@ public class PatternMethods {
             }
         }
         return true;
-    }
-
-    /**
-     * Secure the perimeter of an element (based on its pattern) putting single pathways around it.
-     * The pointed out case (startRowIdx, startColIdx) corresponds to the north/west corner of the pattern.
-     * If a case is not available, go to the next case.
-     *
-     * @param rMapPointMatrix the map (represented by its matrix of RMapPoint)
-     * @param mapWidth        the map width
-     * @param mapHeight       the map height
-     * @param rMapPattern     the pattern of the element
-     * @param startRowIdx     the row index of the north/west pattern corner
-     * @param startColIdx     the column index of the north/west pattern corner
-     */
-    public static void securePerimeter(RMapPoint[][] rMapPointMatrix, int mapWidth, int mapHeight,
-                                       RMapPattern rMapPattern, int startRowIdx, int startColIdx) {
-        Random R = new Random(); // initStatement the random function.
-
-        for (int rowIdx = Math.min(0, startRowIdx - 1);
-             rowIdx <= Math.min(mapHeight - 1, startRowIdx + rMapPattern.getHeight()); rowIdx++) {
-            for (int colIdx = Math.min(0, startColIdx - 1);
-                 colIdx <= Math.min(mapWidth - 1, startColIdx + rMapPattern.getWidth()); colIdx++) {
-                if (rMapPointMatrix[rowIdx][colIdx].isAvailable()) {
-                    int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_PATHWAY); // get a random single pathway image.
-                    Image image = ImagesLoader.imagesMatrix[ImagesLoader.singlePathwayMatrixRowIdx][imageIdx];
-
-                    rMapPointMatrix[rowIdx][colIdx].setImage(image);
-                    rMapPointMatrix[rowIdx][colIdx].setPathway(true);
-                    rMapPointMatrix[rowIdx][colIdx].setMutable(false);
-                    rMapPointMatrix[rowIdx][colIdx].setAvailable(false);
-                }
-            }
-        }
     }
 
     /**
@@ -169,34 +163,36 @@ public class PatternMethods {
      * @throws CannotCreateRMapElementException if the castle has not been placed
      */
     public static void placeCastleOnMap(RMapPoint[][] rMapPointMatrix, int mapWidth, int mapHeight,
-                                        RMapPattern rMapPattern, int startRowIdx, int startColIdx)
+                                        RMapPattern rMapPattern, int startRowIdx, int startColIdx,
+                                        int perDynamicElt)
             throws CannotCreateRMapElementException {
         if (!placePatternOnMap(rMapPointMatrix, mapWidth, mapHeight, rMapPattern, startRowIdx, startColIdx)) {
             throw new CannotCreateRMapElementException("not able to create a castle at rowIdx=" +
                     startRowIdx + ", colIdx=" + startColIdx + ".");
         }
-        securePerimeter(rMapPointMatrix, mapWidth, mapHeight, rMapPattern, startRowIdx, startColIdx);
+        securePerimeter(rMapPointMatrix, mapWidth, mapHeight, rMapPattern, startRowIdx, startColIdx, perDynamicElt);
     }
 
     /**
-     * Try to place a single obstacle on map.
-     * If the case is available, place the obstacle and return true, otherwise return false.
+     * Try to place a single pathway on map.
+     * If the case is available, place the pathway and return true, otherwise return false.
      *
-     * @param rMapPoint the RMapPoint to place the obstacle
-     * @return true if the obstacle has been placed, false otherwise
+     * @param rMapPoint the RMapPoint to place the pathway
+     * @return true if the pathway has been placed, false otherwise
      */
-    public static boolean placeSingleObstacleOnMap(RMapPoint rMapPoint) {
+    public static boolean placeSinglePathwayOnMap(RMapPoint rMapPoint, int perSingleFlowerPathway) {
         if (rMapPoint.isAvailable()) {
             Random R = new Random(); // initStatement the random function.
-
-            // randomly choose an image.
-            int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_OBSTABLE);
-            Image image = ImagesLoader.imagesMatrix[ImagesLoader.singleObstacleMatrixRowIdx][imageIdx];
-
-            // set rMapPoint.
-            rMapPoint.setImage(image);
+            int randomPercent = Math.abs(R.nextInt(100)); // randomly choose a single element.
+            if (randomPercent < perSingleFlowerPathway) { // animated elements.
+                Triple dynamicElt = ImagesLoader.getRandomSingleDynamicPathway();
+                rMapPoint.setImages((Image[]) dynamicElt.getFirst(), (Integer) dynamicElt.getSecond());
+                rMapPoint.setRefreshTime((Integer) dynamicElt.getThird());
+            } else { // static elements.
+                rMapPoint.setImage(ImagesLoader.getRandomSingleStaticPathway());
+            }
             rMapPoint.setMutable(false);
-            rMapPoint.setPathway(false);
+            rMapPoint.setPathway(true);
             rMapPoint.setAvailable(false);
             return true;
         } else {
@@ -213,14 +209,7 @@ public class PatternMethods {
      */
     public static boolean placeSingleMutableOnMap(RMapPoint rMapPoint) {
         if (rMapPoint.isAvailable()) {
-            Random R = new Random(); // initStatement the random function.
-
-            // randomly choose an image.
-            int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_MUTABLE);
-            Image image = ImagesLoader.imagesMatrix[ImagesLoader.singleMutableMatrixRowIdx][imageIdx];
-
-            // set rMapPoint.
-            rMapPoint.setImage(image);
+            rMapPoint.setImage(ImagesLoader.getRandomSingleMutable());
             rMapPoint.setMutable(true);
             rMapPoint.setPathway(false);
             rMapPoint.setAvailable(false);
@@ -231,30 +220,17 @@ public class PatternMethods {
     }
 
     /**
-     * Try to place a single pathway on map.
-     * If the case is available, place the pathway and return true, otherwise return false.
+     * Try to place a single obstacle on map.
+     * If the case is available, place the obstacle and return true, otherwise return false.
      *
-     * @param rMapPoint the RMapPoint to place the pathway
-     * @return true if the pathway has been placed, false otherwise
+     * @param rMapPoint the RMapPoint to place the obstacle
+     * @return true if the obstacle has been placed, false otherwise
      */
-    public static boolean placeSinglePathwayOnMap(RMapPoint rMapPoint, int perSingleFlowerPathway) {
+    public static boolean placeSingleObstacleOnMap(RMapPoint rMapPoint) {
         if (rMapPoint.isAvailable()) {
-            Random R = new Random(); // initStatement the random function.
-            int randomPercent = Math.abs(R.nextInt(100)); // randomly choose a single element.
-
-            if (randomPercent < perSingleFlowerPathway) { // animated flower
-                rMapPoint.setImages(ImagesLoader.imagesMatrix[ImagesLoader.flowerMatrixRowIdx],
-                        ImagesLoader.NB_FLOWER_FRAME);
-                rMapPoint.setRefreshTime(100);
-            } else {
-
-                // randomly choose an image.
-                int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_PATHWAY);
-                Image image = ImagesLoader.imagesMatrix[ImagesLoader.singlePathwayMatrixRowIdx][imageIdx];
-                rMapPoint.setImage(image);
-            }
+            rMapPoint.setImage(ImagesLoader.getRandomSingleObstacle());
             rMapPoint.setMutable(false);
-            rMapPoint.setPathway(true);
+            rMapPoint.setPathway(false);
             rMapPoint.setAvailable(false);
             return true;
         } else {

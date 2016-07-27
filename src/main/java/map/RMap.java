@@ -142,14 +142,14 @@ public class RMap {
         int xSpCastleT1 = MARGIN_X;
         int ySpCastleT1 = generateRandomRowIdx(ImagesLoader.CASTLE_HEIGHT, MARGIN_Y);
         placeCastleOnMap(rMapPointMatrix, rMapSetting.getMapWidth(), rMapSetting.getMapHeight(),
-                castleT1, ySpCastleT1, xSpCastleT1);
+                castleT1, ySpCastleT1, xSpCastleT1, rMapSetting.getPerSingleFlowerPathway());
         spCastleT1 = rMapPointMatrix[ySpCastleT1][xSpCastleT1];
 
         // 2nd castle.
         int xSpCastleT2 = rMapSetting.getMapWidth() - MARGIN_X - ImagesLoader.CASTLE_WIDTH;
         int ySpCastleT2 = generateRandomRowIdx(ImagesLoader.CASTLE_HEIGHT, MARGIN_Y);
         placeCastleOnMap(rMapPointMatrix, rMapSetting.getMapWidth(), rMapSetting.getMapHeight(),
-                castleT2, ySpCastleT2, xSpCastleT2);
+                castleT2, ySpCastleT2, xSpCastleT2, rMapSetting.getPerSingleFlowerPathway());
         spCastleT2 = rMapPointMatrix[ySpCastleT2][xSpCastleT2];
 
         // complex elements.

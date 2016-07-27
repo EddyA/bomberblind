@@ -11,17 +11,32 @@ import static sprites.nomad.abstracts.Enemy.status.STATUS_DEAD;
  * Abstract class of an enemy.
  */
 public abstract class Enemy extends Character {
+    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
+
+    /**
+     * enum the different status of an enemy.
+     */
+    public enum status {
+        STATUS_DEAD,
+        STATUS_WALK_BACK,
+        STATUS_WALK_FRONT,
+        STATUS_WALK_LEFT,
+        STATUS_WALK_RIGHT,
+        NO_STATUS
+    }
+
+    private Enemy.status status; // status.
+    private Enemy.status lastStatus; // last status.
+
     private final Image[] walkBackImages; // array of images of the "walk back" sprite.
     private final Image[] walkFrontImages; // array of images of the "walk front" sprite.
     private final Image[] walkLeftImages; // array of images of the "walk left" sprite.
     private final Image[] walkRightImages; // array of images of the "walk right" sprite.
     private final int nbWalkFrame; // number of images of the "walk" sprite.
-    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
-    private Enemy.status status; // status.
-    private Enemy.status lastStatus; // last status.
     private int curImageIdx; // current image index of the sprite.
     private int refreshTime; // refresh time (in ms).
     private long lastRefreshTs; // last refresh timestamp.
+
     private boolean isFinished; // is the BbMan dead and the sprite finished?
 
     public Enemy(int xMap,
@@ -43,12 +58,12 @@ public abstract class Enemy extends Character {
         this.refreshTime = refreshTime;
     }
 
-    public Enemy.status getStatus() {
-        return status;
-    }
-
     public void setStatus(Enemy.status status) {
         this.status = status;
+    }
+
+    public Enemy.status getStatus() {
+        return status;
     }
 
     public boolean isFinished() {
@@ -100,17 +115,5 @@ public abstract class Enemy extends Character {
             }
         }
         return images[curImageIdx];
-    }
-
-    /**
-     * enum the different status of an enemy.
-     */
-    public enum status {
-        STATUS_DEAD,
-        STATUS_WALK_BACK,
-        STATUS_WALK_FRONT,
-        STATUS_WALK_LEFT,
-        STATUS_WALK_RIGHT,
-        NO_STATUS
     }
 }

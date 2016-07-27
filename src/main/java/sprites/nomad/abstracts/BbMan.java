@@ -12,6 +12,27 @@ import static sprites.nomad.abstracts.BbMan.status.STATUS_WAIT;
  * The sprite loops until isFinished() return true.
  */
 public abstract class BbMan extends Character {
+    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
+
+    /**
+     * enum the different available status of a bbman.
+     */
+    public enum status {
+        STATUS_DEAD,
+        STATUS_WAIT,
+        STATUS_WALK_BACK,
+        STATUS_WALK_FRONT,
+        STATUS_WALK_LEFT,
+        STATUS_WALK_RIGHT,
+        STATUS_WIN
+    }
+
+    private BbMan.status status; // status.
+    private BbMan.status lastStatus; // last status.
+
+    private int initialXMap; // initial abscissa on map.
+    private int initialYMap; // initial ordinate on map.
+
     private final Image[] deathImages;
     private final int nbDeathFrame;
     private final Image[] waitImages;
@@ -23,17 +44,14 @@ public abstract class BbMan extends Character {
     private final int nbWalkFrame;
     private final Image[] winImages;
     private final int nbWinFrame;
-    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
-    private BbMan.status status; // status.
-    private BbMan.status lastStatus; // last status.
-    private int initialXMap; // initial abscissa on map.
-    private int initialYMap; // initial ordinate on map.
     private int curImageIdx; // current image index of the animation.
     private int refreshTime; // refresh time of the sprite (in ms).
     private long lastRefreshTs; // last refresh timestamp.
+
     private boolean isInvincible; // is the BbMan invincible?
     private int invincibilityTime; // invincibility time (in ms).
     private long lastInvincibilityTs; // last invincibility timestamp.
+
     private boolean isFinished; // is the BbMan dead and the sprite finished?
 
     public BbMan(int xMap,
@@ -83,12 +101,12 @@ public abstract class BbMan extends Character {
         this.lastInvincibilityTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
     }
 
-    public BbMan.status getStatus() {
-        return status;
-    }
-
     public void setStatus(BbMan.status status) {
         this.status = status;
+    }
+
+    public BbMan.status getStatus() {
+        return status;
     }
 
     public boolean isFinished() {
@@ -172,18 +190,5 @@ public abstract class BbMan extends Character {
             }
         }
         return shouldPrint ? images[curImageIdx] : null;
-    }
-
-    /**
-     * enum the different available status of a bbman.
-     */
-    public enum status {
-        STATUS_DEAD,
-        STATUS_WAIT,
-        STATUS_WALK_BACK,
-        STATUS_WALK_FRONT,
-        STATUS_WALK_LEFT,
-        STATUS_WALK_RIGHT,
-        STATUS_WIN
     }
 }
