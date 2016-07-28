@@ -159,8 +159,7 @@ public class PatternMethods {
      * @param startColIdx the column index of the north/west pattern corner
      */
     public static void securePerimeter(RMapPoint[][] rMapPointMatrix, int mapWidth, int mapHeight,
-            RMapPattern rMapPattern, int startRowIdx, int startColIdx,
-            int perDynamicElt) {
+            RMapPattern rMapPattern, int startRowIdx, int startColIdx, int perDynamicElt) {
         for (int rowIdx = Math.max(0, startRowIdx - 1); rowIdx <= Math.min(mapHeight - 1,
                 startRowIdx + rMapPattern.getHeight()); rowIdx++) {
             for (int colIdx = Math.max(0, startColIdx - 1); colIdx <= Math.min(mapWidth - 1,

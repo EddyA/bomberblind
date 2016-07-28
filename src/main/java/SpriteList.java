@@ -47,8 +47,8 @@ public class SpriteList extends LinkedList<Sprite> {
      * @param flameSize the flame size of the bomb
      */
     private void addBomb(LinkedList<Sprite> list, int rowIdx, int colIdx, int flameSize) {
-        if (!rMap.getRMapPoint(rowIdx, colIdx).isBombing()) {
-            rMap.getRMapPoint(rowIdx, colIdx).setBombing(true);
+        if (!rMap.getRMapPointMatrix()[rowIdx][colIdx].isBombing()) {
+            rMap.getRMapPointMatrix()[rowIdx][colIdx].setBombing(true);
             list.add(new Bomb(rowIdx, colIdx, flameSize));
         }
     }
@@ -62,16 +62,16 @@ public class SpriteList extends LinkedList<Sprite> {
      * @return true if the flame can be propagated, false it is stopped
      */
     private boolean addFlame(LinkedList<Sprite> list, int rowIdx, int colIdx) {
-        if (rMap.getRMapPoint(rowIdx, colIdx).isPathway()) {
-            rMap.getRMapPoint(rowIdx, colIdx).addFlame();
-            rMap.getRMapPoint(rowIdx, colIdx).setImageAsBurned();
+        if (rMap.getRMapPointMatrix()[rowIdx][colIdx].isPathway()) {
+            rMap.getRMapPointMatrix()[rowIdx][colIdx].addFlame();
+            rMap.getRMapPointMatrix()[rowIdx][colIdx].setImageAsBurned();
             list.add(new Flame(rowIdx, colIdx));
             return true; // the next case can burn.
-        } else if (rMap.getRMapPoint(rowIdx, colIdx).isMutable() || rMap.getRMapPoint(rowIdx, colIdx).isBombing()) {
-            rMap.getRMapPoint(rowIdx, colIdx).setPathway(true);
-            rMap.getRMapPoint(rowIdx, colIdx).setMutable(false);
-            rMap.getRMapPoint(rowIdx, colIdx).addFlame();
-            rMap.getRMapPoint(rowIdx, colIdx).setImageAsBurned();
+        } else if (rMap.getRMapPointMatrix()[rowIdx][colIdx].isMutable() || rMap.getRMapPointMatrix()[rowIdx][colIdx].isBombing()) {
+            rMap.getRMapPointMatrix()[rowIdx][colIdx].setPathway(true);
+            rMap.getRMapPointMatrix()[rowIdx][colIdx].setMutable(false);
+            rMap.getRMapPointMatrix()[rowIdx][colIdx].addFlame();
+            rMap.getRMapPointMatrix()[rowIdx][colIdx].setImageAsBurned();
             list.add(new Flame(rowIdx, colIdx));
             return false; // the next case should not burn.
         } else {
@@ -112,11 +112,11 @@ public class SpriteList extends LinkedList<Sprite> {
         for (int i = 1, j = centralRowIdx - 1;
              i <= flameSize && j >= 0;
              i++, j--) { // from center to upper.
-            if (rMap.getRMapPoint(centralRowIdx - i, centralColIdx).isPathway()) {
+            if (rMap.getRMapPointMatrix()[centralRowIdx - i][centralColIdx].isPathway()) {
                 // as a pathway, this case must burn -> check the following one.
                 rowIdx++;
-            } else if (rMap.getRMapPoint(centralRowIdx - i, centralColIdx).isMutable() ||
-                    rMap.getRMapPoint(centralRowIdx - i, centralColIdx).isBombing()) {
+            } else if (rMap.getRMapPointMatrix()[centralRowIdx - i][centralColIdx].isMutable() ||
+                    rMap.getRMapPointMatrix()[centralRowIdx - i][centralColIdx].isBombing()) {
                 // as a mutable, this case must burn -> stop here.
                 rowIdx++;
                 break;
@@ -166,10 +166,10 @@ public class SpriteList extends LinkedList<Sprite> {
                 // is it finished?
                 if (sprite.isFinished() ||
                         // OR is it on a burning case?
-                        rMap.getRMapPoint(sprite.getRowIdx(), sprite.getColIdx()).isBurning()) {
+                        rMap.getRMapPointMatrix()[sprite.getRowIdx()][sprite.getColIdx()].isBurning()) {
                     // create flames.
                     addFlames(tmpList, sprite.getRowIdx(), sprite.getColIdx(), ((Bomb) sprite).getFlameSize());
-                    rMap.getRMapPoint(sprite.getRowIdx(), sprite.getColIdx()).setBombing(false);
+                    rMap.getRMapPointMatrix()[sprite.getRowIdx()][sprite.getColIdx()].setBombing(false);
                     iterator.remove(); // remove it from the list.
                 }
                 // is the current sprite a flame?
@@ -178,7 +178,7 @@ public class SpriteList extends LinkedList<Sprite> {
                 if (sprite.isFinished()) {
                     // create conclusion flames.
                     addFlameEnd(tmpList, sprite.getRowIdx(), sprite.getColIdx());
-                    rMap.getRMapPoint(sprite.getRowIdx(), sprite.getColIdx()).removeFlame();
+                    rMap.getRMapPointMatrix()[sprite.getRowIdx()][sprite.getColIdx()].removeFlame();
                     iterator.remove(); // remove it from the list.
                 }
             } else { // for all the other sprites.

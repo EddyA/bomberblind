@@ -1,12 +1,10 @@
 package map;
 
+import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-
-public class RMapTest {
+public class RMapTest implements WithAssertions {
 
     // use small values to avoid heap overflow using Mockito.
     private final int MAP_WIDTH = 4;
@@ -35,7 +33,7 @@ public class RMapTest {
         try {
             for (rowIdx = 0; rowIdx < rMap.getMapHeight() + 3; rowIdx++) {
                 for (colIdx = 0; colIdx < rMap.getMapWidth() + 4; colIdx++) {
-                    assertThat(rMap.getRMapPoint(rowIdx, colIdx)).isNotNull();
+                    assertThat(rMap.getRMapPointMatrix()[rowIdx][colIdx]).isNotNull();
                 }
             }
         } catch (ArrayIndexOutOfBoundsException e) {

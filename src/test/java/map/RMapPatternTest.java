@@ -1,12 +1,11 @@
 package map;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.awt.Image;
-
+import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
-public class RMapPatternTest {
+import java.awt.*;
+
+public class RMapPatternTest implements WithAssertions {
 
     @Test
     public void rMapPatternShouldSetMembersWithTheAppropriateValues() throws Exception {

@@ -142,8 +142,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
         switch (pressedKey) {
             case KeyEvent.VK_UP: {
-                if (rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx).isPathway() &&
-                        !rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx).isBombing()) { // the upper case is a pathway && !bombing.
+                if (rMap.getRMapPointMatrix()[bbManRowIdx - 1][bbManColIdx].isPathway() && // the upper case is a pathway
+                        !rMap.getRMapPointMatrix()[bbManRowIdx - 1][bbManColIdx].isBombing()) {  // && !bombing.
                     if (bbManColShift < IMAGE_SIZE / 2) { // bbMan on left side of its case.
                         bbMan.setXMap(bbMan.getXMap() + 1);
                     } else if (bbManColShift > IMAGE_SIZE / 2) { // bbMan on right side of its case.
@@ -153,8 +153,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 break;
             }
             case KeyEvent.VK_DOWN: {
-                if (rMap.getRMapPoint(bbManRowIdx + 1, bbManColIdx).isPathway() &&
-                        !rMap.getRMapPoint(bbManRowIdx + 1, bbManColIdx).isBombing()) { // the lower case is a pathway && !bombing.
+                if (rMap.getRMapPointMatrix()[bbManRowIdx + 1][bbManColIdx].isPathway() && // the lower case is a pathway
+                        !rMap.getRMapPointMatrix()[bbManRowIdx + 1][bbManColIdx].isBombing()) { // && !bombing.
                     if (bbManColShift < IMAGE_SIZE / 2) { // bbMan on left side of its case.
                         bbMan.setXMap(bbMan.getXMap() + 1);
                     } else if (bbManColShift > IMAGE_SIZE / 2) { // bbMan on right side of its case.
@@ -164,15 +164,14 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 break;
             }
             case KeyEvent.VK_LEFT: {
-                if (rMap.getRMapPoint(bbManRowIdx, bbManColIdx - 1).isPathway() &&
-                        !rMap.getRMapPoint(bbManRowIdx, bbManColIdx - 1).isBombing()) { // the left case is a pathway && !bombing.
+                if (rMap.getRMapPointMatrix()[bbManRowIdx][bbManColIdx - 1].isPathway() && // the left case is a pathway
+                        !rMap.getRMapPointMatrix()[bbManRowIdx][bbManColIdx - 1].isBombing()) { // && !bombing.
                     if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
                         bbMan.setYMap(bbMan.getYMap() + 1);
                     }
                 }
-                if (rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx - 1).isPathway() &&
-                        !rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx - 1).isBombing()) { // the upper/left case is a pathway &&
-                    // !bombing.
+                if (rMap.getRMapPointMatrix()[bbManRowIdx - 1][bbManColIdx - 1].isPathway() && // the upper/left case is a pathway
+                        !rMap.getRMapPointMatrix()[bbManRowIdx - 1][bbManColIdx - 1].isBombing()) { // && !bombing.
                     if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
                         bbMan.setYMap(bbMan.getYMap() - 1);
                     }
@@ -180,15 +179,14 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 break;
             }
             case KeyEvent.VK_RIGHT: {
-                if (rMap.getRMapPoint(bbManRowIdx, bbManColIdx + 1).isPathway() &&
-                        !rMap.getRMapPoint(bbManRowIdx, bbManColIdx + 1).isBombing()) { // the right case is a pathway && !bombing.
+                if (rMap.getRMapPointMatrix()[bbManRowIdx][bbManColIdx + 1].isPathway() && // the right case is a pathway
+                        !rMap.getRMapPointMatrix()[bbManRowIdx][bbManColIdx + 1].isBombing()) { // && !bombing.
                     if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
                         bbMan.setYMap(bbMan.getYMap() + 1);
                     }
                 }
-                if (rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx + 1).isPathway() &&
-                        !rMap.getRMapPoint(bbManRowIdx - 1, bbManColIdx + 1).isBombing()) { // the upper/right case is a pathway &&
-                    // !bombing.
+                if (rMap.getRMapPointMatrix()[bbManRowIdx - 1][bbManColIdx + 1].isPathway() && // the upper/right case is a pathway
+                        !rMap.getRMapPointMatrix()[bbManRowIdx - 1][bbManColIdx + 1].isBombing()) { // && !bombing.
                     if (bbManRowShift < IMAGE_SIZE / 2) { // bbMan on upper side of its case.
                         bbMan.setYMap(bbMan.getYMap() - 1);
                     }
@@ -218,9 +216,12 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         }
                         case KeyEvent.VK_UP: {
                             bbMan.setStatus(BbMan.status.STATUS_WALK_BACK);
-                            if (!CharacterMethods.isCharacterCrossingMapLimit(rMap, bbMan.getXMap(), bbMan.getYMap() - 1)) {
-                                if (!CharacterMethods.isCharacterCrossingObstacle(rMap, bbMan.getXMap(), bbMan.getYMap() - 1) &&
-                                        !CharacterMethods.isCharacterCrossingBomb(rMap, bbMan.getXMap(), bbMan.getYMap() - 1,
+                            if (!CharacterMethods.isCharacterCrossingMapLimit(rMap.getMapWidth(), rMap.getMapHeight(),
+                                    bbMan.getXMap(), bbMan.getYMap() - 1)) {
+                                if (!CharacterMethods.isCharacterCrossingObstacle(rMap.getRMapPointMatrix(),
+                                        rMap.getMapWidth(), rMap.getMapHeight(), bbMan.getXMap(), bbMan.getYMap() - 1) &&
+                                        !CharacterMethods.isCharacterCrossingBomb(rMap.getRMapPointMatrix(),
+                                                rMap.getMapWidth(), rMap.getMapHeight(), bbMan.getXMap(), bbMan.getYMap() - 1,
                                                 KeyEvent.VK_UP)) {
                                     bbMan.setYMap(bbMan.getYMap() - 1);
                                 } else {
@@ -231,9 +232,12 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         }
                         case KeyEvent.VK_DOWN: {
                             bbMan.setStatus(BbMan.status.STATUS_WALK_FRONT);
-                            if (!CharacterMethods.isCharacterCrossingMapLimit(rMap, bbMan.getXMap(), bbMan.getYMap() + 1)) {
-                                if (!CharacterMethods.isCharacterCrossingObstacle(rMap, bbMan.getXMap(), bbMan.getYMap() + 1) &&
-                                        !CharacterMethods.isCharacterCrossingBomb(rMap, bbMan.getXMap(), bbMan.getYMap() + 1,
+                            if (!CharacterMethods.isCharacterCrossingMapLimit(rMap.getMapWidth(), rMap.getMapHeight(),
+                                    bbMan.getXMap(), bbMan.getYMap() + 1)) {
+                                if (!CharacterMethods.isCharacterCrossingObstacle(rMap.getRMapPointMatrix(),
+                                        rMap.getMapWidth(), rMap.getMapHeight(), bbMan.getXMap(), bbMan.getYMap() + 1) &&
+                                        !CharacterMethods.isCharacterCrossingBomb(rMap.getRMapPointMatrix(),
+                                                rMap.getMapWidth(), rMap.getMapHeight(), bbMan.getXMap(), bbMan.getYMap() + 1,
                                                 KeyEvent.VK_DOWN)) {
                                     bbMan.setYMap(bbMan.getYMap() + 1);
                                 } else {
@@ -244,9 +248,12 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         }
                         case KeyEvent.VK_LEFT: {
                             bbMan.setStatus(BbMan.status.STATUS_WALK_LEFT);
-                            if (!CharacterMethods.isCharacterCrossingMapLimit(rMap, bbMan.getXMap() - 1, bbMan.getYMap())) {
-                                if (!CharacterMethods.isCharacterCrossingObstacle(rMap, bbMan.getXMap() - 1, bbMan.getYMap()) &&
-                                        !CharacterMethods.isCharacterCrossingBomb(rMap, bbMan.getXMap() - 1, bbMan.getYMap(),
+                            if (!CharacterMethods.isCharacterCrossingMapLimit(rMap.getMapWidth(), rMap.getMapHeight(),
+                                    bbMan.getXMap() - 1, bbMan.getYMap())) {
+                                if (!CharacterMethods.isCharacterCrossingObstacle(rMap.getRMapPointMatrix(),
+                                        rMap.getMapWidth(), rMap.getMapHeight(), bbMan.getXMap() - 1, bbMan.getYMap()) &&
+                                        !CharacterMethods.isCharacterCrossingBomb(rMap.getRMapPointMatrix(),
+                                                rMap.getMapWidth(), rMap.getMapHeight(), bbMan.getXMap() - 1, bbMan.getYMap(),
                                                 KeyEvent.VK_LEFT)) {
                                     bbMan.setXMap(bbMan.getXMap() - 1);
                                 } else {
@@ -257,9 +264,12 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         }
                         case KeyEvent.VK_RIGHT: {
                             bbMan.setStatus(BbMan.status.STATUS_WALK_RIGHT);
-                            if (!CharacterMethods.isCharacterCrossingMapLimit(rMap, bbMan.getXMap() + 1, bbMan.getYMap())) {
-                                if (!CharacterMethods.isCharacterCrossingObstacle(rMap, bbMan.getXMap() + 1, bbMan.getYMap()) &&
-                                        !CharacterMethods.isCharacterCrossingBomb(rMap, bbMan.getXMap() + 1, bbMan.getYMap(),
+                            if (!CharacterMethods.isCharacterCrossingMapLimit(rMap.getMapWidth(), rMap.getMapHeight(),
+                                    bbMan.getXMap() + 1, bbMan.getYMap())) {
+                                if (!CharacterMethods.isCharacterCrossingObstacle(rMap.getRMapPointMatrix(),
+                                        rMap.getMapWidth(), rMap.getMapHeight(), bbMan.getXMap() + 1, bbMan.getYMap()) &&
+                                        !CharacterMethods.isCharacterCrossingBomb(rMap.getRMapPointMatrix(),
+                                                rMap.getMapWidth(), rMap.getMapHeight(), bbMan.getXMap() + 1, bbMan.getYMap(),
                                                 KeyEvent.VK_RIGHT)) {
                                     bbMan.setXMap(bbMan.getXMap() + 1);
                                 } else {
@@ -280,7 +290,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     updateMapStartPosOnScreen();
                     updateBbManPosOnScreen();
                     if (!bbMan.isInvincible() &&
-                            CharacterMethods.isCharacterBurning(rMap, bbMan.getXMap(), bbMan.getYMap())) {
+                            CharacterMethods.isCharacterBurning(rMap.getRMapPointMatrix(), rMap.getMapWidth(),
+                                    rMap.getMapHeight(), bbMan.getXMap(), bbMan.getYMap())) {
                         bbMan.setStatus(BbMan.status.STATUS_DEAD);
                     }
                 }

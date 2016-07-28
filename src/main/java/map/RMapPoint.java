@@ -102,6 +102,14 @@ public class RMapPoint {
         return nbFlames > 0;
     }
 
+    public Image getImage() {
+        return image;
+    }
+
+    public Image[] getImages() {
+        return images;
+    }
+
     /**
      * Set the image to burned.
      */

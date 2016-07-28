@@ -86,8 +86,8 @@ public class RMap {
         return screenHeight;
     }
 
-    public RMapPoint getRMapPoint(int rowIdx, int colIdx) {
-        return rMapPointMatrix[rowIdx][colIdx];
+    public RMapPoint[][] getRMapPointMatrix() {
+        return rMapPointMatrix;
     }
 
     public RMapPoint getSpCastleT1() {

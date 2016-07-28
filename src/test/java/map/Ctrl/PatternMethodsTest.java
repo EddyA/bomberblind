@@ -1,16 +1,15 @@
 package map.Ctrl;
 
+import images.ImagesLoader;
+import map.RMapPattern;
+import map.RMapPoint;
+import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
 import java.awt.*;
+import java.io.IOException;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import map.Ctrl.PatternMethods;
-import map.RMapPattern;
-import map.RMapPoint;
-
-public class PatternMethodsTest {
+public class PatternMethodsTest implements WithAssertions {
 
     private final int MAP_WIDTH = 20;
     private final int MAP_HEIGHT = 10;
@@ -18,8 +17,8 @@ public class PatternMethodsTest {
     @Test
     public void isPatternCrossingMapLimitShouldReturnTheAppropriateValue() {
         RMapPattern rMapPattern = new RMapPattern(new Image[6], 2, 3, true, true, "myPattern");
-
         // tests.
+
         for (int colIdx = -1; colIdx <= MAP_WIDTH + 1; colIdx++) {
             for (int rowIdx = -1; rowIdx <= MAP_HEIGHT + 1; rowIdx++) {
                 if (colIdx < 0 || colIdx + rMapPattern.getWidth() > MAP_WIDTH ||
@@ -90,8 +89,10 @@ public class PatternMethodsTest {
     }
 
     @Test
-    public void securePerimeterShouldReturnTheAppropriateValue() {
-         RMapPoint[][] rMapPointMatrix = new RMapPoint[MAP_HEIGHT][MAP_WIDTH];
+    public void securePerimeterShouldReturnTheAppropriateValue() throws IOException {
+        ImagesLoader.fillImagesMatrix(); // fill images to avoid a nullPointerException when puting a static mutable.
+
+        RMapPoint[][] rMapPointMatrix = new RMapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
                 rMapPointMatrix[rowIdx][colIdx] = new RMapPoint(rowIdx, colIdx);
@@ -105,23 +106,18 @@ public class PatternMethodsTest {
         rMapPointMatrix[notAvCaseRowIdx][notAvCaseColIdx].setAvailable(false);
 
         // secure perimeter.
-        try {
-            PatternMethods.securePerimeter(rMapPointMatrix, MAP_WIDTH, MAP_HEIGHT, rMapPattern, startRowIdx,
-                    startColIdx, 0);
-        } catch (NullPointerException e) { // must throw an excpetion because of ImageLoader.
+        PatternMethods.securePerimeter(rMapPointMatrix, MAP_WIDTH, MAP_HEIGHT, rMapPattern, startRowIdx, startColIdx, 0);
 
-            // test.
-            for (int colIdx = 0; colIdx < MAP_WIDTH - rMapPattern.getWidth(); colIdx++) {
-                for (int rowIdx = 0; rowIdx < MAP_HEIGHT - rMapPattern.getHeight(); rowIdx++) {
-                    if (colIdx >= startColIdx - 1 && colIdx <= startColIdx + rMapPattern.getWidth() &&
-                            rowIdx >= startRowIdx && rowIdx <= startRowIdx + rMapPattern.getHeight()) {
-                        assertThat(rMapPointMatrix[rowIdx][colIdx].isAvailable()).isFalse();
-                    } else {
-                        assertThat(rMapPointMatrix[rowIdx][colIdx].isAvailable()).isTrue();
-                    }
+        // test.
+        for (int colIdx = 0; colIdx < MAP_WIDTH - rMapPattern.getWidth(); colIdx++) {
+            for (int rowIdx = 0; rowIdx < MAP_HEIGHT - rMapPattern.getHeight(); rowIdx++) {
+                if (colIdx >= startColIdx - 1 && colIdx <= startColIdx + rMapPattern.getWidth() &&
+                        rowIdx >= startRowIdx && rowIdx <= startRowIdx + rMapPattern.getHeight()) {
+                    assertThat(rMapPointMatrix[rowIdx][colIdx].isAvailable()).isFalse();
+                } else {
+                    assertThat(rMapPointMatrix[rowIdx][colIdx].isAvailable()).isTrue();
                 }
             }
         }
-
     }
 }

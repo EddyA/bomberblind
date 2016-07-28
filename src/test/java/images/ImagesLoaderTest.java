@@ -1,13 +1,11 @@
 package images;
 
+import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
-public class ImagesLoaderTest {
+public class ImagesLoaderTest implements WithAssertions {
 
     @Test
     public void createImageShouldThrowAnExceptionWithABadPath() throws Exception {

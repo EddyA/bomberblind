@@ -1,18 +1,17 @@
 package map;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-
-import java.awt.Image;
-import java.time.Instant;
-
+import images.ImagesLoader;
+import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import images.ImagesLoader;
 import utils.CurrentTimeSupplier;
 
-public class RMapPointTest {
+import java.awt.*;
+import java.time.Instant;
+
+import static org.mockito.Mockito.mock;
+
+public class RMapPointTest implements WithAssertions {
 
     @Test
     public void rMapPointShouldSetMembersWithTheAppropriateValues() throws Exception {
