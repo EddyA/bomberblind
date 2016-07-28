@@ -1,13 +1,22 @@
 package map;
 
+import static map.Ctrl.PatternMethods.placeCastleOnMap;
+import static map.Ctrl.PatternMethods.placeNorthEdgeOnMap;
+import static map.Ctrl.PatternMethods.placePatternOnMap;
+import static map.Ctrl.PatternMethods.placeSouthEdgeOnMap;
+import static map.Ctrl.SingleMethods.placeSingleMutableOnMap;
+import static map.Ctrl.SingleMethods.placeSingleObstacleOnMap;
+import static map.Ctrl.SingleMethods.placeSinglePathwayOnMap;
+
+import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import exceptions.CannotCreateRMapElementException;
 import images.ImagesLoader;
-
-import java.awt.*;
-import java.util.*;
-import java.util.List;
-
-import static map.PatternMethods.*;
 
 public class RMap {
 

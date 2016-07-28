@@ -1,11 +1,14 @@
-package map;
+package map.Ctrl;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.awt.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import map.Ctrl.PatternMethods;
+import map.RMapPattern;
+import map.RMapPoint;
 
 public class PatternMethodsTest {
 

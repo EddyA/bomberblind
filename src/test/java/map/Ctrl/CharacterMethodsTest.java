@@ -1,6 +1,10 @@
-package map;
+package map.Ctrl;
 
 import exceptions.OutOfRMapBoundsException;
+import map.Ctrl.CharacterMethods;
+import map.RMap;
+import map.RMapSetting;
+
 import org.junit.Test;
 import org.mockito.Mockito;
 

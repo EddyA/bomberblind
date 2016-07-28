@@ -1,6 +1,6 @@
 import exceptions.CannotCreateRMapElementException;
 import exceptions.OutOfRMapBoundsException;
-import map.CharacterMethods;
+import map.Ctrl.CharacterMethods;
 import map.RMap;
 import sprites.nomad.BbManBlue;
 import sprites.nomad.abstracts.BbMan;
