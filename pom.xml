@@ -10,6 +10,7 @@
 
     <properties>
         <maven.plugin.version>3.5.1</maven.plugin.version>
+        <guava.version>16.0.1</guava.version>
         <junit.version>4.12</junit.version>
         <assertj.version>3.5.1</assertj.version>
         <mockito.version>1.10.19</mockito.version>
@@ -30,6 +31,13 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+
+        <!-- test purpose -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

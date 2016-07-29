@@ -31,7 +31,7 @@ public class App extends JFrame {
             System.out.println("- run game. ");
             setVisible(true);
 
-        } catch (IOException | CannotCreateRMapElementException e) {
+        } catch (Exception e) {
             System.err.println("App: " + e.getMessage());
         }
     }

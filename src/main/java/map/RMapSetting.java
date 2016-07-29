@@ -1,5 +1,10 @@
 package map;
 
+import java.io.IOException;
+
+import exceptions.InvalidMapConfigurationException;
+import utils.MapProperties;
+
 /**
  * Define the map size and the number of elements to place onto it.
  */
@@ -19,20 +24,18 @@ public class RMapSetting {
     private int perSingleObstacle; // the percentage of single obstacle to place among available cases.
     private int perSingleFlowerPathway; // the percentage of single flower pathway to place among available cases.
 
-    RMapSetting() {
-
-        // ToDo: Get Values from a .properties file.
-        this.mapWidth = 80;
-        this.mapHeight = 32;
-        this.nbWood1 = 2;
-        this.nbWood2 = 2;
-        this.nbTree1 = 6;
-        this.nbTree2 = 6;
-        this.nbPuddle1 = 2;
-        this.nbPuddle2 = 2;
-        this.perSingleMutable = 25;
-        this.perSingleObstacle = 10;
-        this.perSingleFlowerPathway = 15;
+    RMapSetting(MapProperties mapConfiguration) throws IOException, InvalidMapConfigurationException {
+        this.mapWidth = mapConfiguration.getMapSizeWidth();
+        this.mapHeight = mapConfiguration.getMapSizeHeight();
+        this.nbWood1 = mapConfiguration.getMapElementNbWood1();
+        this.nbWood2 = mapConfiguration.getMapElementNbWood2();
+        this.nbTree1 = mapConfiguration.getMapElementNbTree1();
+        this.nbTree2 = mapConfiguration.getMapElementNbTree2();
+        this.nbPuddle1 = mapConfiguration.getMapElementNbPuddle1();
+        this.nbPuddle2 = mapConfiguration.getMapElementNbPuddle2();
+        this.perSingleMutable = mapConfiguration.getMapElementPerSingleMutable();
+        this.perSingleObstacle = mapConfiguration.getMapElementPerSingleObstacle();
+        this.perSingleFlowerPathway = mapConfiguration.getMapElementPerSingleDynPathway();
     }
 
     public int getMapWidth() {

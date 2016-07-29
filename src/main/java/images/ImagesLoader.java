@@ -1,13 +1,13 @@
 package images;
 
-import utils.Triple;
-
-import javax.imageio.ImageIO;
-import javax.xml.ws.WebEndpoint;
-import java.awt.*;
+import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
+
+import utils.Triple;
 
 /**
  * Load the images of the game in a matrix of type 'Image'.

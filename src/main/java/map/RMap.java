@@ -9,6 +9,7 @@ import static map.Ctrl.SingleMethods.placeSingleObstacleOnMap;
 import static map.Ctrl.SingleMethods.placeSinglePathwayOnMap;
 
 import java.awt.Graphics;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +17,9 @@ import java.util.Map;
 import java.util.Random;
 
 import exceptions.CannotCreateRMapElementException;
+import exceptions.InvalidMapConfigurationException;
 import images.ImagesLoader;
+import utils.MapProperties;
 
 public class RMap {
 
@@ -56,12 +59,12 @@ public class RMap {
     private RMapPattern puddle2;
 
     public RMap(int screenWidth, int screenHeight)
-            throws CannotCreateRMapElementException {
+            throws IOException, InvalidMapConfigurationException, CannotCreateRMapElementException {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
         // Create a map of mapHeight*mapWidth cases.
-        rMapSetting = new RMapSetting();
+        rMapSetting = new RMapSetting(new MapProperties());
         rMapPointMatrix = new RMapPoint[rMapSetting.getMapHeight()][rMapSetting.getMapWidth()];
         for (int rowIdx = 0; rowIdx < rMapSetting.getMapHeight(); rowIdx++) {
             for (int colIdx = 0; colIdx < rMapSetting.getMapWidth(); colIdx++) {
