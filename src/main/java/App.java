@@ -1,4 +1,3 @@
-import exceptions.MapException;
 import images.ImagesLoader;
 
 import javax.imageio.ImageIO;
@@ -10,7 +9,7 @@ public class App extends JFrame {
     private final int SCREEN_WIDTH = 1200;
     private final int SCREEN_HEIGHT = 720;
     private final String PACKAGE_NAME = "Bomberblind";
-    private final String PACKAGE_VERSION = "0.2";
+    private final String PACKAGE_VERSION = "1.0-SNAPSHOT";
 
     private GameJpanel gameJpanel;
 
@@ -20,7 +19,6 @@ public class App extends JFrame {
         try {
             System.out.println("- load images ... ");
             ImagesLoader.fillImagesMatrix();
-            ImagesLoader.setBbManSprites();
 
             System.out.println("- create and set JFrame ... ");
             setJframe();
@@ -32,9 +30,13 @@ public class App extends JFrame {
             System.out.println("- run game. ");
             setVisible(true);
 
-        } catch (IOException | MapException e) {
-            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            System.err.println("App: " + e.getMessage());
         }
+    }
+
+    public static void main(String[] args) {
+        new App();
     }
 
     private void setJframe() throws IOException {
@@ -44,9 +46,5 @@ public class App extends JFrame {
         setIconImage(ImageIO.read(App.class.getResource("/images/icon.gif")));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
-    }
-
-    public static void main(String[] args) {
-        new App();
     }
 }
