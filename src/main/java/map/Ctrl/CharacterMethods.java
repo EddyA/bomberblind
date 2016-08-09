@@ -1,6 +1,6 @@
 package map.Ctrl;
 
-import exceptions.OutOfRMapBoundsException;
+import exceptions.OutOfMapBoundsException;
 import map.RMapPoint;
 
 import java.awt.event.KeyEvent;
@@ -69,14 +69,14 @@ public class CharacterMethods {
      * @param xChar           the character abscissa
      * @param yChar           the character ordinate
      * @return true if the character is crossing an obstacle, false otherwise
-     * @throws OutOfRMapBoundsException if the character is crossing map limits
+     * @throws OutOfMapBoundsException if the character is crossing map limits
      */
     public static boolean isCharacterCrossingObstacle(RMapPoint[][] rMapPointMatrix, int mapWidth, int mapHeight,
-                                                      int xChar, int yChar) throws OutOfRMapBoundsException {
+                                                      int xChar, int yChar) throws OutOfMapBoundsException {
 
         // ToDo: Do not check map limit and add an impLSpec as in PatternMethods class.
         if (isCharacterCrossingMapLimit(mapWidth, mapHeight, xChar, yChar)) {
-            throw new OutOfRMapBoundsException(
+            throw new OutOfMapBoundsException(
                     "rMap out of bounds with the following coordinates: xChar=" + xChar + ", yChar=" + yChar);
         }
         int topRowIdx = getTopRowIdxIfOrdIs(yChar);
@@ -104,12 +104,12 @@ public class CharacterMethods {
      * @param xChar           the character abscissa
      * @param yChar           the character ordinate
      * @return true if the character is burning, false otherwise
-     * @throws OutOfRMapBoundsException if the character is crossing map limits
+     * @throws OutOfMapBoundsException if the character is crossing map limits
      */
     public static boolean isCharacterBurning(RMapPoint[][] rMapPointMatrix, int mapWidth, int mapHeight,
-                                             int xChar, int yChar) throws OutOfRMapBoundsException {
+                                             int xChar, int yChar) throws OutOfMapBoundsException {
         if (isCharacterCrossingMapLimit(mapWidth, mapHeight, xChar, yChar)) {
-            throw new OutOfRMapBoundsException(
+            throw new OutOfMapBoundsException(
                     "rMap out of bounds with the following coordinates: xChar=" + xChar + ", yChar=" + yChar);
         }
         int topRowIdx = getTopRowIdxIfOrdIs(yChar);
@@ -139,13 +139,13 @@ public class CharacterMethods {
      * @param yChar           the character ordinate
      * @param keyEvent        the current pressed key
      * @return true if the character is crossing a bomb, false otherwise
-     * @throws OutOfRMapBoundsException if the character is crossing map limits
+     * @throws OutOfMapBoundsException if the character is crossing map limits
      */
     public static boolean isCharacterCrossingBomb(RMapPoint[][] rMapPointMatrix, int mapWidth, int mapHeight,
                                                   int xChar, int yChar, int keyEvent)
-            throws OutOfRMapBoundsException {
+            throws OutOfMapBoundsException {
         if (isCharacterCrossingMapLimit(mapWidth, mapHeight, xChar, yChar)) {
-            throw new OutOfRMapBoundsException(
+            throw new OutOfMapBoundsException(
                     "rMap out of bounds with the following coordinates: xChar=" + xChar + ", yChar=" + yChar);
         }
         int topRowIdx = getTopRowIdxIfOrdIs(yChar);

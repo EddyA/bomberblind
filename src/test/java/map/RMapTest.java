@@ -28,17 +28,9 @@ public class RMapTest implements WithAssertions {
         assertThat(rMap.getMapHeight()).isEqualTo(MAP_HEIGHT);
         assertThat(rMap.getScreenWidth()).isEqualTo(SCREEN_WIDTH);
         assertThat(rMap.getScreenHeight()).isEqualTo(SCREEN_HEIGHT);
-        int rowIdx = 0;
-        int colIdx = 0;
-        try {
-            for (rowIdx = 0; rowIdx < rMap.getMapHeight() + 3; rowIdx++) {
-                for (colIdx = 0; colIdx < rMap.getMapWidth() + 4; colIdx++) {
-                    assertThat(rMap.getRMapPointMatrix()[rowIdx][colIdx]).isNotNull();
-                }
-            }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            if (rowIdx < rMap.getMapHeight() && colIdx < rMap.getMapWidth()) {
-                fail("Should not fail."); // should failed if asked case is out of bounds.
+        for (int rowIdx = 0; rowIdx < rMap.getMapHeight(); rowIdx++) {
+            for (int colIdx = 0; colIdx < rMap.getMapWidth(); colIdx++) {
+                assertThat(rMap.getRMapPointMatrix()[rowIdx][colIdx]).isNotNull();
             }
         }
     }

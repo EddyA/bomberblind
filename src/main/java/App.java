@@ -1,4 +1,3 @@
-import exceptions.CannotCreateRMapElementException;
 import images.ImagesLoader;
 
 import javax.imageio.ImageIO;

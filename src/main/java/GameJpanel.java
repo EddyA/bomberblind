@@ -10,9 +10,9 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import exceptions.CannotCreateRMapElementException;
+import exceptions.CannotCreateMapElementException;
 import exceptions.InvalidMapConfigurationException;
-import exceptions.OutOfRMapBoundsException;
+import exceptions.OutOfMapBoundsException;
 import map.Ctrl.CharacterMethods;
 import map.RMap;
 import sprites.nomad.BbManBlue;
@@ -34,7 +34,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private int yMapStartPosOnScreen;
 
     GameJpanel(int widthScreen, int heightScreen)
-            throws IOException, InvalidMapConfigurationException, CannotCreateRMapElementException {
+            throws IOException, InvalidMapConfigurationException, CannotCreateMapElementException {
         rMap = new RMap(widthScreen, heightScreen);
         rMap.createPatterns();
         rMap.generateMap();
@@ -303,7 +303,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 spriteList.clean();
                 repaint();
                 Thread.sleep(4);
-            } catch (InterruptedException | OutOfRMapBoundsException e) {
+            } catch (InterruptedException | OutOfMapBoundsException e) {
                 System.err.println("Unexpected exception: " + e.getMessage());
             }
         }

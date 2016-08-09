@@ -1,6 +1,6 @@
 package map.Ctrl;
 
-import exceptions.OutOfRMapBoundsException;
+import exceptions.OutOfMapBoundsException;
 import map.RMapPoint;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
@@ -120,7 +120,7 @@ public class CharacterMethodsTest implements WithAssertions {
                         // assert that the character is not crossing an obstacle.
                         assertThat(CharacterMethods.isCharacterCrossingObstacle(rMapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isFalse();
                     }
-                } catch (OutOfRMapBoundsException e) {
+                } catch (OutOfMapBoundsException e) {
 
                     // assert that an exception has been thrown because the character is crossing the map limits.
                     assertThat(CharacterMethods.isCharacterCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
@@ -170,7 +170,7 @@ public class CharacterMethodsTest implements WithAssertions {
                         // assert that the character is not crossing a flame.
                         assertThat(CharacterMethods.isCharacterBurning(rMapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isFalse();
                     }
-                } catch (OutOfRMapBoundsException e) {
+                } catch (OutOfMapBoundsException e) {
 
                     // assert that an exception has been thrown because the character is crossing the map limits.
                     assertThat(CharacterMethods.isCharacterCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
@@ -233,7 +233,7 @@ public class CharacterMethodsTest implements WithAssertions {
                             // assert that the character is not crossing a flame.
                             assertThat(CharacterMethods.isCharacterCrossingBomb(rMapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar, keyEvent)).isFalse();
                         }
-                    } catch (OutOfRMapBoundsException e) {
+                    } catch (OutOfMapBoundsException e) {
 
                         // assert that an exception has been thrown because the character is crossing the map limits.
                         assertThat(CharacterMethods.isCharacterCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();

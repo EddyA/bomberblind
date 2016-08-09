@@ -1,25 +1,17 @@
 package map;
 
-import static map.Ctrl.PatternMethods.placeCastleOnMap;
-import static map.Ctrl.PatternMethods.placeNorthEdgeOnMap;
-import static map.Ctrl.PatternMethods.placePatternOnMap;
-import static map.Ctrl.PatternMethods.placeSouthEdgeOnMap;
-import static map.Ctrl.SingleMethods.placeSingleMutableOnMap;
-import static map.Ctrl.SingleMethods.placeSingleObstacleOnMap;
-import static map.Ctrl.SingleMethods.placeSinglePathwayOnMap;
-
-import java.awt.Graphics;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
-import exceptions.CannotCreateRMapElementException;
+import exceptions.CannotCreateMapElementException;
 import exceptions.InvalidMapConfigurationException;
 import images.ImagesLoader;
 import utils.MapProperties;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.*;
+import java.util.List;
+
+import static map.Ctrl.PatternMethods.*;
+import static map.Ctrl.SingleMethods.*;
 
 public class RMap {
 
@@ -59,16 +51,21 @@ public class RMap {
     private RMapPattern puddle2;
 
     public RMap(int screenWidth, int screenHeight)
-            throws IOException, InvalidMapConfigurationException, CannotCreateRMapElementException {
+            throws IOException, InvalidMapConfigurationException, CannotCreateMapElementException {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
-        // Create a map of mapHeight*mapWidth cases.
-        rMapSetting = new RMapSetting(new MapProperties());
-        rMapPointMatrix = new RMapPoint[rMapSetting.getMapHeight()][rMapSetting.getMapWidth()];
+        // load and check map properties file.
+        MapProperties mapProperties = new MapProperties();
+        mapProperties.loadProperties();
+        mapProperties.checkProperties();
+
+        // create a map of mapHeight*mapWidth cases.
+        this.rMapSetting = new RMapSetting(mapProperties);
+        this.rMapPointMatrix = new RMapPoint[rMapSetting.getMapHeight()][rMapSetting.getMapWidth()];
         for (int rowIdx = 0; rowIdx < rMapSetting.getMapHeight(); rowIdx++) {
             for (int colIdx = 0; colIdx < rMapSetting.getMapWidth(); colIdx++) {
-                rMapPointMatrix[rowIdx][colIdx] = new RMapPoint(rowIdx, colIdx);
+                this.rMapPointMatrix[rowIdx][colIdx] = new RMapPoint(rowIdx, colIdx);
             }
         }
     }
@@ -144,22 +141,24 @@ public class RMap {
     /**
      * Randomly generate a map.
      *
-     * @throws CannotCreateRMapElementException if the map could not be created
+     * @throws CannotCreateMapElementException if the map could not be created
      */
-    public void generateMap() throws CannotCreateRMapElementException {
+    public void generateMap() throws CannotCreateMapElementException {
         placeNorthEdgeOnMap(rMapPointMatrix, rMapSetting.getMapWidth(), rMapSetting.getMapHeight(), tree1);
         placeSouthEdgeOnMap(rMapPointMatrix, rMapSetting.getMapWidth(), rMapSetting.getMapHeight(), edge);
 
         // 1st castle.
         int xSpCastleT1 = MARGIN_X;
-        int ySpCastleT1 = generateRandomRowIdx(ImagesLoader.CASTLE_HEIGHT, MARGIN_Y);
+        int ySpCastleT1 = generateRandomRowIdx(rMapSetting.getMapHeight(), ImagesLoader.TREE_HEIGHT,
+                ImagesLoader.EDGE_HEIGHT, ImagesLoader.CASTLE_HEIGHT, MARGIN_Y);
         placeCastleOnMap(rMapPointMatrix, rMapSetting.getMapWidth(), rMapSetting.getMapHeight(),
                 castleT1, ySpCastleT1, xSpCastleT1, rMapSetting.getPerSingleFlowerPathway());
         spCastleT1 = rMapPointMatrix[ySpCastleT1][xSpCastleT1];
 
         // 2nd castle.
         int xSpCastleT2 = rMapSetting.getMapWidth() - MARGIN_X - ImagesLoader.CASTLE_WIDTH;
-        int ySpCastleT2 = generateRandomRowIdx(ImagesLoader.CASTLE_HEIGHT, MARGIN_Y);
+        int ySpCastleT2 = generateRandomRowIdx(rMapSetting.getMapHeight(), ImagesLoader.TREE_HEIGHT,
+                ImagesLoader.EDGE_HEIGHT, ImagesLoader.CASTLE_HEIGHT, MARGIN_Y);
         placeCastleOnMap(rMapPointMatrix, rMapSetting.getMapWidth(), rMapSetting.getMapHeight(),
                 castleT2, ySpCastleT2, xSpCastleT2, rMapSetting.getPerSingleFlowerPathway());
         spCastleT2 = rMapPointMatrix[ySpCastleT2][xSpCastleT2];
@@ -177,8 +176,9 @@ public class RMap {
             for (int eltIdx = 0; eltIdx < eltConf.getValue(); eltIdx++) {
                 int nbTry = 0;
                 while (true) {
-                    int xSpElt = generateRandomColIdx(eltConf.getKey().getWidth(), 0);
-                    int ySpElt = generateRandomRowIdx(eltConf.getKey().getHeight(), 0);
+                    int xSpElt = generateRandomColIdx(rMapSetting.getMapWidth(), 0, 0, eltConf.getKey().getWidth(), 0);
+                    int ySpElt = generateRandomRowIdx(rMapSetting.getMapHeight(), ImagesLoader.TREE_HEIGHT,
+                            ImagesLoader.EDGE_HEIGHT, eltConf.getKey().getHeight(), 0);
                     if (!placePatternOnMap(rMapPointMatrix, rMapSetting.getMapWidth(), rMapSetting.getMapHeight(),
                             eltConf.getKey(), ySpElt, xSpElt)) {
                         if (nbTry < MAX_NB_TRY) {
@@ -216,51 +216,20 @@ public class RMap {
 
             if (randomPercent < perSingleObstacle) {
                 if (!placeSingleObstacleOnMap(rMapPoint)) {
-                    throw new CannotCreateRMapElementException("not able to create a single obstacle.");
+                    throw new CannotCreateMapElementException("not able to create a single obstacle.");
                 }
 
             } else if (randomPercent < perSingleObstacle + perSingleMutable) {
                 if (!placeSingleMutableOnMap(rMapPoint)) {
-                    throw new CannotCreateRMapElementException("not able to create a single mutable.");
+                    throw new CannotCreateMapElementException("not able to create a single mutable.");
                 }
             } else {
                 if (!placeSinglePathwayOnMap(rMapPoint, rMapSetting.getPerSingleFlowerPathway())) {
-                    throw new CannotCreateRMapElementException("not able to create a single pathway.");
+                    throw new CannotCreateMapElementException("not able to create a single pathway.");
                 }
             }
             emptyPtList.remove(ptIdx);
         }
-    }
-
-    /**
-     * Generate a random rowIdx based on a pattern height and a margin range.
-     * This function is used to place elements at a certain margin from north and south sides.
-     *
-     * @param patternHeight the pattern height
-     * @param marginRange   the margin range
-     * @return the random rowIdx
-     */
-    private int generateRandomRowIdx(int patternHeight, int marginRange) {
-        Random R = new Random(); // initStatement the random function.
-        return R.nextInt(rMapSetting.getMapHeight() - 2 * marginRange - // north/south requiered margins.
-                patternHeight - // pattern height as we place the north/west point.
-                (ImagesLoader.EDGE_HEIGHT + ImagesLoader.TREE_HEIGHT)) + // egde + tree.
-                ImagesLoader.TREE_HEIGHT + marginRange; // re-add tree height + margin to get the right range.
-    }
-
-    /**
-     * Generate a random colIdx based on a pattern width and a margin range.
-     * This function is used to place elements at a certain margin from east and west sides.
-     *
-     * @param patternWidth the pattern height
-     * @param marginRange  the margin range
-     * @return the random rowIdx
-     */
-    private int generateRandomColIdx(int patternWidth, int marginRange) {
-        Random R = new Random(); // initStatement the random function.
-        return R.nextInt(rMapSetting.getMapWidth() - 2 * marginRange - // east/west requiered margins.
-                patternWidth) + // pattern width as we place the noth/west point.
-                marginRange; // re-add the margin to get the right range.
     }
 
     /**

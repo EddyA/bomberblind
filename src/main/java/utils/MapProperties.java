@@ -1,15 +1,14 @@
 package utils;
 
-import static utils.Tools.isValidInteger;
+import com.google.common.base.Preconditions;
+import exceptions.InvalidMapConfigurationException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import com.google.common.base.Preconditions;
-
-import exceptions.InvalidMapConfigurationException;
+import static utils.Tools.isValidInteger;
 
 /**
  * Open and read the map properties file.
@@ -31,11 +30,28 @@ public class MapProperties {
     final protected static String MAP_ELEMENT_PER_SINGLE_OBSTACLE = "map.element.single.obstacle.percentage";
     final protected static String MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY = "map.element.single.dynamic.pathway.percentage";
 
+    protected String mapPropertiesFile;
     protected Properties properties = new Properties();
 
+    /**
+     * Load and check the default map properties file.
+     *
+     * @throws IOException
+     * @throws InvalidMapConfigurationException
+     */
     public MapProperties() throws IOException, InvalidMapConfigurationException {
-        loadProperties(MAP_PROPERTIES_FILE);
-        checkProperties(MAP_PROPERTIES_FILE);
+        this.mapPropertiesFile = MAP_PROPERTIES_FILE;
+    }
+
+    /**
+     * Load and check a particular map properties file.
+     * Note: this constructor has been declare for test purpose.
+     *
+     * @throws IOException                      if the properties file cannot be opened
+     * @throws InvalidMapConfigurationException if properties file has not been set or cannot be found
+     */
+    public MapProperties(String mapPropertiesFile) {
+        this.mapPropertiesFile = mapPropertiesFile;
     }
 
     public int getMapSizeWidth() {
@@ -84,16 +100,17 @@ public class MapProperties {
 
     /**
      * Load all properties from the map file properties.
-     * 
-     * @throws IOException if the properties file cannot be opened
+     *
+     * @throws IOException                      if the properties file cannot be opened
      * @throws InvalidMapConfigurationException if properties file has not been set or cannot be found
      */
-    protected void loadProperties(String file)
+    public void loadProperties()
             throws IllegalArgumentException, IOException, InvalidMapConfigurationException {
-        Preconditions.checkArgument((file != null) && !file.isEmpty(), "map properties file not set.");
-        URL configurationFile = MapProperties.class.getResource(file);
+        Preconditions.checkArgument((mapPropertiesFile != null) &&
+                !mapPropertiesFile.isEmpty(), "map properties file not set.");
+        URL configurationFile = MapProperties.class.getResource(mapPropertiesFile);
         if (configurationFile == null) {
-            throw new InvalidMapConfigurationException(file + "' file not found.");
+            throw new InvalidMapConfigurationException("'" + mapPropertiesFile + "' file not found.");
         }
         InputStream inputStream = configurationFile.openStream();
         properties.load(inputStream);
@@ -101,10 +118,10 @@ public class MapProperties {
 
     /**
      * Check all properties of the map file properties.
-     * 
+     *
      * @throws InvalidMapConfigurationException if at least one propertie is badly set.
      */
-    protected void checkProperties(String file) throws InvalidMapConfigurationException {
+    public void checkProperties() throws InvalidMapConfigurationException {
         if (!isValidInteger(properties.getProperty(MAP_SIZE_WIDTH)) ||
                 !isValidInteger(properties.getProperty(MAP_SIZE_HEIGHT)) ||
                 !isValidInteger(properties.getProperty(MAP_ELEMENT_NB_WOOD1)) ||
@@ -116,14 +133,14 @@ public class MapProperties {
                 !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_MUTABLE)) ||
                 !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_OBSTACLE)) ||
                 !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY))) {
-            throw new InvalidMapConfigurationException(file + "' is not a valid properties file: "
+            throw new InvalidMapConfigurationException("'" + mapPropertiesFile + "' is not a valid properties file: "
                     + "some field are missing or not integer convertible.");
         }
         int perSingleMutable = Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_MUTABLE));
         int perSingleObstacle = Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_OBSTACLE));
         int perSingleDynamicPathway = Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY));
         if (perSingleMutable + perSingleObstacle + perSingleDynamicPathway > 100) {
-            throw new InvalidMapConfigurationException(file + "' is not a valid properties file: "
+            throw new InvalidMapConfigurationException("'" + mapPropertiesFile + "' is not a valid properties file: "
                     + "sum of the percentage cannot exceed 100.");
         }
     }
