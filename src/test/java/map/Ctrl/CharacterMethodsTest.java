@@ -1,7 +1,7 @@
-package map.Ctrl;
+package map.ctrl;
 
 import exceptions.OutOfMapBoundsException;
-import map.RMapPoint;
+import map.MapPoint;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -54,7 +54,7 @@ public class CharacterMethodsTest implements WithAssertions {
         
         /*
         compute the character limits according to the map dimensions.
-        ex: RMap(20, 10) = W=600px * H=300px.
+        ex: ZeldaMap(20, 10) = W=600px * H=300px.
         - yChar < 15px ||
         - yChar > 299px ||
         - xChar < 15px ||
@@ -81,16 +81,16 @@ public class CharacterMethodsTest implements WithAssertions {
 
     @Test
     public void isCharacterCrossingObstacleShouldReturnTheAppropriateValue() throws Exception {
-        RMapPoint[][] rMapPointMatrix = new RMapPoint[MAP_HEIGHT][MAP_WIDTH];
+        MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
-                rMapPointMatrix[rowIdx][colIdx] = new RMapPoint(rowIdx, colIdx);
-                rMapPointMatrix[rowIdx][colIdx].setPathway(true);
+                mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
+                mapPointMatrix[rowIdx][colIdx].setPathway(true);
             }
         }
         int obsRowIdx = 1;
         int obsColIdx = 2;
-        rMapPointMatrix[obsRowIdx][obsColIdx].setPathway(false);
+        mapPointMatrix[obsRowIdx][obsColIdx].setPathway(false);
 
         /*
         compute the character limits according to the obstacle position.
@@ -114,11 +114,11 @@ public class CharacterMethodsTest implements WithAssertions {
                             (yChar > topObsLimit) && (yChar < bottomObsLimit)) {
 
                         // assert that the character is crossing an obstacle.
-                        assertThat(CharacterMethods.isCharacterCrossingObstacle(rMapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
+                        assertThat(CharacterMethods.isCharacterCrossingObstacle(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
                     } else {
 
                         // assert that the character is not crossing an obstacle.
-                        assertThat(CharacterMethods.isCharacterCrossingObstacle(rMapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isFalse();
+                        assertThat(CharacterMethods.isCharacterCrossingObstacle(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isFalse();
                     }
                 } catch (OutOfMapBoundsException e) {
 
@@ -131,16 +131,16 @@ public class CharacterMethodsTest implements WithAssertions {
 
     @Test
     public void isCharacterBurningShouldReturnTheAppropriateValue() throws Exception {
-        RMapPoint[][] rMapPointMatrix = new RMapPoint[MAP_HEIGHT][MAP_WIDTH];
+        MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
-                rMapPointMatrix[rowIdx][colIdx] = new RMapPoint(rowIdx, colIdx);
-                rMapPointMatrix[rowIdx][colIdx].setPathway(true);
+                mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
+                mapPointMatrix[rowIdx][colIdx].setPathway(true);
             }
         }
         int flameRowIdx = 1;
         int flameColIdx = 2;
-        rMapPointMatrix[flameRowIdx][flameColIdx].addFlame();
+        mapPointMatrix[flameRowIdx][flameColIdx].addFlame();
 
         /*
         compute the character limits according to the flame position.
@@ -164,11 +164,11 @@ public class CharacterMethodsTest implements WithAssertions {
                             (yChar > topFlameLimit) && (yChar < bottomFlameLimit)) {
 
                         // assert that the character is crossing a flame.
-                        assertThat(CharacterMethods.isCharacterBurning(rMapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
+                        assertThat(CharacterMethods.isCharacterBurning(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
                     } else {
 
                         // assert that the character is not crossing a flame.
-                        assertThat(CharacterMethods.isCharacterBurning(rMapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isFalse();
+                        assertThat(CharacterMethods.isCharacterBurning(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isFalse();
                     }
                 } catch (OutOfMapBoundsException e) {
 
@@ -181,16 +181,16 @@ public class CharacterMethodsTest implements WithAssertions {
 
     @Test
     public void isCharacterCrossingBombShouldReturnTheAppropriateValue() throws Exception {
-        RMapPoint[][] rMapPointMatrix = new RMapPoint[MAP_HEIGHT][MAP_WIDTH];
+        MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
-                rMapPointMatrix[rowIdx][colIdx] = new RMapPoint(rowIdx, colIdx);
-                rMapPointMatrix[rowIdx][colIdx].setPathway(true);
+                mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
+                mapPointMatrix[rowIdx][colIdx].setPathway(true);
             }
         }
         int bombRowIdx = 1;
         int bombColIdx = 2;
-        rMapPointMatrix[bombRowIdx][bombColIdx].setBombing(true);
+        mapPointMatrix[bombRowIdx][bombColIdx].setBombing(true);
 
         /*
         compute the character limits according to the bomb position.
@@ -227,11 +227,11 @@ public class CharacterMethodsTest implements WithAssertions {
                                         (xChar == leftBombLimit + 1) && keyEvent == KeyEvent.VK_RIGHT) ||
                                 ((yChar > topBombLimit) && (yChar < bottomBombLimit) &&
                                         (xChar == rightBombLimit - 1) && keyEvent == KeyEvent.VK_LEFT)) {
-                            assertThat(CharacterMethods.isCharacterCrossingBomb(rMapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar, keyEvent)).isTrue();
+                            assertThat(CharacterMethods.isCharacterCrossingBomb(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar, keyEvent)).isTrue();
                         } else {
 
                             // assert that the character is not crossing a flame.
-                            assertThat(CharacterMethods.isCharacterCrossingBomb(rMapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar, keyEvent)).isFalse();
+                            assertThat(CharacterMethods.isCharacterCrossingBomb(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar, keyEvent)).isFalse();
                         }
                     } catch (OutOfMapBoundsException e) {
 

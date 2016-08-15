@@ -1,7 +1,7 @@
-package map.Ctrl;
+package map.ctrl;
 
 import exceptions.OutOfMapBoundsException;
-import map.RMapPoint;
+import map.MapPoint;
 
 import java.awt.event.KeyEvent;
 
@@ -63,7 +63,7 @@ public class CharacterMethods {
     /**
      * Is the character crossing an obstacle?
      *
-     * @param rMapPointMatrix the map (represented by its matrix of RMapPoint)
+     * @param mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth        the map width
      * @param mapHeight       the map height
      * @param xChar           the character abscissa
@@ -71,13 +71,13 @@ public class CharacterMethods {
      * @return true if the character is crossing an obstacle, false otherwise
      * @throws OutOfMapBoundsException if the character is crossing map limits
      */
-    public static boolean isCharacterCrossingObstacle(RMapPoint[][] rMapPointMatrix, int mapWidth, int mapHeight,
+    public static boolean isCharacterCrossingObstacle(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
                                                       int xChar, int yChar) throws OutOfMapBoundsException {
 
         // ToDo: Do not check map limit and add an impLSpec as in PatternMethods class.
         if (isCharacterCrossingMapLimit(mapWidth, mapHeight, xChar, yChar)) {
             throw new OutOfMapBoundsException(
-                    "rMap out of bounds with the following coordinates: xChar=" + xChar + ", yChar=" + yChar);
+                    "map out of bounds with the following coordinates: xChar=" + xChar + ", yChar=" + yChar);
         }
         int topRowIdx = getTopRowIdxIfOrdIs(yChar);
         int bottomRowIdx = getBottomRowIdxIfOrdIs(yChar);
@@ -85,10 +85,10 @@ public class CharacterMethods {
         int mostRightColIdx = getMostRightColIdxIfAbsIs(xChar);
 
         boolean isCrossing = false;
-        if (!rMapPointMatrix[topRowIdx][mostLeftColIdx].isPathway() ||
-                !rMapPointMatrix[topRowIdx][mostRightColIdx].isPathway() ||
-                !rMapPointMatrix[bottomRowIdx][mostLeftColIdx].isPathway() ||
-                !rMapPointMatrix[bottomRowIdx][mostRightColIdx].isPathway()) {
+        if (!mapPointMatrix[topRowIdx][mostLeftColIdx].isPathway() ||
+                !mapPointMatrix[topRowIdx][mostRightColIdx].isPathway() ||
+                !mapPointMatrix[bottomRowIdx][mostLeftColIdx].isPathway() ||
+                !mapPointMatrix[bottomRowIdx][mostRightColIdx].isPathway()) {
             isCrossing = true;
         }
         return isCrossing;
@@ -98,7 +98,7 @@ public class CharacterMethods {
      * Is the character burning?
      * i.e. is there a burning case adjoining the character?
      *
-     * @param rMapPointMatrix the map (represented by its matrix of RMapPoint)
+     * @param mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth        the map width
      * @param mapHeight       the map height
      * @param xChar           the character abscissa
@@ -106,11 +106,11 @@ public class CharacterMethods {
      * @return true if the character is burning, false otherwise
      * @throws OutOfMapBoundsException if the character is crossing map limits
      */
-    public static boolean isCharacterBurning(RMapPoint[][] rMapPointMatrix, int mapWidth, int mapHeight,
+    public static boolean isCharacterBurning(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
                                              int xChar, int yChar) throws OutOfMapBoundsException {
         if (isCharacterCrossingMapLimit(mapWidth, mapHeight, xChar, yChar)) {
             throw new OutOfMapBoundsException(
-                    "rMap out of bounds with the following coordinates: xChar=" + xChar + ", yChar=" + yChar);
+                    "map out of bounds with the following coordinates: xChar=" + xChar + ", yChar=" + yChar);
         }
         int topRowIdx = getTopRowIdxIfOrdIs(yChar);
         int bottomRowIdx = getBottomRowIdxIfOrdIs(yChar);
@@ -118,10 +118,10 @@ public class CharacterMethods {
         int mostRightColIdx = getMostRightColIdxIfAbsIs(xChar);
 
         boolean isBurning = false;
-        if (rMapPointMatrix[topRowIdx][mostLeftColIdx].isBurning() ||
-                rMapPointMatrix[topRowIdx][mostRightColIdx].isBurning() ||
-                rMapPointMatrix[bottomRowIdx][mostLeftColIdx].isBurning() ||
-                rMapPointMatrix[bottomRowIdx][mostRightColIdx].isBurning()) {
+        if (mapPointMatrix[topRowIdx][mostLeftColIdx].isBurning() ||
+                mapPointMatrix[topRowIdx][mostRightColIdx].isBurning() ||
+                mapPointMatrix[bottomRowIdx][mostLeftColIdx].isBurning() ||
+                mapPointMatrix[bottomRowIdx][mostRightColIdx].isBurning()) {
             isBurning = true;
         }
         return isBurning;
@@ -132,7 +132,7 @@ public class CharacterMethods {
      * note: we can't just use the isCharacterCrossingObstacle() algorithm as the character can already be
      * on a bombing case - when it just put a bomb - and this particular case cannot be processed the same way.
      *
-     * @param rMapPointMatrix the map (represented by its matrix of RMapPoint)
+     * @param mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth        the map width
      * @param mapHeight       the map height
      * @param xChar           the character abscissa
@@ -141,12 +141,12 @@ public class CharacterMethods {
      * @return true if the character is crossing a bomb, false otherwise
      * @throws OutOfMapBoundsException if the character is crossing map limits
      */
-    public static boolean isCharacterCrossingBomb(RMapPoint[][] rMapPointMatrix, int mapWidth, int mapHeight,
+    public static boolean isCharacterCrossingBomb(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
                                                   int xChar, int yChar, int keyEvent)
             throws OutOfMapBoundsException {
         if (isCharacterCrossingMapLimit(mapWidth, mapHeight, xChar, yChar)) {
             throw new OutOfMapBoundsException(
-                    "rMap out of bounds with the following coordinates: xChar=" + xChar + ", yChar=" + yChar);
+                    "map out of bounds with the following coordinates: xChar=" + xChar + ", yChar=" + yChar);
         }
         int topRowIdx = getTopRowIdxIfOrdIs(yChar);
         int bottomRowIdx = getBottomRowIdxIfOrdIs(yChar);
@@ -156,32 +156,32 @@ public class CharacterMethods {
         boolean isCrossing = false;
         switch (keyEvent) {
             case KeyEvent.VK_UP: {
-                if ((rMapPointMatrix[topRowIdx][mostLeftColIdx].isBombing() ||
-                        rMapPointMatrix[topRowIdx][mostRightColIdx].isBombing()) &&
+                if ((mapPointMatrix[topRowIdx][mostLeftColIdx].isBombing() ||
+                        mapPointMatrix[topRowIdx][mostRightColIdx].isBombing()) &&
                         topRowIdx != getTopRowIdxIfOrdIs(yChar + 1)) {
                     isCrossing = true;
                 }
                 break;
             }
             case KeyEvent.VK_DOWN: {
-                if ((rMapPointMatrix[bottomRowIdx][mostLeftColIdx].isBombing() ||
-                        rMapPointMatrix[bottomRowIdx][mostRightColIdx].isBombing()) &&
+                if ((mapPointMatrix[bottomRowIdx][mostLeftColIdx].isBombing() ||
+                        mapPointMatrix[bottomRowIdx][mostRightColIdx].isBombing()) &&
                         bottomRowIdx != getBottomRowIdxIfOrdIs(yChar - 1)) {
                     isCrossing = true;
                 }
                 break;
             }
             case KeyEvent.VK_LEFT: {
-                if ((rMapPointMatrix[topRowIdx][mostLeftColIdx].isBombing() ||
-                        rMapPointMatrix[bottomRowIdx][mostLeftColIdx].isBombing()) &&
+                if ((mapPointMatrix[topRowIdx][mostLeftColIdx].isBombing() ||
+                        mapPointMatrix[bottomRowIdx][mostLeftColIdx].isBombing()) &&
                         mostLeftColIdx != getMostLeftColIdxIfAbsIs(xChar + 1)) {
                     isCrossing = true;
                 }
                 break;
             }
             case KeyEvent.VK_RIGHT: {
-                if ((rMapPointMatrix[topRowIdx][mostRightColIdx].isBombing() ||
-                        rMapPointMatrix[bottomRowIdx][mostRightColIdx].isBombing()) &&
+                if ((mapPointMatrix[topRowIdx][mostRightColIdx].isBombing() ||
+                        mapPointMatrix[bottomRowIdx][mostRightColIdx].isBombing()) &&
                         mostRightColIdx != getMostRightColIdxIfAbsIs(xChar - 1)) {
                     isCrossing = true;
                 }

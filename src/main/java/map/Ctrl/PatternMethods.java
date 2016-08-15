@@ -1,30 +1,30 @@
-package map.Ctrl;
+package map.ctrl;
 
 import exceptions.CannotCreateMapElementException;
-import map.RMapPattern;
-import map.RMapPoint;
+import map.MapPoint;
+import map.MapPattern;
 
 import java.util.Random;
 
-import static map.Ctrl.SingleMethods.placeSinglePathwayOnMap;
+import static map.ctrl.SingleMethods.placeSinglePathwayOnMap;
 
 public class PatternMethods {
 
     /**
      * Place a north edge on map.
      *
-     * @param rMapPointMatrix the map (represented by its matrix of RMapPoint)
+     * @param mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth        the map width
      * @param mapHeight       the map height
-     * @param rMapPattern     the pattern of the element
+     * @param mapPattern     the pattern of the element
      * @throws CannotCreateMapElementException if the north edge has not been fully created
      */
-    public static void placeNorthEdgeOnMap(RMapPoint[][] rMapPointMatrix, int mapWidth, int mapHeight,
-                                           RMapPattern rMapPattern) throws CannotCreateMapElementException {
-        for (int colIdx = 0; colIdx < mapWidth; colIdx += rMapPattern.getWidth()) {
-            if (!placePatternOnMap(rMapPointMatrix, mapWidth, mapHeight, rMapPattern, 0, colIdx)) {
+    public static void placeNorthEdgeOnMap(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
+                                           MapPattern mapPattern) throws CannotCreateMapElementException {
+        for (int colIdx = 0; colIdx < mapWidth; colIdx += mapPattern.getWidth()) {
+            if (!placePatternOnMap(mapPointMatrix, mapWidth, mapHeight, mapPattern, 0, colIdx)) {
                 throw new CannotCreateMapElementException("not able to create the north edge: mapWidth(=" +
-                        mapWidth + ") % patternWidth(=" + rMapPattern.getWidth() + ") != 0).");
+                        mapWidth + ") % patternWidth(=" + mapPattern.getWidth() + ") != 0).");
             }
         }
     }
@@ -32,18 +32,18 @@ public class PatternMethods {
     /**
      * Place a south edge on map.
      *
-     * @param rMapPointMatrix the map (represented by its matrix of RMapPoint)
+     * @param mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth        the map width
      * @param mapHeight       the map height
-     * @param rMapPattern     the pattern of the element
+     * @param mapPattern     the pattern of the element
      * @throws CannotCreateMapElementException if the south edge has not been fully created
      */
-    public static void placeSouthEdgeOnMap(RMapPoint[][] rMapPointMatrix, int mapWidth, int mapHeight,
-                                           RMapPattern rMapPattern) throws CannotCreateMapElementException {
-        for (int colIdx = 0; colIdx < mapWidth; colIdx += rMapPattern.getWidth()) {
-            if (!placePatternOnMap(rMapPointMatrix, mapWidth, mapHeight, rMapPattern, mapHeight - rMapPattern.getHeight(), colIdx)) {
+    public static void placeSouthEdgeOnMap(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
+                                           MapPattern mapPattern) throws CannotCreateMapElementException {
+        for (int colIdx = 0; colIdx < mapWidth; colIdx += mapPattern.getWidth()) {
+            if (!placePatternOnMap(mapPointMatrix, mapWidth, mapHeight, mapPattern, mapHeight - mapPattern.getHeight(), colIdx)) {
                 throw new CannotCreateMapElementException("not able to create the south edge: mapWidth(=" +
-                        mapWidth + ") % patternWidth(=" + rMapPattern.getWidth() + ") != 0).");
+                        mapWidth + ") % patternWidth(=" + mapPattern.getWidth() + ") != 0).");
             }
         }
     }
@@ -51,23 +51,24 @@ public class PatternMethods {
     /**
      * Place a castle map and secure its perimeter.
      *
-     * @param rMapPointMatrix the map (represented by its matrix of RMapPoint)
-     * @param mapWidth        the map width
-     * @param mapHeight       the map height
-     * @param rMapPattern     the pattern of the castle
-     * @param startRowIdx     the row index of the north/west pattern corner
-     * @param startColIdx     the column index of the north/west pattern corner
+     * @param mapPointMatrix      the map (represented by its matrix of MapPoint)
+     * @param mapWidth             the map width
+     * @param mapHeight            the map height
+     * @param mapPattern          the pattern of the castle
+     * @param startRowIdx          the row index of the north/west pattern corner
+     * @param startColIdx          the column index of the north/west pattern corner
+     * @param perDynamicPathwayElt the percentage of dynamic patwhay elements to place arround the castle
      * @throws CannotCreateMapElementException if the castle has not been placed
      */
-    public static void placeCastleOnMap(RMapPoint[][] rMapPointMatrix, int mapWidth, int mapHeight,
-                                        RMapPattern rMapPattern, int startRowIdx, int startColIdx,
-                                        int perDynamicElt)
+    public static void placeCastleOnMap(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
+                                        MapPattern mapPattern, int startRowIdx, int startColIdx,
+                                        int perDynamicPathwayElt)
             throws CannotCreateMapElementException {
-        if (!placePatternOnMap(rMapPointMatrix, mapWidth, mapHeight, rMapPattern, startRowIdx, startColIdx)) {
+        if (!placePatternOnMap(mapPointMatrix, mapWidth, mapHeight, mapPattern, startRowIdx, startColIdx)) {
             throw new CannotCreateMapElementException("not able to create a castle at rowIdx=" +
                     startRowIdx + ", colIdx=" + startColIdx + ".");
         }
-        securePerimeter(rMapPointMatrix, mapWidth, mapHeight, rMapPattern, startRowIdx, startColIdx, perDynamicElt);
+        securePerimeter(mapPointMatrix, mapWidth, mapHeight, mapPattern, startRowIdx, startColIdx, perDynamicPathwayElt);
     }
 
     /**
@@ -75,31 +76,31 @@ public class PatternMethods {
      * The pointed out case (startRowIdx, startColIdx) corresponds to the north/west corner of the pattern.
      * If the pattern is eligible, create the element and return true, otherwise return false.
      *
-     * @param rMapPointMatrix the map (represented by its matrix of RMapPoint)
+     * @param mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth        the map width
      * @param mapHeight       the map height
-     * @param rMapPattern     the pattern of the element
+     * @param mapPattern     the pattern of the element
      * @param startRowIdx     the row index of the north/west pattern corner
      * @param startColIdx     the column index of the north/west pattern corner
      * @return true if the element has been placed, false otherwise
      */
-    public static boolean placePatternOnMap(RMapPoint[][] rMapPointMatrix, int mapWidth, int mapHeight,
-                                            RMapPattern rMapPattern, int startRowIdx, int startColIdx) {
+    public static boolean placePatternOnMap(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
+                                            MapPattern mapPattern, int startRowIdx, int startColIdx) {
 
         // firstly check if the pattern is not crossing a map limit or a not available case.
-        if (isPatternCrossingMapLimit(mapWidth, mapHeight, rMapPattern, startRowIdx, startColIdx) ||
-                isPatternCrossingNotAvailableCase(rMapPointMatrix, rMapPattern, startRowIdx, startColIdx)) {
+        if (isPatternCrossingMapLimit(mapWidth, mapHeight, mapPattern, startRowIdx, startColIdx) ||
+                isPatternCrossingNotAvailableCase(mapPointMatrix, mapPattern, startRowIdx, startColIdx)) {
             return false;
         }
 
         // then, we create the element.
-        for (int rowIdx = 0; rowIdx < rMapPattern.getHeight(); rowIdx++) {
-            for (int colIdx = 0; colIdx < rMapPattern.getWidth(); colIdx++) {
-                rMapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx]
-                        .setImage(rMapPattern.getImageArray()[(colIdx * rMapPattern.getHeight()) + rowIdx]);
-                rMapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setPathway(rMapPattern.isPathway());
-                rMapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setMutable(rMapPattern.isMutable());
-                rMapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setAvailable(false);
+        for (int rowIdx = 0; rowIdx < mapPattern.getHeight(); rowIdx++) {
+            for (int colIdx = 0; colIdx < mapPattern.getWidth(); colIdx++) {
+                mapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx]
+                        .setImage(mapPattern.getImageArray()[(colIdx * mapPattern.getHeight()) + rowIdx]);
+                mapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setPathway(mapPattern.isPathway());
+                mapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setMutable(mapPattern.isMutable());
+                mapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setAvailable(false);
             }
         }
         return true;
@@ -110,16 +111,16 @@ public class PatternMethods {
      *
      * @param mapWidth    the map width
      * @param mapHeight   the map height
-     * @param rMapPattern the pattern
+     * @param mapPattern the pattern
      * @param startRowIdx the row index of the north/west pattern corner
      * @param startColIdx the column index of the north/west pattern corner
      * @return true if the pattern is crossing a map limit, false otherwise
      */
-    public static boolean isPatternCrossingMapLimit(int mapWidth, int mapHeight, RMapPattern rMapPattern,
+    public static boolean isPatternCrossingMapLimit(int mapWidth, int mapHeight, MapPattern mapPattern,
                                                     int startRowIdx, int startColIdx) {
         boolean isCrossing = false;
-        if (startRowIdx < 0 || startRowIdx + rMapPattern.getHeight() > mapHeight ||
-                startColIdx < 0 || startColIdx + rMapPattern.getWidth() > mapWidth) {
+        if (startRowIdx < 0 || startRowIdx + mapPattern.getHeight() > mapHeight ||
+                startColIdx < 0 || startColIdx + mapPattern.getWidth() > mapWidth) {
             isCrossing = true;
         }
         return isCrossing;
@@ -128,19 +129,19 @@ public class PatternMethods {
     /**
      * Is the pattern crossing a not available case?
      *
-     * @param rMapPointMatrix the map (represented by its matrix of RMapPoint)
-     * @param rMapPattern     the pattern
+     * @param mapPointMatrix the map (represented by its matrix of MapPoint)
+     * @param mapPattern     the pattern
      * @param startRowIdx     the row index of the north/west pattern corner
      * @param startColIdx     the column index of the north/west pattern corner
      * @return true if the pattern is crossing a not available case, false otherwise
      * @implSpec isPatternCrossingMapLimit() must be called before this function!
      */
-    public static boolean isPatternCrossingNotAvailableCase(RMapPoint[][] rMapPointMatrix, RMapPattern rMapPattern,
+    public static boolean isPatternCrossingNotAvailableCase(MapPoint[][] mapPointMatrix, MapPattern mapPattern,
                                                             int startRowIdx, int startColIdx) {
         boolean isCrossing = false;
-        for (int rowIdx = startRowIdx; rowIdx < startRowIdx + rMapPattern.getHeight(); rowIdx++) {
-            for (int colIdx = startColIdx; colIdx < startColIdx + rMapPattern.getWidth(); colIdx++) {
-                if (!rMapPointMatrix[rowIdx][colIdx].isAvailable()) {
+        for (int rowIdx = startRowIdx; rowIdx < startRowIdx + mapPattern.getHeight(); rowIdx++) {
+            for (int colIdx = startColIdx; colIdx < startColIdx + mapPattern.getWidth(); colIdx++) {
+                if (!mapPointMatrix[rowIdx][colIdx].isAvailable()) {
                     isCrossing = true;
                 }
             }
@@ -153,21 +154,23 @@ public class PatternMethods {
      * The pointed out case (startRowIdx, startColIdx) corresponds to the north/west corner of the pattern.
      * If a case is not available, go to the next case.
      *
-     * @param rMapPointMatrix the map (represented by its matrix of RMapPoint)
-     * @param mapWidth        the map width
-     * @param mapHeight       the map height
-     * @param rMapPattern     the pattern of the element
-     * @param startRowIdx     the row index of the north/west pattern corner
-     * @param startColIdx     the column index of the north/west pattern corner
+     * @param mapPointMatrix      the map (represented by its matrix of MapPoint)
+     * @param mapWidth             the map width
+     * @param mapHeight            the map height
+     * @param mapPattern          the pattern of the element
+     * @param startRowIdx          the row index of the north/west pattern corner
+     * @param startColIdx          the column index of the north/west pattern corner
+     * @param perDynamicPathwayElt the percentage of dynamic pathway elements to place arround the castle
      */
-    public static void securePerimeter(RMapPoint[][] rMapPointMatrix, int mapWidth, int mapHeight,
-                                       RMapPattern rMapPattern, int startRowIdx, int startColIdx, int perDynamicElt) {
+    public static void securePerimeter(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
+                                       MapPattern mapPattern, int startRowIdx, int startColIdx,
+                                       int perDynamicPathwayElt) {
         for (int rowIdx = Math.max(0, startRowIdx - 1); rowIdx <= Math.min(mapHeight - 1,
-                startRowIdx + rMapPattern.getHeight()); rowIdx++) {
+                startRowIdx + mapPattern.getHeight()); rowIdx++) {
             for (int colIdx = Math.max(0, startColIdx - 1); colIdx <= Math.min(mapWidth - 1,
-                    startColIdx + rMapPattern.getWidth()); colIdx++) {
-                if (rMapPointMatrix[rowIdx][colIdx].isAvailable()) {
-                    placeSinglePathwayOnMap(rMapPointMatrix[rowIdx][colIdx], perDynamicElt);
+                    startColIdx + mapPattern.getWidth()); colIdx++) {
+                if (mapPointMatrix[rowIdx][colIdx].isAvailable()) {
+                    placeSinglePathwayOnMap(mapPointMatrix[rowIdx][colIdx], perDynamicPathwayElt);
                 }
             }
         }
@@ -193,8 +196,7 @@ public class PatternMethods {
         if (bound == 0) {
             return northEdgeHeight + marginRange;
         }
-        Random R = new Random(); // init the random function.
-        return R.nextInt(bound) +
+        return Math.abs(new Random().nextInt(bound)) +
                 northEdgeHeight + marginRange; // re-add north edge height + margin to get the right range.
     }
 
@@ -202,24 +204,23 @@ public class PatternMethods {
      * Generate a random colIdx based on a pattern width and a margin range.
      * This function is used to place elements at a certain margin from east and west sides.
      *
-     * @param mapWidth       the map width
-     * @param eastEdgeHeight the east edge height
-     * @param westEdgeHeight the west edge height
-     * @param patternWidth   the pattern height
-     * @param marginRange    the margin range
-     * @return the random rowIdx
+     * @param mapWidth      the map width
+     * @param eastEdgeWidth the east edge width
+     * @param westEdgeWidth the west edge width
+     * @param patternWidth  the pattern width
+     * @param marginRange   the margin range
+     * @return the random colIdx
      * @throws IllegalArgumentException if a random colIdx cannot be computed (not applicable)
      */
-    public static int generateRandomColIdx(int mapWidth, int eastEdgeHeight, int westEdgeHeight, int patternWidth,
+    public static int generateRandomColIdx(int mapWidth, int eastEdgeWidth, int westEdgeWidth, int patternWidth,
                                            int marginRange) throws IllegalArgumentException {
         int bound = mapWidth - 2 * marginRange - // east/west requiered margins.
                 patternWidth - // pattern width as we place its noth/west point.
-                (eastEdgeHeight + westEdgeHeight); // east egde height + west edge height.
+                (eastEdgeWidth + westEdgeWidth); // east egde width + west edge width.
         if (bound == 0) {
-            return eastEdgeHeight + marginRange;
+            return eastEdgeWidth + marginRange;
         }
-        Random R = new Random(); // init the random function.
-        return R.nextInt(bound) +
-                eastEdgeHeight + marginRange; // re-add east edge height + margin to get the right range.
+        return Math.abs(new Random().nextInt(bound)) +
+                eastEdgeWidth + marginRange; // re-add east edge width + margin to get the right range.
     }
 }

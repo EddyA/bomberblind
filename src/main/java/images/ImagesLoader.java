@@ -1,13 +1,12 @@
 package images;
 
-import java.awt.Image;
+import utils.Tuple3;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
-
-import utils.Triple;
 
 /**
  * Load the images of the game in a matrix of type 'Image'.
@@ -303,8 +302,8 @@ public class ImagesLoader {
      * @return a random single dynamic pathway image.
      */
     @SuppressWarnings("unchecked")
-    public static Triple<Image[], Integer, Integer> getRandomSingleDynamicPathway() {
-        return new Triple(ImagesLoader.imagesMatrix[ImagesLoader.flowerMatrixRowIdx],
+    public static Tuple3<Image[], Integer, Integer> getRandomSingleDynamicPathway() {
+        return new Tuple3<>(ImagesLoader.imagesMatrix[ImagesLoader.flowerMatrixRowIdx],
                 ImagesLoader.NB_FLOWER_FRAME, 100);
     }
 

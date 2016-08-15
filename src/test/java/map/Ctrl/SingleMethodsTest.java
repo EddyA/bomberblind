@@ -1,7 +1,7 @@
-package map.Ctrl;
+package map.ctrl;
 
 import images.ImagesLoader;
-import map.RMapPoint;
+import map.MapPoint;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,22 +20,22 @@ public class SingleMethodsTest implements WithAssertions {
         // test all cases in a single function to avaid calling fillImagesMatrix() several times.
 
         // should return false because not available.
-        RMapPoint rMapPoint1 = new RMapPoint(0, 0);
-        rMapPoint1.setAvailable(false);
-        assertThat(SingleMethods.placeSinglePathwayOnMap(rMapPoint1, 0)).isFalse();
-        assertThat(rMapPoint1.getImage()).isNull();
+        MapPoint mapPoint1 = new MapPoint(0, 0);
+        mapPoint1.setAvailable(false);
+        assertThat(SingleMethods.placeSinglePathwayOnMap(mapPoint1, 0)).isFalse();
+        assertThat(mapPoint1.getImage()).isNull();
 
         // should return true because available and put a static pathway.
-        RMapPoint rMapPoint2 = new RMapPoint(0, 0);
-        assertThat(SingleMethods.placeSinglePathwayOnMap(rMapPoint2, 0)).isTrue();
-        assertThat(rMapPoint2.getImage()).isNotNull();
-        assertThat(rMapPoint2.getImages()).isNull();
+        MapPoint mapPoint2 = new MapPoint(0, 0);
+        assertThat(SingleMethods.placeSinglePathwayOnMap(mapPoint2, 0)).isTrue();
+        assertThat(mapPoint2.getImage()).isNotNull();
+        assertThat(mapPoint2.getImages()).isNull();
 
         // should return true because available and put a dynamic pathway.
-        RMapPoint rMapPoint3 = new RMapPoint(0, 0);
-        assertThat(SingleMethods.placeSinglePathwayOnMap(rMapPoint3, 100)).isTrue();
-        assertThat(rMapPoint3.getImage()).isNull();
-        assertThat(rMapPoint3.getImages()).isNotNull();
+        MapPoint mapPoint3 = new MapPoint(0, 0);
+        assertThat(SingleMethods.placeSinglePathwayOnMap(mapPoint3, 100)).isTrue();
+        assertThat(mapPoint3.getImage()).isNull();
+        assertThat(mapPoint3.getImages()).isNotNull();
     }
 
     @Test
@@ -43,15 +43,15 @@ public class SingleMethodsTest implements WithAssertions {
         // test all cases in a single function to avaid calling fillImagesMatrix() several times.
 
         // should return false because not available.
-        RMapPoint rMapPoint1 = new RMapPoint(0, 0);
-        rMapPoint1.setAvailable(false);
-        assertThat(SingleMethods.placeSingleMutableOnMap(rMapPoint1)).isFalse();
-        assertThat(rMapPoint1.getImage()).isNull();
+        MapPoint mapPoint1 = new MapPoint(0, 0);
+        mapPoint1.setAvailable(false);
+        assertThat(SingleMethods.placeSingleMutableOnMap(mapPoint1)).isFalse();
+        assertThat(mapPoint1.getImage()).isNull();
 
         // should return true because available and put a static mutable.
-        RMapPoint rMapPoint2 = new RMapPoint(0, 0);
-        assertThat(SingleMethods.placeSingleMutableOnMap(rMapPoint2)).isTrue();
-        assertThat(rMapPoint2.getImage()).isNotNull();
+        MapPoint mapPoint2 = new MapPoint(0, 0);
+        assertThat(SingleMethods.placeSingleMutableOnMap(mapPoint2)).isTrue();
+        assertThat(mapPoint2.getImage()).isNotNull();
     }
 
     @Test
@@ -59,14 +59,14 @@ public class SingleMethodsTest implements WithAssertions {
         // test all cases in a single function to avaid calling fillImagesMatrix() several times.
 
         // should return false because not available.
-        RMapPoint rMapPoint1 = new RMapPoint(0, 0);
-        rMapPoint1.setAvailable(false);
-        assertThat(SingleMethods.placeSingleObstacleOnMap(rMapPoint1)).isFalse();
-        assertThat(rMapPoint1.getImage()).isNull();
+        MapPoint mapPoint1 = new MapPoint(0, 0);
+        mapPoint1.setAvailable(false);
+        assertThat(SingleMethods.placeSingleObstacleOnMap(mapPoint1)).isFalse();
+        assertThat(mapPoint1.getImage()).isNull();
 
         // should return true because available and put a static obstacle.
-        RMapPoint rMapPoint2 = new RMapPoint(0, 0);
-        assertThat(SingleMethods.placeSingleObstacleOnMap(rMapPoint2)).isTrue();
-        assertThat(rMapPoint2.getImage()).isNotNull();
+        MapPoint mapPoint2 = new MapPoint(0, 0);
+        assertThat(SingleMethods.placeSingleObstacleOnMap(mapPoint2)).isTrue();
+        assertThat(mapPoint2.getImage()).isNotNull();
     }
 }
