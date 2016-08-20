@@ -14,91 +14,91 @@ import static org.mockito.Mockito.mock;
 public class MapPointTest implements WithAssertions {
 
     @Test
-    public void rMapPointShouldSetMembersWithTheAppropriateValues() throws Exception {
-        RMapPoint rMapPoint = new RMapPoint(5, 10);
-        assertThat(rMapPoint.getRowIdx()).isEqualTo(5);
-        assertThat(rMapPoint.getColIdx()).isEqualTo(10);
-        assertThat(rMapPoint.isAvailable()).isTrue();
-        assertThat(rMapPoint.isPathway()).isFalse();
-        assertThat(rMapPoint.isMutable()).isFalse();
-        assertThat(rMapPoint.isBombing()).isFalse();
-        assertThat(rMapPoint.isBurning()).isFalse();
+    public void MapPointShouldSetMembersWithTheAppropriateValues() throws Exception {
+        MapPoint MapPoint = new MapPoint(5, 10);
+        assertThat(MapPoint.getRowIdx()).isEqualTo(5);
+        assertThat(MapPoint.getColIdx()).isEqualTo(10);
+        assertThat(MapPoint.isAvailable()).isTrue();
+        assertThat(MapPoint.isPathway()).isFalse();
+        assertThat(MapPoint.isMutable()).isFalse();
+        assertThat(MapPoint.isBombing()).isFalse();
+        assertThat(MapPoint.isBurning()).isFalse();
     }
 
     @Test
     public void setAvailableShouldSetTheMemberWithTheAppropriateValue() throws Exception {
-        RMapPoint rMapPoint = new RMapPoint(5, 10);
-        rMapPoint.setAvailable(false);
-        assertThat(rMapPoint.isAvailable()).isFalse();
+        MapPoint MapPoint = new MapPoint(5, 10);
+        MapPoint.setAvailable(false);
+        assertThat(MapPoint.isAvailable()).isFalse();
     }
 
     @Test
     public void setPathwayShouldSetTheMemberWithTheAppropriateValue() throws Exception {
-        RMapPoint rMapPoint = new RMapPoint(5, 10);
-        rMapPoint.setPathway(true);
-        assertThat(rMapPoint.isPathway()).isTrue();
+        MapPoint MapPoint = new MapPoint(5, 10);
+        MapPoint.setPathway(true);
+        assertThat(MapPoint.isPathway()).isTrue();
     }
 
     @Test
     public void setMutableShouldSetTheMemberWithTheAppropriateValue() throws Exception {
-        RMapPoint rMapPoint = new RMapPoint(5, 10);
-        rMapPoint.setMutable(true);
-        assertThat(rMapPoint.isMutable()).isTrue();
+        MapPoint MapPoint = new MapPoint(5, 10);
+        MapPoint.setMutable(true);
+        assertThat(MapPoint.isMutable()).isTrue();
     }
 
     @Test
     public void setBombingShouldSetTheMemberWithTheAppropriateValue() throws Exception {
-        RMapPoint rMapPoint = new RMapPoint(5, 10);
-        rMapPoint.setBombing(true);
-        assertThat(rMapPoint.isBombing()).isTrue();
+        MapPoint MapPoint = new MapPoint(5, 10);
+        MapPoint.setBombing(true);
+        assertThat(MapPoint.isBombing()).isTrue();
     }
 
     @Test
     public void addAndRemoveFlameShouldSetTheMemberWithTheAppropriateValue() throws Exception {
-        RMapPoint rMapPoint = new RMapPoint(5, 10);
-        rMapPoint.addFlame();
-        rMapPoint.addFlame();
-        assertThat(rMapPoint.isBurning()).isTrue();
-        rMapPoint.removeFlame();
-        rMapPoint.removeFlame();
-        assertThat(rMapPoint.isBurning()).isFalse();
+        MapPoint MapPoint = new MapPoint(5, 10);
+        MapPoint.addFlame();
+        MapPoint.addFlame();
+        assertThat(MapPoint.isBurning()).isTrue();
+        MapPoint.removeFlame();
+        MapPoint.removeFlame();
+        assertThat(MapPoint.isBurning()).isFalse();
     }
 
     @Test
     public void setImageShouldSetTheMemberWithTheAppropriateValue() throws Exception {
-        RMapPoint rMapPoint = new RMapPoint(5, 10);
+        MapPoint MapPoint = new MapPoint(5, 10);
         Image img = ImagesLoader.createImage("/images/icon.gif");
-        rMapPoint.setImage(img);
-        assertThat(rMapPoint.image).isEqualTo(img);
+        MapPoint.setImage(img);
+        assertThat(MapPoint.image).isEqualTo(img);
     }
 
     @Test
     public void setImagesShouldSetTheMemberWithTheAppropriateValue() throws Exception {
-        RMapPoint rMapPoint = new RMapPoint(5, 10);
+        MapPoint MapPoint = new MapPoint(5, 10);
         Image[] imgArray = new Image[1];
-        rMapPoint.setImages(imgArray, 1);
-        assertThat(rMapPoint.images).isEqualTo(imgArray);
+        MapPoint.setImages(imgArray, 1);
+        assertThat(MapPoint.images).isEqualTo(imgArray);
     }
 
     @Test
     public void setRefreshTimeShouldSetTheMemberWithTheAppropriateValue() throws Exception {
-        RMapPoint rMapPoint = new RMapPoint(5, 10);
-        rMapPoint.setRefreshTime(100);
-        assertThat(rMapPoint.refreshTime).isEqualTo(100);
+        MapPoint MapPoint = new MapPoint(5, 10);
+        MapPoint.setRefreshTime(100);
+        assertThat(MapPoint.refreshTime).isEqualTo(100);
     }
 
     @Test
     public void setImageAsBurnedShouldSetTheMemberWithAnImage() throws Exception {
         Image img = ImagesLoader.createImage("/images/icon.gif");
 
-        RMapPoint rMapPoint = mock(RMapPoint.class);
+        MapPoint MapPoint = mock(MapPoint.class);
         Mockito.doAnswer((t) -> {
-            rMapPoint.image = img;
+            MapPoint.image = img;
             return null;
-        }).when(rMapPoint).setImageAsBurned();
+        }).when(MapPoint).setImageAsBurned();
 
-        rMapPoint.setImageAsBurned();
-        assertThat(rMapPoint.image).isEqualTo(img);
+        MapPoint.setImageAsBurned();
+        assertThat(MapPoint.image).isEqualTo(img);
     }
 
     @Test
@@ -108,25 +108,25 @@ public class MapPointTest implements WithAssertions {
         CurrentTimeSupplier currentTimeSupplier = mock(CurrentTimeSupplier.class);
         Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(1000L));
 
-        RMapPoint rMapPoint = new RMapPoint(5, 10);
-        rMapPoint.setRefreshTime(100); // set the refresh time to 100ms.
-        rMapPoint.currentTimeSupplier = currentTimeSupplier;
+        MapPoint MapPoint = new MapPoint(5, 10);
+        MapPoint.setRefreshTime(100); // set the refresh time to 100ms.
+        MapPoint.currentTimeSupplier = currentTimeSupplier;
 
         Image[] imgArray = new Image[4];
         imgArray[0] = ImagesLoader.createImage("/images/icon.gif");
         imgArray[1] = ImagesLoader.createImage("/images/icon.gif");
         imgArray[2] = ImagesLoader.createImage("/images/icon.gif");
         imgArray[3] = ImagesLoader.createImage("/images/icon.gif");
-        rMapPoint.setImages(imgArray, 4);
-        rMapPoint.curImageIdx = 1; // fix it as it is randomly init.
+        MapPoint.setImages(imgArray, 4);
+        MapPoint.curImageIdx = 1; // fix it as it is randomly init.
 
-        rMapPoint.lastRefreshTs = 1000L; // current time - last refresh time < 100ms -> image no change.
-        assertThat(rMapPoint.updateImage()).isEqualTo(imgArray[1]);
-        rMapPoint.lastRefreshTs = 800L; // current time - last refresh time > 100ms -> image change.
-        assertThat(rMapPoint.updateImage()).isEqualTo(imgArray[2]);
-        rMapPoint.lastRefreshTs = 800L; // current time - last refresh time > 100ms -> image change.
-        assertThat(rMapPoint.updateImage()).isEqualTo(imgArray[3]);
-        rMapPoint.lastRefreshTs = 800L; // current time - last refresh time > 100ms -> image change.
-        assertThat(rMapPoint.updateImage()).isEqualTo(imgArray[0]);
+        MapPoint.lastRefreshTs = 1000L; // current time - last refresh time < 100ms -> image no change.
+        assertThat(MapPoint.updateImage()).isEqualTo(imgArray[1]);
+        MapPoint.lastRefreshTs = 800L; // current time - last refresh time > 100ms -> image change.
+        assertThat(MapPoint.updateImage()).isEqualTo(imgArray[2]);
+        MapPoint.lastRefreshTs = 800L; // current time - last refresh time > 100ms -> image change.
+        assertThat(MapPoint.updateImage()).isEqualTo(imgArray[3]);
+        MapPoint.lastRefreshTs = 800L; // current time - last refresh time > 100ms -> image change.
+        assertThat(MapPoint.updateImage()).isEqualTo(imgArray[0]);
     }
 }

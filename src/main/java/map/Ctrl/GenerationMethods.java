@@ -38,7 +38,7 @@ public class GenerationMethods {
                                                                   int perDynamicPathwayElt)
             throws CannotCreateMapElementException {
 
-        // check map.properties values (mapWidth and hMargin).
+        // check zelda.map.properties values (mapWidth and hMargin).
         if (mapWidth / 2 - patterns.getFirst().getWidth() - hMargin <= 0) {
             throw new CannotCreateMapElementException("not able to generate random colIdx when placing castles: "
                     + "the map width is too small or the horizontal margin too high according to the castles width.");

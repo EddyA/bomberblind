@@ -8,15 +8,15 @@ import java.awt.*;
 public class MapPatternTest implements WithAssertions {
 
     @Test
-    public void rMapPatternShouldSetMembersWithTheAppropriateValues() throws Exception {
+    public void MapPatternShouldSetMembersWithTheAppropriateValues() throws Exception {
         Image[] imgArray = new Image[20];
-        RMapPattern rMapPattern = new RMapPattern(imgArray, 4, 5, true, true, "myPattern");
+        MapPattern MapPattern = new MapPattern(imgArray, 4, 5, true, true, "myPattern");
 
-        assertThat(rMapPattern.getImageArray()).isEqualTo(imgArray);
-        assertThat(rMapPattern.getWidth()).isEqualTo(4);
-        assertThat(rMapPattern.getHeight()).isEqualTo(5);
-        assertThat(rMapPattern.isPathway()).isTrue();
-        assertThat(rMapPattern.isMutable()).isTrue();
-        assertThat(rMapPattern.getName()).isEqualTo("myPattern");
+        assertThat(MapPattern.getImageArray()).isEqualTo(imgArray);
+        assertThat(MapPattern.getWidth()).isEqualTo(4);
+        assertThat(MapPattern.getHeight()).isEqualTo(5);
+        assertThat(MapPattern.isPathway()).isTrue();
+        assertThat(MapPattern.isMutable()).isTrue();
+        assertThat(MapPattern.getName()).isEqualTo("myPattern");
     }
 }

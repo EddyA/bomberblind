@@ -2,11 +2,10 @@ package map.zelda;
 
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
-import utils.zelda.ZeldaMapProperties;
 
 public class ZeldaMapSettingTest implements WithAssertions {
 
-    final private String TEST_MAP_PROPERTIES_FILE = "/test.map.properties";
+    final private String TEST_MAP_PROPERTIES_FILE = "/test.zelda.map.properties";
 
     @Test
     public void rMapSettingShouldLoadExpectedValues() throws Exception {

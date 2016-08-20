@@ -1,17 +1,11 @@
 package map.zelda;
 
-import exceptions.InvalidMapConfigurationException;
-import utils.zelda.ZeldaMapProperties;
-
-import java.io.IOException;
+import map.abstracts.MapSettings;
 
 /**
- * Define the map size, margins and the number of elements to place onto it.
+ * Define the map dimensions, margins and the number of elements to place onto it.
  */
-public class ZeldaMapSetting {
-
-    private int mapWidth; // widht of the map (expressed in MapPoint).
-    private int mapHeight; // height of the map (expressed in MapPoint).
+public class ZeldaMapSetting extends MapSettings {
 
     private int verticalMargin; // vertical margin to put castles at a minimum of n cases (i.e n MapPoint) from the top/bottom of the map.
     private int horizontalMargin; // horizontal margin to put castles at exactly n cases (i.e n MapPoint) from the left/right sides of the map.
@@ -27,9 +21,8 @@ public class ZeldaMapSetting {
     private int perSingleObstacle; // the percentage of single obstacle to place among available cases.
     private int perSingleDynPathway; // the percentage of dynamic pathway to place among available cases.
 
-    ZeldaMapSetting(ZeldaMapProperties mapConfiguration) throws IOException, InvalidMapConfigurationException {
-        this.mapWidth = mapConfiguration.getMapSizeWidth();
-        this.mapHeight = mapConfiguration.getMapSizeHeight();
+    public ZeldaMapSetting(ZeldaMapProperties mapConfiguration) {
+        super(mapConfiguration);
         this.verticalMargin = mapConfiguration.getMapMarginVertical();
         this.horizontalMargin = mapConfiguration.getMapMarginHorizontal();
         this.nbWood1 = mapConfiguration.getMapElementNbWood1();
@@ -41,14 +34,6 @@ public class ZeldaMapSetting {
         this.perSingleMutable = mapConfiguration.getMapElementPerSingleMutable();
         this.perSingleObstacle = mapConfiguration.getMapElementPerSingleObstacle();
         this.perSingleDynPathway = mapConfiguration.getMapElementPerSingleDynPathway();
-    }
-
-    public int getMapWidth() {
-        return mapWidth;
-    }
-
-    public int getMapHeight() {
-        return mapHeight;
     }
 
     public int getVerticalMargin() {

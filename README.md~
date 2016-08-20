@@ -12,5 +12,5 @@ A bomberman alike game.
 - Bomberman and map Scrolling. 
   - The bomberman is centered to the screen and the map is scrolled until a border is reached.
   - When a border is reached, scrolling of the map is stopped and the bomberman starts moving.
-- Randomly create the map.
+- Randomly create the map with mutable/not mutable elements.
   - The number/proportion of elements is fully settable.

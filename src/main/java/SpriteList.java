@@ -1,4 +1,5 @@
 import images.ImagesLoader;
+import map.abstracts.Map;
 import map.zelda.ZeldaMap;
 import sprites.settled.Bomb;
 import sprites.settled.Flame;
@@ -17,12 +18,12 @@ public class SpriteList extends LinkedList<Sprite> {
     // create a temporary list to manage addings and avoid concurent accesses.
     LinkedList<Sprite> tmpList = new LinkedList<>();
 
-    private ZeldaMap zeldaMap;
+    private Map map;
     private int screenWidth; // widht of the screen (expressed in pixel).
     private int screenHeight; // height of the screen (expressed in pixel).
 
-    public SpriteList(ZeldaMap zeldaMap, int screenWidth, int screenHeight) {
-        this.zeldaMap = zeldaMap;
+    public SpriteList(Map map, int screenWidth, int screenHeight) {
+        this.map = map;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
     }
@@ -47,8 +48,8 @@ public class SpriteList extends LinkedList<Sprite> {
      * @param flameSize the flame size of the bomb
      */
     private void addBomb(LinkedList<Sprite> list, int rowIdx, int colIdx, int flameSize) {
-        if (!zeldaMap.getMapPointMatrix()[rowIdx][colIdx].isBombing()) {
-            zeldaMap.getMapPointMatrix()[rowIdx][colIdx].setBombing(true);
+        if (!map.getMapPointMatrix()[rowIdx][colIdx].isBombing()) {
+            map.getMapPointMatrix()[rowIdx][colIdx].setBombing(true);
             list.add(new Bomb(rowIdx, colIdx, flameSize));
         }
     }
@@ -62,16 +63,16 @@ public class SpriteList extends LinkedList<Sprite> {
      * @return true if the flame can be propagated, false it is stopped
      */
     private boolean addFlame(LinkedList<Sprite> list, int rowIdx, int colIdx) {
-        if (zeldaMap.getMapPointMatrix()[rowIdx][colIdx].isPathway()) {
-            zeldaMap.getMapPointMatrix()[rowIdx][colIdx].addFlame();
-            zeldaMap.getMapPointMatrix()[rowIdx][colIdx].setImageAsBurned();
+        if (map.getMapPointMatrix()[rowIdx][colIdx].isPathway()) {
+            map.getMapPointMatrix()[rowIdx][colIdx].addFlame();
+            map.getMapPointMatrix()[rowIdx][colIdx].setImageAsBurned();
             list.add(new Flame(rowIdx, colIdx));
             return true; // the next case can burn.
-        } else if (zeldaMap.getMapPointMatrix()[rowIdx][colIdx].isMutable() || zeldaMap.getMapPointMatrix()[rowIdx][colIdx].isBombing()) {
-            zeldaMap.getMapPointMatrix()[rowIdx][colIdx].setPathway(true);
-            zeldaMap.getMapPointMatrix()[rowIdx][colIdx].setMutable(false);
-            zeldaMap.getMapPointMatrix()[rowIdx][colIdx].addFlame();
-            zeldaMap.getMapPointMatrix()[rowIdx][colIdx].setImageAsBurned();
+        } else if (map.getMapPointMatrix()[rowIdx][colIdx].isMutable() || map.getMapPointMatrix()[rowIdx][colIdx].isBombing()) {
+            map.getMapPointMatrix()[rowIdx][colIdx].setPathway(true);
+            map.getMapPointMatrix()[rowIdx][colIdx].setMutable(false);
+            map.getMapPointMatrix()[rowIdx][colIdx].addFlame();
+            map.getMapPointMatrix()[rowIdx][colIdx].setImageAsBurned();
             list.add(new Flame(rowIdx, colIdx));
             return false; // the next case should not burn.
         } else {
@@ -100,7 +101,7 @@ public class SpriteList extends LinkedList<Sprite> {
 
         // place right flames.
         for (int i = 1, j = centralColIdx + 1;
-             i <= flameSize && j < zeldaMap.getMapWidth();
+             i <= flameSize && j < map.getMapWidth();
              i++, j++) { // from center to right.
             if (!addFlame(list, centralRowIdx, centralColIdx + i)) {
                 break; // break loop.
@@ -112,11 +113,11 @@ public class SpriteList extends LinkedList<Sprite> {
         for (int i = 1, j = centralRowIdx - 1;
              i <= flameSize && j >= 0;
              i++, j--) { // from center to upper.
-            if (zeldaMap.getMapPointMatrix()[centralRowIdx - i][centralColIdx].isPathway()) {
+            if (map.getMapPointMatrix()[centralRowIdx - i][centralColIdx].isPathway()) {
                 // as a pathway, this case must burn -> check the following one.
                 rowIdx++;
-            } else if (zeldaMap.getMapPointMatrix()[centralRowIdx - i][centralColIdx].isMutable() ||
-                    zeldaMap.getMapPointMatrix()[centralRowIdx - i][centralColIdx].isBombing()) {
+            } else if (map.getMapPointMatrix()[centralRowIdx - i][centralColIdx].isMutable() ||
+                    map.getMapPointMatrix()[centralRowIdx - i][centralColIdx].isBombing()) {
                 // as a mutable, this case must burn -> stop here.
                 rowIdx++;
                 break;
@@ -130,7 +131,7 @@ public class SpriteList extends LinkedList<Sprite> {
         addFlame(list, centralRowIdx, centralColIdx); // central case.
 
         for (int i = 1, j = centralRowIdx + 1;
-             i <= flameSize && j < zeldaMap.getMapHeight();
+             i <= flameSize && j < map.getMapHeight();
              i++, j++) { // from center to lower.
             if (!addFlame(list, centralRowIdx + i, centralColIdx)) {
                 break; // break loop.
@@ -166,10 +167,10 @@ public class SpriteList extends LinkedList<Sprite> {
                 // is it finished?
                 if (sprite.isFinished() ||
                         // OR is it on a burning case?
-                        zeldaMap.getMapPointMatrix()[sprite.getRowIdx()][sprite.getColIdx()].isBurning()) {
+                        map.getMapPointMatrix()[sprite.getRowIdx()][sprite.getColIdx()].isBurning()) {
                     // create flames.
                     addFlames(tmpList, sprite.getRowIdx(), sprite.getColIdx(), ((Bomb) sprite).getFlameSize());
-                    zeldaMap.getMapPointMatrix()[sprite.getRowIdx()][sprite.getColIdx()].setBombing(false);
+                    map.getMapPointMatrix()[sprite.getRowIdx()][sprite.getColIdx()].setBombing(false);
                     iterator.remove(); // remove it from the list.
                 }
                 // is the current sprite a flame?
@@ -178,7 +179,7 @@ public class SpriteList extends LinkedList<Sprite> {
                 if (sprite.isFinished()) {
                     // create conclusion flames.
                     addFlameEnd(tmpList, sprite.getRowIdx(), sprite.getColIdx());
-                    zeldaMap.getMapPointMatrix()[sprite.getRowIdx()][sprite.getColIdx()].removeFlame();
+                    map.getMapPointMatrix()[sprite.getRowIdx()][sprite.getColIdx()].removeFlame();
                     iterator.remove(); // remove it from the list.
                 }
             } else { // for all the other sprites.

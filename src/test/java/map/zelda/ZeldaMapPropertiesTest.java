@@ -1,12 +1,13 @@
-package utils.zelda;
+package map.zelda;
 
 import exceptions.InvalidMapConfigurationException;
+import map.zelda.ZeldaMapProperties;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
 public class ZeldaMapPropertiesTest implements WithAssertions {
 
-    final private String TEST_MAP_PROPERTIES_FILE = "/test.map.properties";
+    final private String TEST_MAP_PROPERTIES_FILE = "/test.zelda.map.properties";
 
     @Test
     public void loadAndCheckPropertiesShouldLoadExpectedValues() throws Exception {
@@ -60,11 +61,12 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
         zeldaMapProperties.loadProperties();
 
         // set a field with a bad value.
-        zeldaMapProperties.properties.setProperty(ZeldaMapProperties.MAP_SIZE_WIDTH, "notAnIntegerConvertibleString");
+        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY,
+                "notAnIntegerConvertibleString");
 
         assertThatThrownBy(zeldaMapProperties::checkProperties)
                 .isInstanceOf(InvalidMapConfigurationException.class)
-                .hasMessage("'/test.map.properties' is not a valid properties file: "
+                .hasMessage("'/test.zelda.map.properties' is not a valid properties file: "
                         + "some field are missing or not integer convertible.");
     }
 
@@ -74,11 +76,11 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
         zeldaMapProperties.loadProperties();
 
         // remove a mandatory field.
-        zeldaMapProperties.properties.remove(ZeldaMapProperties.MAP_SIZE_WIDTH);
+        zeldaMapProperties.getProperties().remove(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY);
 
         assertThatThrownBy(zeldaMapProperties::checkProperties)
                 .isInstanceOf(InvalidMapConfigurationException.class)
-                .hasMessage("'/test.map.properties' is not a valid properties file: "
+                .hasMessage("'/test.zelda.map.properties' is not a valid properties file: "
                         + "some field are missing or not integer convertible.");
     }
 
@@ -88,13 +90,13 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
         zeldaMapProperties.loadProperties();
 
         // set percentage fields too high values (i.e. sum(percentage) > 100).
-        zeldaMapProperties.properties.setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_MUTABLE, "50");
-        zeldaMapProperties.properties.setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_OBSTACLE, "40");
-        zeldaMapProperties.properties.setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY, "30");
+        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_MUTABLE, "50");
+        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_OBSTACLE, "40");
+        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY, "30");
 
         assertThatThrownBy(zeldaMapProperties::checkProperties)
                 .isInstanceOf(InvalidMapConfigurationException.class)
-                .hasMessage("'/test.map.properties' is not a valid properties file: "
+                .hasMessage("'/test.zelda.map.properties' is not a valid properties file: "
                         + "sum of the percentage cannot exceed 100.");
     }
 }

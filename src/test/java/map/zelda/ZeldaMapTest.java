@@ -21,16 +21,15 @@ public class ZeldaMapTest implements WithAssertions {
         Mockito.when(zeldaMapSetting.getMapWidth()).thenReturn(MAP_WIDTH);
 
         // create the ZeldaMap and set the ZeldaMapSetting with mocked instance.
-        ZeldaMap zeldaMap = new ZeldaMap(SCREEN_WIDTH, SCREEN_HEIGHT);
-        zeldaMap.zeldaMapSetting = zeldaMapSetting;
+        ZeldaMap map = new ZeldaMap(zeldaMapSetting, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        assertThat(zeldaMap.getMapWidth()).isEqualTo(MAP_WIDTH);
-        assertThat(zeldaMap.getMapHeight()).isEqualTo(MAP_HEIGHT);
-        assertThat(zeldaMap.screenWidth).isEqualTo(SCREEN_WIDTH);
-        assertThat(zeldaMap.screenHeight).isEqualTo(SCREEN_HEIGHT);
-        for (int rowIdx = 0; rowIdx < zeldaMap.getMapHeight(); rowIdx++) {
-            for (int colIdx = 0; colIdx < zeldaMap.getMapWidth(); colIdx++) {
-                assertThat(zeldaMap.getMapPointMatrix()[rowIdx][colIdx]).isNotNull();
+        assertThat(map.getMapWidth()).isEqualTo(MAP_WIDTH);
+        assertThat(map.getMapHeight()).isEqualTo(MAP_HEIGHT);
+        assertThat(map.getScreenWidth()).isEqualTo(SCREEN_WIDTH);
+        assertThat(map.getScreenHeight()).isEqualTo(SCREEN_HEIGHT);
+        for (int rowIdx = 0; rowIdx < map.getMapHeight(); rowIdx++) {
+            for (int colIdx = 0; colIdx < map.getMapWidth(); colIdx++) {
+                assertThat(map.getMapPointMatrix()[rowIdx][colIdx]).isNotNull();
             }
         }
     }

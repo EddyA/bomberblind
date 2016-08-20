@@ -1,25 +1,20 @@
-package utils.zelda;
+package map.zelda;
 
 import com.google.common.base.Preconditions;
 import exceptions.InvalidMapConfigurationException;
+import map.abstracts.MapProperties;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Properties;
 
 import static utils.Tools.isValidInteger;
 
 /**
- * Open and read the map properties file.
+ * Open, read and check a zelda map properties file.
  */
-public class ZeldaMapProperties {
+public class ZeldaMapProperties extends MapProperties {
 
-    final private String MAP_PROPERTIES_FILE = "/map.properties";
-
-    // properties field name.
-    final protected static String MAP_SIZE_WIDTH = "map.size.width";
-    final private static String MAP_SIZE_HEIGHT = "map.size.height";
     final private static String MAP_MARGIN_VERTICAL = "map.margin.vertical";
     final private static String MAP_MARGIN_HORIZONTAL = "map.margin.horizontal";
     final private static String MAP_ELEMENT_NB_WOOD1 = "map.element.woods1.number";
@@ -32,36 +27,8 @@ public class ZeldaMapProperties {
     final protected static String MAP_ELEMENT_PER_SINGLE_OBSTACLE = "map.element.single.obstacle.percentage";
     final protected static String MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY = "map.element.single.dynamic.pathway.percentage";
 
-    protected String mapPropertiesFile;
-    protected Properties properties = new Properties();
-
-    /**
-     * Load and check the default map properties file.
-     *
-     * @throws IOException
-     * @throws InvalidMapConfigurationException
-     */
-    public ZeldaMapProperties() throws IOException, InvalidMapConfigurationException {
-        this.mapPropertiesFile = MAP_PROPERTIES_FILE;
-    }
-
-    /**
-     * Load and check a particular map properties file.
-     * Note: this constructor has been declare for test purpose.
-     *
-     * @throws IOException                      if the properties file cannot be opened
-     * @throws InvalidMapConfigurationException if properties file has not been set or cannot be found
-     */
     public ZeldaMapProperties(String mapPropertiesFile) {
-        this.mapPropertiesFile = mapPropertiesFile;
-    }
-
-    public int getMapSizeWidth() {
-        return Integer.parseInt(properties.getProperty(MAP_SIZE_WIDTH));
-    }
-
-    public int getMapSizeHeight() {
-        return Integer.parseInt(properties.getProperty(MAP_SIZE_HEIGHT));
+        super(mapPropertiesFile);
     }
 
     public int getMapMarginVertical() {
@@ -108,13 +75,7 @@ public class ZeldaMapProperties {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY));
     }
 
-    /**
-     * Load all properties from the map file properties.
-     *
-     * @throws IOException                      if the properties file cannot be opened
-     * @throws InvalidMapConfigurationException if properties file has not been set or cannot be found
-     */
-    public void loadProperties()
+    public ZeldaMapProperties loadProperties()
             throws IllegalArgumentException, IOException, InvalidMapConfigurationException {
         Preconditions.checkArgument((mapPropertiesFile != null) &&
                 !mapPropertiesFile.isEmpty(), "map properties file not set.");
@@ -124,14 +85,10 @@ public class ZeldaMapProperties {
         }
         InputStream inputStream = configurationFile.openStream();
         properties.load(inputStream);
+        return this;
     }
 
-    /**
-     * Check all properties of the map file properties.
-     *
-     * @throws InvalidMapConfigurationException if at least one propertie is badly set.
-     */
-    public void checkProperties() throws InvalidMapConfigurationException {
+    public ZeldaMapProperties checkProperties() throws InvalidMapConfigurationException {
         if (!isValidInteger(properties.getProperty(MAP_SIZE_WIDTH)) ||
                 !isValidInteger(properties.getProperty(MAP_SIZE_HEIGHT)) ||
                 !isValidInteger(properties.getProperty(MAP_MARGIN_VERTICAL)) ||
@@ -155,5 +112,6 @@ public class ZeldaMapProperties {
             throw new InvalidMapConfigurationException("'" + mapPropertiesFile + "' is not a valid properties file: "
                     + "sum of the percentage cannot exceed 100.");
         }
+        return this;
     }
 }
