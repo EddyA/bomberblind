@@ -3,7 +3,8 @@ package map.zelda;
 import map.abstracts.MapSettings;
 
 /**
- * Define the map dimensions, margins and the number of elements to place onto it.
+ * This class extends {@link MapSettings}.
+ * Based on {@link ZeldaMapProperties}, it contains all the properties requiered to randomly generate a zelda map.
  */
 public class ZeldaMapSetting extends MapSettings {
 

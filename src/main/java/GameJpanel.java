@@ -55,7 +55,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
         // create a list to handle pressed key.
         pressedKeyList = new ArrayList<>();
-        pressedKeyList.add(0L);
+        pressedKeyList.add(0L); // add the "wait" status.
 
         setFocusable(true);
         requestFocusInWindow();

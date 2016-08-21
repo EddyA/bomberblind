@@ -17,7 +17,7 @@ import static map.zelda.ZeldaMapPatterns.*;
 
 public class ZeldaMap extends map.abstracts.Map {
     protected ZeldaMapSetting zeldaMapSetting;
-    protected MapPoint firstCastleStartPoint; // north/west castle MapPoint.
+    protected MapPoint castleStartPoint; // castle start point (north/west MapPoint).
 
     public ZeldaMap(ZeldaMapSetting zeldaMapSetting, int screenWidth, int screenHeight)
             throws IOException, InvalidMapConfigurationException, CannotCreateMapElementException {
@@ -44,7 +44,7 @@ public class ZeldaMap extends map.abstracts.Map {
                 zeldaMapSetting.getMapWidth(), zeldaMapSetting.getMapHeight(), zeldaMapSetting.getHorizontalMargin(),
                 tree1.getHeight(), edge.getHeight(), zeldaMapSetting.getVerticalMargin(), castlePatterns,
                 zeldaMapSetting.getPerSingleDynPathway());
-        firstCastleStartPoint = spCastles.getFirst();
+        castleStartPoint = spCastles.getFirst();
 
         // place complex elements.
         java.util.Map<MapPattern, Integer> complexEltPatterns = new HashMap<>();
@@ -65,9 +65,9 @@ public class ZeldaMap extends map.abstracts.Map {
     public Tuple2<Integer, Integer> computeInitialBbManPosition() {
 
         // compute the initial BbMan position in order to be in front of the 1st castle door.
-        int xBbManOnMap = firstCastleStartPoint.getColIdx() * IMAGE_SIZE +
+        int xBbManOnMap = castleStartPoint.getColIdx() * IMAGE_SIZE +
                 (castle1.getWidth() * IMAGE_SIZE / 2);
-        int yBbManOnMap = firstCastleStartPoint.getRowIdx() * IMAGE_SIZE +
+        int yBbManOnMap = castleStartPoint.getRowIdx() * IMAGE_SIZE +
                 (castle1.getHeight() * IMAGE_SIZE) + (IMAGE_SIZE / 2);
         return new Tuple2<>(xBbManOnMap, yBbManOnMap);
     }

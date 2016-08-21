@@ -11,7 +11,8 @@ import java.net.URL;
 import static utils.Tools.isValidInteger;
 
 /**
- * Open, read and check a zelda map properties file.
+ * This class extends {@link MapProperties}.
+ * It Opens, reads and checks a zelda map properties file.
  */
 public class ZeldaMapProperties extends MapProperties {
 
