@@ -32,7 +32,7 @@ public class ImagesLoader {
     public final static int NB_BBMAN_WALK_FRAME = 4;
     public final static int NB_BBMAN_WIN_FRAME = 8;
 
-    // - blue BbMan.
+    // - blue Bomber.
     public static int blueBbManDeathMatrixRowIdx;
     public static int blueBbManWaitMatrixRowIdx;
     public static int blueBbManWalkBackMatrixRowIdx;
@@ -117,7 +117,7 @@ public class ImagesLoader {
         imagesMatrix = new Image[NB_MATRIX_ROW][NB_MATRIX_COL];
 
         // bbmans:
-        // - blue BbMan.
+        // - blue Bomber.
         for (int i = 0; i < NB_BBMAN_DEATH_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(BBMAN_SKIN_DIR + "/blue/death_" + imageIdx + ".png");

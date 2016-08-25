@@ -11,7 +11,7 @@ import java.util.List;
 
 import static images.ImagesLoader.IMAGE_SIZE;
 
-public class CharacterMethodsTest implements WithAssertions {
+public class NomadMethodsTest implements WithAssertions {
 
     private final int MAP_WIDTH = 20;
     private final int MAP_HEIGHT = 10;

@@ -1,12 +1,12 @@
 package sprites.settled;
 
 import images.ImagesLoader;
-import sprites.settled.abstracts.TSprite;
+import sprites.settled.abstracts.TimedSettled;
 
 /**
  * A bomb.
  */
-public class Bomb extends TSprite {
+public class Bomb extends TimedSettled {
 
     private int flamesize;
 

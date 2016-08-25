@@ -1,12 +1,12 @@
 package sprites.settled;
 
 import images.ImagesLoader;
-import sprites.settled.abstracts.LSprite;
+import sprites.settled.abstracts.LoopedSettled;
 
 /**
  * A conclusion flame.
  */
-public class FlameEnd extends LSprite {
+public class FlameEnd extends LoopedSettled {
 
     /**
      * Create a conclusion flame.

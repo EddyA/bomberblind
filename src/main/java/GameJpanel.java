@@ -5,8 +5,8 @@ import map.ctrl.CharacterMethods;
 import map.zelda.ZeldaMap;
 import map.zelda.ZeldaMapProperties;
 import map.zelda.ZeldaMapSetting;
-import sprites.nomad.BbManBlue;
-import sprites.nomad.abstracts.BbMan;
+import sprites.nomad.BomberBlue;
+import sprites.nomad.abstracts.Bomber;
 import utils.Tuple2;
 
 import javax.swing.*;
@@ -25,8 +25,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private final int MAP_HEIGHT = 32;
 
     private map.abstracts.Map map;
-    private BbManBlue bbMan;
-    private SpriteList spriteList;
+    private BomberBlue bbMan;
+    private NomadList nomadList;
+    private SettledList settledList;
     private List<Long> pressedKeyList;
 
     private int xBbManPosOnScreen;
@@ -46,12 +47,16 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         map = new ZeldaMap(new ZeldaMapSetting(mapProperties), widthScreen, heightScreen);
         map.generateMap();
 
-        // create the BbMan.
+        // create the Bomber.
         Tuple2<Integer, Integer> bbManInitialPosition = map.computeInitialBbManPosition();
-        bbMan = new BbManBlue(bbManInitialPosition.getFirst(), bbManInitialPosition.getSecond());
+        bbMan = new BomberBlue(bbManInitialPosition.getFirst(), bbManInitialPosition.getSecond());
 
         // create a list of sprites.
-        spriteList = new SpriteList(map, widthScreen, heightScreen);
+        nomadList = new NomadList(map, widthScreen, heightScreen);
+        settledList = new SettledList(map, widthScreen, heightScreen);
+
+        // ToDo: Just a test ...
+        nomadList.addCloakedSkeleton(bbManInitialPosition.getFirst() + 60, bbManInitialPosition.getSecond());
 
         // create a list to handle pressed key.
         pressedKeyList = new ArrayList<>();
@@ -67,7 +72,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     }
 
     /**
-     * Update the BbMap position on screen function of the BbMan map position.
+     * Update the BbMap position on screen function of the Bomber map position.
      */
     private void updateBbManPosOnScreen() {
         if (bbMan.getXMap() < getWidth() / 2) { // left side.
@@ -87,7 +92,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     }
 
     /**
-     * Update the ZeldaMap start position on screen function of the BbMan map position.
+     * Update the ZeldaMap start position on screen function of the Bomber map position.
      */
     private void updateMapStartPosOnScreen() {
         if (bbMan.getXMap() < getWidth() / 2) {
@@ -111,7 +116,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         Graphics2D g2d = (Graphics2D) g;
         try {
             map.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
-            spriteList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
+            nomadList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
+            settledList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             bbMan.paintBuffer(g2d, xBbManPosOnScreen, yBbManPosOnScreen);
         } catch (Exception e) {
             System.err.println("GameJPanel.paintComponent(): " + e.getMessage());
@@ -137,7 +143,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     }
 
     /**
-     * Shift BbMan of a pixel to help him finding the way (if possible).
+     * Shift Bomber of a pixel to help him finding the way (if possible).
      *
      * @param pressedKey the pressed key
      */
@@ -207,7 +213,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     public void run() {
         while (true) {
             try {
-                if (bbMan.getStatus() == BbMan.status.STATUS_DEAD) {
+                if (bbMan.getStatus() == Bomber.status.STATUS_DEAD) {
                     if (bbMan.isFinished()) {
                         bbMan.initStatement();
                     }
@@ -218,11 +224,11 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case 0: {
-                            bbMan.setStatus(BbMan.status.STATUS_WAIT);
+                            bbMan.setStatus(Bomber.status.STATUS_WAIT);
                             break;
                         }
                         case KeyEvent.VK_UP: {
-                            bbMan.setStatus(BbMan.status.STATUS_WALK_BACK);
+                            bbMan.setStatus(Bomber.status.STATUS_WALK_BACK);
                             if (!CharacterMethods.isCharacterCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     bbMan.getXMap(), bbMan.getYMap() - 1)) {
                                 if (!CharacterMethods.isCharacterCrossingObstacle(map.getMapPointMatrix(),
@@ -238,7 +244,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case KeyEvent.VK_DOWN: {
-                            bbMan.setStatus(BbMan.status.STATUS_WALK_FRONT);
+                            bbMan.setStatus(Bomber.status.STATUS_WALK_FRONT);
                             if (!CharacterMethods.isCharacterCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     bbMan.getXMap(), bbMan.getYMap() + 1)) {
                                 if (!CharacterMethods.isCharacterCrossingObstacle(map.getMapPointMatrix(),
@@ -254,7 +260,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case KeyEvent.VK_LEFT: {
-                            bbMan.setStatus(BbMan.status.STATUS_WALK_LEFT);
+                            bbMan.setStatus(Bomber.status.STATUS_WALK_LEFT);
                             if (!CharacterMethods.isCharacterCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     bbMan.getXMap() - 1, bbMan.getYMap())) {
                                 if (!CharacterMethods.isCharacterCrossingObstacle(map.getMapPointMatrix(),
@@ -270,7 +276,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case KeyEvent.VK_RIGHT: {
-                            bbMan.setStatus(BbMan.status.STATUS_WALK_RIGHT);
+                            bbMan.setStatus(Bomber.status.STATUS_WALK_RIGHT);
                             if (!CharacterMethods.isCharacterCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     bbMan.getXMap() + 1, bbMan.getYMap())) {
                                 if (!CharacterMethods.isCharacterCrossingObstacle(map.getMapPointMatrix(),
@@ -286,11 +292,11 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case KeyEvent.VK_B: {
-                            spriteList.addBomb(bbMan.getYMap() / IMAGE_SIZE, bbMan.getXMap() / IMAGE_SIZE, 5);
+                            settledList.addBomb(bbMan.getYMap() / IMAGE_SIZE, bbMan.getXMap() / IMAGE_SIZE, 5);
                             break;
                         }
                         case KeyEvent.VK_W: {
-                            bbMan.setStatus(BbMan.status.STATUS_WIN);
+                            bbMan.setStatus(Bomber.status.STATUS_WIN);
                             break;
                         }
                     }
@@ -299,10 +305,10 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     if (!bbMan.isInvincible() &&
                             CharacterMethods.isCharacterBurning(map.getMapPointMatrix(), map.getMapWidth(),
                                     map.getMapHeight(), bbMan.getXMap(), bbMan.getYMap())) {
-                        bbMan.setStatus(BbMan.status.STATUS_DEAD);
+                        bbMan.setStatus(Bomber.status.STATUS_DEAD);
                     }
                 }
-                spriteList.clean();
+                settledList.clean();
                 repaint();
                 Thread.sleep(4);
             } catch (InterruptedException | OutOfMapBoundsException e) {

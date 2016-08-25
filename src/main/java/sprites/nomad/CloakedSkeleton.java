@@ -18,11 +18,11 @@ public class CloakedSkeleton extends Enemy {
                            int yMap) {
         super(xMap,
                 yMap,
-                ImagesLoader.imagesMatrix[ImagesLoader.blueBbManWalkBackMatrixRowIdx],
-                ImagesLoader.imagesMatrix[ImagesLoader.blueBbManWalkFrontMatrixRowIdx],
-                ImagesLoader.imagesMatrix[ImagesLoader.blueBbManWalkLeftMatrixRowIdx],
-                ImagesLoader.imagesMatrix[ImagesLoader.blueBbManWalkRightMatrixRowIdx],
-                ImagesLoader.NB_BBMAN_WALK_FRAME,
+                ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkBackMatrixRowIdx],
+                ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkFrontMatrixRowIdx],
+                ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkLeftMatrixRowIdx],
+                ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkRightMatrixRowIdx],
+                ImagesLoader.NB_ENEMY_WALK_FRAME,
                 100); // create the BbMan.
     }
 }

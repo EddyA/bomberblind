@@ -53,10 +53,10 @@ public abstract class Map {
     public abstract void generateMap() throws CannotCreateMapElementException;
 
     /**
-     * Compute the initial BbMan position on map.
+     * Compute the initial Bomber position on map.
      * This function must be called after generateMap().
      *
-     * @return the initial BbMan position on map
+     * @return the initial Bomber position on map (in pixel)
      */
     public abstract Tuple2<Integer, Integer> computeInitialBbManPosition();
 

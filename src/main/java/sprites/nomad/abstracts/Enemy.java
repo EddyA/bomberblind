@@ -6,11 +6,12 @@ import java.awt.*;
 
 import static sprites.nomad.abstracts.Enemy.status.NO_STATUS;
 import static sprites.nomad.abstracts.Enemy.status.STATUS_DEAD;
+import static sprites.nomad.abstracts.Enemy.status.STATUS_WALK_FRONT;
 
 /**
  * Abstract class of an enemy.
  */
-public abstract class Enemy extends Character {
+public abstract class Enemy extends Nomad {
     protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
     /**
@@ -37,7 +38,7 @@ public abstract class Enemy extends Character {
     private int refreshTime; // refresh time (in ms).
     private long lastRefreshTs; // last refresh timestamp.
 
-    private boolean isFinished; // is the BbMan dead and the sprite finished?
+    private boolean isFinished; // is the Bomber dead and the sprite finished?
 
     public Enemy(int xMap,
                  int yMap,
@@ -48,8 +49,8 @@ public abstract class Enemy extends Character {
                  int nbWalkFrame,
                  int refreshTime) {
         super(xMap, yMap);
-        this.status = NO_STATUS;
-        this.lastStatus = NO_STATUS;
+        this.status = STATUS_WALK_FRONT;
+        this.lastStatus = STATUS_WALK_FRONT;
         this.walkBackImages = walkBackImages;
         this.walkFrontImages = walkFrontImages;
         this.walkLeftImages = walkLeftImages;

@@ -1,12 +1,12 @@
 package sprites.settled;
 
 import images.ImagesLoader;
-import sprites.settled.abstracts.TSprite;
+import sprites.settled.abstracts.TimedSettled;
 
 /**
  * A flame.
  */
-public class Flame extends TSprite {
+public class Flame extends TimedSettled {
 
     /**
      * Create a flame.

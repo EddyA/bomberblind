@@ -1,21 +1,21 @@
 package sprites.nomad;
 
 import images.ImagesLoader;
-import sprites.nomad.abstracts.BbMan;
+import sprites.nomad.abstracts.Bomber;
 
 /**
- * A blue BbMan.
+ * A blue bomber.
  */
-public class BbManBlue extends BbMan {
+public class BomberBlue extends Bomber {
 
     /**
-     * Create a blue BbMan.
+     * Create a blue bomber.
      *
      * @param xMap abscissa on the map.
      * @param yMap ordinate on the map.
      */
-    public BbManBlue(int xMap,
-                     int yMap) {
+    public BomberBlue(int xMap,
+                      int yMap) {
         super(xMap,
                 yMap,
                 ImagesLoader.imagesMatrix[ImagesLoader.blueBbManDeathMatrixRowIdx],
