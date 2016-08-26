@@ -1,17 +1,14 @@
-import images.ImagesLoader;
-import map.abstracts.Map;
-import sprites.nomad.CloakedSkeleton;
-import sprites.nomad.abstracts.Enemy;
-import sprites.nomad.abstracts.Nomad;
-import sprites.settled.abstracts.Settled;
-
-import java.awt.*;
-import java.util.LinkedList;
-
 import static images.ImagesLoader.IMAGE_SIZE;
 
+import java.awt.Graphics;
+import java.util.LinkedList;
+
+import map.abstracts.Map;
+import sprites.nomad.CloakedSkeleton;
+import sprites.nomad.abstracts.Nomad;
+
 /**
- * List of nomad item.
+ * List of nomad items.
  */
 public class NomadList extends LinkedList<Nomad> {
 

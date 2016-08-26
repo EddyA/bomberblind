@@ -30,6 +30,6 @@ public class BomberBlue extends Bomber {
                 ImagesLoader.imagesMatrix[ImagesLoader.blueBbManWinMatrixRowIdx],
                 ImagesLoader.NB_BBMAN_WIN_FRAME,
                 100,
-                2500); // create the BbMan.
+                2500);
     }
 }

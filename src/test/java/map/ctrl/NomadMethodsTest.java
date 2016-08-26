@@ -1,15 +1,15 @@
 package map.ctrl;
 
-import exceptions.OutOfMapBoundsException;
-import map.MapPoint;
-import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import static images.ImagesLoader.IMAGE_SIZE;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import static images.ImagesLoader.IMAGE_SIZE;
+import org.assertj.core.api.WithAssertions;
+import org.junit.Test;
+
+import map.MapPoint;
 
 public class NomadMethodsTest implements WithAssertions {
 
@@ -18,35 +18,35 @@ public class NomadMethodsTest implements WithAssertions {
 
     @Test
     public void getTopRowIdxIfOrdIsShouldReturnTheAppropriateValue() throws Exception {
-        assertThat(CharacterMethods.getTopRowIdxIfOrdIs(10)).isEqualTo(-1); // negative  case.
-        assertThat(CharacterMethods.getTopRowIdxIfOrdIs(14)).isEqualTo(-1); // limit before negative  case.
-        assertThat(CharacterMethods.getTopRowIdxIfOrdIs(20)).isEqualTo(0); // standard case.
-        assertThat(CharacterMethods.getTopRowIdxIfOrdIs(44)).isEqualTo(0); // limit before moving to another case.
-        assertThat(CharacterMethods.getTopRowIdxIfOrdIs(45)).isEqualTo(1); // moving to another case.
+        assertThat(NomadMethods.getTopRowIdxIfOrdIs(10)).isEqualTo(-1); // negative case.
+        assertThat(NomadMethods.getTopRowIdxIfOrdIs(14)).isEqualTo(-1); // limit before negative case.
+        assertThat(NomadMethods.getTopRowIdxIfOrdIs(20)).isEqualTo(0); // standard case.
+        assertThat(NomadMethods.getTopRowIdxIfOrdIs(44)).isEqualTo(0); // limit before moving to another case.
+        assertThat(NomadMethods.getTopRowIdxIfOrdIs(45)).isEqualTo(1); // moving to another case.
     }
 
     @Test
     public void getBottomRowIdxIfOrdIsShouldReturnTheAppropriateValue() throws Exception {
-        assertThat(CharacterMethods.getBottomRowIdxIfOrdIs(20)).isEqualTo(0); // standard case.
-        assertThat(CharacterMethods.getBottomRowIdxIfOrdIs(29)).isEqualTo(0); // limit before moving to another case.
-        assertThat(CharacterMethods.getBottomRowIdxIfOrdIs(30)).isEqualTo(1); // moving to another case.
+        assertThat(NomadMethods.getBottomRowIdxIfOrdIs(20)).isEqualTo(0); // standard case.
+        assertThat(NomadMethods.getBottomRowIdxIfOrdIs(29)).isEqualTo(0); // limit before moving to another case.
+        assertThat(NomadMethods.getBottomRowIdxIfOrdIs(30)).isEqualTo(1); // moving to another case.
 
     }
 
     @Test
     public void getMostLeftRowIdxIfOrdIsShouldReturnTheAppropriateValue() throws Exception {
-        assertThat(CharacterMethods.getMostLeftColIdxIfAbsIs(10)).isEqualTo(-1); // negative  case.
-        assertThat(CharacterMethods.getMostLeftColIdxIfAbsIs(14)).isEqualTo(-1); // limit before negative  case.
-        assertThat(CharacterMethods.getMostLeftColIdxIfAbsIs(30)).isEqualTo(0); // standard case.
-        assertThat(CharacterMethods.getMostLeftColIdxIfAbsIs(44)).isEqualTo(0); // limit before moving to another case.
-        assertThat(CharacterMethods.getMostLeftColIdxIfAbsIs(45)).isEqualTo(1); // moving to another case.
+        assertThat(NomadMethods.getMostLeftColIdxIfAbsIs(10)).isEqualTo(-1); // negative case.
+        assertThat(NomadMethods.getMostLeftColIdxIfAbsIs(14)).isEqualTo(-1); // limit before negative case.
+        assertThat(NomadMethods.getMostLeftColIdxIfAbsIs(30)).isEqualTo(0); // standard case.
+        assertThat(NomadMethods.getMostLeftColIdxIfAbsIs(44)).isEqualTo(0); // limit before moving to another case.
+        assertThat(NomadMethods.getMostLeftColIdxIfAbsIs(45)).isEqualTo(1); // moving to another case.
     }
 
     @Test
     public void getMostRightRowIdxIfOrdIsShouldReturnTheAppropriateValue() throws Exception {
-        assertThat(CharacterMethods.getMostRightColIdxIfAbsIs(30)).isEqualTo(1); // standard case.
-        assertThat(CharacterMethods.getMostRightColIdxIfAbsIs(45)).isEqualTo(1); // limit before moving to another case.
-        assertThat(CharacterMethods.getMostRightColIdxIfAbsIs(46)).isEqualTo(2); // moving to another case.
+        assertThat(NomadMethods.getMostRightColIdxIfAbsIs(30)).isEqualTo(1); // standard case.
+        assertThat(NomadMethods.getMostRightColIdxIfAbsIs(45)).isEqualTo(1); // limit before moving to another case.
+        assertThat(NomadMethods.getMostRightColIdxIfAbsIs(46)).isEqualTo(2); // moving to another case.
     }
 
     @Test
@@ -71,9 +71,10 @@ public class NomadMethodsTest implements WithAssertions {
             for (int yChar = 0; yChar < MAP_HEIGHT * IMAGE_SIZE; yChar++) {
                 if ((xChar < leftMapLimit) || (xChar > rightMapLimit) ||
                         (yChar < topMapLimit) || (yChar > bottomMapLimit)) {
-                    assertThat(CharacterMethods.isCharacterCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue(); // crossing.
+                    assertThat(NomadMethods.isNomadCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue(); // crossing.
                 } else {
-                    assertThat(CharacterMethods.isCharacterCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isFalse(); // not crossing.
+                    assertThat(NomadMethods.isNomadCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isFalse(); // not
+                                                                                                                     // crossing.
                 }
             }
         }
@@ -114,16 +115,16 @@ public class NomadMethodsTest implements WithAssertions {
                             (yChar > topObsLimit) && (yChar < bottomObsLimit)) {
 
                         // assert that the character is crossing an obstacle.
-                        assertThat(CharacterMethods.isCharacterCrossingObstacle(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
+                        assertThat(NomadMethods.isNomadCrossingObstacle(mapPointMatrix, xChar, yChar)).isTrue();
                     } else {
 
                         // assert that the character is not crossing an obstacle.
-                        assertThat(CharacterMethods.isCharacterCrossingObstacle(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isFalse();
+                        assertThat(NomadMethods.isNomadCrossingObstacle(mapPointMatrix, xChar, yChar)).isFalse();
                     }
-                } catch (OutOfMapBoundsException e) {
+                } catch (Exception e) {
 
                     // assert that an exception has been thrown because the character is crossing the map limits.
-                    assertThat(CharacterMethods.isCharacterCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
+                    assertThat(NomadMethods.isNomadCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
                 }
             }
         }
@@ -164,16 +165,16 @@ public class NomadMethodsTest implements WithAssertions {
                             (yChar > topFlameLimit) && (yChar < bottomFlameLimit)) {
 
                         // assert that the character is crossing a flame.
-                        assertThat(CharacterMethods.isCharacterBurning(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
+                        assertThat(NomadMethods.isNomadBurning(mapPointMatrix, xChar, yChar)).isTrue();
                     } else {
 
                         // assert that the character is not crossing a flame.
-                        assertThat(CharacterMethods.isCharacterBurning(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isFalse();
+                        assertThat(NomadMethods.isNomadBurning(mapPointMatrix, xChar, yChar)).isFalse();
                     }
-                } catch (OutOfMapBoundsException e) {
+                } catch (Exception e) {
 
                     // assert that an exception has been thrown because the character is crossing the map limits.
-                    assertThat(CharacterMethods.isCharacterCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
+                    assertThat(NomadMethods.isNomadCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
                 }
             }
         }
@@ -227,16 +228,18 @@ public class NomadMethodsTest implements WithAssertions {
                                         (xChar == leftBombLimit + 1) && keyEvent == KeyEvent.VK_RIGHT) ||
                                 ((yChar > topBombLimit) && (yChar < bottomBombLimit) &&
                                         (xChar == rightBombLimit - 1) && keyEvent == KeyEvent.VK_LEFT)) {
-                            assertThat(CharacterMethods.isCharacterCrossingBomb(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar, keyEvent)).isTrue();
+                            assertThat(NomadMethods.isNomadCrossingBomb(mapPointMatrix, xChar, yChar, keyEvent))
+                                    .isTrue();
                         } else {
 
                             // assert that the character is not crossing a flame.
-                            assertThat(CharacterMethods.isCharacterCrossingBomb(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar, keyEvent)).isFalse();
+                            assertThat(NomadMethods.isNomadCrossingBomb(mapPointMatrix, xChar, yChar, keyEvent))
+                                    .isFalse();
                         }
-                    } catch (OutOfMapBoundsException e) {
+                    } catch (Exception e) {
 
                         // assert that an exception has been thrown because the character is crossing the map limits.
-                        assertThat(CharacterMethods.isCharacterCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
+                        assertThat(NomadMethods.isNomadCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
                     }
                 }
             }

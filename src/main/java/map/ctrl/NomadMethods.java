@@ -1,52 +1,51 @@
 package map.ctrl;
 
-import exceptions.OutOfMapBoundsException;
-import map.MapPoint;
+import static images.ImagesLoader.IMAGE_SIZE;
 
 import java.awt.event.KeyEvent;
 
-import static images.ImagesLoader.IMAGE_SIZE;
+import map.MapPoint;
 
-public class CharacterMethods {
+public class NomadMethods {
 
     /**
-     * Return the top rowIdx of a character given its map ordinate.
+     * Return the top rowIdx of a nomad given its map ordinate.
      */
     protected static int getTopRowIdxIfOrdIs(int yChar) {
         return (yChar - IMAGE_SIZE / 2) < 0 ? -1 : (yChar - IMAGE_SIZE / 2) / IMAGE_SIZE;
     }
 
     /**
-     * Return the bottom rowIdx of a character given its map ordinate.
+     * Return the bottom rowIdx of a nomad given its map ordinate.
      */
     protected static int getBottomRowIdxIfOrdIs(int yChar) {
         return yChar / IMAGE_SIZE;
     }
 
     /**
-     * Return the most left colIdx of a character given its map abscissa.
+     * Return the most left colIdx of a nomad given its map abscissa.
      */
     protected static int getMostLeftColIdxIfAbsIs(int xChar) {
         return (xChar - IMAGE_SIZE / 2) < 0 ? -1 : (xChar - IMAGE_SIZE / 2) / IMAGE_SIZE;
     }
 
     /**
-     * Return the most right colIdx of a character given its map abscissa.
+     * Return the most right colIdx of a nomad given its map abscissa.
      */
     protected static int getMostRightColIdxIfAbsIs(int xChar) {
         return (xChar + IMAGE_SIZE / 2 - 1) / IMAGE_SIZE;
     }
 
     /**
-     * Is the character crossing a map limit?
+     * Is the nomad crossing a map limit?
      *
      * @param mapWidth  the map width
      * @param mapHeight the map height
-     * @param xChar     the character abscissa
-     * @param yChar     the character ordinate
-     * @return true if the character is crossing a map limit, false otherwise
+     * @param xChar     the nomad abscissa
+     * @param yChar     the nomad ordinate
+     * @return true if the nomad is crossing a map limit, false otherwise
      */
-    public static boolean isCharacterCrossingMapLimit(int mapWidth, int mapHeight, int xChar, int yChar) {
+    public static boolean isNomadCrossingMapLimit(int mapWidth, int mapHeight, int xChar, int yChar) {
         int topRowIdx = getTopRowIdxIfOrdIs(yChar);
         int bottomRowIdx = getBottomRowIdxIfOrdIs(yChar);
         int mostLeftColIdx = getMostLeftColIdxIfAbsIs(xChar);
@@ -61,24 +60,15 @@ public class CharacterMethods {
     }
 
     /**
-     * Is the character crossing an obstacle?
+     * Is the nomad crossing an obstacle?
      *
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param mapWidth        the map width
-     * @param mapHeight       the map height
-     * @param xChar           the character abscissa
-     * @param yChar           the character ordinate
-     * @return true if the character is crossing an obstacle, false otherwise
-     * @throws OutOfMapBoundsException if the character is crossing map limits
+     * @param xChar the nomad abscissa
+     * @param yChar the nomad ordinate
+     * @return true if the nomad is crossing an obstacle, false otherwise
+     * @implSpec isNomadCrossingMapLimit() must be called before this function!
      */
-    public static boolean isCharacterCrossingObstacle(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
-                                                      int xChar, int yChar) throws OutOfMapBoundsException {
-
-        // ToDo: Do not check map limit and add an impLSpec as in PatternMethods class.
-        if (isCharacterCrossingMapLimit(mapWidth, mapHeight, xChar, yChar)) {
-            throw new OutOfMapBoundsException(
-                    "map out of bounds with the following coordinates: xChar=" + xChar + ", yChar=" + yChar);
-        }
+    public static boolean isNomadCrossingObstacle(MapPoint[][] mapPointMatrix, int xChar, int yChar) {
         int topRowIdx = getTopRowIdxIfOrdIs(yChar);
         int bottomRowIdx = getBottomRowIdxIfOrdIs(yChar);
         int mostLeftColIdx = getMostLeftColIdxIfAbsIs(xChar);
@@ -95,23 +85,16 @@ public class CharacterMethods {
     }
 
     /**
-     * Is the character burning?
-     * i.e. is there a burning case adjoining the character?
+     * Is the nomad burning?
+     * i.e. is there a burning case adjoining the nomad?
      *
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param mapWidth        the map width
-     * @param mapHeight       the map height
-     * @param xChar           the character abscissa
-     * @param yChar           the character ordinate
-     * @return true if the character is burning, false otherwise
-     * @throws OutOfMapBoundsException if the character is crossing map limits
+     * @param xChar the nomad abscissa
+     * @param yChar the nomad ordinate
+     * @return true if the nomad is burning, false otherwise
+     * @implSpec isNomadCrossingMapLimit() must be called before this function!
      */
-    public static boolean isCharacterBurning(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
-                                             int xChar, int yChar) throws OutOfMapBoundsException {
-        if (isCharacterCrossingMapLimit(mapWidth, mapHeight, xChar, yChar)) {
-            throw new OutOfMapBoundsException(
-                    "map out of bounds with the following coordinates: xChar=" + xChar + ", yChar=" + yChar);
-        }
+    public static boolean isNomadBurning(MapPoint[][] mapPointMatrix, int xChar, int yChar) {
         int topRowIdx = getTopRowIdxIfOrdIs(yChar);
         int bottomRowIdx = getBottomRowIdxIfOrdIs(yChar);
         int mostLeftColIdx = getMostLeftColIdxIfAbsIs(xChar);
@@ -128,26 +111,18 @@ public class CharacterMethods {
     }
 
     /**
-     * Is the character crossing a bomb?
-     * note: we can't just use the isCharacterCrossingObstacle() algorithm as the character can already be
+     * Is the nomad crossing a bomb?
+     * note: we can't just use the isNomadCrossingObstacle() algorithm as the nomad can already be
      * on a bombing case - when it just put a bomb - and this particular case cannot be processed the same way.
      *
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param mapWidth        the map width
-     * @param mapHeight       the map height
-     * @param xChar           the character abscissa
-     * @param yChar           the character ordinate
-     * @param keyEvent        the current pressed key
-     * @return true if the character is crossing a bomb, false otherwise
-     * @throws OutOfMapBoundsException if the character is crossing map limits
+     * @param xChar the nomad abscissa
+     * @param yChar the nomad ordinate
+     * @param keyEvent the current pressed key
+     * @return true if the nomad is crossing a bomb, false otherwise
+     * @implSpec isNomadCrossingMapLimit() must be called before this function!
      */
-    public static boolean isCharacterCrossingBomb(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
-                                                  int xChar, int yChar, int keyEvent)
-            throws OutOfMapBoundsException {
-        if (isCharacterCrossingMapLimit(mapWidth, mapHeight, xChar, yChar)) {
-            throw new OutOfMapBoundsException(
-                    "map out of bounds with the following coordinates: xChar=" + xChar + ", yChar=" + yChar);
-        }
+    public static boolean isNomadCrossingBomb(MapPoint[][] mapPointMatrix, int xChar, int yChar, int keyEvent) {
         int topRowIdx = getTopRowIdxIfOrdIs(yChar);
         int bottomRowIdx = getBottomRowIdxIfOrdIs(yChar);
         int mostLeftColIdx = getMostLeftColIdxIfAbsIs(xChar);
