@@ -1,4 +1,4 @@
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -201,7 +201,7 @@ public class SettledList extends LinkedList<Settled> {
      * @param xMap the map abscissa from which painting settled
      * @param yMap the map ordinate from which painting settled
      */
-    public synchronized void paintBuffer(Graphics g, int xMap, int yMap) {
+    public synchronized void paintBuffer(Graphics2D g, int xMap, int yMap) {
 
         // get the relative starting MapPoint.
         int startColIdx = xMap / ImagesLoader.IMAGE_SIZE;

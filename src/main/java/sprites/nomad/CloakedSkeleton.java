@@ -23,6 +23,7 @@ public class CloakedSkeleton extends Enemy {
                 ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkLeftMatrixRowIdx],
                 ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkRightMatrixRowIdx],
                 ImagesLoader.NB_ENEMY_WALK_FRAME,
-                100);
+                100,
+                10);
     }
 }

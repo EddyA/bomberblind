@@ -67,7 +67,7 @@ public abstract class Map {
      * @param xMap the map abscissa from which painting elements
      * @param yMap the map ordinate from which painting elements
      */
-    public void paintBuffer(Graphics g, int xMap, int yMap) {
+    public void paintBuffer(Graphics2D g, int xMap, int yMap) {
 
         // get the starting MapPoint concerned.
         int startColIdx = xMap / ImagesLoader.IMAGE_SIZE;

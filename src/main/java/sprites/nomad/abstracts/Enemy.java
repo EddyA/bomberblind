@@ -4,7 +4,6 @@ import utils.CurrentTimeSupplier;
 
 import java.awt.*;
 
-import static sprites.nomad.abstracts.Enemy.status.NO_STATUS;
 import static sprites.nomad.abstracts.Enemy.status.STATUS_DEAD;
 import static sprites.nomad.abstracts.Enemy.status.STATUS_WALK_FRONT;
 
@@ -18,12 +17,11 @@ public abstract class Enemy extends Nomad {
      * enum the different status of an enemy.
      */
     public enum status {
-        STATUS_DEAD,
         STATUS_WALK_BACK,
         STATUS_WALK_FRONT,
         STATUS_WALK_LEFT,
         STATUS_WALK_RIGHT,
-        NO_STATUS
+        STATUS_DEAD
     }
 
     private Enemy.status status; // status.
@@ -38,6 +36,8 @@ public abstract class Enemy extends Nomad {
     private int refreshTime; // refresh time (in ms).
     private long lastRefreshTs; // last refresh timestamp.
 
+    private int moveTime; // move time (in ms).
+    private long lastMoveTs; // last move timestamp.
     private boolean isFinished; // is the Bomber dead and the sprite finished?
 
     public Enemy(int xMap,
@@ -47,7 +47,8 @@ public abstract class Enemy extends Nomad {
                  Image[] walkLeftImages,
                  Image[] walkRightImages,
                  int nbWalkFrame,
-                 int refreshTime) {
+                 int refreshTime,
+                 int moveTime) {
         super(xMap, yMap);
         this.status = STATUS_WALK_FRONT;
         this.lastStatus = STATUS_WALK_FRONT;
@@ -57,6 +58,7 @@ public abstract class Enemy extends Nomad {
         this.walkRightImages = walkRightImages;
         this.nbWalkFrame = nbWalkFrame;
         this.refreshTime = refreshTime;
+        this.moveTime = moveTime;
     }
 
     public void setStatus(Enemy.status status) {
@@ -69,6 +71,21 @@ public abstract class Enemy extends Nomad {
 
     public boolean isFinished() {
         return (status == STATUS_DEAD && isFinished);
+    }
+
+    /**
+     * This function allows handling enemy speed.
+     *
+     * @return true if the enemy should move, false oterhwise.
+     */
+    public boolean shouldMove() {
+        long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
+        if (curTs - lastMoveTs >= moveTime) { // it is time to move.
+            lastMoveTs = curTs;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

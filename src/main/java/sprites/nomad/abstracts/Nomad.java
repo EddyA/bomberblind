@@ -62,7 +62,7 @@ public abstract class Nomad {
      * @param xScreen the abscissa on the screen
      * @param yScreen the ordinate on the screen
      */
-    public void paintBuffer(Graphics g, int xScreen, int yScreen) {
+    public void paintBuffer(Graphics2D g, int xScreen, int yScreen) {
         Image updatedImage = updateImage();
         if ((updatedImage != null) && !isFinished()) {
             int xImage = xScreen - updatedImage.getWidth(null) / 2;

@@ -305,6 +305,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     }
                 }
                 settledList.clean();
+                nomadList.updateStatus();
                 repaint();
                 Thread.sleep(4);
             } catch (InterruptedException e) {
