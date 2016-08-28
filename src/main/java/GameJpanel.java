@@ -117,8 +117,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         Graphics2D g2d = (Graphics2D) g;
         try {
             map.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
-            nomadList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             settledList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
+            nomadList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             bbMan.paintBuffer(g2d, xBbManPosOnScreen, yBbManPosOnScreen);
         } catch (Exception e) {
             System.err.println("GameJPanel.paintComponent(): " + e.getMessage());
@@ -306,6 +306,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 }
                 settledList.clean();
                 nomadList.updateStatus();
+                nomadList.clean();
                 repaint();
                 Thread.sleep(4);
             } catch (InterruptedException e) {

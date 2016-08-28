@@ -1,11 +1,13 @@
 import ai.EnemyAi;
 import map.abstracts.Map;
+import map.ctrl.NomadMethods;
 import sprites.nomad.CloakedSkeleton;
 import sprites.nomad.abstracts.Enemy;
 import sprites.nomad.abstracts.Nomad;
 
 import java.awt.*;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * List of nomad items.
@@ -39,8 +41,11 @@ public class NomadList extends LinkedList<Nomad> {
         for (Nomad nomad : this) {
             if (nomad.getClass().getSuperclass().getSimpleName().equals("Enemy")) {
                 Enemy enemy = (Enemy) nomad; // cast the nomad to enemy.
-                if (enemy.shouldMove()) { // is it time to move?
-                    enemy.setStatus(EnemyAi.updateStatus(map.getMapPointMatrix(), map.getMapWidth(),
+                if ((enemy.getStatus() == Enemy.status.STATUS_DEAD) ||
+                NomadMethods.isNomadBurning(map.getMapPointMatrix(), enemy.getXMap(), enemy.getYMap())) {
+                    enemy.setStatus(Enemy.status.STATUS_DEAD);
+                } else if (enemy.shouldMove()) { // is it time to move?
+                    enemy.setStatus(EnemyAi.computeNextMove(map.getMapPointMatrix(), map.getMapWidth(),
                             map.getMapHeight(), enemy.getXMap(), enemy.getYMap(), enemy.getStatus()));
                     switch (enemy.getStatus()) {
                         case STATUS_WALK_BACK: {
@@ -60,6 +65,21 @@ public class NomadList extends LinkedList<Nomad> {
                             break;
                         }
                     }
+                }
+            }
+        }
+    }
+
+    public synchronized void clean() {
+
+        for (ListIterator<Nomad> iterator = this.listIterator(); iterator.hasNext(); ) {
+            Nomad nomad = iterator.next();
+
+            if (nomad.getClass().getSuperclass().getSimpleName().equals("Enemy")) {
+                Enemy enemy = (Enemy) nomad; // cast the nomad to enemy.
+
+                if (enemy.isFinished()) {
+                    iterator.remove(); // remove it from the list.
                 }
             }
         }

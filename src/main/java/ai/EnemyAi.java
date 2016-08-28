@@ -25,18 +25,18 @@ public class EnemyAi {
     }
 
     /**
-     * Compute direction according to the map.
+     * Compute the next move.
      *
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param mapWidth the map width
-     * @param mapHeight the map height
-     * @param xChar the enemy abscissa
-     * @param yChar the enemy ordinate
-     * @param status the enemy
+     * @param mapWidth       the map width
+     * @param mapHeight      the map height
+     * @param xChar          the enemy abscissa
+     * @param yChar          the enemy ordinate
+     * @param status         the enemy status
      * @return the updated status
      */
-    public static Enemy.status updateStatus(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight, int xChar,
-                                            int yChar, Enemy.status status) {
+    public static Enemy.status computeNextMove(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight, int xChar,
+                                               int yChar, Enemy.status status) {
         if (!moveList.contains(status)) {
             throw new RuntimeException("the provided status is not valid.");
         }
@@ -47,6 +47,7 @@ public class EnemyAi {
                 case STATUS_WALK_BACK: {
                     if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, xChar, yChar - 1)) {
                         if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, xChar, yChar - 1) &&
+                                !NomadMethods.isNomadBurning(mapPointMatrix, xChar, yChar - 1) &&
                                 !NomadMethods.isNomadCrossingBomb(mapPointMatrix, xChar, yChar - 1, KeyEvent.VK_UP)) {
                             resultFound = true;
                         }
@@ -56,6 +57,7 @@ public class EnemyAi {
                 case STATUS_WALK_FRONT: {
                     if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, xChar, yChar + 1)) {
                         if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, xChar, yChar + 1) &&
+                                !NomadMethods.isNomadBurning(mapPointMatrix, xChar, yChar + 1) &&
                                 !NomadMethods.isNomadCrossingBomb(mapPointMatrix, xChar, yChar + 1, KeyEvent.VK_DOWN)) {
                             resultFound = true;
                         }
@@ -65,6 +67,7 @@ public class EnemyAi {
                 case STATUS_WALK_LEFT: {
                     if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, xChar - 1, yChar)) {
                         if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, xChar - 1, yChar) &&
+                                !NomadMethods.isNomadBurning(mapPointMatrix, xChar - 1, yChar) &&
                                 !NomadMethods.isNomadCrossingBomb(mapPointMatrix, xChar - 1, yChar, KeyEvent.VK_LEFT)) {
                             resultFound = true;
                         }
@@ -74,6 +77,7 @@ public class EnemyAi {
                 case STATUS_WALK_RIGHT: {
                     if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, xChar + 1, yChar)) {
                         if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, xChar + 1, yChar) &&
+                                !NomadMethods.isNomadBurning(mapPointMatrix, xChar + 1, yChar) &&
                                 !NomadMethods.isNomadCrossingBomb(mapPointMatrix, xChar + 1, yChar, KeyEvent.VK_RIGHT)) {
                             resultFound = true;
                         }

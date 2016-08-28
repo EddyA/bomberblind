@@ -67,7 +67,8 @@ public class SettledList extends LinkedList<Settled> {
             map.getMapPointMatrix()[rowIdx][colIdx].setImageAsBurned();
             list.add(new Flame(rowIdx, colIdx));
             return true; // the next case can burn.
-        } else if (map.getMapPointMatrix()[rowIdx][colIdx].isMutable() || map.getMapPointMatrix()[rowIdx][colIdx].isBombing()) {
+        } else if (map.getMapPointMatrix()[rowIdx][colIdx].isMutable() ||
+                map.getMapPointMatrix()[rowIdx][colIdx].isBombing()) {
             map.getMapPointMatrix()[rowIdx][colIdx].setPathway(true);
             map.getMapPointMatrix()[rowIdx][colIdx].setMutable(false);
             map.getMapPointMatrix()[rowIdx][colIdx].addFlame();
