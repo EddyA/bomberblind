@@ -1,10 +1,11 @@
 package map.ctrl;
 
-import static images.ImagesLoader.IMAGE_SIZE;
+import map.MapPoint;
 
 import java.awt.event.KeyEvent;
 
-import map.MapPoint;
+import static images.ImagesLoader.IMAGE_SIZE;
+import static utils.Character.*;
 
 public class NomadMethods {
 
@@ -12,28 +13,28 @@ public class NomadMethods {
      * Return the top rowIdx of a nomad given its map ordinate.
      */
     protected static int getTopRowIdxIfOrdIs(int yChar) {
-        return (yChar - IMAGE_SIZE / 2) < 0 ? -1 : (yChar - IMAGE_SIZE / 2) / IMAGE_SIZE;
+        return getCharTopBound(yChar) < 0 ? -1 : (yChar - IMAGE_SIZE / 2) / IMAGE_SIZE;
     }
 
     /**
      * Return the bottom rowIdx of a nomad given its map ordinate.
      */
     protected static int getBottomRowIdxIfOrdIs(int yChar) {
-        return yChar / IMAGE_SIZE;
+        return getCharBottomBound(yChar) / IMAGE_SIZE;
     }
 
     /**
      * Return the most left colIdx of a nomad given its map abscissa.
      */
     protected static int getMostLeftColIdxIfAbsIs(int xChar) {
-        return (xChar - IMAGE_SIZE / 2) < 0 ? -1 : (xChar - IMAGE_SIZE / 2) / IMAGE_SIZE;
+        return getCharLeftBound(xChar) < 0 ? -1 : (xChar - IMAGE_SIZE / 2) / IMAGE_SIZE;
     }
 
     /**
      * Return the most right colIdx of a nomad given its map abscissa.
      */
     protected static int getMostRightColIdxIfAbsIs(int xChar) {
-        return (xChar + IMAGE_SIZE / 2 - 1) / IMAGE_SIZE;
+        return getCharRightBound(xChar) / IMAGE_SIZE;
     }
 
     /**
@@ -63,8 +64,8 @@ public class NomadMethods {
      * Is the nomad crossing an obstacle?
      *
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param xChar the nomad abscissa
-     * @param yChar the nomad ordinate
+     * @param xChar          the nomad abscissa
+     * @param yChar          the nomad ordinate
      * @return true if the nomad is crossing an obstacle, false otherwise
      * @implSpec isNomadCrossingMapLimit() must be called before this function!
      */
@@ -89,8 +90,8 @@ public class NomadMethods {
      * i.e. is there a burning case adjoining the nomad?
      *
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param xChar the nomad abscissa
-     * @param yChar the nomad ordinate
+     * @param xChar          the nomad abscissa
+     * @param yChar          the nomad ordinate
      * @return true if the nomad is burning, false otherwise
      * @implSpec isNomadCrossingMapLimit() must be called before this function!
      */
@@ -116,9 +117,9 @@ public class NomadMethods {
      * on a bombing case - when it just put a bomb - and this particular case cannot be processed the same way.
      *
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param xChar the nomad abscissa
-     * @param yChar the nomad ordinate
-     * @param keyEvent the current pressed key
+     * @param xChar          the nomad abscissa
+     * @param yChar          the nomad ordinate
+     * @param keyEvent       the current pressed key
      * @return true if the nomad is crossing a bomb, false otherwise
      * @implSpec isNomadCrossingMapLimit() must be called before this function!
      */

@@ -44,7 +44,8 @@ public abstract class Bomber extends Nomad {
     private final int nbWalkFrame;
     private final Image[] winImages;
     private final int nbWinFrame;
-    private int curImageIdx; // current image index of the animation.
+    private int curImageIdx; // current image index of the sprite.
+    private Image curImage; // current image of the sprite.
     private int refreshTime; // refresh time of the sprite (in ms).
     private long lastRefreshTs; // last refresh timestamp.
 
@@ -109,20 +110,23 @@ public abstract class Bomber extends Nomad {
         return status;
     }
 
-    public boolean isFinished() {
-        return (status == STATUS_DEAD && isFinished);
-    }
-
     public boolean isInvincible() {
         return isInvincible;
     }
 
-    /**
-     * Update the image.
-     *
-     * @return the image to paint.
-     */
-    public Image updateImage() {
+
+    @Override
+    public boolean isFinished() {
+        return (status == STATUS_DEAD && isFinished);
+    }
+
+    @Override
+    public Image getCurImage() {
+        return curImage;
+    }
+
+    @Override
+    public void updateImage() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         boolean shouldPrint = true;
 
@@ -189,6 +193,6 @@ public abstract class Bomber extends Nomad {
                 }
             }
         }
-        return shouldPrint ? images[curImageIdx] : null;
+        curImage = shouldPrint ? images[curImageIdx] : null;
     }
 }

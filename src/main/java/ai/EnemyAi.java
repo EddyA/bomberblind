@@ -1,14 +1,14 @@
 package ai;
 
+import exceptions.CannotMoveNomadException;
 import map.MapPoint;
 import map.ctrl.NomadMethods;
+import sprites.nomad.NomadCtrl;
 import sprites.nomad.abstracts.Enemy;
+import sprites.nomad.abstracts.Nomad;
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static sprites.nomad.abstracts.Enemy.status.*;
 
@@ -30,55 +30,63 @@ public class EnemyAi {
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth       the map width
      * @param mapHeight      the map height
-     * @param xChar          the enemy abscissa
-     * @param yChar          the enemy ordinate
-     * @param status         the enemy status
+     * @param nomadList      the list of nomads
+     * @param enemy          the enemy to move
      * @return the updated status
      */
-    public static Enemy.status computeNextMove(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight, int xChar,
-                                               int yChar, Enemy.status status) {
-        if (!moveList.contains(status)) {
+    public static Enemy.status computeNextMove(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
+                                               List<Nomad> nomadList, Enemy enemy) throws CannotMoveNomadException {
+        if (!moveList.contains(enemy.getStatus())) {
             throw new RuntimeException("the provided status is not valid.");
         }
-        Enemy.status checkedStatus = status;
+
+        // create a set of checked status.
+        Set<Enemy.status> checkedStatus = new HashSet<>();
+
+        Enemy.status curCheckedStatus = enemy.getStatus();
         boolean resultFound = false;
         do {
-            switch (checkedStatus) {
+            checkedStatus.add(curCheckedStatus); // add the current checked status to the set of checked status.
+            switch (curCheckedStatus) {
                 case STATUS_WALK_BACK: {
-                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, xChar, yChar - 1)) {
-                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, xChar, yChar - 1) &&
-                                !NomadMethods.isNomadBurning(mapPointMatrix, xChar, yChar - 1) &&
-                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, xChar, yChar - 1, KeyEvent.VK_UP)) {
+                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap(), enemy.getYMap() - 1)) {
+                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap(), enemy.getYMap() - 1) &&
+                                !NomadMethods.isNomadBurning(mapPointMatrix, enemy.getXMap(), enemy.getYMap() - 1) &&
+                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, enemy.getXMap(), enemy.getYMap() - 1, KeyEvent.VK_UP) &&
+                                !NomadCtrl.isNomadCrossingAnotherNomad(nomadList, enemy, enemy.getXMap(), enemy.getYMap() - 1)) {
                             resultFound = true;
                         }
                     }
                     break;
                 }
                 case STATUS_WALK_FRONT: {
-                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, xChar, yChar + 1)) {
-                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, xChar, yChar + 1) &&
-                                !NomadMethods.isNomadBurning(mapPointMatrix, xChar, yChar + 1) &&
-                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, xChar, yChar + 1, KeyEvent.VK_DOWN)) {
+                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap(), enemy.getYMap() + 1)) {
+                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap(), enemy.getYMap() + 1) &&
+                                !NomadMethods.isNomadBurning(mapPointMatrix, enemy.getXMap(), enemy.getYMap() + 1) &&
+                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, enemy.getXMap(), enemy.getYMap() + 1, KeyEvent.VK_DOWN) &&
+                                !NomadCtrl.isNomadCrossingAnotherNomad(nomadList, enemy, enemy.getXMap(), enemy.getYMap() + 1)) {
                             resultFound = true;
                         }
                     }
                     break;
                 }
                 case STATUS_WALK_LEFT: {
-                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, xChar - 1, yChar)) {
-                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, xChar - 1, yChar) &&
-                                !NomadMethods.isNomadBurning(mapPointMatrix, xChar - 1, yChar) &&
-                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, xChar - 1, yChar, KeyEvent.VK_LEFT)) {
+                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap() - 1, enemy.getYMap())) {
+                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap() - 1, enemy.getYMap()) &&
+                                !NomadMethods.isNomadBurning(mapPointMatrix, enemy.getXMap() - 1, enemy.getYMap()) &&
+                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, enemy.getXMap() - 1, enemy.getYMap(), KeyEvent.VK_LEFT) &&
+                                !NomadCtrl.isNomadCrossingAnotherNomad(nomadList, enemy, enemy.getXMap() - 1, enemy.getYMap())) {
                             resultFound = true;
                         }
                     }
                     break;
                 }
                 case STATUS_WALK_RIGHT: {
-                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, xChar + 1, yChar)) {
-                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, xChar + 1, yChar) &&
-                                !NomadMethods.isNomadBurning(mapPointMatrix, xChar + 1, yChar) &&
-                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, xChar + 1, yChar, KeyEvent.VK_RIGHT)) {
+                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap() + 1, enemy.getYMap())) {
+                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap() + 1, enemy.getYMap()) &&
+                                !NomadMethods.isNomadBurning(mapPointMatrix, enemy.getXMap() + 1, enemy.getYMap()) &&
+                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, enemy.getXMap() + 1, enemy.getYMap(), KeyEvent.VK_RIGHT) &&
+                                !NomadCtrl.isNomadCrossingAnotherNomad(nomadList, enemy, enemy.getXMap() + 1, enemy.getYMap())) {
                             resultFound = true;
                         }
                     }
@@ -86,9 +94,18 @@ public class EnemyAi {
                 }
             }
             if (!resultFound) {
-                checkedStatus = getRandomDirection();
+                if (checkedStatus.size() == moveList.size()) {
+
+                    /**
+                     * all the status has been checked but no result found.
+                     * this case happens when the nomad is blocked by another one
+                     * and it cannot move during this iteration ... just wait for the next one.
+                     */
+                    throw new CannotMoveNomadException("nomad is not able to move during this iteration.");
+                }
+                curCheckedStatus = getRandomDirection();
             }
         } while (!resultFound); // until a move is possible.
-        return checkedStatus;
+        return curCheckedStatus;
     }
 }

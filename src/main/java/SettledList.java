@@ -1,13 +1,13 @@
-import java.awt.*;
-import java.util.LinkedList;
-import java.util.ListIterator;
-
 import images.ImagesLoader;
 import map.abstracts.Map;
 import sprites.settled.Bomb;
 import sprites.settled.Flame;
 import sprites.settled.FlameEnd;
 import sprites.settled.abstracts.Settled;
+
+import java.awt.*;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * List of settled items.
@@ -156,12 +156,10 @@ public class SettledList extends LinkedList<Settled> {
      * - it is finished.
      * 2. Create flames and clean dead settled from the list.
      */
-    public synchronized void clean() {
-
+    public synchronized void updateStatusAndClean() {
         for (ListIterator<Settled> iterator = this.listIterator(); iterator.hasNext(); ) {
             Settled settled = iterator.next();
 
-            // is the current settled a bomb?
             if (settled.getClass().getSimpleName().equals("Bomb")) { // it is a bomb.
 
                 // is it finished?
@@ -173,8 +171,7 @@ public class SettledList extends LinkedList<Settled> {
                     map.getMapPointMatrix()[settled.getRowIdx()][settled.getColIdx()].setBombing(false);
                     iterator.remove(); // remove it from the list.
                 }
-                // is the current settled a flame?
-            } else if (settled.getClass().getSimpleName().equals("Flame")) {
+            } else if (settled.getClass().getSimpleName().equals("Flame")) { // it is a flame.
                 // is it finished?
                 if (settled.isFinished()) {
                     // create conclusion flames.

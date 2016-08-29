@@ -1,7 +1,9 @@
 import ai.EnemyAi;
+import exceptions.CannotMoveNomadException;
 import map.abstracts.Map;
 import map.ctrl.NomadMethods;
 import sprites.nomad.CloakedSkeleton;
+import sprites.nomad.abstracts.Bomber;
 import sprites.nomad.abstracts.Enemy;
 import sprites.nomad.abstracts.Nomad;
 
@@ -25,6 +27,15 @@ public class NomadList extends LinkedList<Nomad> {
     }
 
     /**
+     * Add the main bomber to the list.
+     *
+     * @param bomber the bomber to add
+     */
+    public void addMainBomber(Bomber bomber) {
+        this.add(bomber);
+    }
+
+    /**
      * Add a cloaked skeleton to the list.
      *
      * @param xMap the abscissa of the cloaked skeleton
@@ -37,49 +48,64 @@ public class NomadList extends LinkedList<Nomad> {
     /**
      * Update status of nomads.
      */
-    public void updateStatus() {
-        for (Nomad nomad : this) {
-            if (nomad.getClass().getSuperclass().getSimpleName().equals("Enemy")) {
-                Enemy enemy = (Enemy) nomad; // cast the nomad to enemy.
-                if ((enemy.getStatus() == Enemy.status.STATUS_DEAD) ||
-                NomadMethods.isNomadBurning(map.getMapPointMatrix(), enemy.getXMap(), enemy.getYMap())) {
-                    enemy.setStatus(Enemy.status.STATUS_DEAD);
-                } else if (enemy.shouldMove()) { // is it time to move?
-                    enemy.setStatus(EnemyAi.computeNextMove(map.getMapPointMatrix(), map.getMapWidth(),
-                            map.getMapHeight(), enemy.getXMap(), enemy.getYMap(), enemy.getStatus()));
-                    switch (enemy.getStatus()) {
-                        case STATUS_WALK_BACK: {
-                            nomad.setYMap(nomad.getYMap() - 1);
-                            break;
-                        }
-                        case STATUS_WALK_FRONT: {
-                            nomad.setYMap(nomad.getYMap() + 1);
-                            break;
-                        }
-                        case STATUS_WALK_LEFT: {
-                            nomad.setXMap(nomad.getXMap() - 1);
-                            break;
-                        }
-                        case STATUS_WALK_RIGHT: {
-                            nomad.setXMap(nomad.getXMap() + 1);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public synchronized void clean() {
-
+    public synchronized void updateStatusAndClean() {
         for (ListIterator<Nomad> iterator = this.listIterator(); iterator.hasNext(); ) {
             Nomad nomad = iterator.next();
 
-            if (nomad.getClass().getSuperclass().getSimpleName().equals("Enemy")) {
-                Enemy enemy = (Enemy) nomad; // cast the nomad to enemy.
+            if (nomad.getClass().getSuperclass().getSimpleName().equals("Bomber")) { // it is a bomber.
+                Bomber bomber = (Bomber) nomad; // cast to bomber.
 
+                // is it finished?
+                if (bomber.isFinished()) {
+                    bomber.initStatement(); // bombers are never removed from the list, they are just re-initialized.
+                } else if (bomber.getStatus() != Bomber.status.STATUS_DEAD) { // not finished and not dead.
+
+                    // should the bomber die?
+                    if (!bomber.isInvincible() &&
+                            NomadMethods.isNomadBurning(map.getMapPointMatrix(), bomber.getXMap(), bomber.getYMap())) {
+                        bomber.setStatus(Bomber.status.STATUS_DEAD);
+                    }
+                }
+            } else if (nomad.getClass().getSuperclass().getSimpleName().equals("Enemy")) {  // it is an enemy.
+                Enemy enemy = (Enemy) nomad; // cast to enemy.
+
+                // is it finished?
                 if (enemy.isFinished()) {
                     iterator.remove(); // remove it from the list.
+                } else if (enemy.getStatus() != Enemy.status.STATUS_DEAD) { // not finished and not dead.
+
+                    // should the enemy die?
+                    if (NomadMethods.isNomadBurning(map.getMapPointMatrix(), enemy.getXMap(), enemy.getYMap())) {
+                        enemy.setStatus(Enemy.status.STATUS_DEAD);
+
+                    } else if (enemy.shouldMove()) { // not dead -> should the enemy move?
+                        try {
+                            Enemy.status newStatus = EnemyAi.computeNextMove(map.getMapPointMatrix(), map.getMapWidth(),
+                                    map.getMapHeight(), this, enemy); // try to compute the nex move.
+
+                            enemy.setStatus(newStatus); // if the previous function has not thrown an exception.
+                            switch (enemy.getStatus()) {
+                                case STATUS_WALK_BACK: {
+                                    nomad.setYMap(nomad.getYMap() - 1);
+                                    break;
+                                }
+                                case STATUS_WALK_FRONT: {
+                                    nomad.setYMap(nomad.getYMap() + 1);
+                                    break;
+                                }
+                                case STATUS_WALK_LEFT: {
+                                    nomad.setXMap(nomad.getXMap() - 1);
+                                    break;
+                                }
+                                case STATUS_WALK_RIGHT: {
+                                    nomad.setXMap(nomad.getXMap() + 1);
+                                    break;
+                                }
+                            }
+                        } catch (CannotMoveNomadException e) {
+                            // nothing to do, just wait for the next iteration.
+                        }
+                    }
                 }
             }
         }
@@ -96,9 +122,14 @@ public class NomadList extends LinkedList<Nomad> {
 
         // paint sprites.
         for (Nomad nomad : this) {
-            if ((nomad.getYMap() >= yMap && nomad.getYMap() < yMap + screenHeight + 1) &&
-                    (nomad.getXMap() >= xMap && nomad.getXMap() < xMap + screenWidth + 1)) {
-                nomad.paintBuffer(g, nomad.getXMap() - xMap, nomad.getYMap() - yMap);
+            nomad.updateImage();
+            if (nomad.getCurImage() != null) {
+                if ((nomad.getYMap() >= yMap && nomad.getYMap() <=
+                        yMap + nomad.getCurImage().getWidth(null) + screenHeight) &&
+                        (nomad.getXMap() >= xMap && nomad.getXMap() <=
+                                xMap + nomad.getCurImage().getHeight(null) / 2 + screenWidth)) {
+                    nomad.paintBuffer(g, nomad.getXMap() - xMap, nomad.getYMap() - yMap);
+                }
             }
         }
     }

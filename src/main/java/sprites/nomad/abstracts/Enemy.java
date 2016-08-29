@@ -40,8 +40,8 @@ public abstract class Enemy extends Nomad {
     private int moveTime; // move time (in ms).
     private long lastMoveTs; // last move timestamp.
 
-    private int nbDeadImages;
-    private int curDeadImageIdx;
+    private int nbDeadFrames; // number of images of the "dead" sprite.
+    private int curDeadFrameIdx; // current image index of the "dead" sprite.
     private boolean isFinished; // is the Bomber dead and the sprite finished?
 
     public Enemy(int xMap,
@@ -63,7 +63,7 @@ public abstract class Enemy extends Nomad {
         this.nbWalkFrame = nbWalkFrame;
         this.refreshTime = refreshTime;
         this.moveTime = moveTime;
-        this.nbDeadImages = 16;
+        this.nbDeadFrames = 16;
     }
 
     public void setStatus(Enemy.status status) {
@@ -74,12 +74,10 @@ public abstract class Enemy extends Nomad {
         return status;
     }
 
-    public boolean isFinished() {
-        return (status == STATUS_DEAD && isFinished);
-    }
 
     /**
-     * This function allows handling enemy speed.
+     * This function is mainly used to handle speed of character.
+     * It computes the time spent since its last move and return true if it should move, false oterhwise.
      *
      * @return true if the enemy should move, false oterhwise.
      */
@@ -94,12 +92,45 @@ public abstract class Enemy extends Nomad {
     }
 
     /**
-     * Return a Tuple2 containing an array of images and the relative number of images according to a status.
+     * This function is mainly used to handle the "dead" sprite.
+     * It returns the next - anticlockwise - direction according to a given status.
+     *
+     * @param status a given status (with the initial direction)
+     * @return the status with the next direction.
+     */
+    private Enemy.status getNextDirection(Enemy.status status) {
+        Enemy.status nextStatus = null;
+        switch (status) {
+            case STATUS_WALK_BACK: {
+                nextStatus = STATUS_WALK_LEFT;
+                break;
+            }
+            case STATUS_WALK_LEFT: {
+                nextStatus = STATUS_WALK_FRONT;
+                break;
+            }
+            case STATUS_WALK_FRONT: {
+                nextStatus = STATUS_WALK_RIGHT;
+                break;
+            }
+            case STATUS_WALK_RIGHT: {
+                nextStatus = STATUS_WALK_BACK;
+                break;
+            }
+        }
+        return nextStatus;
+    }
+
+    /**
+     * Return a {@link Tuple2} containing:
+     * - an array of images,
+     * - the relative number of images.
+     * according to a given status.
      *
      * @param status the status
      * @return the relative Tuple2
      */
-    private Tuple2<Image[], Integer> getImagesAccordingToCurrentDirection(Enemy.status status) {
+    private Tuple2<Image[], Integer> getImagesBasedOnStatus(Enemy.status status) {
         int nbFrames = 0;
         Image[] images = null;
         switch (status) {
@@ -127,46 +158,25 @@ public abstract class Enemy extends Nomad {
         return new Tuple2<>(images, nbFrames);
     }
 
-    /**
-     * @param status
-     * @return
-     */
-    private Enemy.status getNextDirection(Enemy.status status) {
-        Enemy.status nextStatus = null;
-        switch (status) {
-            case STATUS_WALK_BACK: {
-                nextStatus = STATUS_WALK_LEFT;
-                break;
-            }
-            case STATUS_WALK_LEFT: {
-                nextStatus = STATUS_WALK_FRONT;
-                break;
-            }
-            case STATUS_WALK_FRONT: {
-                nextStatus = STATUS_WALK_RIGHT;
-                break;
-            }
-            case STATUS_WALK_RIGHT: {
-                nextStatus = STATUS_WALK_BACK;
-                break;
-            }
-        }
-        return nextStatus;
+    @Override
+    public boolean isFinished() {
+        return (status == STATUS_DEAD && isFinished);
     }
 
-    /**
-     * Update the image.
-     *
-     * @return the image to paint.
-     */
-    public Image updateImage() {
+    @Override
+    public Image getCurImage() {
+        return curImage;
+    }
+
+    @Override
+    public void updateImage() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
 
         Tuple2<Image[], Integer> imageInformation;
         if (status != STATUS_DEAD) {
-            imageInformation = getImagesAccordingToCurrentDirection(status); // get images according to the current direction.
+            imageInformation = getImagesBasedOnStatus(status); // get images according to the current direction.
         } else {
-            imageInformation = getImagesAccordingToCurrentDirection(lastStatus); // get images according to the last direction.
+            imageInformation = getImagesBasedOnStatus(lastStatus); // get images according to the last direction.
         }
         Image[] images = imageInformation.getFirst();
         int nbFrames = imageInformation.getSecond();
@@ -179,15 +189,16 @@ public abstract class Enemy extends Nomad {
             if (curTs - lastRefreshTs > refreshTime) { // it is time to refresh.
                 lastRefreshTs = curTs;
                 if (status == STATUS_DEAD) {
-                    if (++curDeadImageIdx == nbDeadImages) {
+                    if (++curDeadFrameIdx == nbDeadFrames) { // is the number of frames ahs been reached?
                         isFinished = true;
                     }
-                    lastStatus = getNextDirection(lastStatus); // update the last status to
+                    // set the last status with the next direction to get the right image the next iteration.
+                    lastStatus = getNextDirection(lastStatus);
                 } else if (++curImageIdx == nbFrames) { // at the end of the sprite.
                     curImageIdx = 0; // back to the begining of the sprite.
                 }
             }
         }
-        return images[curImageIdx];
+        curImage = images[curImageIdx];
     }
 }
