@@ -3,6 +3,7 @@ import exceptions.CannotMoveNomadException;
 import map.abstracts.Map;
 import map.ctrl.NomadMethods;
 import sprites.nomad.CloakedSkeleton;
+import sprites.nomad.NomadCtrl;
 import sprites.nomad.abstracts.Bomber;
 import sprites.nomad.abstracts.Enemy;
 import sprites.nomad.abstracts.Nomad;
@@ -62,7 +63,8 @@ public class NomadList extends LinkedList<Nomad> {
 
                     // should the bomber die?
                     if (!bomber.isInvincible() &&
-                            NomadMethods.isNomadBurning(map.getMapPointMatrix(), bomber.getXMap(), bomber.getYMap())) {
+                            (NomadMethods.isNomadBurning(map.getMapPointMatrix(), bomber.getXMap(), bomber.getYMap()) ||
+                                    NomadCtrl.isNomadCrossingAnEmeny(this, bomber, bomber.getXMap(), bomber.getYMap()))) {
                         bomber.setStatus(Bomber.status.STATUS_DEAD);
                     }
                 }

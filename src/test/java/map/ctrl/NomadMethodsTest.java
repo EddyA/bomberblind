@@ -17,39 +17,6 @@ public class NomadMethodsTest implements WithAssertions {
     private final int MAP_HEIGHT = 10;
 
     @Test
-    public void getTopRowIdxIfOrdIsShouldReturnTheAppropriateValue() throws Exception {
-        assertThat(NomadMethods.getTopRowIdxIfOrdIs(10)).isEqualTo(-1); // negative case.
-        assertThat(NomadMethods.getTopRowIdxIfOrdIs(14)).isEqualTo(-1); // limit before negative case.
-        assertThat(NomadMethods.getTopRowIdxIfOrdIs(20)).isEqualTo(0); // standard case.
-        assertThat(NomadMethods.getTopRowIdxIfOrdIs(44)).isEqualTo(0); // limit before moving to another case.
-        assertThat(NomadMethods.getTopRowIdxIfOrdIs(45)).isEqualTo(1); // moving to another case.
-    }
-
-    @Test
-    public void getBottomRowIdxIfOrdIsShouldReturnTheAppropriateValue() throws Exception {
-        assertThat(NomadMethods.getBottomRowIdxIfOrdIs(20)).isEqualTo(0); // standard case.
-        assertThat(NomadMethods.getBottomRowIdxIfOrdIs(29)).isEqualTo(0); // limit before moving to another case.
-        assertThat(NomadMethods.getBottomRowIdxIfOrdIs(30)).isEqualTo(1); // moving to another case.
-
-    }
-
-    @Test
-    public void getMostLeftRowIdxIfOrdIsShouldReturnTheAppropriateValue() throws Exception {
-        assertThat(NomadMethods.getMostLeftColIdxIfAbsIs(10)).isEqualTo(-1); // negative case.
-        assertThat(NomadMethods.getMostLeftColIdxIfAbsIs(14)).isEqualTo(-1); // limit before negative case.
-        assertThat(NomadMethods.getMostLeftColIdxIfAbsIs(30)).isEqualTo(0); // standard case.
-        assertThat(NomadMethods.getMostLeftColIdxIfAbsIs(44)).isEqualTo(0); // limit before moving to another case.
-        assertThat(NomadMethods.getMostLeftColIdxIfAbsIs(45)).isEqualTo(1); // moving to another case.
-    }
-
-    @Test
-    public void getMostRightRowIdxIfOrdIsShouldReturnTheAppropriateValue() throws Exception {
-        assertThat(NomadMethods.getMostRightColIdxIfAbsIs(30)).isEqualTo(1); // standard case.
-        assertThat(NomadMethods.getMostRightColIdxIfAbsIs(45)).isEqualTo(1); // limit before moving to another case.
-        assertThat(NomadMethods.getMostRightColIdxIfAbsIs(46)).isEqualTo(2); // moving to another case.
-    }
-
-    @Test
     public void isCharacterCrossingMapLimitShouldReturnTheAppropriateValue() throws Exception {
         
         /*

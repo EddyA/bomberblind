@@ -53,7 +53,7 @@ public class EnemyAi {
                         if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap(), enemy.getYMap() - 1) &&
                                 !NomadMethods.isNomadBurning(mapPointMatrix, enemy.getXMap(), enemy.getYMap() - 1) &&
                                 !NomadMethods.isNomadCrossingBomb(mapPointMatrix, enemy.getXMap(), enemy.getYMap() - 1, KeyEvent.VK_UP) &&
-                                !NomadCtrl.isNomadCrossingAnotherNomad(nomadList, enemy, enemy.getXMap(), enemy.getYMap() - 1)) {
+                                !NomadCtrl.isNomadCrossingAnEmeny(nomadList, enemy, enemy.getXMap(), enemy.getYMap() - 1)) {
                             resultFound = true;
                         }
                     }
@@ -64,7 +64,7 @@ public class EnemyAi {
                         if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap(), enemy.getYMap() + 1) &&
                                 !NomadMethods.isNomadBurning(mapPointMatrix, enemy.getXMap(), enemy.getYMap() + 1) &&
                                 !NomadMethods.isNomadCrossingBomb(mapPointMatrix, enemy.getXMap(), enemy.getYMap() + 1, KeyEvent.VK_DOWN) &&
-                                !NomadCtrl.isNomadCrossingAnotherNomad(nomadList, enemy, enemy.getXMap(), enemy.getYMap() + 1)) {
+                                !NomadCtrl.isNomadCrossingAnEmeny(nomadList, enemy, enemy.getXMap(), enemy.getYMap() + 1)) {
                             resultFound = true;
                         }
                     }
@@ -75,7 +75,7 @@ public class EnemyAi {
                         if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap() - 1, enemy.getYMap()) &&
                                 !NomadMethods.isNomadBurning(mapPointMatrix, enemy.getXMap() - 1, enemy.getYMap()) &&
                                 !NomadMethods.isNomadCrossingBomb(mapPointMatrix, enemy.getXMap() - 1, enemy.getYMap(), KeyEvent.VK_LEFT) &&
-                                !NomadCtrl.isNomadCrossingAnotherNomad(nomadList, enemy, enemy.getXMap() - 1, enemy.getYMap())) {
+                                !NomadCtrl.isNomadCrossingAnEmeny(nomadList, enemy, enemy.getXMap() - 1, enemy.getYMap())) {
                             resultFound = true;
                         }
                     }
@@ -86,7 +86,7 @@ public class EnemyAi {
                         if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap() + 1, enemy.getYMap()) &&
                                 !NomadMethods.isNomadBurning(mapPointMatrix, enemy.getXMap() + 1, enemy.getYMap()) &&
                                 !NomadMethods.isNomadCrossingBomb(mapPointMatrix, enemy.getXMap() + 1, enemy.getYMap(), KeyEvent.VK_RIGHT) &&
-                                !NomadCtrl.isNomadCrossingAnotherNomad(nomadList, enemy, enemy.getXMap() + 1, enemy.getYMap())) {
+                                !NomadCtrl.isNomadCrossingAnEmeny(nomadList, enemy, enemy.getXMap() + 1, enemy.getYMap())) {
                             resultFound = true;
                         }
                     }

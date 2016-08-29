@@ -1,15 +1,3 @@
-import static images.ImagesLoader.IMAGE_SIZE;
-
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JPanel;
-
 import exceptions.CannotCreateMapElementException;
 import exceptions.InvalidMapConfigurationException;
 import map.ctrl.NomadMethods;
@@ -19,6 +7,16 @@ import map.zelda.ZeldaMapSetting;
 import sprites.nomad.BomberBlue;
 import sprites.nomad.abstracts.Bomber;
 import utils.Tuple2;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static images.ImagesLoader.IMAGE_SIZE;
 
 public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
@@ -31,8 +29,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private SettledList settledList;
     private List<Long> pressedKeyList;
 
-    private int xBbManPosOnScreen;
-    private int yBbManPosOnScreen;
+    // this members allow printing map from a certain point.
     private int xMapStartPosOnScreen;
     private int yMapStartPosOnScreen;
 
@@ -209,12 +206,12 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         }
                         case KeyEvent.VK_UP: {
                             mainBomber.setStatus(Bomber.status.STATUS_WALK_BACK);
-                        if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
+                            if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     mainBomber.getXMap(), mainBomber.getYMap() - 1)) {
-                            if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap(),
-                                    mainBomber.getYMap() - 1) &&
-                                    !NomadMethods.isNomadCrossingBomb(map.getMapPointMatrix(), mainBomber.getXMap(),
-                                            mainBomber.getYMap() - 1, KeyEvent.VK_UP)) {
+                                if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap(),
+                                        mainBomber.getYMap() - 1) &&
+                                        !NomadMethods.isNomadCrossingBomb(map.getMapPointMatrix(), mainBomber.getXMap(),
+                                                mainBomber.getYMap() - 1, KeyEvent.VK_UP)) {
                                     mainBomber.setYMap(mainBomber.getYMap() - 1);
                                 } else {
                                     shiftBbManIfPossible(KeyEvent.VK_UP);
@@ -224,12 +221,12 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         }
                         case KeyEvent.VK_DOWN: {
                             mainBomber.setStatus(Bomber.status.STATUS_WALK_FRONT);
-                        if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
+                            if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     mainBomber.getXMap(), mainBomber.getYMap() + 1)) {
-                            if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap(),
-                                    mainBomber.getYMap() + 1) &&
-                                    !NomadMethods.isNomadCrossingBomb(map.getMapPointMatrix(), mainBomber.getXMap(),
-                                            mainBomber.getYMap() + 1, KeyEvent.VK_DOWN)) {
+                                if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap(),
+                                        mainBomber.getYMap() + 1) &&
+                                        !NomadMethods.isNomadCrossingBomb(map.getMapPointMatrix(), mainBomber.getXMap(),
+                                                mainBomber.getYMap() + 1, KeyEvent.VK_DOWN)) {
                                     mainBomber.setYMap(mainBomber.getYMap() + 1);
                                 } else {
                                     shiftBbManIfPossible(KeyEvent.VK_DOWN);
@@ -239,12 +236,12 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         }
                         case KeyEvent.VK_LEFT: {
                             mainBomber.setStatus(Bomber.status.STATUS_WALK_LEFT);
-                        if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
+                            if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     mainBomber.getXMap() - 1, mainBomber.getYMap())) {
-                            if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap() - 1,
-                                    mainBomber.getYMap()) &&
-                                    !NomadMethods.isNomadCrossingBomb(map.getMapPointMatrix(), mainBomber.getXMap() - 1,
-                                            mainBomber.getYMap(), KeyEvent.VK_LEFT)) {
+                                if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap() - 1,
+                                        mainBomber.getYMap()) &&
+                                        !NomadMethods.isNomadCrossingBomb(map.getMapPointMatrix(), mainBomber.getXMap() - 1,
+                                                mainBomber.getYMap(), KeyEvent.VK_LEFT)) {
                                     mainBomber.setXMap(mainBomber.getXMap() - 1);
                                 } else {
                                     shiftBbManIfPossible(KeyEvent.VK_LEFT);
@@ -254,12 +251,12 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         }
                         case KeyEvent.VK_RIGHT: {
                             mainBomber.setStatus(Bomber.status.STATUS_WALK_RIGHT);
-                        if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
+                            if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     mainBomber.getXMap() + 1, mainBomber.getYMap())) {
-                            if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap() + 1,
-                                    mainBomber.getYMap()) &&
-                                    !NomadMethods.isNomadCrossingBomb(map.getMapPointMatrix(), mainBomber.getXMap() + 1,
-                                            mainBomber.getYMap(), KeyEvent.VK_RIGHT)) {
+                                if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap() + 1,
+                                        mainBomber.getYMap()) &&
+                                        !NomadMethods.isNomadCrossingBomb(map.getMapPointMatrix(), mainBomber.getXMap() + 1,
+                                                mainBomber.getYMap(), KeyEvent.VK_RIGHT)) {
                                     mainBomber.setXMap(mainBomber.getXMap() + 1);
                                 } else {
                                     shiftBbManIfPossible(KeyEvent.VK_RIGHT);

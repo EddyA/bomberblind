@@ -4,38 +4,9 @@ import map.MapPoint;
 
 import java.awt.event.KeyEvent;
 
-import static images.ImagesLoader.IMAGE_SIZE;
-import static utils.Character.*;
+import static utils.Tools.*;
 
 public class NomadMethods {
-
-    /**
-     * Return the top rowIdx of a nomad given its map ordinate.
-     */
-    protected static int getTopRowIdxIfOrdIs(int yChar) {
-        return getCharTopBound(yChar) < 0 ? -1 : (yChar - IMAGE_SIZE / 2) / IMAGE_SIZE;
-    }
-
-    /**
-     * Return the bottom rowIdx of a nomad given its map ordinate.
-     */
-    protected static int getBottomRowIdxIfOrdIs(int yChar) {
-        return getCharBottomBound(yChar) / IMAGE_SIZE;
-    }
-
-    /**
-     * Return the most left colIdx of a nomad given its map abscissa.
-     */
-    protected static int getMostLeftColIdxIfAbsIs(int xChar) {
-        return getCharLeftBound(xChar) < 0 ? -1 : (xChar - IMAGE_SIZE / 2) / IMAGE_SIZE;
-    }
-
-    /**
-     * Return the most right colIdx of a nomad given its map abscissa.
-     */
-    protected static int getMostRightColIdxIfAbsIs(int xChar) {
-        return getCharRightBound(xChar) / IMAGE_SIZE;
-    }
 
     /**
      * Is the nomad crossing a map limit?
@@ -47,10 +18,10 @@ public class NomadMethods {
      * @return true if the nomad is crossing a map limit, false otherwise
      */
     public static boolean isNomadCrossingMapLimit(int mapWidth, int mapHeight, int xChar, int yChar) {
-        int topRowIdx = getTopRowIdxIfOrdIs(yChar);
-        int bottomRowIdx = getBottomRowIdxIfOrdIs(yChar);
-        int mostLeftColIdx = getMostLeftColIdxIfAbsIs(xChar);
-        int mostRightColIdx = getMostRightColIdxIfAbsIs(xChar);
+        int topRowIdx = getCharTopRowIdx(yChar);
+        int bottomRowIdx = getCharBottomRowIdx(yChar);
+        int mostLeftColIdx = getCharLeftColIdx(xChar);
+        int mostRightColIdx = getCharRightColIdx(xChar);
 
         boolean isCrossing = false;
         if (topRowIdx < 0 || bottomRowIdx >= mapHeight ||
@@ -70,10 +41,10 @@ public class NomadMethods {
      * @implSpec isNomadCrossingMapLimit() must be called before this function!
      */
     public static boolean isNomadCrossingObstacle(MapPoint[][] mapPointMatrix, int xChar, int yChar) {
-        int topRowIdx = getTopRowIdxIfOrdIs(yChar);
-        int bottomRowIdx = getBottomRowIdxIfOrdIs(yChar);
-        int mostLeftColIdx = getMostLeftColIdxIfAbsIs(xChar);
-        int mostRightColIdx = getMostRightColIdxIfAbsIs(xChar);
+        int topRowIdx = getCharTopRowIdx(yChar);
+        int bottomRowIdx = getCharBottomRowIdx(yChar);
+        int mostLeftColIdx = getCharLeftColIdx(xChar);
+        int mostRightColIdx = getCharRightColIdx(xChar);
 
         boolean isCrossing = false;
         if (!mapPointMatrix[topRowIdx][mostLeftColIdx].isPathway() ||
@@ -96,10 +67,10 @@ public class NomadMethods {
      * @implSpec isNomadCrossingMapLimit() must be called before this function!
      */
     public static boolean isNomadBurning(MapPoint[][] mapPointMatrix, int xChar, int yChar) {
-        int topRowIdx = getTopRowIdxIfOrdIs(yChar);
-        int bottomRowIdx = getBottomRowIdxIfOrdIs(yChar);
-        int mostLeftColIdx = getMostLeftColIdxIfAbsIs(xChar);
-        int mostRightColIdx = getMostRightColIdxIfAbsIs(xChar);
+        int topRowIdx = getCharTopRowIdx(yChar);
+        int bottomRowIdx = getCharBottomRowIdx(yChar);
+        int mostLeftColIdx = getCharLeftColIdx(xChar);
+        int mostRightColIdx = getCharRightColIdx(xChar);
 
         boolean isBurning = false;
         if (mapPointMatrix[topRowIdx][mostLeftColIdx].isBurning() ||
@@ -124,17 +95,17 @@ public class NomadMethods {
      * @implSpec isNomadCrossingMapLimit() must be called before this function!
      */
     public static boolean isNomadCrossingBomb(MapPoint[][] mapPointMatrix, int xChar, int yChar, int keyEvent) {
-        int topRowIdx = getTopRowIdxIfOrdIs(yChar);
-        int bottomRowIdx = getBottomRowIdxIfOrdIs(yChar);
-        int mostLeftColIdx = getMostLeftColIdxIfAbsIs(xChar);
-        int mostRightColIdx = getMostRightColIdxIfAbsIs(xChar);
+        int topRowIdx = getCharTopRowIdx(yChar);
+        int bottomRowIdx = getCharBottomRowIdx(yChar);
+        int mostLeftColIdx = getCharLeftColIdx(xChar);
+        int mostRightColIdx = getCharRightColIdx(xChar);
 
         boolean isCrossing = false;
         switch (keyEvent) {
             case KeyEvent.VK_UP: {
                 if ((mapPointMatrix[topRowIdx][mostLeftColIdx].isBombing() ||
                         mapPointMatrix[topRowIdx][mostRightColIdx].isBombing()) &&
-                        topRowIdx != getTopRowIdxIfOrdIs(yChar + 1)) {
+                        topRowIdx != getCharTopRowIdx(yChar + 1)) {
                     isCrossing = true;
                 }
                 break;
@@ -142,7 +113,7 @@ public class NomadMethods {
             case KeyEvent.VK_DOWN: {
                 if ((mapPointMatrix[bottomRowIdx][mostLeftColIdx].isBombing() ||
                         mapPointMatrix[bottomRowIdx][mostRightColIdx].isBombing()) &&
-                        bottomRowIdx != getBottomRowIdxIfOrdIs(yChar - 1)) {
+                        bottomRowIdx != getCharBottomRowIdx(yChar - 1)) {
                     isCrossing = true;
                 }
                 break;
@@ -150,7 +121,7 @@ public class NomadMethods {
             case KeyEvent.VK_LEFT: {
                 if ((mapPointMatrix[topRowIdx][mostLeftColIdx].isBombing() ||
                         mapPointMatrix[bottomRowIdx][mostLeftColIdx].isBombing()) &&
-                        mostLeftColIdx != getMostLeftColIdxIfAbsIs(xChar + 1)) {
+                        mostLeftColIdx != getCharLeftColIdx(xChar + 1)) {
                     isCrossing = true;
                 }
                 break;
@@ -158,7 +129,7 @@ public class NomadMethods {
             case KeyEvent.VK_RIGHT: {
                 if ((mapPointMatrix[topRowIdx][mostRightColIdx].isBombing() ||
                         mapPointMatrix[bottomRowIdx][mostRightColIdx].isBombing()) &&
-                        mostRightColIdx != getMostRightColIdxIfAbsIs(xChar - 1)) {
+                        mostRightColIdx != getCharRightColIdx(xChar - 1)) {
                     isCrossing = true;
                 }
                 break;
