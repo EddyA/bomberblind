@@ -32,7 +32,7 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
     }
 
     @Test
-    public void loadPropertiesWithNullFileShouldThrowTheAppropriateException() throws Exception {
+    public void loadPropertiesWithNullFileShouldThrowExpectedException() throws Exception {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties(null);
         assertThatThrownBy(zeldaMapProperties::loadProperties)
                 .isInstanceOf(IllegalArgumentException.class)
@@ -40,7 +40,7 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
     }
 
     @Test
-    public void loadPropertiesWithEmptyFileShouldThrowTheAppropriateException() throws Exception {
+    public void loadPropertiesWithEmptyFileShouldThrowExpectedException() throws Exception {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties("");
         assertThatThrownBy(zeldaMapProperties::loadProperties)
                 .isInstanceOf(IllegalArgumentException.class)
@@ -48,7 +48,7 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
     }
 
     @Test
-    public void loadPropertiesWithUnknownParameterShouldThrowTheAppropriateException() throws Exception {
+    public void loadPropertiesWithUnknownParameterShouldThrowExpectedException() throws Exception {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties("badFilePath");
         assertThatThrownBy(zeldaMapProperties::loadProperties)
                 .isInstanceOf(InvalidMapConfigurationException.class)
@@ -56,7 +56,7 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
     }
 
     @Test
-    public void checkPropertiesWithNotIntegerPropertiesShouldThrowTheAppropriateException() throws Exception {
+    public void checkPropertiesWithNotIntegerPropertiesShouldThrowExpectedException() throws Exception {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties(TEST_MAP_PROPERTIES_FILE);
         zeldaMapProperties.loadProperties();
 
@@ -71,7 +71,7 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
     }
 
     @Test
-    public void checkPropertiesWithMissingPropertiesShouldThrowTheAppropriateException() throws Exception {
+    public void checkPropertiesWithMissingPropertiesShouldThrowExpectedException() throws Exception {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties(TEST_MAP_PROPERTIES_FILE);
         zeldaMapProperties.loadProperties();
 
@@ -85,7 +85,7 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
     }
 
     @Test
-    public void checkPropertiesWithTooHighPerValuePropertiesShouldThrowTheAppropriateException() throws Exception {
+    public void checkPropertiesWithTooHighPerValuePropertiesShouldThrowExpectedException() throws Exception {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties(TEST_MAP_PROPERTIES_FILE);
         zeldaMapProperties.loadProperties();
 

@@ -1,16 +1,17 @@
 import ai.EnemyAi;
 import exceptions.CannotMoveNomadException;
 import map.abstracts.Map;
-import map.ctrl.NomadMethods;
 import sprites.nomad.CloakedSkeleton;
-import sprites.nomad.NomadCtrl;
-import sprites.nomad.abstracts.Bomber;
-import sprites.nomad.abstracts.Enemy;
-import sprites.nomad.abstracts.Nomad;
+import sprites.nomad.Bomber;
+import sprites.nomad.Enemy;
+import sprites.nomad.Nomad;
 
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.ListIterator;
+
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static sprites.nomad.NomadCtrl.isNomadCrossingEnemy;
 
 /**
  * List of nomad items.
@@ -63,8 +64,8 @@ public class NomadList extends LinkedList<Nomad> {
 
                     // should the bomber die?
                     if (!bomber.isInvincible() &&
-                            (NomadMethods.isNomadBurning(map.getMapPointMatrix(), bomber.getXMap(), bomber.getYMap()) ||
-                                    NomadCtrl.isNomadCrossingAnEmeny(this, bomber, bomber.getXMap(), bomber.getYMap()))) {
+                            (isNomadBurning(map.getMapPointMatrix(), bomber.getXMap(), bomber.getYMap()) ||
+                                    isNomadCrossingEnemy(this, bomber, bomber.getXMap(), bomber.getYMap()))) {
                         bomber.setStatus(Bomber.status.STATUS_DEAD);
                     }
                 }
@@ -77,7 +78,7 @@ public class NomadList extends LinkedList<Nomad> {
                 } else if (enemy.getStatus() != Enemy.status.STATUS_DEAD) { // not finished and not dead.
 
                     // should the enemy die?
-                    if (NomadMethods.isNomadBurning(map.getMapPointMatrix(), enemy.getXMap(), enemy.getYMap())) {
+                    if (isNomadBurning(map.getMapPointMatrix(), enemy.getXMap(), enemy.getYMap())) {
                         enemy.setStatus(Enemy.status.STATUS_DEAD);
 
                     } else if (enemy.shouldMove()) { // not dead -> should the enemy move?

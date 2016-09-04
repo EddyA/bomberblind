@@ -1,4 +1,4 @@
-package sprites.settled.abstracts;
+package sprites.settled;
 
 import java.awt.*;
 

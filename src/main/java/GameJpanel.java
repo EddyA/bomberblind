@@ -4,8 +4,8 @@ import map.ctrl.NomadMethods;
 import map.zelda.ZeldaMap;
 import map.zelda.ZeldaMapProperties;
 import map.zelda.ZeldaMapSetting;
-import sprites.nomad.BomberBlue;
-import sprites.nomad.abstracts.Bomber;
+import sprites.nomad.BlueBomber;
+import sprites.nomad.Bomber;
 import utils.Tuple2;
 
 import javax.swing.*;
@@ -24,7 +24,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private final int MAP_HEIGHT = 32;
 
     private map.abstracts.Map map;
-    private BomberBlue mainBomber;
+    private BlueBomber mainBomber;
     private NomadList nomadList;
     private SettledList settledList;
     private List<Long> pressedKeyList;
@@ -51,7 +51,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
         // create the main bomber and add it to the list of nomad.
         Tuple2<Integer, Integer> bbManInitialPosition = map.computeInitialBbManPosition();
-        mainBomber = new BomberBlue(bbManInitialPosition.getFirst(), bbManInitialPosition.getSecond());
+        mainBomber = new BlueBomber(bbManInitialPosition.getFirst(), bbManInitialPosition.getSecond());
         nomadList.addMainBomber(mainBomber);
 
         // ToDo: Just a test ...

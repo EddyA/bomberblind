@@ -1,26 +1,23 @@
 package sprites.nomad;
 
-import sprites.nomad.abstracts.Nomad;
-
-import java.util.ListIterator;
+import sprites.nomad.Nomad;
 
 import static utils.Tools.*;
 
 public class NomadCtrl {
 
     /**
-     * Is the nomad is crossing another nomad?
+     * Is the nomad is crossing an enemy?
      *
      * @param nomadList the list of nomads
-     * @param nomad     the provided nomad
+     * @param nomad     the provided nomad (requiered to avoid comparing with itself)
      * @param xChar     the abscissa of the provided nomad
      * @param yChar     the ordinate of the provided nomad
      * @return true if the provided nomad is crossing another one, flase otherwise
      */
-    public static boolean isNomadCrossingAnEmeny(java.util.List<Nomad> nomadList, Nomad nomad, int xChar, int yChar) {
+    public static boolean isNomadCrossingEnemy(java.util.List<Nomad> nomadList, Nomad nomad, int xChar, int yChar) {
         boolean isCrossing = false;
-        for (ListIterator<Nomad> iterator = nomadList.listIterator(); iterator.hasNext(); ) {
-            Nomad curNomad = iterator.next();
+        for (Nomad curNomad : nomadList) {
             if (curNomad.getClass().getSuperclass().getSimpleName().equals("Enemy") && // it is an enemy
                     curNomad != nomad) { // AND the checked nomad is not the one provided.
 

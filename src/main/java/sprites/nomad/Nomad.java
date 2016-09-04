@@ -1,4 +1,4 @@
-package sprites.nomad.abstracts;
+package sprites.nomad;
 
 import java.awt.*;
 

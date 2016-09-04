@@ -2,15 +2,15 @@ package ai;
 
 import exceptions.CannotMoveNomadException;
 import map.MapPoint;
-import map.ctrl.NomadMethods;
-import sprites.nomad.NomadCtrl;
-import sprites.nomad.abstracts.Enemy;
-import sprites.nomad.abstracts.Nomad;
+import sprites.nomad.Enemy;
+import sprites.nomad.Nomad;
 
 import java.awt.event.KeyEvent;
 import java.util.*;
 
-import static sprites.nomad.abstracts.Enemy.status.*;
+import static map.ctrl.NomadMethods.*;
+import static sprites.nomad.Enemy.status.*;
+import static sprites.nomad.NomadCtrl.isNomadCrossingEnemy;
 
 public class EnemyAi {
 
@@ -49,44 +49,44 @@ public class EnemyAi {
             checkedStatus.add(curCheckedStatus); // add the current checked status to the set of checked status.
             switch (curCheckedStatus) {
                 case STATUS_WALK_BACK: {
-                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap(), enemy.getYMap() - 1)) {
-                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap(), enemy.getYMap() - 1) &&
-                                !NomadMethods.isNomadBurning(mapPointMatrix, enemy.getXMap(), enemy.getYMap() - 1) &&
-                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, enemy.getXMap(), enemy.getYMap() - 1, KeyEvent.VK_UP) &&
-                                !NomadCtrl.isNomadCrossingAnEmeny(nomadList, enemy, enemy.getXMap(), enemy.getYMap() - 1)) {
+                    if (!isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap(), enemy.getYMap() - 1)) {
+                        if (!isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap(), enemy.getYMap() - 1) &&
+                                !isNomadBurning(mapPointMatrix, enemy.getXMap(), enemy.getYMap() - 1) &&
+                                !isNomadCrossingBomb(mapPointMatrix, enemy.getXMap(), enemy.getYMap() - 1, KeyEvent.VK_UP) &&
+                                !isNomadCrossingEnemy(nomadList, enemy, enemy.getXMap(), enemy.getYMap() - 1)) {
                             resultFound = true;
                         }
                     }
                     break;
                 }
                 case STATUS_WALK_FRONT: {
-                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap(), enemy.getYMap() + 1)) {
-                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap(), enemy.getYMap() + 1) &&
-                                !NomadMethods.isNomadBurning(mapPointMatrix, enemy.getXMap(), enemy.getYMap() + 1) &&
-                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, enemy.getXMap(), enemy.getYMap() + 1, KeyEvent.VK_DOWN) &&
-                                !NomadCtrl.isNomadCrossingAnEmeny(nomadList, enemy, enemy.getXMap(), enemy.getYMap() + 1)) {
+                    if (!isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap(), enemy.getYMap() + 1)) {
+                        if (!isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap(), enemy.getYMap() + 1) &&
+                                !isNomadBurning(mapPointMatrix, enemy.getXMap(), enemy.getYMap() + 1) &&
+                                !isNomadCrossingBomb(mapPointMatrix, enemy.getXMap(), enemy.getYMap() + 1, KeyEvent.VK_DOWN) &&
+                                !isNomadCrossingEnemy(nomadList, enemy, enemy.getXMap(), enemy.getYMap() + 1)) {
                             resultFound = true;
                         }
                     }
                     break;
                 }
                 case STATUS_WALK_LEFT: {
-                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap() - 1, enemy.getYMap())) {
-                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap() - 1, enemy.getYMap()) &&
-                                !NomadMethods.isNomadBurning(mapPointMatrix, enemy.getXMap() - 1, enemy.getYMap()) &&
-                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, enemy.getXMap() - 1, enemy.getYMap(), KeyEvent.VK_LEFT) &&
-                                !NomadCtrl.isNomadCrossingAnEmeny(nomadList, enemy, enemy.getXMap() - 1, enemy.getYMap())) {
+                    if (!isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap() - 1, enemy.getYMap())) {
+                        if (!isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap() - 1, enemy.getYMap()) &&
+                                !isNomadBurning(mapPointMatrix, enemy.getXMap() - 1, enemy.getYMap()) &&
+                                !isNomadCrossingBomb(mapPointMatrix, enemy.getXMap() - 1, enemy.getYMap(), KeyEvent.VK_LEFT) &&
+                                !isNomadCrossingEnemy(nomadList, enemy, enemy.getXMap() - 1, enemy.getYMap())) {
                             resultFound = true;
                         }
                     }
                     break;
                 }
                 case STATUS_WALK_RIGHT: {
-                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap() + 1, enemy.getYMap())) {
-                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap() + 1, enemy.getYMap()) &&
-                                !NomadMethods.isNomadBurning(mapPointMatrix, enemy.getXMap() + 1, enemy.getYMap()) &&
-                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, enemy.getXMap() + 1, enemy.getYMap(), KeyEvent.VK_RIGHT) &&
-                                !NomadCtrl.isNomadCrossingAnEmeny(nomadList, enemy, enemy.getXMap() + 1, enemy.getYMap())) {
+                    if (!isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap() + 1, enemy.getYMap())) {
+                        if (!isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap() + 1, enemy.getYMap()) &&
+                                !isNomadBurning(mapPointMatrix, enemy.getXMap() + 1, enemy.getYMap()) &&
+                                !isNomadCrossingBomb(mapPointMatrix, enemy.getXMap() + 1, enemy.getYMap(), KeyEvent.VK_RIGHT) &&
+                                !isNomadCrossingEnemy(nomadList, enemy, enemy.getXMap() + 1, enemy.getYMap())) {
                             resultFound = true;
                         }
                     }

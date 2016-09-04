@@ -20,26 +20,26 @@ public class ImagesLoader {
     protected final static int NB_MATRIX_COL = 80;
 
     // images location.
-    private final static String BBMAN_SKIN_DIR = "/images/characters/bbman";
+    private final static String BOMBER_SKIN_DIR = "/images/characters/bomber";
     private final static String ENEMY_SKIN_DIR = "/images/characters/enemy";
     private final static String BOMB_SKIN_DIR = "/images/bomb";
     private final static String FLAME_SKIN_DIR = "/images/flame";
     private final static String SCENE_SKIN_DIR = "/images/scene";
 
     // bbmans:
-    public final static int NB_BBMAN_DEATH_FRAME = 9;
-    public final static int NB_BBMAN_WAIT_FRAME = 4;
-    public final static int NB_BBMAN_WALK_FRAME = 4;
-    public final static int NB_BBMAN_WIN_FRAME = 8;
+    public final static int NB_BOMBER_DEATH_FRAME = 9;
+    public final static int NB_BOMBER_WAIT_FRAME = 4;
+    public final static int NB_BOMBER_WALK_FRAME = 4;
+    public final static int NB_BOMBER_WIN_FRAME = 8;
 
     // - blue Bomber.
-    public static int blueBbManDeathMatrixRowIdx;
-    public static int blueBbManWaitMatrixRowIdx;
-    public static int blueBbManWalkBackMatrixRowIdx;
-    public static int blueBbManWalkFrontMatrixRowIdx;
-    public static int blueBbManWalkLeftMatrixRowIdx;
-    public static int blueBbManWalkRightMatrixRowIdx;
-    public static int blueBbManWinMatrixRowIdx;
+    public static int blueBomberDeathMatrixRowIdx;
+    public static int blueBomberWaitMatrixRowIdx;
+    public static int blueBomberWalkBackMatrixRowIdx;
+    public static int blueBomberWalkFrontMatrixRowIdx;
+    public static int blueBomberWalkLeftMatrixRowIdx;
+    public static int blueBomberWalkRightMatrixRowIdx;
+    public static int blueBomberWinMatrixRowIdx;
 
     // enemies:
     public final static int NB_ENEMY_WALK_FRAME = 4;
@@ -116,43 +116,43 @@ public class ImagesLoader {
         int rowIdx = 0;
         imagesMatrix = new Image[NB_MATRIX_ROW][NB_MATRIX_COL];
 
-        // bbmans:
+        // bombers:
         // - blue Bomber.
-        for (int i = 0; i < NB_BBMAN_DEATH_FRAME; i++) {
+        for (int i = 0; i < NB_BOMBER_DEATH_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(BBMAN_SKIN_DIR + "/blue/death_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(BOMBER_SKIN_DIR + "/blue/death_" + imageIdx + ".png");
         }
-        blueBbManDeathMatrixRowIdx = rowIdx++;
-        for (int i = 0; i < NB_BBMAN_WAIT_FRAME; i++) {
+        blueBomberDeathMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_BOMBER_WAIT_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(BBMAN_SKIN_DIR + "/blue/wait_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(BOMBER_SKIN_DIR + "/blue/wait_" + imageIdx + ".png");
         }
-        blueBbManWaitMatrixRowIdx = rowIdx++;
-        for (int i = 0; i < NB_BBMAN_WALK_FRAME; i++) {
+        blueBomberWaitMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_BOMBER_WALK_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(BBMAN_SKIN_DIR + "/blue/walk_back_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(BOMBER_SKIN_DIR + "/blue/walk_back_" + imageIdx + ".png");
         }
-        blueBbManWalkBackMatrixRowIdx = rowIdx++;
-        for (int i = 0; i < NB_BBMAN_WALK_FRAME; i++) {
+        blueBomberWalkBackMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_BOMBER_WALK_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(BBMAN_SKIN_DIR + "/blue/walk_front_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(BOMBER_SKIN_DIR + "/blue/walk_front_" + imageIdx + ".png");
         }
-        blueBbManWalkFrontMatrixRowIdx = rowIdx++;
-        for (int i = 0; i < NB_BBMAN_WALK_FRAME; i++) {
+        blueBomberWalkFrontMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_BOMBER_WALK_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(BBMAN_SKIN_DIR + "/blue/walk_left_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(BOMBER_SKIN_DIR + "/blue/walk_left_" + imageIdx + ".png");
         }
-        blueBbManWalkLeftMatrixRowIdx = rowIdx++;
-        for (int i = 0; i < NB_BBMAN_WALK_FRAME; i++) {
+        blueBomberWalkLeftMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_BOMBER_WALK_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(BBMAN_SKIN_DIR + "/blue/walk_right_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(BOMBER_SKIN_DIR + "/blue/walk_right_" + imageIdx + ".png");
         }
-        blueBbManWalkRightMatrixRowIdx = rowIdx++;
-        for (int i = 0; i < NB_BBMAN_WIN_FRAME; i++) {
+        blueBomberWalkRightMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_BOMBER_WIN_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(BBMAN_SKIN_DIR + "/blue/win_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(BOMBER_SKIN_DIR + "/blue/win_" + imageIdx + ".png");
         }
-        blueBbManWinMatrixRowIdx = rowIdx++;
+        blueBomberWinMatrixRowIdx = rowIdx++;
 
         // enemies:
         // - cloaked skeleton.
@@ -196,15 +196,15 @@ public class ImagesLoader {
 
         // scene:
         // - immutable elements.
-        // -- castle (team 1 & 2).
+        // -- castle (1 & 2).
         for (int i = 0; i < CASTLE_WIDTH * CASTLE_HEIGHT; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(SCENE_SKIN_DIR + "/immutable/castle/team_1/castle_t1_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(SCENE_SKIN_DIR + "/immutable/obstacle/castle_1/castle_t1_" + imageIdx + ".png");
         }
         castleT1MatrixRowIdx = rowIdx++;
         for (int i = 0; i < CASTLE_WIDTH * CASTLE_HEIGHT; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(SCENE_SKIN_DIR + "/immutable/castle/team_2/castle_t2_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(SCENE_SKIN_DIR + "/immutable/obstacle/castle_2/castle_t2_" + imageIdx + ".png");
         }
         castleT2MatrixRowIdx = rowIdx++;
 

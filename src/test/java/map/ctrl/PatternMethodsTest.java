@@ -18,7 +18,7 @@ public class PatternMethodsTest implements WithAssertions {
     private final int MAP_HEIGHT = 10;
 
     @Test
-    public void placeNorthEdgeOnMapShouldThrowTheAppropriateException() throws Exception {
+    public void placeNorthEdgeOnMapShouldThrowExpectedException() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -32,7 +32,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void placeSouthEdgeOnMapShouldThrowTheAppropriateException() throws Exception {
+    public void placeSouthEdgeOnMapShouldThrowExpectedException() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -46,7 +46,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void placeCastleOnMapShouldThrowTheAppropriateException() throws Exception {
+    public void placeCastleOnMapShouldThrowExpectedException() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -61,7 +61,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void isPatternCrossingMapLimitShouldReturnTheAppropriateValue() {
+    public void isPatternCrossingMapLimitShouldReturnExpectedValue() {
         MapPattern mapPattern = new MapPattern(new Image[6], 2, 3, true, true, "myPattern");
 
         // tests.
@@ -80,7 +80,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void isPatternCrossingNotAvailableCaseShouldReturnTheAppropriateValue() {
+    public void isPatternCrossingNotAvailableCaseShouldReturnExpectedValue() {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -108,7 +108,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void placePatternOnMapShouldReturnTheAppropriateValue() {
+    public void placePatternOnMapShouldReturnExpectedValue() {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -135,7 +135,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void securePerimeterShouldReturnTheAppropriateValue() throws IOException {
+    public void securePerimeterShouldReturnExpectedValue() throws IOException {
         ImagesLoader.fillImagesMatrix(); // fill images to avoid a nullPointerException when putting a static mutable.
 
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
@@ -168,7 +168,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void generateRandomRowIdxShouldReturnTheAppropriateValue() {
+    public void generateRandomRowIdxShouldReturnExpectedValue() {
         assertThat(generateRandomRowIdx(10, 1, 1, 4, 2)).isEqualTo(3);
         for (int i = 0; i < 100000; i++) {
             assertThat(generateRandomRowIdx(100, 1, 1, 4, 2)).isBetween(3, 92);
@@ -176,14 +176,14 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void generateRandomRowIdxShouldThrowTheAppropriateException() {
+    public void generateRandomRowIdxShouldThrowExpectedException() {
         assertThatThrownBy(() -> generateRandomRowIdx(8, 1, 1, 4, 2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("bound must be positive");
     }
 
     @Test
-    public void generateRandomColIdxShouldReturnTheAppropriateValue() {
+    public void generateRandomColIdxShouldReturnExpectedValue() {
         assertThat(generateRandomColIdx(10, 1, 1, 4, 2)).isEqualTo(3);
         for (int i = 0; i < 100000; i++) {
             assertThat(generateRandomColIdx(100, 1, 1, 4, 2)).isBetween(3, 92);
@@ -191,7 +191,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void generateRandomColIdxShouldThrowTheAppropriateException() {
+    public void generateRandomColIdxShouldThrowExpectedException() {
         assertThatThrownBy(() -> generateRandomColIdx(8, 1, 1, 4, 2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("bound must be positive");

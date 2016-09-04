@@ -3,7 +3,7 @@ import map.abstracts.Map;
 import sprites.settled.Bomb;
 import sprites.settled.Flame;
 import sprites.settled.FlameEnd;
-import sprites.settled.abstracts.Settled;
+import sprites.settled.Settled;
 
 import java.awt.*;
 import java.util.LinkedList;

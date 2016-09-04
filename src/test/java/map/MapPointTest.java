@@ -14,7 +14,7 @@ import static org.mockito.Mockito.mock;
 public class MapPointTest implements WithAssertions {
 
     @Test
-    public void MapPointShouldSetMembersWithTheAppropriateValues() throws Exception {
+    public void MapPointShouldSetMembersWithExpectedValues() throws Exception {
         MapPoint MapPoint = new MapPoint(5, 10);
         assertThat(MapPoint.getRowIdx()).isEqualTo(5);
         assertThat(MapPoint.getColIdx()).isEqualTo(10);
@@ -26,35 +26,35 @@ public class MapPointTest implements WithAssertions {
     }
 
     @Test
-    public void setAvailableShouldSetTheMemberWithTheAppropriateValue() throws Exception {
+    public void setAvailableShouldSetTheMemberWithExpectedValue() throws Exception {
         MapPoint MapPoint = new MapPoint(5, 10);
         MapPoint.setAvailable(false);
         assertThat(MapPoint.isAvailable()).isFalse();
     }
 
     @Test
-    public void setPathwayShouldSetTheMemberWithTheAppropriateValue() throws Exception {
+    public void setPathwayShouldSetTheMemberWithExpectedValue() throws Exception {
         MapPoint MapPoint = new MapPoint(5, 10);
         MapPoint.setPathway(true);
         assertThat(MapPoint.isPathway()).isTrue();
     }
 
     @Test
-    public void setMutableShouldSetTheMemberWithTheAppropriateValue() throws Exception {
+    public void setMutableShouldSetTheMemberWithExpectedValue() throws Exception {
         MapPoint MapPoint = new MapPoint(5, 10);
         MapPoint.setMutable(true);
         assertThat(MapPoint.isMutable()).isTrue();
     }
 
     @Test
-    public void setBombingShouldSetTheMemberWithTheAppropriateValue() throws Exception {
+    public void setBombingShouldSetTheMemberWithExpectedValue() throws Exception {
         MapPoint MapPoint = new MapPoint(5, 10);
         MapPoint.setBombing(true);
         assertThat(MapPoint.isBombing()).isTrue();
     }
 
     @Test
-    public void addAndRemoveFlameShouldSetTheMemberWithTheAppropriateValue() throws Exception {
+    public void addAndRemoveFlameShouldSetTheMemberWithExpectedValue() throws Exception {
         MapPoint MapPoint = new MapPoint(5, 10);
         MapPoint.addFlame();
         MapPoint.addFlame();
@@ -65,7 +65,7 @@ public class MapPointTest implements WithAssertions {
     }
 
     @Test
-    public void setImageShouldSetTheMemberWithTheAppropriateValue() throws Exception {
+    public void setImageShouldSetTheMemberWithExpectedValue() throws Exception {
         MapPoint MapPoint = new MapPoint(5, 10);
         Image img = ImagesLoader.createImage("/images/icon.gif");
         MapPoint.setImage(img);
@@ -73,7 +73,7 @@ public class MapPointTest implements WithAssertions {
     }
 
     @Test
-    public void setImagesShouldSetTheMemberWithTheAppropriateValue() throws Exception {
+    public void setImagesShouldSetTheMemberWithExpectedValue() throws Exception {
         MapPoint MapPoint = new MapPoint(5, 10);
         Image[] imgArray = new Image[1];
         MapPoint.setImages(imgArray, 1);
@@ -81,7 +81,7 @@ public class MapPointTest implements WithAssertions {
     }
 
     @Test
-    public void setRefreshTimeShouldSetTheMemberWithTheAppropriateValue() throws Exception {
+    public void setRefreshTimeShouldSetTheMemberWithExpectedValue() throws Exception {
         MapPoint MapPoint = new MapPoint(5, 10);
         MapPoint.setRefreshTime(100);
         assertThat(MapPoint.refreshTime).isEqualTo(100);
@@ -102,7 +102,7 @@ public class MapPointTest implements WithAssertions {
     }
 
     @Test
-    public void updateImageShouldSetTheMemberWithTheAppropriateValue() throws Exception {
+    public void updateImageShouldSetTheMemberWithExpectedValue() throws Exception {
 
         // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.
         CurrentTimeSupplier currentTimeSupplier = mock(CurrentTimeSupplier.class);

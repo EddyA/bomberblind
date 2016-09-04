@@ -17,7 +17,7 @@ public class NomadMethodsTest implements WithAssertions {
     private final int MAP_HEIGHT = 10;
 
     @Test
-    public void isCharacterCrossingMapLimitShouldReturnTheAppropriateValue() throws Exception {
+    public void isCharacterCrossingMapLimitShouldReturnExpectedValue() throws Exception {
         
         /*
         compute the character limits according to the map dimensions.
@@ -48,7 +48,7 @@ public class NomadMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void isCharacterCrossingObstacleShouldReturnTheAppropriateValue() throws Exception {
+    public void isCharacterCrossingObstacleShouldReturnExpectedValue() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -98,7 +98,7 @@ public class NomadMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void isCharacterBurningShouldReturnTheAppropriateValue() throws Exception {
+    public void isCharacterBurningShouldReturnExpectedValue() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -148,7 +148,7 @@ public class NomadMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void isCharacterCrossingBombShouldReturnTheAppropriateValue() throws Exception {
+    public void isCharacterCrossingBombShouldReturnExpectedValue() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {

@@ -1,43 +1,42 @@
-package sprites.settled.abstracts;
+package sprites.settled;
 
 import utils.CurrentTimeSupplier;
 
 import java.awt.*;
 
 /**
- * Abstract class of a timed sprites.
- * The sprite loops during a certain time.
+ * Abstract class of a looped animation.
+ * The animation loops a certain number of times.
  */
-public abstract class TimedSettled extends Settled {
+public abstract class LoopedSettled extends Settled {
     protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
     private final Image[] images; // array of images of the sprite.
     private final int nbImages; // number of images of the sprite.
     private int curImageIdx; // current image index of the sprite.
-    private final int duration; // duration (in ms).
-    private final long startTs; // start timestamp.
     private final int refreshTime; // refresh time (in ms).
     private long lastRefreshTs; // last refresh timestamp.
+    private final int maxNbTimes; // number of times the sprite should be painted.
+    private int curNbTimes; // current number of times.
 
-    public TimedSettled(int rowIdx,
-                        int colIdx,
-                        Image[] images,
-                        int nbImages,
-                        int duration,
-                        int refreshTime) {
+    public LoopedSettled(int rowIdx,
+                         int colIdx,
+                         Image[] images,
+                         int nbImages,
+                         int refreshTime,
+                         int maxNbTimes) {
         super(rowIdx, colIdx);
         this.images = images;
         this.nbImages = nbImages;
-        this.duration = duration;
         this.refreshTime = refreshTime;
-        this.startTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
+        this.maxNbTimes = maxNbTimes;
     }
 
     /**
      * @return true if the sprite is finished, false otherwise.
      */
     public boolean isFinished() {
-        return currentTimeSupplier.get().toEpochMilli() - startTs > duration;
+        return curNbTimes == maxNbTimes;
     }
 
     /**
@@ -52,6 +51,7 @@ public abstract class TimedSettled extends Settled {
             lastRefreshTs = curTs;
             if (++curImageIdx == nbImages) {
                 curImageIdx = 0;
+                curNbTimes++;
             }
         }
         imageToPaint = images[curImageIdx];

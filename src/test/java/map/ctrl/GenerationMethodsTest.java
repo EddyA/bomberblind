@@ -29,7 +29,7 @@ public class GenerationMethodsTest {
     }
 
     @Test
-    public void randomlyPlaceCastlesWithDifferentHMarginShouldHaveTheExpectedBehavior() throws Exception {
+    public void randomlyPlaceCastlesWithDifferentHMarginShouldHaveExpectedBehavior() throws Exception {
         int patternWidth = 3;
         MapPattern mapPattern = new MapPattern(new Image[patternWidth * 2], patternWidth, 2, false, false, "castle");
 
@@ -61,7 +61,7 @@ public class GenerationMethodsTest {
     }
 
     @Test
-    public void randomlyPlaceCastlesWithDifferentVMarginShouldHaveTheExpectedBehavior() throws Exception {
+    public void randomlyPlaceCastlesWithDifferentVMarginShouldHaveExpectedBehavior() throws Exception {
         int northEdgeHeight = 1;
         int southEdgeHeight = 1;
         int patternHeight = 2;
@@ -95,7 +95,7 @@ public class GenerationMethodsTest {
     }
 
     @Test
-    public void randomlyPlaceComplexElementsWithTooHighSizeShouldThrowTheAppropriateException() throws Exception {
+    public void randomlyPlaceComplexElementsWithTooHighSizeShouldThrowExpectedException() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {

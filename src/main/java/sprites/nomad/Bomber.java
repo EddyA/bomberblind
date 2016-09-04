@@ -1,11 +1,11 @@
-package sprites.nomad.abstracts;
+package sprites.nomad;
 
 import utils.CurrentTimeSupplier;
 
 import java.awt.*;
 
-import static sprites.nomad.abstracts.Bomber.status.STATUS_DEAD;
-import static sprites.nomad.abstracts.Bomber.status.STATUS_WAIT;
+import static sprites.nomad.Bomber.status.STATUS_DEAD;
+import static sprites.nomad.Bomber.status.STATUS_WAIT;
 
 /**
  * Abstract class of a bomber.
@@ -27,33 +27,33 @@ public abstract class Bomber extends Nomad {
         STATUS_WIN
     }
 
-    private Bomber.status status; // status.
-    private Bomber.status lastStatus; // last status.
+    protected Bomber.status status; // status.
+    protected Bomber.status lastStatus; // last status.
 
-    private int initialXMap; // initial abscissa on map.
-    private int initialYMap; // initial ordinate on map.
+    protected int initialXMap; // initial abscissa on map.
+    protected int initialYMap; // initial ordinate on map.
 
-    private final Image[] deathImages;
-    private final int nbDeathFrame;
-    private final Image[] waitImages;
-    private final int nbWaitFrame;
-    private final Image[] walkBackImages;
-    private final Image[] walkFrontImages;
-    private final Image[] walkLeftImages;
-    private final Image[] walkRightImages;
-    private final int nbWalkFrame;
-    private final Image[] winImages;
-    private final int nbWinFrame;
-    private int curImageIdx; // current image index of the sprite.
-    private Image curImage; // current image of the sprite.
-    private int refreshTime; // refresh time of the sprite (in ms).
-    private long lastRefreshTs; // last refresh timestamp.
+    protected final Image[] deathImages;
+    protected final int nbDeathFrame;
+    protected final Image[] waitImages;
+    protected final int nbWaitFrame;
+    protected final Image[] walkBackImages;
+    protected final Image[] walkFrontImages;
+    protected final Image[] walkLeftImages;
+    protected final Image[] walkRightImages;
+    protected final int nbWalkFrame;
+    protected final Image[] winImages;
+    protected final int nbWinFrame;
+    protected int curImageIdx; // current image index of the sprite.
+    protected Image curImage; // current image of the sprite.
+    protected int refreshTime; // refresh time of the sprite (in ms).
+    protected long lastRefreshTs; // last refresh timestamp.
 
-    private boolean isInvincible; // is the bomber invincible?
-    private int invincibilityTime; // invincibility time (in ms).
-    private long lastInvincibilityTs; // last invincibility timestamp.
+    protected boolean isInvincible; // is the bomber invincible?
+    protected int invincibilityTime; // invincibility time (in ms).
+    protected long lastInvincibilityTs; // last invincibility timestamp.
 
-    private boolean isFinished; // is the bomber dead and the dead sprite finished?
+    protected boolean isFinished; // is the bomber dead and the dead sprite finished?
 
     public Bomber(int xMap,
                   int yMap,
@@ -87,6 +87,7 @@ public abstract class Bomber extends Nomad {
         this.winImages = winImages;
         this.nbWinFrame = nbWinFrame;
         this.refreshTime = refreshTime;
+        this.lastRefreshTs = 0;
         this.invincibilityTime = invincibleTime;
     }
 
@@ -114,10 +115,9 @@ public abstract class Bomber extends Nomad {
         return isInvincible;
     }
 
-
     @Override
     public boolean isFinished() {
-        return (status == STATUS_DEAD && isFinished);
+        return isFinished;
     }
 
     @Override
@@ -169,10 +169,11 @@ public abstract class Bomber extends Nomad {
                 break;
             }
         }
-        if (status != lastStatus) {
+        if ((status != lastStatus) || // etiher the status changed
+                (lastRefreshTs == 0)) { // or it is the 1st call to that function.
+            lastRefreshTs = curTs;
             lastStatus = status;
             curImageIdx = 0;
-            lastRefreshTs = curTs;
         } else {
             if (curTs - lastRefreshTs > refreshTime) { // it is time to refresh.
                 lastRefreshTs = curTs;
@@ -185,12 +186,12 @@ public abstract class Bomber extends Nomad {
                     }
                 }
             }
-            if (isInvincible) {
-                if (curTs - lastInvincibilityTs > invincibilityTime) { // stop invincibility?
-                    isInvincible = false;
-                } else if (curImageIdx % 2 == 0) { // print every two images.
-                    shouldPrint = false;
-                }
+        }
+        if (isInvincible) {
+            if (curTs - lastInvincibilityTs > invincibilityTime) { // stop invincibility?
+                isInvincible = false;
+            } else if (curImageIdx % 2 == 0) { // print every two images.
+                shouldPrint = false;
             }
         }
         curImage = shouldPrint ? images[curImageIdx] : null;

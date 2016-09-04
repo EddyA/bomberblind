@@ -1,7 +1,6 @@
 package sprites.settled;
 
 import images.ImagesLoader;
-import sprites.settled.abstracts.TimedSettled;
 
 /**
  * A flame.

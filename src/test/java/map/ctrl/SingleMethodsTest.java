@@ -17,7 +17,7 @@ public class SingleMethodsTest implements WithAssertions {
 
     @Test
     public void placeSinglePathwayOnMapShouldWorkAsExpected() throws Exception {
-        // test all cases in a single function to avaid calling fillImagesMatrix() several times.
+        // test all cases in a single function to avoid calling fillImagesMatrix() several times.
 
         // should return false because not available.
         MapPoint mapPoint1 = new MapPoint(0, 0);
@@ -40,7 +40,7 @@ public class SingleMethodsTest implements WithAssertions {
 
     @Test
     public void placeSingleMutableOnMapShouldWorkAsExpected() throws Exception {
-        // test all cases in a single function to avaid calling fillImagesMatrix() several times.
+        // test all cases in a single function to avoid calling fillImagesMatrix() several times.
 
         // should return false because not available.
         MapPoint mapPoint1 = new MapPoint(0, 0);
@@ -56,7 +56,7 @@ public class SingleMethodsTest implements WithAssertions {
 
     @Test
     public void placeSingleObstacleOnMapShouldWorkAsExpected() throws Exception {
-        // test all cases in a single function to avaid calling fillImagesMatrix() several times.
+        // test all cases in a single function to avoid calling fillImagesMatrix() several times.
 
         // should return false because not available.
         MapPoint mapPoint1 = new MapPoint(0, 0);
