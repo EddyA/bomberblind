@@ -14,7 +14,7 @@ import static org.mockito.Mockito.mock;
 public class MapPointTest implements WithAssertions {
 
     @Test
-    public void MapPointShouldSetMembersWithExpectedValues() throws Exception {
+    public void MapPointShouldSetMembersWithTheExpectedValues() throws Exception {
         MapPoint MapPoint = new MapPoint(5, 10);
         assertThat(MapPoint.getRowIdx()).isEqualTo(5);
         assertThat(MapPoint.getColIdx()).isEqualTo(10);

@@ -13,7 +13,7 @@ public class ZeldaMapTest implements WithAssertions {
     private final int SCREEN_HEIGHT = 1;
 
     @Test
-    public void rMapShouldSetMembersWithExpectedValues() throws Exception {
+    public void rMapShouldSetMembersWithTheExpectedValues() throws Exception {
 
         // mock the ZeldaMapSetting class.
         ZeldaMapSetting zeldaMapSetting = Mockito.mock(ZeldaMapSetting.class);

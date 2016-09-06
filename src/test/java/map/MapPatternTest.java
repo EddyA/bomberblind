@@ -8,7 +8,7 @@ import java.awt.*;
 public class MapPatternTest implements WithAssertions {
 
     @Test
-    public void MapPatternShouldSetMembersWithExpectedValues() throws Exception {
+    public void MapPatternShouldSetMembersWithTheExpectedValues() throws Exception {
         Image[] imgArray = new Image[20];
         MapPattern MapPattern = new MapPattern(imgArray, 4, 5, true, true, "myPattern");
 

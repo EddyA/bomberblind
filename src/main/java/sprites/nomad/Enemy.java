@@ -1,11 +1,11 @@
 package sprites.nomad;
 
 import utils.CurrentTimeSupplier;
-import utils.Tuple2;
 
 import java.awt.*;
 
-import static sprites.nomad.Enemy.status.*;
+import static sprites.nomad.Enemy.status.STATUS_DEAD;
+import static sprites.nomad.Enemy.status.STATUS_WALK_FRONT;
 
 /**
  * Abstract class of an enemy.
@@ -24,25 +24,23 @@ public abstract class Enemy extends Nomad {
         STATUS_WALK_RIGHT,
     }
 
-    private Enemy.status status; // status.
-    private Enemy.status lastStatus; // last status.
+    protected Enemy.status status; // status.
+    protected Enemy.status lastStatus; // last status.
 
-    private final Image[] walkBackImages; // array of images of the "walk back" sprite.
-    private final Image[] walkFrontImages; // array of images of the "walk front" sprite.
-    private final Image[] walkLeftImages; // array of images of the "walk left" sprite.
-    private final Image[] walkRightImages; // array of images of the "walk right" sprite.
-    private final int nbWalkFrame; // number of images of the "walk" sprite.
-    private int curImageIdx; // current image index of the sprite.
-    private Image curImage; // current image of the sprite.
-    private int refreshTime; // refresh time (in ms).
-    private long lastRefreshTs; // last refresh timestamp.
+    protected final Image[] walkBackImages; // array of images of the "walk back" sprite.
+    protected final Image[] walkFrontImages; // array of images of the "walk front" sprite.
+    protected final Image[] walkLeftImages; // array of images of the "walk left" sprite.
+    protected final Image[] walkRightImages; // array of images of the "walk right" sprite.
+    protected final int nbWalkFrame; // number of images of the "walk" sprite.
+    protected int curImageIdx; // current image index of the sprite.
+    protected Image curImage; // current image of the sprite.
+    protected int refreshTime; // refresh time (in ms).
+    protected long lastRefreshTs; // last refresh timestamp.
 
-    private int moveTime; // move time (in ms).
-    private long lastMoveTs; // last move timestamp.
+    protected int moveTime; // move time (in ms).
+    protected long lastMoveTs; // last move timestamp.
 
-    private int nbDeadFrames; // number of images of the "dead" sprite.
-    private int curDeadFrameIdx; // current image index of the "dead" sprite.
-    private boolean isFinished; // is the Bomber dead and the sprite finished?
+    protected boolean isFinished; // is the enemy dead and the sprite finished?
 
     public Enemy(int xMap,
                  int yMap,
@@ -62,8 +60,9 @@ public abstract class Enemy extends Nomad {
         this.walkRightImages = walkRightImages;
         this.nbWalkFrame = nbWalkFrame;
         this.refreshTime = refreshTime;
+        this.lastRefreshTs = 0;
         this.moveTime = moveTime;
-        this.nbDeadFrames = 16;
+        this.lastMoveTs = 0;
     }
 
     public void setStatus(Enemy.status status) {
@@ -90,76 +89,9 @@ public abstract class Enemy extends Nomad {
         }
     }
 
-    /**
-     * This function is mainly used to handle the "dead" sprite.
-     * It returns the next - anticlockwise - direction according to a given status.
-     *
-     * @param status a given status (with the initial direction)
-     * @return the status with the next direction.
-     */
-    private Enemy.status getNextDirection(Enemy.status status) {
-        Enemy.status nextStatus = null;
-        switch (status) {
-            case STATUS_WALK_BACK: {
-                nextStatus = STATUS_WALK_LEFT;
-                break;
-            }
-            case STATUS_WALK_LEFT: {
-                nextStatus = STATUS_WALK_FRONT;
-                break;
-            }
-            case STATUS_WALK_FRONT: {
-                nextStatus = STATUS_WALK_RIGHT;
-                break;
-            }
-            case STATUS_WALK_RIGHT: {
-                nextStatus = STATUS_WALK_BACK;
-                break;
-            }
-        }
-        return nextStatus;
-    }
-
-    /**
-     * Return a {@link Tuple2} containing:
-     * - an array of images,
-     * - the relative number of images.
-     * according to a given status.
-     *
-     * @param status the status
-     * @return the relative Tuple2
-     */
-    private Tuple2<Image[], Integer> getImagesBasedOnStatus(Enemy.status status) {
-        int nbFrames = 0;
-        Image[] images = null;
-        switch (status) {
-            case STATUS_WALK_BACK: {
-                nbFrames = nbWalkFrame;
-                images = walkBackImages;
-                break;
-            }
-            case STATUS_WALK_FRONT: {
-                nbFrames = nbWalkFrame;
-                images = walkFrontImages;
-                break;
-            }
-            case STATUS_WALK_LEFT: {
-                nbFrames = nbWalkFrame;
-                images = walkLeftImages;
-                break;
-            }
-            case STATUS_WALK_RIGHT: {
-                nbFrames = nbWalkFrame;
-                images = walkRightImages;
-                break;
-            }
-        }
-        return new Tuple2<>(images, nbFrames);
-    }
-
     @Override
     public boolean isFinished() {
-        return (status == STATUS_DEAD && isFinished);
+        return isFinished;
     }
 
     @Override
@@ -171,33 +103,50 @@ public abstract class Enemy extends Nomad {
     public void updateImage() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
 
-        Tuple2<Image[], Integer> imageInformation;
-        if (status != STATUS_DEAD) {
-            imageInformation = getImagesBasedOnStatus(status); // get images according to the current direction.
+        if (status == STATUS_DEAD) { // get images according to the current direction.
+            isFinished = true;
         } else {
-            imageInformation = getImagesBasedOnStatus(lastStatus); // get images according to the last direction.
-        }
-        Image[] images = imageInformation.getFirst();
-        int nbFrames = imageInformation.getSecond();
-
-        if ((status != lastStatus) && (status != STATUS_DEAD)) {
-            lastRefreshTs = curTs;
-            lastStatus = status;
-            curImageIdx = 0;
-        } else {
-            if (curTs - lastRefreshTs > refreshTime) { // it is time to refresh.
-                lastRefreshTs = curTs;
-                if (status == STATUS_DEAD) {
-                    if (++curDeadFrameIdx == nbDeadFrames) { // is the number of frames ahs been reached?
-                        isFinished = true;
-                    }
-                    // set the last status with the next direction to get the right image the next iteration.
-                    lastStatus = getNextDirection(lastStatus);
-                } else if (++curImageIdx == nbFrames) { // at the end of the sprite.
-                    curImageIdx = 0; // back to the begining of the sprite.
+            int nbFrames;
+            Image[] images;
+            switch (status) {
+                case STATUS_WALK_BACK: {
+                    nbFrames = nbWalkFrame;
+                    images = walkBackImages;
+                    break;
+                }
+                case STATUS_WALK_FRONT: {
+                    nbFrames = nbWalkFrame;
+                    images = walkFrontImages;
+                    break;
+                }
+                case STATUS_WALK_LEFT: {
+                    nbFrames = nbWalkFrame;
+                    images = walkLeftImages;
+                    break;
+                }
+                case STATUS_WALK_RIGHT: {
+                    nbFrames = nbWalkFrame;
+                    images = walkRightImages;
+                    break;
+                }
+                default: {
+                    throw new RuntimeException("another status is not allowed here, please check the algorithm.");
                 }
             }
+            if ((status != lastStatus) || // etiher the status changed
+                    (lastRefreshTs == 0)) { // or it is the 1st call to that function.
+                lastRefreshTs = curTs;
+                lastStatus = status;
+                curImageIdx = 0;
+            } else {
+                if (curTs - lastRefreshTs >= refreshTime) { // it is time to refresh.
+                    lastRefreshTs = curTs;
+                    if (++curImageIdx == nbFrames) { // at the end of the sprite.
+                        curImageIdx = 0; // back to the begining of the sprite.
+                    }
+                }
+            }
+            curImage = images[curImageIdx];
         }
-        curImage = images[curImageIdx];
     }
 }

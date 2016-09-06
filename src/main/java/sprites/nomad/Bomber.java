@@ -89,6 +89,7 @@ public abstract class Bomber extends Nomad {
         this.refreshTime = refreshTime;
         this.lastRefreshTs = 0;
         this.invincibilityTime = invincibleTime;
+        this.lastInvincibilityTs = 0;
     }
 
     /**
@@ -175,7 +176,7 @@ public abstract class Bomber extends Nomad {
             lastStatus = status;
             curImageIdx = 0;
         } else {
-            if (curTs - lastRefreshTs > refreshTime) { // it is time to refresh.
+            if (curTs - lastRefreshTs >= refreshTime) { // it is time to refresh.
                 lastRefreshTs = curTs;
                 curImageIdx++;
                 if (curImageIdx == nbFrames) { // at the end of the sprite.
@@ -188,7 +189,7 @@ public abstract class Bomber extends Nomad {
             }
         }
         if (isInvincible) {
-            if (curTs - lastInvincibilityTs > invincibilityTime) { // stop invincibility?
+            if (curTs - lastInvincibilityTs >= invincibilityTime) { // stop invincibility?
                 isInvincible = false;
             } else if (curImageIdx % 2 == 0) { // print every two images.
                 shouldPrint = false;
