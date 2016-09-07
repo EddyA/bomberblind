@@ -1,6 +1,7 @@
 package sprites.nomad;
 
 import images.ImagesLoader;
+import utils.Tools;
 
 import java.awt.*;
 
@@ -49,14 +50,14 @@ public abstract class Nomad {
      * @return the map row index of the nomad.
      */
     public synchronized int getRowIdx() {
-        return yMap / ImagesLoader.IMAGE_SIZE;
+        return Tools.getCharRowIdx(yMap);
     }
 
     /**
      * @return the map column index of the nomad.
      */
     public synchronized int getColIdx() {
-        return xMap / ImagesLoader.IMAGE_SIZE;
+        return Tools.getCharColIdx(xMap);
 
     }
 

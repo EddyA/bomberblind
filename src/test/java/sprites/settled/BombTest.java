@@ -20,8 +20,8 @@ public class BombTest implements WithAssertions {
         Bomb bomb = new Bomb(5, 4, 3);
 
         // check members value.
-        assertThat(bomb.getRowIdx()).isEqualTo(5);
-        assertThat(bomb.getColIdx()).isEqualTo(4);
+        assertThat(bomb.getXMap()).isEqualTo(5);
+        assertThat(bomb.getYMap()).isEqualTo(4);
         assertThat(bomb.images).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bombMatrixRowIdx]);
         assertThat(bomb.nbImages).isEqualTo(ImagesLoader.NB_BOMB_FRAME);
         assertThat(bomb.refreshTime).isEqualTo(Bomb.REFRESH_TIME);

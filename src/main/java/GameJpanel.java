@@ -6,6 +6,7 @@ import map.zelda.ZeldaMapProperties;
 import map.zelda.ZeldaMapSetting;
 import sprites.nomad.BlueBomber;
 import sprites.nomad.Bomber;
+import utils.Tools;
 import utils.Tuple2;
 
 import javax.swing.*;
@@ -265,7 +266,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case KeyEvent.VK_B: {
-                            settledList.addBomb(mainBomber.getYMap() / IMAGE_SIZE, mainBomber.getXMap() / IMAGE_SIZE, 5);
+                            settledList.addBomb(Tools.getCharRowIdx(mainBomber.getYMap()),
+                                    Tools.getCharColIdx(mainBomber.getXMap()), 5);
                             break;
                         }
                         case KeyEvent.VK_W: {

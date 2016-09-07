@@ -1,4 +1,3 @@
-import images.ImagesLoader;
 import map.abstracts.Map;
 import sprites.nomad.Nomad;
 import sprites.settled.Bomb;
@@ -50,7 +49,7 @@ public class SettledList extends LinkedList<Nomad> {
     private void addBomb(LinkedList<Nomad> list, int rowIdx, int colIdx, int flameSize) {
         if (!map.getMapPointMatrix()[rowIdx][colIdx].isBombing()) {
             map.getMapPointMatrix()[rowIdx][colIdx].setBombing(true);
-            list.add(new Bomb(Tools.getColAbscissa(colIdx), Tools.getRowOrdinate(rowIdx), flameSize));
+            list.add(new Bomb(Tools.getCaseCentreAbscissa(colIdx), Tools.getCaseBottomOrdinate(rowIdx), flameSize));
         }
     }
 
@@ -66,7 +65,7 @@ public class SettledList extends LinkedList<Nomad> {
         if (map.getMapPointMatrix()[rowIdx][colIdx].isPathway()) {
             map.getMapPointMatrix()[rowIdx][colIdx].addFlame();
             map.getMapPointMatrix()[rowIdx][colIdx].setImageAsBurned();
-            list.add(new Flame(Tools.getColAbscissa(colIdx), Tools.getRowOrdinate(rowIdx)));
+            list.add(new Flame(Tools.getCaseCentreAbscissa(colIdx), Tools.getCaseBottomOrdinate(rowIdx)));
             return true; // the next case can burn.
         } else if (map.getMapPointMatrix()[rowIdx][colIdx].isMutable() ||
                 map.getMapPointMatrix()[rowIdx][colIdx].isBombing()) {
@@ -74,7 +73,7 @@ public class SettledList extends LinkedList<Nomad> {
             map.getMapPointMatrix()[rowIdx][colIdx].setMutable(false);
             map.getMapPointMatrix()[rowIdx][colIdx].addFlame();
             map.getMapPointMatrix()[rowIdx][colIdx].setImageAsBurned();
-            list.add(new Flame(Tools.getColAbscissa(colIdx), Tools.getRowOrdinate(rowIdx)));
+            list.add(new Flame(Tools.getCaseCentreAbscissa(colIdx), Tools.getCaseBottomOrdinate(rowIdx)));
             return false; // the next case should not burn.
         } else {
             return false; // the next case should not burn.
@@ -148,7 +147,7 @@ public class SettledList extends LinkedList<Nomad> {
      * @param colIdx the map column index of the flame
      */
     private void addFlameEnd(LinkedList<Nomad> list, int rowIdx, int colIdx) {
-        list.add(new FlameEnd(Tools.getColAbscissa(colIdx), Tools.getRowOrdinate(rowIdx)));
+        list.add(new FlameEnd(Tools.getCaseCentreAbscissa(colIdx), Tools.getCaseBottomOrdinate(rowIdx)));
     }
 
     /**

@@ -75,10 +75,30 @@ public class Tools {
      */
 
     /**
+     * Compute the rowIdx of a character.
+     *
+     * @param yChar the ordinate of the character
+     * @return the map rowIdx of the character
+     */
+    public static int getCharRowIdx(int yChar) {
+        return yChar / IMAGE_SIZE;
+    }
+
+    /**
+     * Compute the colIdx of a character.
+     *
+     * @param xChar the abscissa of the character
+     * @return the colIdx of the character
+     */
+    public static int getCharColIdx(int xChar) {
+        return xChar / IMAGE_SIZE;
+    }
+
+    /**
      * Compute the top rowIdx of a character.
      *
      * @param yChar the ordinate of the character
-     * @return the top rowIdx of the character.
+     * @return the top rowIdx of the character
      */
     public static int getCharTopRowIdx(int yChar) {
         return getCharTopOrdinate(yChar) < 0 ? -1 : (yChar - IMAGE_SIZE / 2) / IMAGE_SIZE;
@@ -88,7 +108,7 @@ public class Tools {
      * Compute the bottom rowIdx of a character.
      *
      * @param yChar the ordinate of the character
-     * @return the bottom rowIdx of the character.
+     * @return the bottom rowIdx of the character
      */
     public static int getCharBottomRowIdx(int yChar) {
         return getCharBottomOrdinate(yChar) / IMAGE_SIZE;
@@ -98,7 +118,7 @@ public class Tools {
      * Compute the left colIdx of a character.
      *
      * @param xChar the abscissa of the character
-     * @return the left colIdx of the character.
+     * @return the left colIdx of the character
      */
     public static int getCharLeftColIdx(int xChar) {
         return getCharLeftAbscissa(xChar) < 0 ? -1 : (xChar - IMAGE_SIZE / 2) / IMAGE_SIZE;
@@ -108,17 +128,36 @@ public class Tools {
      * Compute the right colIdx of a character.
      *
      * @param xChar the abscissa of the character
-     * @return the right colIdx of the character.
+     * @return the right colIdx of the character
      */
     public static int getCharRightColIdx(int xChar) {
         return getCharRightAbscissa(xChar) / IMAGE_SIZE;
     }
 
-    public static int getColAbscissa(int colIdx) {
+    /**
+     * -----------------------------------------------------------------------
+     * The following functions allow getting the abscissa (resp. ordinate)
+     * of the case centre (resp. case bottom) given its colIdx (resp. rowIdx).
+     * -----------------------------------------------------------------------
+     */
+
+    /**
+     * Compute the abscissa of the case centre given its colIdx.
+     *
+     * @param colIdx the colIdx of the case
+     * @return the abscissa of the case centre given its colIdx
+     */
+    public static int getCaseCentreAbscissa(int colIdx) {
         return colIdx * IMAGE_SIZE + IMAGE_SIZE / 2;
     }
 
-    public static int getRowOrdinate(int rowIdx) {
+    /**
+     * Compute the ordinate of the case bottom given its rowIdx.
+     *
+     * @param rowIdx the rowIdx of the case
+     * @return the ordinate of the case bottom given its rowIdx
+     */
+    public static int getCaseBottomOrdinate(int rowIdx) {
         return rowIdx * IMAGE_SIZE + IMAGE_SIZE - 1;
     }
 }
