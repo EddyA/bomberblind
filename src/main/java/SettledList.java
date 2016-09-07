@@ -1,21 +1,22 @@
 import images.ImagesLoader;
 import map.abstracts.Map;
+import sprites.nomad.Nomad;
 import sprites.settled.Bomb;
 import sprites.settled.Flame;
 import sprites.settled.FlameEnd;
-import sprites.settled.Settled;
+import utils.Tools;
 
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
 /**
- * List of settled items.
+ * List of nomad items.
  */
-public class SettledList extends LinkedList<Settled> {
+public class SettledList extends LinkedList<Nomad> {
 
     // create a temporary list to manage addings and avoid concurent accesses.
-    LinkedList<Settled> tmpList = new LinkedList<>();
+    LinkedList<Nomad> tmpList = new LinkedList<>();
 
     private Map map;
     private int screenWidth; // widht of the screen (expressed in pixel).
@@ -46,10 +47,10 @@ public class SettledList extends LinkedList<Settled> {
      * @param colIdx    the map column index of the bomb
      * @param flameSize the flame size of the bomb
      */
-    private void addBomb(LinkedList<Settled> list, int rowIdx, int colIdx, int flameSize) {
+    private void addBomb(LinkedList<Nomad> list, int rowIdx, int colIdx, int flameSize) {
         if (!map.getMapPointMatrix()[rowIdx][colIdx].isBombing()) {
             map.getMapPointMatrix()[rowIdx][colIdx].setBombing(true);
-            list.add(new Bomb(rowIdx, colIdx, flameSize));
+            list.add(new Bomb(Tools.getColAbscissa(colIdx), Tools.getRowOrdinate(rowIdx), flameSize));
         }
     }
 
@@ -61,11 +62,11 @@ public class SettledList extends LinkedList<Settled> {
      * @param colIdx the map column index of the flame
      * @return true if the flame can be propagated, false it is stopped
      */
-    private boolean addFlame(LinkedList<Settled> list, int rowIdx, int colIdx) {
+    private boolean addFlame(LinkedList<Nomad> list, int rowIdx, int colIdx) {
         if (map.getMapPointMatrix()[rowIdx][colIdx].isPathway()) {
             map.getMapPointMatrix()[rowIdx][colIdx].addFlame();
             map.getMapPointMatrix()[rowIdx][colIdx].setImageAsBurned();
-            list.add(new Flame(rowIdx, colIdx));
+            list.add(new Flame(Tools.getColAbscissa(colIdx), Tools.getRowOrdinate(rowIdx)));
             return true; // the next case can burn.
         } else if (map.getMapPointMatrix()[rowIdx][colIdx].isMutable() ||
                 map.getMapPointMatrix()[rowIdx][colIdx].isBombing()) {
@@ -73,7 +74,7 @@ public class SettledList extends LinkedList<Settled> {
             map.getMapPointMatrix()[rowIdx][colIdx].setMutable(false);
             map.getMapPointMatrix()[rowIdx][colIdx].addFlame();
             map.getMapPointMatrix()[rowIdx][colIdx].setImageAsBurned();
-            list.add(new Flame(rowIdx, colIdx));
+            list.add(new Flame(Tools.getColAbscissa(colIdx), Tools.getRowOrdinate(rowIdx)));
             return false; // the next case should not burn.
         } else {
             return false; // the next case should not burn.
@@ -88,7 +89,7 @@ public class SettledList extends LinkedList<Settled> {
      * @param centralColIdx the map column index of the central flame
      * @param flameSize     the flame size
      */
-    private void addFlames(LinkedList<Settled> list, int centralRowIdx, int centralColIdx, int flameSize) {
+    private void addFlames(LinkedList<Nomad> list, int centralRowIdx, int centralColIdx, int flameSize) {
 
         // place left flames.
         for (int i = 1, j = centralColIdx - 1;
@@ -146,42 +147,42 @@ public class SettledList extends LinkedList<Settled> {
      * @param rowIdx the map row index of the flame
      * @param colIdx the map column index of the flame
      */
-    private void addFlameEnd(LinkedList<Settled> list, int rowIdx, int colIdx) {
-        list.add(new FlameEnd(rowIdx, colIdx));
+    private void addFlameEnd(LinkedList<Nomad> list, int rowIdx, int colIdx) {
+        list.add(new FlameEnd(Tools.getColAbscissa(colIdx), Tools.getRowOrdinate(rowIdx)));
     }
 
     /**
      * 1. Detonate bombs, if
      * - it is on a burning case,
      * - it is finished.
-     * 2. Create flames and clean dead settled from the list.
+     * 2. Create flames and clean dead nomad from the list.
      */
     public synchronized void updateStatusAndClean() {
-        for (ListIterator<Settled> iterator = this.listIterator(); iterator.hasNext(); ) {
-            Settled settled = iterator.next();
+        for (ListIterator<Nomad> iterator = this.listIterator(); iterator.hasNext(); ) {
+            Nomad nomad = iterator.next();
 
-            if (settled.getClass().getSimpleName().equals("Bomb")) { // it is a bomb.
+            if (nomad.getClass().getSimpleName().equals("Bomb")) { // it is a bomb.
 
                 // is it finished?
-                if (settled.isFinished() ||
+                if (nomad.isFinished() ||
                         // OR is it on a burning case?
-                        map.getMapPointMatrix()[settled.getRowIdx()][settled.getColIdx()].isBurning()) {
+                        map.getMapPointMatrix()[nomad.getRowIdx()][nomad.getColIdx()].isBurning()) {
                     // create flames.
-                    addFlames(tmpList, settled.getRowIdx(), settled.getColIdx(), ((Bomb) settled).getFlameSize());
-                    map.getMapPointMatrix()[settled.getRowIdx()][settled.getColIdx()].setBombing(false);
+                    addFlames(tmpList, nomad.getRowIdx(), nomad.getColIdx(), ((Bomb) nomad).getFlameSize());
+                    map.getMapPointMatrix()[nomad.getRowIdx()][nomad.getColIdx()].setBombing(false);
                     iterator.remove(); // remove it from the list.
                 }
-            } else if (settled.getClass().getSimpleName().equals("Flame")) { // it is a flame.
+            } else if (nomad.getClass().getSimpleName().equals("Flame")) { // it is a flame.
                 // is it finished?
-                if (settled.isFinished()) {
+                if (nomad.isFinished()) {
                     // create conclusion flames.
-                    addFlameEnd(tmpList, settled.getRowIdx(), settled.getColIdx());
-                    map.getMapPointMatrix()[settled.getRowIdx()][settled.getColIdx()].removeFlame();
+                    addFlameEnd(tmpList, nomad.getRowIdx(), nomad.getColIdx());
+                    map.getMapPointMatrix()[nomad.getRowIdx()][nomad.getColIdx()].removeFlame();
                     iterator.remove(); // remove it from the list.
                 }
             } else { // for all the other sprites.
-                // is the current settled finished?
-                if (settled.isFinished()) {
+                // is the current nomad finished?
+                if (nomad.isFinished()) {
                     iterator.remove(); // remove it from the list.
                 }
             }
@@ -193,28 +194,24 @@ public class SettledList extends LinkedList<Settled> {
     }
 
     /**
-     * Paint the visible settled on screen.
+     * Paint the visible nomads on screen.
      *
      * @param g    the graphics context
-     * @param xMap the map abscissa from which painting settled
-     * @param yMap the map ordinate from which painting settled
+     * @param xMap the map abscissa from which painting nomads
+     * @param yMap the map ordinate from which painting nomads
      */
     public synchronized void paintBuffer(Graphics2D g, int xMap, int yMap) {
 
-        // get the relative starting MapPoint.
-        int startColIdx = xMap / ImagesLoader.IMAGE_SIZE;
-        int startRowIdx = yMap / ImagesLoader.IMAGE_SIZE;
-
         // paint sprites.
-        for (Settled settled : this) {
-            settled.updateImage();
-            if ((settled.getRowIdx() >= startRowIdx &&
-                    settled.getRowIdx() < startRowIdx + (screenHeight / ImagesLoader.IMAGE_SIZE) + 1) &&
-                    (settled.getColIdx() >= startColIdx &&
-                            settled.getColIdx() < startColIdx + (screenWidth / ImagesLoader.IMAGE_SIZE) + 1)) {
-                settled.paintBuffer(g,
-                        (settled.getColIdx() - startColIdx) * ImagesLoader.IMAGE_SIZE - xMap % ImagesLoader.IMAGE_SIZE,
-                        (settled.getRowIdx() - startRowIdx) * ImagesLoader.IMAGE_SIZE - yMap % ImagesLoader.IMAGE_SIZE);
+        for (Nomad nomad : this) {
+            nomad.updateImage();
+            if (nomad.getCurImage() != null) {
+                if ((nomad.getYMap() >= yMap && nomad.getYMap() <=
+                        yMap + nomad.getCurImage().getWidth(null) + screenHeight) &&
+                        (nomad.getXMap() >= xMap && nomad.getXMap() <=
+                                xMap + nomad.getCurImage().getHeight(null) / 2 + screenWidth)) {
+                    nomad.paintBuffer(g, nomad.getXMap() - xMap, nomad.getYMap() - yMap);
+                }
             }
         }
     }

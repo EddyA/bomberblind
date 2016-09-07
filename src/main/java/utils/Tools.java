@@ -113,4 +113,12 @@ public class Tools {
     public static int getCharRightColIdx(int xChar) {
         return getCharRightAbscissa(xChar) / IMAGE_SIZE;
     }
+
+    public static int getColAbscissa(int colIdx) {
+        return colIdx * IMAGE_SIZE + IMAGE_SIZE / 2;
+    }
+
+    public static int getRowOrdinate(int rowIdx) {
+        return rowIdx * IMAGE_SIZE + IMAGE_SIZE - 1;
+    }
 }

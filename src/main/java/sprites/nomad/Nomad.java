@@ -1,5 +1,7 @@
 package sprites.nomad;
 
+import images.ImagesLoader;
+
 import java.awt.*;
 
 /**
@@ -41,6 +43,21 @@ public abstract class Nomad {
      */
     public void setYMap(int yMap) {
         this.yMap = yMap;
+    }
+
+    /**
+     * @return the map row index of the nomad.
+     */
+    public synchronized int getRowIdx() {
+        return yMap / ImagesLoader.IMAGE_SIZE;
+    }
+
+    /**
+     * @return the map column index of the nomad.
+     */
+    public synchronized int getColIdx() {
+        return xMap / ImagesLoader.IMAGE_SIZE;
+
     }
 
     /**

@@ -7,6 +7,9 @@ import images.ImagesLoader;
  */
 public class FlameEnd extends LoopedSettled {
 
+    protected final static int REFRESH_TIME = 50;
+    protected final static int NB_TIMES = 1;
+
     /**
      * Create a conclusion flame.
      *
@@ -18,7 +21,7 @@ public class FlameEnd extends LoopedSettled {
                 colIdx,
                 ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx],
                 ImagesLoader.NB_FLAME_END_FRAME,
-                50,
-                1);
+                REFRESH_TIME,
+                NB_TIMES);
     }
 }

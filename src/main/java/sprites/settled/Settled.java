@@ -48,7 +48,7 @@ public abstract class Settled {
      *
      * @return the updated image.
      */
-    public abstract Image updateImage();
+    public abstract void updateImage();
 
     /**
      * Paint the current animation image.

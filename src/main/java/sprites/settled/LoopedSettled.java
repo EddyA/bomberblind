@@ -2,13 +2,14 @@ package sprites.settled;
 
 import java.awt.Image;
 
+import sprites.nomad.Nomad;
 import utils.CurrentTimeSupplier;
 
 /**
  * Abstract class of a looped animation.
  * The animation loops a certain number of times.
  */
-public abstract class LoopedSettled extends Settled {
+public abstract class LoopedSettled extends Nomad {
     protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
     private final Image[] images; // array of images of the sprite.
@@ -44,7 +45,7 @@ public abstract class LoopedSettled extends Settled {
     }
 
     @Override
-    public Image updateImage() {
+    public void updateImage() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         if (curTs - lastRefreshTs > refreshTime) { // it is time to refresh.
             lastRefreshTs = curTs;
@@ -54,6 +55,5 @@ public abstract class LoopedSettled extends Settled {
             }
             curImage = images[curImageIdx];
         }
-        return curImage;
     }
 }

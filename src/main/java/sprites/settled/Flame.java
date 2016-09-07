@@ -7,6 +7,9 @@ import images.ImagesLoader;
  */
 public class Flame extends TimedSettled {
 
+    protected final static int REFRESH_TIME = 100;
+    protected final static int DURATION_TIME = 1500;
+
     /**
      * Create a flame.
      *
@@ -18,7 +21,7 @@ public class Flame extends TimedSettled {
                 colIdx,
                 ImagesLoader.imagesMatrix[ImagesLoader.flameMatrixRowIdx],
                 ImagesLoader.NB_FLAME_FRAME,
-                1500,
-                100);
+                REFRESH_TIME,
+                DURATION_TIME);
     }
 }
