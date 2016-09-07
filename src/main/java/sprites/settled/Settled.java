@@ -39,6 +39,11 @@ public abstract class Settled {
     public abstract boolean isFinished();
 
     /**
+     * @return the current image of the sprite.
+     */
+    public abstract Image getCurImage();
+
+    /**
      * Update the animation image.
      *
      * @return the updated image.
@@ -53,11 +58,10 @@ public abstract class Settled {
      * @param yScreen the ordinate on the screen
      */
     public synchronized void paintBuffer(Graphics g, int xScreen, int yScreen) {
-        Image updatedImage = updateImage();
-        if (!isFinished()) {
-            int xMap = xScreen + (IMAGE_SIZE / 2) - updatedImage.getWidth(null) / 2;
-            int yMap = yScreen + IMAGE_SIZE - updatedImage.getHeight(null);
-            g.drawImage(updatedImage, xMap, yMap, null);
+        if ((getCurImage() != null) && !isFinished()) {
+            int xMap = xScreen + (IMAGE_SIZE / 2) - getCurImage().getWidth(null) / 2;
+            int yMap = yScreen + IMAGE_SIZE - getCurImage().getHeight(null);
+            g.drawImage(getCurImage(), xMap, yMap, null);
         }
     }
 }

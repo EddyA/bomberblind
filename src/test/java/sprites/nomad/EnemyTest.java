@@ -108,7 +108,7 @@ public class EnemyTest implements WithAssertions {
     }
 
     @Test
-    public void updateImageWithWalkFrontStatusShouldSetCurImageWithTheExpectedValues() throws Exception {
+    public void updateImageWithAFixedStatusShouldCorrectlyUpdateCurImageTimeAfterTime() throws Exception {
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
 
         // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.

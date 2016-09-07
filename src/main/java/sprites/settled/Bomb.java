@@ -8,6 +8,8 @@ import images.ImagesLoader;
 public class Bomb extends TimedSettled {
 
     private int flamesize;
+    public final static int DURATION_TIME = 2000;
+    public final static int REFRESH_TIME = 100;
 
     /**
      * Create a bomb.
@@ -21,8 +23,8 @@ public class Bomb extends TimedSettled {
                 colIdx,
                 ImagesLoader.imagesMatrix[ImagesLoader.bombMatrixRowIdx],
                 ImagesLoader.NB_BOMB_FRAME,
-                2000,
-                100);
+                DURATION_TIME,
+                REFRESH_TIME);
         this.flamesize = flameSize;
     }
 

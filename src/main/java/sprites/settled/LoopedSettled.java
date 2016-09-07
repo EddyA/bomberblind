@@ -1,8 +1,8 @@
 package sprites.settled;
 
-import utils.CurrentTimeSupplier;
+import java.awt.Image;
 
-import java.awt.*;
+import utils.CurrentTimeSupplier;
 
 /**
  * Abstract class of a looped animation.
@@ -14,6 +14,7 @@ public abstract class LoopedSettled extends Settled {
     private final Image[] images; // array of images of the sprite.
     private final int nbImages; // number of images of the sprite.
     private int curImageIdx; // current image index of the sprite.
+    protected Image curImage; // current image of the sprite.
     private final int refreshTime; // refresh time (in ms).
     private long lastRefreshTs; // last refresh timestamp.
     private final int maxNbTimes; // number of times the sprite should be painted.
@@ -32,20 +33,18 @@ public abstract class LoopedSettled extends Settled {
         this.maxNbTimes = maxNbTimes;
     }
 
-    /**
-     * @return true if the sprite is finished, false otherwise.
-     */
+    @Override
     public boolean isFinished() {
         return curNbTimes == maxNbTimes;
     }
 
-    /**
-     * Update the sprite image.
-     *
-     * @return the updated image.
-     */
+    @Override
+    public Image getCurImage() {
+        return curImage;
+    }
+
+    @Override
     public Image updateImage() {
-        Image imageToPaint;
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         if (curTs - lastRefreshTs > refreshTime) { // it is time to refresh.
             lastRefreshTs = curTs;
@@ -53,8 +52,8 @@ public abstract class LoopedSettled extends Settled {
                 curImageIdx = 0;
                 curNbTimes++;
             }
+            curImage = images[curImageIdx];
         }
-        imageToPaint = images[curImageIdx];
-        return imageToPaint;
+        return curImage;
     }
 }

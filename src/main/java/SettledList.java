@@ -207,6 +207,7 @@ public class SettledList extends LinkedList<Settled> {
 
         // paint sprites.
         for (Settled settled : this) {
+            settled.updateImage();
             if ((settled.getRowIdx() >= startRowIdx &&
                     settled.getRowIdx() < startRowIdx + (screenHeight / ImagesLoader.IMAGE_SIZE) + 1) &&
                     (settled.getColIdx() >= startColIdx &&

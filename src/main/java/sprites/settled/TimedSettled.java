@@ -1,8 +1,8 @@
 package sprites.settled;
 
-import utils.CurrentTimeSupplier;
+import java.awt.Image;
 
-import java.awt.*;
+import utils.CurrentTimeSupplier;
 
 /**
  * Abstract class of a timed sprites.
@@ -11,13 +11,14 @@ import java.awt.*;
 public abstract class TimedSettled extends Settled {
     protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
-    private final Image[] images; // array of images of the sprite.
-    private final int nbImages; // number of images of the sprite.
-    private int curImageIdx; // current image index of the sprite.
-    private final int duration; // duration (in ms).
-    private final long startTs; // start timestamp.
-    private final int refreshTime; // refresh time (in ms).
-    private long lastRefreshTs; // last refresh timestamp.
+    protected final Image[] images; // array of images of the sprite.
+    protected final int nbImages; // number of images of the sprite.
+    protected int curImageIdx; // current image index of the sprite.
+    protected Image curImage; // current image of the sprite.
+    protected final int duration; // duration (in ms).
+    protected final long startTs; // start timestamp.
+    protected final int refreshTime; // refresh time (in ms).
+    protected long lastRefreshTs; // last refresh timestamp.
 
     public TimedSettled(int rowIdx,
                         int colIdx,
@@ -33,28 +34,26 @@ public abstract class TimedSettled extends Settled {
         this.startTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
     }
 
-    /**
-     * @return true if the sprite is finished, false otherwise.
-     */
+    @Override
     public boolean isFinished() {
-        return currentTimeSupplier.get().toEpochMilli() - startTs > duration;
+        return currentTimeSupplier.get().toEpochMilli() - startTs >= duration;
     }
 
-    /**
-     * Update the sprite image.
-     *
-     * @return the updated image.
-     */
+    @Override
+    public Image getCurImage() {
+        return curImage;
+    }
+
+    @Override
     public Image updateImage() {
-        Image imageToPaint;
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         if (curTs - lastRefreshTs > refreshTime) { // it is time to refresh.
             lastRefreshTs = curTs;
             if (++curImageIdx == nbImages) {
                 curImageIdx = 0;
             }
+            curImage = images[curImageIdx];
         }
-        imageToPaint = images[curImageIdx];
-        return imageToPaint;
+        return curImage;
     }
 }
