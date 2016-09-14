@@ -1,56 +1,24 @@
-package sprites.nomad;
+package sprites;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import sprites.nomad.CloakedSkeleton;
 import utils.CurrentTimeSupplier;
 
 import java.io.IOException;
 import java.time.Instant;
 
 import static org.mockito.Mockito.mock;
-import static sprites.nomad.Enemy.status.*;
+import static sprites.nomad.abstracts.Enemy.status.*;
 
 public class EnemyTest implements WithAssertions {
 
     @Before
     public void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
-    }
-
-    @Test
-    public void accessorsShouldReturnTheExpectedValues() throws Exception {
-        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
-
-        // - status:
-        cloakedSkeleton.status = STATUS_WALK_BACK;
-        assertThat(cloakedSkeleton.getStatus()).isEqualTo(STATUS_WALK_BACK);
-        cloakedSkeleton.status = STATUS_WALK_LEFT;
-        assertThat(cloakedSkeleton.getStatus()).isEqualTo(STATUS_WALK_LEFT);
-
-        // - isFinished:
-        cloakedSkeleton.isFinished = false;
-        assertThat(cloakedSkeleton.isFinished()).isEqualTo(false);
-        cloakedSkeleton.isFinished = true;
-        assertThat(cloakedSkeleton.isFinished()).isEqualTo(true);
-
-        // - curImage:
-        cloakedSkeleton.curImage = null;
-        assertThat(cloakedSkeleton.getCurImage()).isEqualTo(cloakedSkeleton.curImage);
-        cloakedSkeleton.curImage = ImagesLoader.createImage("/images/icon.gif");
-        assertThat(cloakedSkeleton.getCurImage()).isEqualTo(cloakedSkeleton.curImage);
-    }
-
-    @Test
-    public void mutatorsShouldSetMembersWithTheExpectedValues() throws Exception {
-        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
-
-        // - status.
-        cloakedSkeleton.status = STATUS_WALK_FRONT; // initial status.
-        cloakedSkeleton.setStatus(STATUS_WALK_LEFT); // update the status.
-        assertThat(cloakedSkeleton.status).isEqualTo(STATUS_WALK_LEFT); // check value after the update.
     }
 
     @Test
@@ -63,7 +31,7 @@ public class EnemyTest implements WithAssertions {
         cloakedSkeleton.currentTimeSupplier = currentTimeSupplier;
 
         // 1 ms before moving.
-        cloakedSkeleton.lastMoveTs = 100 - CloakedSkeleton.MOVE_TIME + 1;
+        cloakedSkeleton.setLastMoveTs(100 - CloakedSkeleton.MOVE_TIME + 1);
         assertThat(cloakedSkeleton.shouldMove()).isFalse();
     }
 
@@ -77,7 +45,7 @@ public class EnemyTest implements WithAssertions {
         cloakedSkeleton.currentTimeSupplier = currentTimeSupplier;
 
         // time has been reached.
-        cloakedSkeleton.lastMoveTs = 100 - CloakedSkeleton.MOVE_TIME;
+        cloakedSkeleton.setLastMoveTs(100 - CloakedSkeleton.MOVE_TIME);
         assertThat(cloakedSkeleton.shouldMove()).isTrue();
     }
 
@@ -86,22 +54,22 @@ public class EnemyTest implements WithAssertions {
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
 
         // - walk back:
-        cloakedSkeleton.setStatus(STATUS_WALK_BACK);
+        cloakedSkeleton.setCurStatus(STATUS_WALKING_BACK);
         cloakedSkeleton.updateImage();
         assertThat(cloakedSkeleton.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkBackMatrixRowIdx][0]);
         // - walk front:
-        cloakedSkeleton.setStatus(STATUS_WALK_FRONT);
+        cloakedSkeleton.setCurStatus(STATUS_WALKING_FRONT);
         cloakedSkeleton.updateImage();
         assertThat(cloakedSkeleton.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkFrontMatrixRowIdx][0]);
         // - walk left:
-        cloakedSkeleton.setStatus(STATUS_WALK_LEFT);
+        cloakedSkeleton.setCurStatus(STATUS_WALKING_LEFT);
         cloakedSkeleton.updateImage();
         assertThat(cloakedSkeleton.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkLeftMatrixRowIdx][0]);
         // - walk right:
-        cloakedSkeleton.setStatus(STATUS_WALK_RIGHT);
+        cloakedSkeleton.setCurStatus(STATUS_WALKING_RIGHT);
         cloakedSkeleton.updateImage();
         assertThat(cloakedSkeleton.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkRightMatrixRowIdx][0]);
@@ -116,8 +84,8 @@ public class EnemyTest implements WithAssertions {
         Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(1000L));
         cloakedSkeleton.currentTimeSupplier = currentTimeSupplier;
 
-        // set status.
-        cloakedSkeleton.setStatus(STATUS_WALK_FRONT);
+        // set curStatus.
+        cloakedSkeleton.setCurStatus(STATUS_WALKING_FRONT);
 
         // check value according to "lastRefreshTs":
         // - 1st update -> 1st image.
@@ -156,14 +124,13 @@ public class EnemyTest implements WithAssertions {
     public void updateImageWithDeadStatusShouldSetIsFinishedToTrue() throws Exception {
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
 
-        // update image with a status != dead.
-        cloakedSkeleton.setStatus(STATUS_WALK_FRONT);
+        // update image with a curStatus != dead.
+        cloakedSkeleton.setCurStatus(STATUS_WALKING_FRONT);
         cloakedSkeleton.updateImage();
         assertThat(cloakedSkeleton.isFinished()).isFalse();
 
-        // update image with a status == dead.
-        cloakedSkeleton.setStatus(STATUS_DEAD);
-        cloakedSkeleton.updateImage();
+        // update image with a curStatus == dead.
+        cloakedSkeleton.setCurStatus(STATUS_DEAD);
         assertThat(cloakedSkeleton.isFinished()).isTrue();
     }
 }

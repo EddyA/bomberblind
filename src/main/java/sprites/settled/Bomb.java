@@ -1,6 +1,7 @@
 package sprites.settled;
 
 import images.ImagesLoader;
+import sprites.settled.abstracts.TimedSettled;
 
 /**
  * A bomb.
@@ -8,8 +9,8 @@ import images.ImagesLoader;
 public class Bomb extends TimedSettled {
 
     private int flamesize;
-    protected final static int REFRESH_TIME = 100;
-    protected final static int DURATION_TIME = 2000;
+    public final static int REFRESH_TIME = 100;
+    public final static int DURATION_TIME = 2000;
 
     /**
      * Create a bomb.

@@ -1,6 +1,7 @@
 package sprites.nomad;
 
 import images.ImagesLoader;
+import sprites.nomad.abstracts.Enemy;
 
 /**
  * A cloaked skeleton.
@@ -20,6 +21,8 @@ public class CloakedSkeleton extends Enemy {
                            int yMap) {
         super(xMap,
                 yMap,
+                ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonDeathMatrixRowIdx],
+                ImagesLoader.NB_ENEMY_DEATH_FRAME,
                 ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkBackMatrixRowIdx],
                 ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkFrontMatrixRowIdx],
                 ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkLeftMatrixRowIdx],

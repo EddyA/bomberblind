@@ -2,19 +2,19 @@ import ai.EnemyAi;
 import exceptions.CannotMoveNomadException;
 import map.abstracts.Map;
 import sprites.nomad.CloakedSkeleton;
-import sprites.nomad.Bomber;
-import sprites.nomad.Enemy;
-import sprites.nomad.Nomad;
+import sprites.nomad.abstracts.Bomber;
+import sprites.nomad.abstracts.Enemy;
+import sprites.nomad.abstracts.Nomad;
 
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
 import static map.ctrl.NomadMethods.isNomadBurning;
-import static sprites.nomad.NomadCtrl.isNomadCrossingEnemy;
+import static sprites.NomadCtrl.isNomadCrossingEnemy;
 
 /**
- * List of nomad items.
+ * List of abstracts items.
  */
 public class NomadList extends LinkedList<Nomad> {
 
@@ -48,7 +48,7 @@ public class NomadList extends LinkedList<Nomad> {
     }
 
     /**
-     * Update status of nomads.
+     * Update curStatus of nomads.
      */
     public synchronized void updateStatusAndClean() {
         for (ListIterator<Nomad> iterator = this.listIterator(); iterator.hasNext(); ) {
@@ -60,13 +60,13 @@ public class NomadList extends LinkedList<Nomad> {
                 // is it finished?
                 if (bomber.isFinished()) {
                     bomber.initStatement(); // bombers are never removed from the list, they are just re-initialized.
-                } else if (bomber.getStatus() != Bomber.status.STATUS_DEAD) { // not finished and not dead.
+                } else if (bomber.getCurStatus() != Bomber.status.STATUS_DYING) { // not finished and not dead.
 
                     // should the bomber die?
                     if (!bomber.isInvincible() &&
                             (isNomadBurning(map.getMapPointMatrix(), bomber.getXMap(), bomber.getYMap()) ||
                                     isNomadCrossingEnemy(this, bomber, bomber.getXMap(), bomber.getYMap()))) {
-                        bomber.setStatus(Bomber.status.STATUS_DEAD);
+                        bomber.setCurStatus(Bomber.status.STATUS_DYING);
                     }
                 }
             } else if (nomad.getClass().getSuperclass().getSimpleName().equals("Enemy")) {  // it is an enemy.
@@ -75,32 +75,32 @@ public class NomadList extends LinkedList<Nomad> {
                 // is it finished?
                 if (enemy.isFinished()) {
                     iterator.remove(); // remove it from the list.
-                } else if (enemy.getStatus() != Enemy.status.STATUS_DEAD) { // not finished and not dead.
+                } else if (enemy.getCurStatus() != Enemy.status.STATUS_DYING) { // not finished and not dead.
 
                     // should the enemy die?
                     if (isNomadBurning(map.getMapPointMatrix(), enemy.getXMap(), enemy.getYMap())) {
-                        enemy.setStatus(Enemy.status.STATUS_DEAD);
+                        enemy.setCurStatus(Enemy.status.STATUS_DYING);
 
                     } else if (enemy.shouldMove()) { // not dead -> should the enemy move?
                         try {
                             Enemy.status newStatus = EnemyAi.computeNextMove(map.getMapPointMatrix(), map.getMapWidth(),
                                     map.getMapHeight(), this, enemy); // try to compute the nex move.
 
-                            enemy.setStatus(newStatus); // if the previous function has not thrown an exception.
-                            switch (enemy.getStatus()) {
-                                case STATUS_WALK_BACK: {
+                            enemy.setCurStatus(newStatus); // if the previous function has not thrown an exception.
+                            switch (enemy.getCurStatus()) {
+                                case STATUS_WALKING_BACK: {
                                     nomad.setYMap(nomad.getYMap() - 1);
                                     break;
                                 }
-                                case STATUS_WALK_FRONT: {
+                                case STATUS_WALKING_FRONT: {
                                     nomad.setYMap(nomad.getYMap() + 1);
                                     break;
                                 }
-                                case STATUS_WALK_LEFT: {
+                                case STATUS_WALKING_LEFT: {
                                     nomad.setXMap(nomad.getXMap() - 1);
                                     break;
                                 }
-                                case STATUS_WALK_RIGHT: {
+                                case STATUS_WALKING_RIGHT: {
                                     nomad.setXMap(nomad.getXMap() + 1);
                                     break;
                                 }

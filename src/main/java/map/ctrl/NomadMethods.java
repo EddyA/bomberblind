@@ -9,13 +9,13 @@ import static utils.Tools.*;
 public class NomadMethods {
 
     /**
-     * Is the nomad crossing a map limit?
+     * Is the abstracts crossing a map limit?
      *
      * @param mapWidth  the map width
      * @param mapHeight the map height
-     * @param xChar     the nomad abscissa
-     * @param yChar     the nomad ordinate
-     * @return true if the nomad is crossing a map limit, false otherwise
+     * @param xChar     the abstracts abscissa
+     * @param yChar     the abstracts ordinate
+     * @return true if the abstracts is crossing a map limit, false otherwise
      */
     public static boolean isNomadCrossingMapLimit(int mapWidth, int mapHeight, int xChar, int yChar) {
         int topRowIdx = getCharTopRowIdx(yChar);
@@ -32,12 +32,12 @@ public class NomadMethods {
     }
 
     /**
-     * Is the nomad crossing an obstacle?
+     * Is the abstracts crossing an obstacle?
      *
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param xChar          the nomad abscissa
-     * @param yChar          the nomad ordinate
-     * @return true if the nomad is crossing an obstacle, false otherwise
+     * @param xChar          the abstracts abscissa
+     * @param yChar          the abstracts ordinate
+     * @return true if the abstracts is crossing an obstacle, false otherwise
      * @implSpec isNomadCrossingMapLimit() must be called before this function!
      */
     public static boolean isNomadCrossingObstacle(MapPoint[][] mapPointMatrix, int xChar, int yChar) {
@@ -57,13 +57,13 @@ public class NomadMethods {
     }
 
     /**
-     * Is the nomad burning?
-     * i.e. is there a burning case adjoining the nomad?
+     * Is the abstracts burning?
+     * i.e. is there a burning case adjoining the abstracts?
      *
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param xChar          the nomad abscissa
-     * @param yChar          the nomad ordinate
-     * @return true if the nomad is burning, false otherwise
+     * @param xChar          the abstracts abscissa
+     * @param yChar          the abstracts ordinate
+     * @return true if the abstracts is burning, false otherwise
      * @implSpec isNomadCrossingMapLimit() must be called before this function!
      */
     public static boolean isNomadBurning(MapPoint[][] mapPointMatrix, int xChar, int yChar) {
@@ -83,15 +83,15 @@ public class NomadMethods {
     }
 
     /**
-     * Is the nomad crossing a bomb?
-     * note: we can't just use the isNomadCrossingObstacle() algorithm as the nomad can already be
+     * Is the abstracts crossing a bomb?
+     * note: we can't just use the isNomadCrossingObstacle() algorithm as the abstracts can already be
      * on a bombing case - when it just put a bomb - and this particular case cannot be processed the same way.
      *
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param xChar          the nomad abscissa
-     * @param yChar          the nomad ordinate
+     * @param xChar          the abstracts abscissa
+     * @param yChar          the abstracts ordinate
      * @param keyEvent       the current pressed key
-     * @return true if the nomad is crossing a bomb, false otherwise
+     * @return true if the abstracts is crossing a bomb, false otherwise
      * @implSpec isNomadCrossingMapLimit() must be called before this function!
      */
     public static boolean isNomadCrossingBomb(MapPoint[][] mapPointMatrix, int xChar, int yChar, int keyEvent) {

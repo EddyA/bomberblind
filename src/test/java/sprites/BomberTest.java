@@ -1,10 +1,11 @@
-package sprites.nomad;
+package sprites;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import sprites.nomad.BlueBomber;
 import utils.CurrentTimeSupplier;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.time.Instant;
 
 import static org.mockito.Mockito.mock;
 import static sprites.nomad.BlueBomber.INVINCIBLE_TIME;
-import static sprites.nomad.Bomber.status.*;
+import static sprites.nomad.abstracts.Bomber.status.*;
 
 public class BomberTest implements WithAssertions {
 
@@ -22,54 +23,14 @@ public class BomberTest implements WithAssertions {
     }
 
     @Test
-    public void accessorsShouldReturnTheExpectedValues() throws Exception {
-        BlueBomber blueBomber = new BlueBomber(10, 20);
-
-        // - status:
-        blueBomber.status = STATUS_WALK_BACK;
-        assertThat(blueBomber.getStatus()).isEqualTo(STATUS_WALK_BACK);
-        blueBomber.status = STATUS_WALK_LEFT;
-        assertThat(blueBomber.getStatus()).isEqualTo(STATUS_WALK_LEFT);
-
-        // - isInvicible:
-        blueBomber.isInvincible = false;
-        assertThat(blueBomber.isInvincible()).isEqualTo(false);
-        blueBomber.isInvincible = true;
-        assertThat(blueBomber.isInvincible()).isEqualTo(true);
-
-        // - isFinished:
-        blueBomber.isFinished = false;
-        assertThat(blueBomber.isFinished()).isEqualTo(false);
-        blueBomber.isFinished = true;
-        assertThat(blueBomber.isFinished()).isEqualTo(true);
-
-        // - curImage:
-        blueBomber.curImage = null;
-        assertThat(blueBomber.getCurImage()).isEqualTo(blueBomber.curImage);
-        blueBomber.curImage = ImagesLoader.createImage("/images/icon.gif");
-        assertThat(blueBomber.getCurImage()).isEqualTo(blueBomber.curImage);
-    }
-
-    @Test
-    public void mutatorsShouldSetMembersWithTheExpectedValues() throws Exception {
-        BlueBomber blueBomber = new BlueBomber(10, 20);
-
-        // - status.
-        blueBomber.status = STATUS_WAIT; // initial status.
-        blueBomber.setStatus(STATUS_WALK_LEFT); // update the status.
-        assertThat(blueBomber.status).isEqualTo(STATUS_WALK_LEFT); // check value after the update.
-    }
-
-    @Test
     public void initStatementShouldSetMembersWithTheExpectedValues() throws Exception {
         BlueBomber blueBomber = new BlueBomber(10, 20);
 
         // update members with value != than the expected one.
-        blueBomber.status = STATUS_DEAD;
+        blueBomber.setCurStatus(STATUS_DYING);
         blueBomber.setXMap(30);
         blueBomber.setYMap(40);
-        blueBomber.isFinished = true;
-        blueBomber.isInvincible = false;
+        blueBomber.setInvincible(false);
 
         // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.
         CurrentTimeSupplier currentTimeSupplier = mock(CurrentTimeSupplier.class);
@@ -78,12 +39,11 @@ public class BomberTest implements WithAssertions {
 
         // init bomber and check values.
         blueBomber.initStatement();
-        assertThat(blueBomber.getXMap()).isEqualTo(blueBomber.initialXMap);
-        assertThat(blueBomber.getYMap()).isEqualTo(blueBomber.initialYMap);
-        assertThat(blueBomber.status).isEqualTo(STATUS_WAIT);
-        assertThat(blueBomber.isFinished).isEqualTo(false);
-        assertThat(blueBomber.isInvincible).isEqualTo(true);
-        assertThat(blueBomber.lastInvincibilityTs).isEqualTo(1000L);
+        assertThat(blueBomber.getXMap()).isEqualTo(blueBomber.getInitialXMap());
+        assertThat(blueBomber.getYMap()).isEqualTo(blueBomber.getInitialYMap());
+        assertThat(blueBomber.getCurStatus()).isEqualTo(STATUS_WAITING);
+        assertThat(blueBomber.isInvincible()).isEqualTo(true);
+        assertThat(blueBomber.getLastInvincibilityTs()).isEqualTo(1000L);
     }
 
     @Test
@@ -91,37 +51,37 @@ public class BomberTest implements WithAssertions {
         BlueBomber blueBomber = new BlueBomber(10, 20);
 
         // - dead:
-        blueBomber.setStatus(STATUS_DEAD);
+        blueBomber.setCurStatus(STATUS_DYING);
         blueBomber.updateImage();
         assertThat(blueBomber.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberDeathMatrixRowIdx][0]);
         // - wait:
-        blueBomber.setStatus(STATUS_WAIT);
+        blueBomber.setCurStatus(STATUS_WAITING);
         blueBomber.updateImage();
         assertThat(blueBomber.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx][0]);
         // - walk back:
-        blueBomber.setStatus(STATUS_WALK_BACK);
+        blueBomber.setCurStatus(STATUS_WALKING_BACK);
         blueBomber.updateImage();
         assertThat(blueBomber.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkBackMatrixRowIdx][0]);
         // - walk front:
-        blueBomber.setStatus(STATUS_WALK_FRONT);
+        blueBomber.setCurStatus(STATUS_WALKING_FRONT);
         blueBomber.updateImage();
         assertThat(blueBomber.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkFrontMatrixRowIdx][0]);
         // - walk left:
-        blueBomber.setStatus(STATUS_WALK_LEFT);
+        blueBomber.setCurStatus(STATUS_WALKING_LEFT);
         blueBomber.updateImage();
         assertThat(blueBomber.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkLeftMatrixRowIdx][0]);
         // - walk right:
-        blueBomber.setStatus(STATUS_WALK_RIGHT);
+        blueBomber.setCurStatus(STATUS_WALKING_RIGHT);
         blueBomber.updateImage();
         assertThat(blueBomber.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkRightMatrixRowIdx][0]);
         // - win:
-        blueBomber.setStatus(STATUS_WIN);
+        blueBomber.setCurStatus(STATUS_WON);
         blueBomber.updateImage();
         assertThat(blueBomber.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWinMatrixRowIdx][0]);
@@ -136,8 +96,8 @@ public class BomberTest implements WithAssertions {
         Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(1000L));
         blueBomber.currentTimeSupplier = currentTimeSupplier;
 
-        // set status.
-        blueBomber.setStatus(STATUS_WALK_BACK);
+        // set curStatus.
+        blueBomber.setCurStatus(STATUS_WALKING_BACK);
 
         // check value according to "lastRefreshTs":
         // - 1st update -> 1st image.
@@ -181,13 +141,13 @@ public class BomberTest implements WithAssertions {
         Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(1000L));
         blueBomber.currentTimeSupplier = currentTimeSupplier;
 
-        // set dead status.
-        blueBomber.setStatus(STATUS_DEAD);
+        // set dead curStatus.
+        blueBomber.setCurStatus(STATUS_DYING);
 
         // for each step of the dead sprite:
         // - check 'curImage' value,
         // - check 'isFinished' value.
-        for (int iterIdx = 0; iterIdx < blueBomber.nbDeathFrame; iterIdx++) {
+        for (int iterIdx = 0; iterIdx < blueBomber.getNbDeathFrame(); iterIdx++) {
             blueBomber.lastRefreshTs = 1000L - BlueBomber.REFRESH_TIME;
             blueBomber.updateImage();
             assertThat(blueBomber.getCurImage())
@@ -210,17 +170,17 @@ public class BomberTest implements WithAssertions {
         Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(10000L));
         blueBomber.currentTimeSupplier = currentTimeSupplier;
 
-        // set status.
-        blueBomber.setStatus(STATUS_WAIT);
-        blueBomber.isInvincible = true; // set to invincible.
+        // set curStatus.
+        blueBomber.setCurStatus(STATUS_WAITING);
+        blueBomber.setInvincible(true); // set to invincible.
 
         // 1st case: should continue to be invincible.
-        blueBomber.lastInvincibilityTs = 10000L - INVINCIBLE_TIME + 1; // limit not reached.
+        blueBomber.setLastInvincibilityTs(10000L - INVINCIBLE_TIME + 1); // limit not reached.
         blueBomber.updateImage();
         assertThat(blueBomber.isInvincible()).isTrue();
 
         // 2nd case: should stop being invincible.
-        blueBomber.lastInvincibilityTs = 10000L - INVINCIBLE_TIME; // limit reached.
+        blueBomber.setLastInvincibilityTs(10000L - INVINCIBLE_TIME); // limit reached.
         blueBomber.updateImage();
         assertThat(blueBomber.isInvincible()).isFalse();
     }

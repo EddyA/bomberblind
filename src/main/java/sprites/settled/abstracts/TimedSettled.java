@@ -1,23 +1,17 @@
-package sprites.settled;
+package sprites.settled.abstracts;
 
 import java.awt.Image;
-
-import sprites.nomad.Nomad;
-import utils.CurrentTimeSupplier;
 
 /**
  * Abstract class of a timed sprites.
  * The sprite loops during a certain time.
  */
-public abstract class TimedSettled extends Nomad {
-    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
+public abstract class TimedSettled extends Settled {
 
     protected final Image[] images; // array of images of the sprite.
     protected final int nbImages; // number of images of the sprite.
     protected int curImageIdx; // current image index of the sprite.
     protected Image curImage; // current image of the sprite.
-    protected final int refreshTime; // refresh time (in ms).
-    protected long lastRefreshTs; // last refresh timestamp.
 
     protected final int duration; // duration (in ms).
     protected final long startTs; // start timestamp.
@@ -28,12 +22,39 @@ public abstract class TimedSettled extends Nomad {
                         int nbImages,
                         int refreshTime,
                         int duration) {
-        super(rowIdx, colIdx);
+        super(rowIdx, colIdx, refreshTime);
         this.images = images;
         this.nbImages = nbImages;
-        this.refreshTime = refreshTime;
         this.duration = duration;
         this.startTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
+    }
+
+    public Image[] getImages() {
+        return images;
+    }
+
+    public int getNbImages() {
+        return nbImages;
+    }
+
+    public int getCurImageIdx() {
+        return curImageIdx;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public long getStartTs() {
+        return startTs;
+    }
+
+    public void setCurImageIdx(int curImageIdx) {
+        this.curImageIdx = curImageIdx;
+    }
+
+    public void setCurImage(Image curImage) {
+        this.curImage = curImage;
     }
 
     @Override

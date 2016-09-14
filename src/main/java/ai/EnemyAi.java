@@ -2,20 +2,20 @@ package ai;
 
 import exceptions.CannotMoveNomadException;
 import map.MapPoint;
-import sprites.nomad.Enemy;
-import sprites.nomad.Nomad;
+import sprites.nomad.abstracts.Enemy;
+import sprites.nomad.abstracts.Nomad;
 
 import java.awt.event.KeyEvent;
 import java.util.*;
 
 import static map.ctrl.NomadMethods.*;
-import static sprites.nomad.Enemy.status.*;
-import static sprites.nomad.NomadCtrl.isNomadCrossingEnemy;
+import static sprites.nomad.abstracts.Enemy.status.*;
+import static sprites.NomadCtrl.isNomadCrossingEnemy;
 
 public class EnemyAi {
 
     private static List<Enemy.status> moveList = new ArrayList<>(
-            Arrays.asList(STATUS_WALK_BACK, STATUS_WALK_FRONT, STATUS_WALK_LEFT, STATUS_WALK_RIGHT));
+            Arrays.asList(STATUS_WALKING_BACK, STATUS_WALKING_FRONT, STATUS_WALKING_LEFT, STATUS_WALKING_RIGHT));
 
     /**
      * @return a random move from the list of available moves.
@@ -32,23 +32,23 @@ public class EnemyAi {
      * @param mapHeight      the map height
      * @param nomadList      the list of nomads
      * @param enemy          the enemy to move
-     * @return the updated status
+     * @return the updated curStatus
      */
     public static Enemy.status computeNextMove(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
                                                List<Nomad> nomadList, Enemy enemy) throws CannotMoveNomadException {
-        if (!moveList.contains(enemy.getStatus())) {
-            throw new RuntimeException("the provided status is not valid.");
+        if (!moveList.contains(enemy.getCurStatus())) {
+            throw new RuntimeException("the provided curStatus is not valid.");
         }
 
-        // create a set of checked status.
+        // create a set of checked curStatus.
         Set<Enemy.status> checkedStatus = new HashSet<>();
 
-        Enemy.status curCheckedStatus = enemy.getStatus();
+        Enemy.status curCheckedStatus = enemy.getCurStatus();
         boolean resultFound = false;
         do {
-            checkedStatus.add(curCheckedStatus); // add the current checked status to the set of checked status.
+            checkedStatus.add(curCheckedStatus); // add the current checked curStatus to the set of checked curStatus.
             switch (curCheckedStatus) {
-                case STATUS_WALK_BACK: {
+                case STATUS_WALKING_BACK: {
                     if (!isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap(), enemy.getYMap() - 1)) {
                         if (!isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap(), enemy.getYMap() - 1) &&
                                 !isNomadBurning(mapPointMatrix, enemy.getXMap(), enemy.getYMap() - 1) &&
@@ -59,7 +59,7 @@ public class EnemyAi {
                     }
                     break;
                 }
-                case STATUS_WALK_FRONT: {
+                case STATUS_WALKING_FRONT: {
                     if (!isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap(), enemy.getYMap() + 1)) {
                         if (!isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap(), enemy.getYMap() + 1) &&
                                 !isNomadBurning(mapPointMatrix, enemy.getXMap(), enemy.getYMap() + 1) &&
@@ -70,7 +70,7 @@ public class EnemyAi {
                     }
                     break;
                 }
-                case STATUS_WALK_LEFT: {
+                case STATUS_WALKING_LEFT: {
                     if (!isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap() - 1, enemy.getYMap())) {
                         if (!isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap() - 1, enemy.getYMap()) &&
                                 !isNomadBurning(mapPointMatrix, enemy.getXMap() - 1, enemy.getYMap()) &&
@@ -81,7 +81,7 @@ public class EnemyAi {
                     }
                     break;
                 }
-                case STATUS_WALK_RIGHT: {
+                case STATUS_WALKING_RIGHT: {
                     if (!isNomadCrossingMapLimit(mapWidth, mapHeight, enemy.getXMap() + 1, enemy.getYMap())) {
                         if (!isNomadCrossingObstacle(mapPointMatrix, enemy.getXMap() + 1, enemy.getYMap()) &&
                                 !isNomadBurning(mapPointMatrix, enemy.getXMap() + 1, enemy.getYMap()) &&
@@ -97,11 +97,11 @@ public class EnemyAi {
                 if (checkedStatus.size() == moveList.size()) {
 
                     /**
-                     * all the status has been checked but no result found.
-                     * this case happens when the nomad is blocked by another one
+                     * all the curStatus has been checked but no result found.
+                     * this case happens when the abstracts is blocked by another one
                      * and it cannot move during this iteration ... just wait for the next one.
                      */
-                    throw new CannotMoveNomadException("nomad is not able to move during this iteration.");
+                    throw new CannotMoveNomadException("abstracts is not able to move during this iteration.");
                 }
                 curCheckedStatus = getRandomDirection();
             }

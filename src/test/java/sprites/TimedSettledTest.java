@@ -1,4 +1,4 @@
-package sprites.settled;
+package sprites;
 
 import static org.mockito.Mockito.mock;
 
@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import images.ImagesLoader;
+import sprites.settled.Bomb;
 import utils.CurrentTimeSupplier;
 
 public class TimedSettledTest implements WithAssertions {
@@ -26,7 +27,7 @@ public class TimedSettledTest implements WithAssertions {
 
         // mock CurrentTimeSupplier class to set currentTimeMillis to DURATION_TIME - 1 (1ms before stopping).
         CurrentTimeSupplier currentTimeSupplier = mock(CurrentTimeSupplier.class);
-        Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(bomb.startTs + Bomb.DURATION_TIME - 1));
+        Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(bomb.getStartTs() + Bomb.DURATION_TIME - 1));
         bomb.currentTimeSupplier = currentTimeSupplier;
 
         assertThat(bomb.isFinished()).isFalse();
@@ -38,7 +39,7 @@ public class TimedSettledTest implements WithAssertions {
 
         // mock CurrentTimeSupplier class to set currentTimeMillis to DURATION_TIME (time has been reached.).
         CurrentTimeSupplier currentTimeSupplier = mock(CurrentTimeSupplier.class);
-        Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(bomb.startTs + Bomb.DURATION_TIME));
+        Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(bomb.getStartTs() + Bomb.DURATION_TIME));
         bomb.currentTimeSupplier = currentTimeSupplier;
 
         assertThat(bomb.isFinished()).isTrue();

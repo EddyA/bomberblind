@@ -16,7 +16,7 @@ public class ImagesLoader {
     public final static int IMAGE_SIZE = 30; // size of an 'Image' in pixels (30*30).
 
     public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
-    protected final static int NB_MATRIX_ROW = 28;
+    protected final static int NB_MATRIX_ROW = 29;
     protected final static int NB_MATRIX_COL = 80;
 
     // images location.
@@ -42,9 +42,11 @@ public class ImagesLoader {
     public static int blueBomberWinMatrixRowIdx;
 
     // enemies:
+    public final static int NB_ENEMY_DEATH_FRAME = 4;
     public final static int NB_ENEMY_WALK_FRAME = 4;
 
     // - cloaked skeleton.
+    public static int cloakedSkeletonDeathMatrixRowIdx;
     public static int cloakedSkeletonWalkBackMatrixRowIdx;
     public static int cloakedSkeletonWalkFrontMatrixRowIdx;
     public static int cloakedSkeletonWalkLeftMatrixRowIdx;
@@ -156,6 +158,11 @@ public class ImagesLoader {
 
         // enemies:
         // - cloaked skeleton.
+        for (int i = 0; i < NB_ENEMY_DEATH_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/cloaked_skeleton/dead_" + imageIdx + ".png");
+        }
+        cloakedSkeletonDeathMatrixRowIdx = rowIdx++;
         for (int i = 0; i < NB_ENEMY_WALK_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/cloaked_skeleton/walk_back_" + imageIdx + ".png");

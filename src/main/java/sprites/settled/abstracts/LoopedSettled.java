@@ -1,23 +1,17 @@
-package sprites.settled;
+package sprites.settled.abstracts;
 
-import java.awt.Image;
-
-import sprites.nomad.Nomad;
-import utils.CurrentTimeSupplier;
+import java.awt.*;
 
 /**
- * Abstract class of a looped animation.
- * The animation loops a certain number of times.
+ * Abstract class of a looped settled sprite.
+ * The sprite loops a certain number of times.
  */
-public abstract class LoopedSettled extends Nomad {
-    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
+public abstract class LoopedSettled extends Settled {
 
     private final Image[] images; // array of images of the sprite.
     private final int nbImages; // number of images of the sprite.
     private int curImageIdx; // current image index of the sprite.
-    protected Image curImage; // current image of the sprite.
-    private final int refreshTime; // refresh time (in ms).
-    private long lastRefreshTs; // last refresh timestamp.
+    private Image curImage; // current image of the sprite.
     private final int maxNbTimes; // number of times the sprite should be painted.
     private int curNbTimes; // current number of times.
 
@@ -27,11 +21,42 @@ public abstract class LoopedSettled extends Nomad {
                          int nbImages,
                          int refreshTime,
                          int maxNbTimes) {
-        super(rowIdx, colIdx);
+        super(rowIdx, colIdx, refreshTime);
         this.images = images;
         this.nbImages = nbImages;
-        this.refreshTime = refreshTime;
         this.maxNbTimes = maxNbTimes;
+    }
+
+    public Image[] getImages() {
+        return images;
+    }
+
+    public int getNbImages() {
+        return nbImages;
+    }
+
+    public int getCurImageIdx() {
+        return curImageIdx;
+    }
+
+    public int getMaxNbTimes() {
+        return maxNbTimes;
+    }
+
+    public int getCurNbTimes() {
+        return curNbTimes;
+    }
+
+    public void setCurImageIdx(int curImageIdx) {
+        this.curImageIdx = curImageIdx;
+    }
+
+    public void setCurImage(Image curImage) {
+        this.curImage = curImage;
+    }
+
+    public void setCurNbTimes(int curNbTimes) {
+        this.curNbTimes = curNbTimes;
     }
 
     @Override

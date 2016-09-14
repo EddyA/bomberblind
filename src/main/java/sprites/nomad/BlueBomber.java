@@ -1,6 +1,7 @@
 package sprites.nomad;
 
 import images.ImagesLoader;
+import sprites.nomad.abstracts.Bomber;
 
 /**
  * A blue bomber.
@@ -8,6 +9,7 @@ import images.ImagesLoader;
 public class BlueBomber extends Bomber {
 
     public final static int REFRESH_TIME = 100;
+    public final static int MOVING_TIME = 0;
     public final static int INVINCIBLE_TIME = 2500;
 
     /**
@@ -32,6 +34,7 @@ public class BlueBomber extends Bomber {
                 ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWinMatrixRowIdx],
                 ImagesLoader.NB_BOMBER_WIN_FRAME,
                 REFRESH_TIME,
+                MOVING_TIME,
                 INVINCIBLE_TIME);
     }
 }

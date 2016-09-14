@@ -1,13 +1,14 @@
-package sprites.nomad;
+package sprites;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
+import sprites.nomad.BlueBomber;
 
 import java.io.IOException;
 
-import static sprites.nomad.Bomber.status.STATUS_WAIT;
+import static sprites.nomad.abstracts.Bomber.status.STATUS_WAITING;
 
 public class BlueBomberTest implements WithAssertions {
 
@@ -23,31 +24,31 @@ public class BlueBomberTest implements WithAssertions {
         // check members value.
         assertThat(blueBomber.getXMap()).isEqualTo(10);
         assertThat(blueBomber.getYMap()).isEqualTo(20);
-        assertThat(blueBomber.initialXMap).isEqualTo(blueBomber.getXMap());
-        assertThat(blueBomber.initialYMap).isEqualTo(blueBomber.getYMap());
-        assertThat(blueBomber.getStatus()).isEqualTo(STATUS_WAIT);
-        assertThat(blueBomber.lastStatus).isEqualTo(STATUS_WAIT);
-        assertThat(blueBomber.deathImages).
+        assertThat(blueBomber.getInitialXMap()).isEqualTo(blueBomber.getXMap());
+        assertThat(blueBomber.getInitialYMap()).isEqualTo(blueBomber.getYMap());
+        assertThat(blueBomber.getCurStatus()).isEqualTo(STATUS_WAITING);
+        assertThat(blueBomber.getLastStatus()).isEqualTo(STATUS_WAITING);
+        assertThat(blueBomber.getDeathImages()).
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberDeathMatrixRowIdx]);
-        assertThat(blueBomber.nbDeathFrame).isEqualTo(ImagesLoader.NB_BOMBER_DEATH_FRAME);
-        assertThat(blueBomber.waitImages).
+        assertThat(blueBomber.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_BOMBER_DEATH_FRAME);
+        assertThat(blueBomber.getWaitImages()).
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
-        assertThat(blueBomber.nbWaitFrame).isEqualTo(ImagesLoader.NB_BOMBER_WAIT_FRAME);
-        assertThat(blueBomber.walkBackImages).
+        assertThat(blueBomber.getNbWaitFrame()).isEqualTo(ImagesLoader.NB_BOMBER_WAIT_FRAME);
+        assertThat(blueBomber.getWalkBackImages()).
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkBackMatrixRowIdx]);
-        assertThat(blueBomber.walkFrontImages).
+        assertThat(blueBomber.getWalkFrontImages()).
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkFrontMatrixRowIdx]);
-        assertThat(blueBomber.walkLeftImages).
+        assertThat(blueBomber.getWalkLeftImages()).
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkLeftMatrixRowIdx]);
-        assertThat(blueBomber.walkRightImages).
+        assertThat(blueBomber.getWalkRightImages()).
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkRightMatrixRowIdx]);
-        assertThat(blueBomber.nbWalkFrame).isEqualTo(ImagesLoader.NB_BOMBER_WALK_FRAME);
-        assertThat(blueBomber.winImages).
+        assertThat(blueBomber.getNbWalkFrame()).isEqualTo(ImagesLoader.NB_BOMBER_WALK_FRAME);
+        assertThat(blueBomber.getWinImages()).
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWinMatrixRowIdx]);
-        assertThat(blueBomber.nbWinFrame).isEqualTo(ImagesLoader.NB_BOMBER_WIN_FRAME);
+        assertThat(blueBomber.getNbWinFrame()).isEqualTo(ImagesLoader.NB_BOMBER_WIN_FRAME);
         assertThat(blueBomber.refreshTime).isEqualTo(BlueBomber.REFRESH_TIME);
         assertThat(blueBomber.lastRefreshTs).isEqualTo(0);
-        assertThat(blueBomber.invincibilityTime).isEqualTo(BlueBomber.INVINCIBLE_TIME);
-        assertThat(blueBomber.lastInvincibilityTs).isEqualTo(0);
+        assertThat(blueBomber.getInvincibilityTime()).isEqualTo(BlueBomber.INVINCIBLE_TIME);
+        assertThat(blueBomber.getLastInvincibilityTs()).isEqualTo(0);
     }
 }
