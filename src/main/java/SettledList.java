@@ -1,7 +1,7 @@
 import map.abstracts.Map;
 import sprites.settled.Bomb;
 import sprites.settled.Flame;
-import sprites.settled.FlameEnd;
+import sprites.settled.ConclusionFlame;
 import sprites.Sprite;
 
 import java.awt.*;
@@ -146,7 +146,7 @@ public class SettledList extends LinkedList<Sprite> {
      * @param colIdx the map column index of the flame
      */
     private void addFlameEnd(LinkedList<Sprite> list, int rowIdx, int colIdx) {
-        list.add(new FlameEnd(rowIdx, colIdx));
+        list.add(new ConclusionFlame(rowIdx, colIdx));
     }
 
     /**

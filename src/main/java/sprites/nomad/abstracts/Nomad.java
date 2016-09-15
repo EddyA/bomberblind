@@ -9,8 +9,13 @@ import java.awt.*;
  */
 public abstract class Nomad extends Sprite {
 
-    protected int moveTime; // move time (in ms).
-    protected long lastMoveTs; // last move timestamp.
+    private Image[] images; // array of images of the sprite.
+    private int nbImages; // number of images of the sprite.
+    private int curImageIdx; // current image index of the sprite.
+    private Image curImage; // current image of the sprite.
+
+    private int moveTime; // move time (in ms).
+    private long lastMoveTs; // last move timestamp.
 
     public Nomad(int xMap, int yMap, int refreshTime, int moveTime) {
         super(xMap, yMap, refreshTime);
@@ -21,16 +26,44 @@ public abstract class Nomad extends Sprite {
         return moveTime;
     }
 
-    public long getLastMoveTs() {
-        return lastMoveTs;
-    }
-
     public void setMoveTime(int moveTime) {
         this.moveTime = moveTime;
     }
 
+    public long getLastMoveTs() {
+        return lastMoveTs;
+    }
+
     public void setLastMoveTs(long lastMoveTs) {
         this.lastMoveTs = lastMoveTs;
+    }
+
+    public Image[] getImages() {
+        return images;
+    }
+
+    public int getNbImages() {
+        return nbImages;
+    }
+
+    public int getCurImageIdx() {
+        return curImageIdx;
+    }
+
+    public void setImages(Image[] images) {
+        this.images = images;
+    }
+
+    public void setNbImages(int nbImages) {
+        this.nbImages = nbImages;
+    }
+
+    public void setCurImageIdx(int curImageIdx) {
+        this.curImageIdx = curImageIdx;
+    }
+
+    public void setCurImage(Image curImage) {
+        this.curImage = curImage;
     }
 
     /**
@@ -57,10 +90,25 @@ public abstract class Nomad extends Sprite {
     /**
      * @return the current image of the sprite.
      */
-    public abstract Image getCurImage();
+    public Image getCurImage() {
+        return curImage;
+    }
+
+    public abstract void updateSprite();
+
+    public abstract boolean updateStatus();
 
     /**
      * Update the sprite image.
      */
-    public abstract void updateImage();
+    @Override
+    public void updateImage() {
+        updateSprite();
+        if (updateStatus() || // the status has changed
+                (isTimeToRefresh() && // OR (it is time to refresh
+                        (++curImageIdx == nbImages))) { // AND it is the end of the sprite).
+            curImageIdx = 0;
+        }
+        curImage = images[curImageIdx];
+    }
 }

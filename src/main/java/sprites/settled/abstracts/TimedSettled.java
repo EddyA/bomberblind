@@ -1,6 +1,6 @@
 package sprites.settled.abstracts;
 
-import java.awt.Image;
+import java.awt.*;
 
 /**
  * Abstract class of a timed sprites.
@@ -8,74 +8,40 @@ import java.awt.Image;
  */
 public abstract class TimedSettled extends Settled {
 
-    protected final Image[] images; // array of images of the sprite.
-    protected final int nbImages; // number of images of the sprite.
-    protected int curImageIdx; // current image index of the sprite.
-    protected Image curImage; // current image of the sprite.
+    private final int time; // time the sprite must loop (in ms).
+    private final long startTs; // start timestamp.
 
-    protected final int duration; // duration (in ms).
-    protected final long startTs; // start timestamp.
-
+    /**
+     * Create a timed settled.
+     *
+     * @param rowIdx      the map row index of the sprite
+     * @param colIdx      the map col index of the sprite
+     * @param refreshTime the sprite refreshTime (i.e. fps)
+     * @param images      the sprite's array of images
+     * @param nbImages    the number of images
+     * @param time        the time the sprite must loop
+     */
     public TimedSettled(int rowIdx,
                         int colIdx,
+                        int refreshTime,
                         Image[] images,
                         int nbImages,
-                        int refreshTime,
-                        int duration) {
-        super(rowIdx, colIdx, refreshTime);
-        this.images = images;
-        this.nbImages = nbImages;
-        this.duration = duration;
+                        int time) {
+        super(rowIdx, colIdx, refreshTime, images, nbImages);
+        this.time = time;
         this.startTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
     }
 
-    public Image[] getImages() {
-        return images;
-    }
-
-    public int getNbImages() {
-        return nbImages;
-    }
-
-    public int getCurImageIdx() {
-        return curImageIdx;
-    }
-
-    public int getDuration() {
-        return duration;
+    public int getTime() {
+        return time;
     }
 
     public long getStartTs() {
         return startTs;
     }
 
-    public void setCurImageIdx(int curImageIdx) {
-        this.curImageIdx = curImageIdx;
-    }
-
-    public void setCurImage(Image curImage) {
-        this.curImage = curImage;
-    }
-
     @Override
     public boolean isFinished() {
-        return currentTimeSupplier.get().toEpochMilli() - startTs >= duration;
-    }
-
-    @Override
-    public Image getCurImage() {
-        return curImage;
-    }
-
-    @Override
-    public void updateImage() {
-        long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
-        if (curTs - lastRefreshTs > refreshTime) { // it is time to refresh.
-            lastRefreshTs = curTs;
-            if (++curImageIdx == nbImages) {
-                curImageIdx = 0;
-            }
-            curImage = images[curImageIdx];
-        }
+        return currentTimeSupplier.get().toEpochMilli() - startTs >= time;
     }
 }

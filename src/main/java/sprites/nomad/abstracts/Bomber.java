@@ -2,7 +2,8 @@ package sprites.nomad.abstracts;
 
 import java.awt.*;
 
-import static sprites.nomad.abstracts.Bomber.status.*;
+import static sprites.nomad.abstracts.Bomber.status.STATUS_DYING;
+import static sprites.nomad.abstracts.Bomber.status.STATUS_WAITING;
 
 /**
  * Abstract class of a bomber.
@@ -37,9 +38,6 @@ public abstract class Bomber extends Nomad {
 
     private Bomber.status curStatus = STATUS_WAITING; // current status.
     private Bomber.status lastStatus = STATUS_WAITING; // last curStatus.
-
-    private Image curImage; // current image of the sprite.
-    private int curImageIdx; // current image index of the sprite.
 
     private int initialXMap; // initial abscissa on map.
     private int initialYMap; // initial ordinate on map.
@@ -130,10 +128,6 @@ public abstract class Bomber extends Nomad {
         return lastStatus;
     }
 
-    public int getCurImageIdx() {
-        return curImageIdx;
-    }
-
     public int getInitialXMap() {
         return initialXMap;
     }
@@ -152,14 +146,6 @@ public abstract class Bomber extends Nomad {
 
     public void setLastStatus(status lastStatus) {
         this.lastStatus = lastStatus;
-    }
-
-    public void setCurImage(Image curImage) {
-        this.curImage = curImage;
-    }
-
-    public void setCurImageIdx(int curImageIdx) {
-        this.curImageIdx = curImageIdx;
     }
 
     public void setInitialXMap(int initialXMap) {
@@ -207,83 +193,63 @@ public abstract class Bomber extends Nomad {
 
     @Override
     public boolean isFinished() {
-        return curStatus == STATUS_DEAD;
+        return ((curStatus == STATUS_DYING) && (getCurImageIdx() == (getNbImages() - 1)));
     }
 
     @Override
-    public Image getCurImage() {
-        return curImage;
-    }
-
-    @Override
-    public void updateImage() {
+    public boolean updateStatus() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
-        boolean shouldPrint = true;
-
-        int nbFrames = 0;
-        Image[] images = null;
-        switch (curStatus) {
-            case STATUS_DYING: {
-                nbFrames = nbDeathFrame;
-                images = deathImages;
-                break;
-            }
-            case STATUS_WAITING: {
-                nbFrames = nbWaitFrame;
-                images = waitImages;
-                break;
-            }
-            case STATUS_WALKING_BACK: {
-                nbFrames = nbWalkFrame;
-                images = walkBackImages;
-                break;
-            }
-            case STATUS_WALKING_FRONT: {
-                nbFrames = nbWalkFrame;
-                images = walkFrontImages;
-                break;
-            }
-            case STATUS_WALKING_LEFT: {
-                nbFrames = nbWalkFrame;
-                images = walkLeftImages;
-                break;
-            }
-            case STATUS_WALKING_RIGHT: {
-                nbFrames = nbWalkFrame;
-                images = walkRightImages;
-                break;
-            }
-            case STATUS_WON: {
-                nbFrames = nbWinFrame;
-                images = winImages;
-                break;
-            }
-        }
-        if ((curStatus != lastStatus) || // etiher the curStatus changed
+        if ((curStatus != lastStatus) || // etiher the status has changed
                 (lastRefreshTs == 0)) { // or it is the 1st call to that function.
             lastRefreshTs = curTs;
             lastStatus = curStatus;
-            curImageIdx = 0;
+            return true;
         } else {
-            if (curTs - lastRefreshTs >= refreshTime) { // it is time to refresh.
-                lastRefreshTs = curTs;
-                curImageIdx++;
-                if (curImageIdx == nbFrames) { // at the end of the sprite.
-                    if (curStatus == STATUS_DYING) {
-                        curStatus = STATUS_DEAD;
-                    } else {
-                        curImageIdx = 0; // back to the begining of the sprite.
-                    }
-                }
+            return false;
+        }
+    }
+
+    @Override
+    public void updateSprite() {
+        switch (curStatus) {
+            case STATUS_DYING: {
+                setImages(deathImages);
+                setNbImages(nbDeathFrame);
+                break;
+            }
+            case STATUS_WAITING: {
+                setImages(waitImages);
+                setNbImages(nbWaitFrame);
+                break;
+            }
+            case STATUS_WALKING_BACK: {
+                setImages(walkBackImages);
+                setNbImages(nbWalkFrame);
+                break;
+            }
+            case STATUS_WALKING_FRONT: {
+                setImages(walkFrontImages);
+                setNbImages(nbWalkFrame);
+                break;
+            }
+            case STATUS_WALKING_LEFT: {
+                setImages(walkLeftImages);
+                setNbImages(nbWalkFrame);
+                break;
+            }
+            case STATUS_WALKING_RIGHT: {
+                setImages(walkRightImages);
+                setNbImages(nbWalkFrame);
+                break;
+            }
+            case STATUS_WON: {
+                setImages(winImages);
+                setNbImages(nbWinFrame);
+                break;
+            }
+            default: {
+                throw new RuntimeException("another status is not allowed here, please check the algorithm.");
             }
         }
-        if (isInvincible) {
-            if (curTs - lastInvincibilityTs >= invincibilityTime) { // stop invincibility?
-                isInvincible = false;
-            } else if (curImageIdx % 2 == 0) { // print every two images.
-                shouldPrint = false;
-            }
-        }
-        curImage = shouldPrint ? images[curImageIdx] : null;
     }
 }

@@ -16,6 +16,13 @@ public abstract class Sprite {
     protected int refreshTime; // refresh time (in ms).
     protected long lastRefreshTs; // last refresh timestamp.
 
+    /**
+     * Create a settled sprite.
+     *
+     * @param xMap        the sprite's abscissa
+     * @param yMap        the sprite's ordinate
+     * @param refreshTime the sprite refreshTime (i.e. fps)
+     */
     public Sprite(int xMap, int yMap, int refreshTime) {
         this.xMap = xMap;
         this.yMap = yMap;
@@ -57,7 +64,7 @@ public abstract class Sprite {
      *
      * @return true if the sprite should be updated, false oterhwise.
      */
-    public boolean shouldUpdateImage() {
+    public boolean isTimeToRefresh() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         if (curTs - lastRefreshTs >= refreshTime) { // it is time to refresh.
             lastRefreshTs = curTs;

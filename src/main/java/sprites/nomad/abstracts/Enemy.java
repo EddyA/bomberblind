@@ -2,7 +2,8 @@ package sprites.nomad.abstracts;
 
 import java.awt.*;
 
-import static sprites.nomad.abstracts.Enemy.status.*;
+import static sprites.nomad.abstracts.Enemy.status.STATUS_DYING;
+import static sprites.nomad.abstracts.Enemy.status.STATUS_WALKING_FRONT;
 
 /**
  * Abstract class of an enemy.
@@ -21,19 +22,16 @@ public abstract class Enemy extends Nomad {
         STATUS_WALKING_RIGHT
     }
 
-    protected final Image[] deathImages;
-    protected final int nbDeathFrame;
-    protected final Image[] walkBackImages; // array of images of the "walk back" sprite.
-    protected final Image[] walkFrontImages; // array of images of the "walk front" sprite.
-    protected final Image[] walkLeftImages; // array of images of the "walk left" sprite.
-    protected final Image[] walkRightImages; // array of images of the "walk right" sprite.
-    protected final int nbWalkFrame; // number of images of the "walk" sprite.
+    private final Image[] deathImages;
+    private final int nbDeathFrame;
+    private final Image[] walkBackImages; // array of images of the "walk back" sprite.
+    private final Image[] walkFrontImages; // array of images of the "walk front" sprite.
+    private final Image[] walkLeftImages; // array of images of the "walk left" sprite.
+    private final Image[] walkRightImages; // array of images of the "walk right" sprite.
+    private final int nbWalkFrame; // number of images of the "walk" sprite.
 
-    protected status curStatus = STATUS_WALKING_FRONT; // current curStatus.
-    protected status lastStatus = STATUS_WALKING_FRONT; // last curStatus.
-
-    protected Image curImage; // current image of the sprite.
-    protected int curImageIdx; // current image index of the sprite.
+    private status curStatus = STATUS_WALKING_FRONT; // current curStatus.
+    private status lastStatus = STATUS_WALKING_FRONT; // last curStatus.
 
     public Enemy(int xMap,
                  int yMap,
@@ -89,20 +87,8 @@ public abstract class Enemy extends Nomad {
         return lastStatus;
     }
 
-    public int getCurImageIdx() {
-        return curImageIdx;
-    }
-
     public void setLastStatus(status lastStatus) {
         this.lastStatus = lastStatus;
-    }
-
-    public void setCurImage(Image curImage) {
-        this.curImage = curImage;
-    }
-
-    public void setCurImageIdx(int curImageIdx) {
-        this.curImageIdx = curImageIdx;
     }
 
     public void setCurStatus(Enemy.status curStatus) {
@@ -115,68 +101,53 @@ public abstract class Enemy extends Nomad {
 
     @Override
     public boolean isFinished() {
-        return curStatus == STATUS_DEAD;
+        return ((curStatus == STATUS_DYING) && (getCurImageIdx() == (getNbImages() - 1)));
     }
 
     @Override
-    public Image getCurImage() {
-        return curImage;
-    }
-
-    @Override
-    public void updateImage() {
+    public boolean updateStatus() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
+        if ((curStatus != lastStatus) || // etiher the status has changed
+                (lastRefreshTs == 0)) { // or it is the 1st call to that function.
+            lastRefreshTs = curTs;
+            lastStatus = curStatus;
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-        int nbFrames;
-        Image[] images;
+    @Override
+    public void updateSprite() {
         switch (curStatus) {
             case STATUS_DYING: {
-                nbFrames = nbDeathFrame;
-                images = deathImages;
+                setImages(deathImages);
+                setNbImages(nbDeathFrame);
                 break;
             }
             case STATUS_WALKING_BACK: {
-                nbFrames = nbWalkFrame;
-                images = walkBackImages;
+                setImages(walkBackImages);
+                setNbImages(nbWalkFrame);
                 break;
             }
             case STATUS_WALKING_FRONT: {
-                nbFrames = nbWalkFrame;
-                images = walkFrontImages;
+                setImages(walkFrontImages);
+                setNbImages(nbWalkFrame);
                 break;
             }
             case STATUS_WALKING_LEFT: {
-                nbFrames = nbWalkFrame;
-                images = walkLeftImages;
+                setImages(walkLeftImages);
+                setNbImages(nbWalkFrame);
                 break;
             }
             case STATUS_WALKING_RIGHT: {
-                nbFrames = nbWalkFrame;
-                images = walkRightImages;
+                setImages(walkRightImages);
+                setNbImages(nbWalkFrame);
                 break;
             }
             default: {
                 throw new RuntimeException("another status is not allowed here, please check the algorithm.");
             }
         }
-        if ((curStatus != lastStatus) || // etiher the curStatus changed
-                (lastRefreshTs == 0)) { // or it is the 1st call to that function.
-            lastRefreshTs = curTs;
-            lastStatus = curStatus;
-            curImageIdx = 0;
-        } else {
-            if (curTs - lastRefreshTs >= refreshTime) { // it is time to refresh.
-                lastRefreshTs = curTs;
-                curImageIdx++;
-                if (curImageIdx == nbFrames) { // at the end of the sprite.
-                    if (curStatus == STATUS_DYING) {
-                        curStatus = STATUS_DEAD;
-                    } else {
-                        curImageIdx = 0; // back to the begining of the sprite.
-                    }
-                }
-            }
-        }
-        curImage = images[curImageIdx];
     }
 }

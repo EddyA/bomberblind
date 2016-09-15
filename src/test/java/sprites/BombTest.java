@@ -29,7 +29,7 @@ public class BombTest implements WithAssertions {
         assertThat(bomb.getImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bombMatrixRowIdx]);
         assertThat(bomb.getNbImages()).isEqualTo(ImagesLoader.NB_BOMB_FRAME);
         assertThat(bomb.refreshTime).isEqualTo(Bomb.REFRESH_TIME);
-        assertThat(bomb.getDuration()).isEqualTo(Bomb.DURATION_TIME);
+        assertThat(bomb.getTime()).isEqualTo(Bomb.DURATION_TIME);
     }
 
     @Test
