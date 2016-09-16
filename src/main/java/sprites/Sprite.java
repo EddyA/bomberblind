@@ -1,8 +1,9 @@
 package sprites;
 
-import utils.CurrentTimeSupplier;
+import java.awt.Graphics2D;
+import java.awt.Image;
 
-import java.awt.*;
+import utils.CurrentTimeSupplier;
 
 /**
  * Abstract class of a sprite.
@@ -59,8 +60,8 @@ public abstract class Sprite {
 
     /**
      * This function is used to handle sprite's speed - in term of image/sec.
-     * It computes the elapsed time since the sprite's image has been updated and return true if it should be
-     * updated again, false oterhwise.
+     * It computes the elapsed time since the sprite's image has been updated
+     * and return true if it should be updated again, false oterhwise.
      *
      * @return true if the sprite should be updated, false oterhwise.
      */
@@ -80,7 +81,7 @@ public abstract class Sprite {
     public abstract boolean isFinished();
 
     /**
-     * @return the current image of the sprite.
+     * @return the current sprite image.
      */
     public abstract Image getCurImage();
 

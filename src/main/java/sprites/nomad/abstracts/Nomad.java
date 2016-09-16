@@ -1,22 +1,30 @@
 package sprites.nomad.abstracts;
 
+import java.awt.Image;
+
 import sprites.Sprite;
 
-import java.awt.*;
-
 /**
- * Abstract class of a abstracts sprite.
+ * Abstract class of a nomad.
  */
 public abstract class Nomad extends Sprite {
 
-    private Image[] images; // array of images of the sprite.
-    private int nbImages; // number of images of the sprite.
-    private int curImageIdx; // current image index of the sprite.
-    private Image curImage; // current image of the sprite.
+    private Image[] images; // array of image according to the current sprite's status.
+    private int nbImages; // number of images of the array of image.
+    private int curImageIdx; // sprite's current image index.
+    private Image curImage; // sprite's current image.
 
-    private int moveTime; // move time (in ms).
+    private int moveTime; // move time (in ms, defining the nomad's move speed).
     private long lastMoveTs; // last move timestamp.
 
+    /**
+     * Create a nomad.
+     *
+     * @param xMap abscissa on the map.
+     * @param yMap ordinate on the map.
+     * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
+     * @param moveTime the move time (i.e. defining the nomad move speed)
+     */
     public Nomad(int xMap, int yMap, int refreshTime, int moveTime) {
         super(xMap, yMap, refreshTime);
         this.moveTime = moveTime;
@@ -83,24 +91,25 @@ public abstract class Nomad extends Sprite {
     }
 
     /**
-     * @return true if the sprite is finished, false otherwise.
+     * Update the nomad status.
+     *
+     * @return true if the status changed, flase otherwise.
      */
-    public abstract boolean isFinished();
+    public abstract boolean updateStatus();
 
     /**
-     * @return the current image of the sprite.
+     * Update the array of image according to the current sprite's status.
      */
+    public abstract void updateSprite();
+
+    @Override
+    public abstract boolean isFinished();
+
+    @Override
     public Image getCurImage() {
         return curImage;
     }
 
-    public abstract void updateSprite();
-
-    public abstract boolean updateStatus();
-
-    /**
-     * Update the sprite image.
-     */
     @Override
     public void updateImage() {
         updateSprite();

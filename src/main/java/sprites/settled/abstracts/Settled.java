@@ -1,9 +1,9 @@
 package sprites.settled.abstracts;
 
+import java.awt.Image;
+
 import sprites.Sprite;
 import utils.Tools;
-
-import java.awt.*;
 
 /**
  * Abstract class of a settled sprite.
@@ -25,7 +25,7 @@ public abstract class Settled extends Sprite {
      *
      * @param rowIdx      the map row index of the sprite
      * @param colIdx      the map col index of the sprite
-     * @param refreshTime the sprite refreshTime (i.e. fps)
+     * @param refreshTime the sprite refresh time (i.e. defining the fps)
      * @param images      the sprite's array of images
      * @param nbImages    the number of images
      */
@@ -39,6 +39,20 @@ public abstract class Settled extends Sprite {
         this.colIdx = colIdx;
         this.images = images;
         this.nbImages = nbImages;
+    }
+
+    /**
+     * @return the map row index of the sprite.
+     */
+    public int getRowIdx() {
+        return rowIdx;
+    }
+
+    /**
+     * @return the map column index of the sprite.
+     */
+    public int getColIdx() {
+        return colIdx;
     }
 
     public Image[] getImages() {
@@ -69,35 +83,16 @@ public abstract class Settled extends Sprite {
         this.curLoopIdx = curLoopIdx;
     }
 
-    /**
-     * @return the map row index of the sprite.
-     */
-    public synchronized int getRowIdx() {
-        return rowIdx;
-    }
 
-    /**
-     * @return the map column index of the sprite.
-     */
-    public synchronized int getColIdx() {
-        return colIdx;
-    }
-
-    /**
-     * @return true if the sprite is finished, false otherwise.
-     */
+    @Override
     public abstract boolean isFinished();
 
-    /**
-     * @return the current image of the sprite.
-     */
+    @Override
     public Image getCurImage() {
         return curImage;
     }
 
-    /**
-     * Update the sprite image.
-     */
+    @Override
     public void updateImage() {
         if (isTimeToRefresh()) { // it is time to refresh.
             if (++curImageIdx == nbImages) {

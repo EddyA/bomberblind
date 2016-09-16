@@ -1,3 +1,10 @@
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static sprites.NomadCtrl.isNomadCrossingEnemy;
+
+import java.awt.Graphics2D;
+import java.util.LinkedList;
+import java.util.ListIterator;
+
 import ai.EnemyAi;
 import exceptions.CannotMoveNomadException;
 import map.abstracts.Map;
@@ -5,13 +12,6 @@ import sprites.nomad.CloakedSkeleton;
 import sprites.nomad.abstracts.Bomber;
 import sprites.nomad.abstracts.Enemy;
 import sprites.nomad.abstracts.Nomad;
-
-import java.awt.*;
-import java.util.LinkedList;
-import java.util.ListIterator;
-
-import static map.ctrl.NomadMethods.isNomadBurning;
-import static sprites.NomadCtrl.isNomadCrossingEnemy;
 
 /**
  * List of abstracts items.
@@ -126,13 +126,10 @@ public class NomadList extends LinkedList<Nomad> {
         // paint sprites.
         for (Nomad nomad : this) {
             nomad.updateImage();
-            if (nomad.getCurImage() != null) {
-                if ((nomad.getYMap() >= yMap && nomad.getYMap() <=
-                        yMap + nomad.getCurImage().getWidth(null) + screenHeight) &&
-                        (nomad.getXMap() >= xMap && nomad.getXMap() <=
-                                xMap + nomad.getCurImage().getHeight(null) / 2 + screenWidth)) {
-                    nomad.paintBuffer(g, nomad.getXMap() - xMap, nomad.getYMap() - yMap);
-                }
+            if ((nomad.getYMap() >= yMap && nomad.getYMap() <= yMap + nomad.getCurImage().getWidth(null) + screenHeight)
+                    && (nomad.getXMap() >= xMap
+                            && nomad.getXMap() <= xMap + nomad.getCurImage().getHeight(null) / 2 + screenWidth)) {
+                nomad.paintBuffer(g, nomad.getXMap() - xMap, nomad.getYMap() - yMap);
             }
         }
     }

@@ -1,9 +1,9 @@
 package sprites.nomad.abstracts;
 
-import java.awt.*;
-
 import static sprites.nomad.abstracts.Bomber.status.STATUS_DYING;
 import static sprites.nomad.abstracts.Bomber.status.STATUS_WAITING;
+
+import java.awt.Image;
 
 /**
  * Abstract class of a bomber.
@@ -42,10 +42,29 @@ public abstract class Bomber extends Nomad {
     private int initialXMap; // initial abscissa on map.
     private int initialYMap; // initial ordinate on map.
 
-    private boolean isInvincible; // is the bomber invincible?
     private int invincibilityTime; // invincibility time (in ms).
     private long lastInvincibilityTs; // last invincibility timestamp.
 
+    /**
+     * Create a bomber.
+     *
+     * @param xMap abscissa on the map
+     * @param yMap ordinate on the map
+     * @param deathImages the array of image for the "death" status
+     * @param nbDeathFrame the number of images of the "death" array
+     * @param waitImages the array of image for the "wait" status
+     * @param nbWaitFrame the number of images of the "wait" array
+     * @param walkBackImages the array of images for the "walk back" status
+     * @param walkFrontImages the array of images for the "walk front" status
+     * @param walkLeftImages the array of images for the "walk left" status
+     * @param walkRightImages the array of images for the "walk right" status
+     * @param nbWalkFrame number of images of the "walk" arrays
+     * @param winImages the array of image for the "win" status
+     * @param nbWinFrame the number of images of the "win" array
+     * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
+     * @param moveTime the move time (i.e. defining the nomad move speed)
+     * @param invincibleTime the time the bomber should be invicible after being revived
+     */
     public Bomber(int xMap,
                   int yMap,
                   Image[] deathImages,
@@ -75,7 +94,7 @@ public abstract class Bomber extends Nomad {
         this.winImages = winImages;
         this.nbWinFrame = nbWinFrame;
         this.invincibilityTime = invincibleTime;
-        this.lastInvincibilityTs = 0;
+        this.setInvincible(false);
         this.initialXMap = xMap;
         this.initialYMap = yMap;
     }
@@ -156,8 +175,13 @@ public abstract class Bomber extends Nomad {
         this.initialYMap = initialYMap;
     }
 
-    public void setInvincible(boolean invincible) {
-        isInvincible = invincible;
+    public void setInvincible(boolean isInvincible) {
+        long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
+        if (isInvincible) {
+            this.lastInvincibilityTs = curTs;
+        } else {
+            this.lastInvincibilityTs = curTs - invincibilityTime - 1;
+        }
     }
 
     public void setInvincibilityTime(int invincibilityTime) {
@@ -172,11 +196,10 @@ public abstract class Bomber extends Nomad {
      * This function is mainly used to re-init the bomber after he died.
      */
     public void initStatement() {
-        this.curStatus = STATUS_WAITING;
         super.setXMap(initialXMap);
         super.setYMap(initialYMap);
-        this.isInvincible = true;
-        this.lastInvincibilityTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
+        curStatus = STATUS_WAITING;
+        setInvincible(true); // get the current time.
     }
 
     public void setCurStatus(Bomber.status curStatus) {
@@ -188,7 +211,8 @@ public abstract class Bomber extends Nomad {
     }
 
     public boolean isInvincible() {
-        return isInvincible;
+        long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
+        return lastInvincibilityTs + invincibilityTime >= curTs;
     }
 
     @Override
@@ -199,7 +223,7 @@ public abstract class Bomber extends Nomad {
     @Override
     public boolean updateStatus() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
-        if ((curStatus != lastStatus) || // etiher the status has changed
+        if ((curStatus != lastStatus) || // either the status has changed
                 (lastRefreshTs == 0)) { // or it is the 1st call to that function.
             lastRefreshTs = curTs;
             lastStatus = curStatus;

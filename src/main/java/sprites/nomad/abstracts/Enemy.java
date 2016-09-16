@@ -1,9 +1,9 @@
 package sprites.nomad.abstracts;
 
-import java.awt.*;
-
 import static sprites.nomad.abstracts.Enemy.status.STATUS_DYING;
 import static sprites.nomad.abstracts.Enemy.status.STATUS_WALKING_FRONT;
+
+import java.awt.Image;
 
 /**
  * Abstract class of an enemy.
@@ -24,15 +24,30 @@ public abstract class Enemy extends Nomad {
 
     private final Image[] deathImages;
     private final int nbDeathFrame;
-    private final Image[] walkBackImages; // array of images of the "walk back" sprite.
-    private final Image[] walkFrontImages; // array of images of the "walk front" sprite.
-    private final Image[] walkLeftImages; // array of images of the "walk left" sprite.
-    private final Image[] walkRightImages; // array of images of the "walk right" sprite.
-    private final int nbWalkFrame; // number of images of the "walk" sprite.
+    private final Image[] walkBackImages;
+    private final Image[] walkFrontImages;
+    private final Image[] walkLeftImages;
+    private final Image[] walkRightImages;
+    private final int nbWalkFrame;
 
-    private status curStatus = STATUS_WALKING_FRONT; // current curStatus.
-    private status lastStatus = STATUS_WALKING_FRONT; // last curStatus.
+    private status curStatus = STATUS_WALKING_FRONT; // current status.
+    private status lastStatus = STATUS_WALKING_FRONT; // last status.
 
+    /**
+     * Create an enemy.
+     *
+     * @param xMap abscissa on the map
+     * @param yMap ordinate on the map
+     * @param deathImages the array of image for the "death" status
+     * @param nbDeathFrame the number of images of the "death" array
+     * @param walkBackImages the array of images for the "walk back" status
+     * @param walkFrontImages the array of images for the "walk front" status
+     * @param walkLeftImages the array of images for the "walk left" status
+     * @param walkRightImages the array of images for the "walk right" status
+     * @param nbWalkFrame number of images of the "walk" arrays
+     * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
+     * @param moveTime the move time (i.e. defining the nomad move speed)
+     */
     public Enemy(int xMap,
                  int yMap,
                  Image[] deathImages,
@@ -55,7 +70,6 @@ public abstract class Enemy extends Nomad {
     }
 
     public Image[] getDeathImages() {
-
         return deathImages;
     }
 
@@ -107,7 +121,7 @@ public abstract class Enemy extends Nomad {
     @Override
     public boolean updateStatus() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
-        if ((curStatus != lastStatus) || // etiher the status has changed
+        if ((curStatus != lastStatus) || // either the status has changed
                 (lastRefreshTs == 0)) { // or it is the 1st call to that function.
             lastRefreshTs = curTs;
             lastStatus = curStatus;
