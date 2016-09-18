@@ -1,4 +1,4 @@
-package sprites;
+package sprites.settled;
 
 import java.io.IOException;
 
@@ -28,7 +28,7 @@ public class BombTest implements WithAssertions {
         assertThat(bomb.getYMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
         assertThat(bomb.getImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bombMatrixRowIdx]);
         assertThat(bomb.getNbImages()).isEqualTo(ImagesLoader.NB_BOMB_FRAME);
-        assertThat(bomb.refreshTime).isEqualTo(Bomb.REFRESH_TIME);
+        assertThat(bomb.getRefreshTime()).isEqualTo(Bomb.REFRESH_TIME);
         assertThat(bomb.getTime()).isEqualTo(Bomb.DURATION_TIME);
     }
 

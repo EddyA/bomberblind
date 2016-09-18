@@ -1,9 +1,8 @@
 package sprites;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-
 import utils.CurrentTimeSupplier;
+
+import java.awt.*;
 
 /**
  * Abstract class of a sprite.
@@ -11,11 +10,11 @@ import utils.CurrentTimeSupplier;
 public abstract class Sprite {
     protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
-    protected int xMap; // abscissa on map.
-    protected int yMap; // ordinate on map.
+    private int xMap; // abscissa on map.
+    private int yMap; // ordinate on map.
 
-    protected int refreshTime; // refresh time (in ms).
-    protected long lastRefreshTs; // last refresh timestamp.
+    private int refreshTime; // refresh time (in ms).
+    private long lastRefreshTs; // last refresh timestamp.
 
     /**
      * Create a settled sprite.
@@ -29,6 +28,8 @@ public abstract class Sprite {
         this.yMap = yMap;
         this.refreshTime = refreshTime;
     }
+
+    public Sprite() { }
 
     /**
      * @return the sprite's abscissa on the map.
@@ -56,6 +57,30 @@ public abstract class Sprite {
      */
     public void setYMap(int yMap) {
         this.yMap = yMap;
+    }
+
+    public int getRefreshTime() {
+        return refreshTime;
+    }
+
+    public long getLastRefreshTs() {
+        return lastRefreshTs;
+    }
+
+    public void setRefreshTime(int refreshTime) {
+        this.refreshTime = refreshTime;
+    }
+
+    public void setLastRefreshTs(long lastRefreshTs) {
+        this.lastRefreshTs = lastRefreshTs;
+    }
+
+    public CurrentTimeSupplier getCurrentTimeSupplier() {
+        return currentTimeSupplier;
+    }
+
+    public void setCurrentTimeSupplier(CurrentTimeSupplier currentTimeSupplier) {
+        this.currentTimeSupplier = currentTimeSupplier;
     }
 
     /**

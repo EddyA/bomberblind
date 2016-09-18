@@ -1,9 +1,9 @@
 package sprites.nomad.abstracts;
 
+import java.awt.*;
+
 import static sprites.nomad.abstracts.Enemy.status.STATUS_DYING;
 import static sprites.nomad.abstracts.Enemy.status.STATUS_WALKING_FRONT;
-
-import java.awt.Image;
 
 /**
  * Abstract class of an enemy.
@@ -14,7 +14,6 @@ public abstract class Enemy extends Nomad {
      * enum the different available status of an enemy.
      */
     public enum status {
-        STATUS_DEAD,
         STATUS_DYING,
         STATUS_WALKING_BACK,
         STATUS_WALKING_FRONT,
@@ -36,17 +35,17 @@ public abstract class Enemy extends Nomad {
     /**
      * Create an enemy.
      *
-     * @param xMap abscissa on the map
-     * @param yMap ordinate on the map
-     * @param deathImages the array of image for the "death" status
-     * @param nbDeathFrame the number of images of the "death" array
-     * @param walkBackImages the array of images for the "walk back" status
+     * @param xMap            abscissa on the map
+     * @param yMap            ordinate on the map
+     * @param deathImages     the array of image for the "death" status
+     * @param nbDeathFrame    the number of images of the "death" array
+     * @param walkBackImages  the array of images for the "walk back" status
      * @param walkFrontImages the array of images for the "walk front" status
-     * @param walkLeftImages the array of images for the "walk left" status
+     * @param walkLeftImages  the array of images for the "walk left" status
      * @param walkRightImages the array of images for the "walk right" status
-     * @param nbWalkFrame number of images of the "walk" arrays
-     * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
-     * @param moveTime the move time (i.e. defining the nomad move speed)
+     * @param nbWalkFrame     number of images of the "walk" arrays
+     * @param refreshTime     the sprite refresh time (i.e. defining the image/sec)
+     * @param moveTime        the move time (i.e. defining the nomad move speed)
      */
     public Enemy(int xMap,
                  int yMap,
@@ -122,8 +121,8 @@ public abstract class Enemy extends Nomad {
     public boolean updateStatus() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         if ((curStatus != lastStatus) || // either the status has changed
-                (lastRefreshTs == 0)) { // or it is the 1st call to that function.
-            lastRefreshTs = curTs;
+                (getLastRefreshTs() == 0)) { // or it is the 1st call to that function.
+            setLastRefreshTs(curTs);
             lastStatus = curStatus;
             return true;
         } else {
@@ -158,9 +157,6 @@ public abstract class Enemy extends Nomad {
                 setImages(walkRightImages);
                 setNbImages(nbWalkFrame);
                 break;
-            }
-            default: {
-                throw new RuntimeException("another status is not allowed here, please check the algorithm.");
             }
         }
     }

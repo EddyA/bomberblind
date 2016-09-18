@@ -1,8 +1,8 @@
 package sprites.nomad.abstracts;
 
-import java.awt.Image;
-
 import sprites.Sprite;
+
+import java.awt.*;
 
 /**
  * Abstract class of a nomad.
@@ -20,15 +20,17 @@ public abstract class Nomad extends Sprite {
     /**
      * Create a nomad.
      *
-     * @param xMap abscissa on the map.
-     * @param yMap ordinate on the map.
+     * @param xMap        abscissa on the map.
+     * @param yMap        ordinate on the map.
      * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
-     * @param moveTime the move time (i.e. defining the nomad move speed)
+     * @param moveTime    the move time (i.e. defining the nomad move speed)
      */
     public Nomad(int xMap, int yMap, int refreshTime, int moveTime) {
         super(xMap, yMap, refreshTime);
         this.moveTime = moveTime;
     }
+
+    public Nomad() {}
 
     public int getMoveTime() {
         return moveTime;
@@ -80,7 +82,7 @@ public abstract class Nomad extends Sprite {
      *
      * @return true if the sprite should move, false oterhwise.
      */
-    public boolean shouldMove() {
+    public boolean isTimeToMove() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         if (curTs - lastMoveTs >= moveTime) { // it is time to move.
             lastMoveTs = curTs;

@@ -300,7 +300,7 @@ public class ImagesLoader {
      * @return a random single static pathway image.
      */
     public static Image getRandomSingleStaticPathway() {
-        Random R = new Random(); // initStatement the random function.
+        Random R = new Random(); // init the random function.
         int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_PATHWAY);
         return ImagesLoader.imagesMatrix[ImagesLoader.singlePathwayMatrixRowIdx][imageIdx];
     }
@@ -318,7 +318,7 @@ public class ImagesLoader {
      * @return a random single mutable image.
      */
     public static Image getRandomSingleMutable() {
-        Random R = new Random(); // initStatement the random function.
+        Random R = new Random(); // init the random function.
         int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_MUTABLE);
         return ImagesLoader.imagesMatrix[ImagesLoader.singleMutableMatrixRowIdx][imageIdx];
     }
@@ -327,7 +327,7 @@ public class ImagesLoader {
      * @return a random single obstacle image.
      */
     public static Image getRandomSingleObstacle() {
-        Random R = new Random(); // initStatement the random function.
+        Random R = new Random(); // init the random function.
         int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_OBSTABLE);
         return ImagesLoader.imagesMatrix[ImagesLoader.singleObstacleMatrixRowIdx][imageIdx];
     }

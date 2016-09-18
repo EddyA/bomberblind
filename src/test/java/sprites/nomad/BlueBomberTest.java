@@ -1,10 +1,9 @@
-package sprites;
+package sprites.nomad;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
-import sprites.nomad.BlueBomber;
 
 import java.io.IOException;
 
@@ -46,9 +45,8 @@ public class BlueBomberTest implements WithAssertions {
         assertThat(blueBomber.getWinImages()).
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWinMatrixRowIdx]);
         assertThat(blueBomber.getNbWinFrame()).isEqualTo(ImagesLoader.NB_BOMBER_WIN_FRAME);
-        assertThat(blueBomber.refreshTime).isEqualTo(BlueBomber.REFRESH_TIME);
-        assertThat(blueBomber.lastRefreshTs).isEqualTo(0);
+        assertThat(blueBomber.getRefreshTime()).isEqualTo(BlueBomber.REFRESH_TIME);
+        assertThat(blueBomber.getMoveTime()).isEqualTo(BlueBomber.MOVING_TIME);
         assertThat(blueBomber.getInvincibilityTime()).isEqualTo(BlueBomber.INVINCIBLE_TIME);
-        assertThat(blueBomber.getLastInvincibilityTs()).isEqualTo(0);
     }
 }

@@ -1,9 +1,9 @@
 package sprites.nomad.abstracts;
 
+import java.awt.*;
+
 import static sprites.nomad.abstracts.Bomber.status.STATUS_DYING;
 import static sprites.nomad.abstracts.Bomber.status.STATUS_WAITING;
-
-import java.awt.Image;
 
 /**
  * Abstract class of a bomber.
@@ -14,7 +14,6 @@ public abstract class Bomber extends Nomad {
      * enum the different available status of a bomber.
      */
     public enum status {
-        STATUS_DEAD,
         STATUS_DYING,
         STATUS_WAITING,
         STATUS_WALKING_BACK,
@@ -24,17 +23,17 @@ public abstract class Bomber extends Nomad {
         STATUS_WON
     }
 
-    private final Image[] deathImages;
-    private final int nbDeathFrame;
-    private final Image[] waitImages;
-    private final int nbWaitFrame;
-    private final Image[] walkBackImages;
-    private final Image[] walkFrontImages;
-    private final Image[] walkLeftImages;
-    private final Image[] walkRightImages;
-    private final int nbWalkFrame;
-    private final Image[] winImages;
-    private final int nbWinFrame;
+    private Image[] deathImages;
+    private int nbDeathFrame;
+    private Image[] waitImages;
+    private int nbWaitFrame;
+    private Image[] walkBackImages;
+    private Image[] walkFrontImages;
+    private Image[] walkLeftImages;
+    private Image[] walkRightImages;
+    private int nbWalkFrame;
+    private Image[] winImages;
+    private int nbWinFrame;
 
     private Bomber.status curStatus = STATUS_WAITING; // current status.
     private Bomber.status lastStatus = STATUS_WAITING; // last curStatus.
@@ -48,22 +47,22 @@ public abstract class Bomber extends Nomad {
     /**
      * Create a bomber.
      *
-     * @param xMap abscissa on the map
-     * @param yMap ordinate on the map
-     * @param deathImages the array of image for the "death" status
-     * @param nbDeathFrame the number of images of the "death" array
-     * @param waitImages the array of image for the "wait" status
-     * @param nbWaitFrame the number of images of the "wait" array
-     * @param walkBackImages the array of images for the "walk back" status
+     * @param xMap            abscissa on the map
+     * @param yMap            ordinate on the map
+     * @param deathImages     the array of image for the "death" status
+     * @param nbDeathFrame    the number of images of the "death" array
+     * @param waitImages      the array of image for the "wait" status
+     * @param nbWaitFrame     the number of images of the "wait" array
+     * @param walkBackImages  the array of images for the "walk back" status
      * @param walkFrontImages the array of images for the "walk front" status
-     * @param walkLeftImages the array of images for the "walk left" status
+     * @param walkLeftImages  the array of images for the "walk left" status
      * @param walkRightImages the array of images for the "walk right" status
-     * @param nbWalkFrame number of images of the "walk" arrays
-     * @param winImages the array of image for the "win" status
-     * @param nbWinFrame the number of images of the "win" array
-     * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
-     * @param moveTime the move time (i.e. defining the nomad move speed)
-     * @param invincibleTime the time the bomber should be invicible after being revived
+     * @param nbWalkFrame     number of images of the "walk" arrays
+     * @param winImages       the array of image for the "win" status
+     * @param nbWinFrame      the number of images of the "win" array
+     * @param refreshTime     the sprite refresh time (i.e. defining the image/sec)
+     * @param moveTime        the move time (i.e. defining the nomad move speed)
+     * @param invincibleTime  the time the bomber should be invicible after being revived
      */
     public Bomber(int xMap,
                   int yMap,
@@ -97,6 +96,9 @@ public abstract class Bomber extends Nomad {
         this.setInvincible(false);
         this.initialXMap = xMap;
         this.initialYMap = yMap;
+    }
+
+    public Bomber() {
     }
 
     public Image[] getDeathImages() {
@@ -192,16 +194,6 @@ public abstract class Bomber extends Nomad {
         this.lastInvincibilityTs = lastInvincibilityTs;
     }
 
-    /**
-     * This function is mainly used to re-init the bomber after he died.
-     */
-    public void initStatement() {
-        super.setXMap(initialXMap);
-        super.setYMap(initialYMap);
-        curStatus = STATUS_WAITING;
-        setInvincible(true); // get the current time.
-    }
-
     public void setCurStatus(Bomber.status curStatus) {
         this.curStatus = curStatus;
     }
@@ -210,6 +202,19 @@ public abstract class Bomber extends Nomad {
         return curStatus;
     }
 
+    /**
+     * This function is mainly used to re-init the bomber after he died.
+     */
+    public void init() {
+        super.setXMap(initialXMap);
+        super.setYMap(initialYMap);
+        curStatus = STATUS_WAITING;
+        setInvincible(true);
+    }
+
+    /**
+     * @return true if the bomber is invicible, false otherwise.
+     */
     public boolean isInvincible() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         return lastInvincibilityTs + invincibilityTime >= curTs;
@@ -224,8 +229,8 @@ public abstract class Bomber extends Nomad {
     public boolean updateStatus() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         if ((curStatus != lastStatus) || // either the status has changed
-                (lastRefreshTs == 0)) { // or it is the 1st call to that function.
-            lastRefreshTs = curTs;
+                (getLastRefreshTs() == 0)) { // or it is the 1st call to that function.
+            setLastRefreshTs(curTs);
             lastStatus = curStatus;
             return true;
         } else {

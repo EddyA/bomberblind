@@ -195,8 +195,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     public void run() {
         while (true) {
             try {
-                if (mainBomber.getCurStatus() != Bomber.status.STATUS_DYING &&
-                        mainBomber.getCurStatus() != Bomber.status.STATUS_DEAD) {
+                if (mainBomber.getCurStatus() != Bomber.status.STATUS_DYING && !mainBomber.isFinished()) {
                     switch (pressedKeyList.get(pressedKeyList.size() - 1).intValue()) {
                         case KeyEvent.VK_ESCAPE: {
                             System.exit(1);

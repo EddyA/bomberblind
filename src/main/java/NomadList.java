@@ -59,7 +59,7 @@ public class NomadList extends LinkedList<Nomad> {
 
                 // is it finished?
                 if (bomber.isFinished()) {
-                    bomber.initStatement(); // bombers are never removed from the list, they are just re-initialized.
+                    bomber.init(); // bombers are never removed from the list, they are just re-initialized.
                 } else if (bomber.getCurStatus() != Bomber.status.STATUS_DYING) { // not finished and not dead.
 
                     // should the bomber die?
@@ -81,7 +81,7 @@ public class NomadList extends LinkedList<Nomad> {
                     if (isNomadBurning(map.getMapPointMatrix(), enemy.getXMap(), enemy.getYMap())) {
                         enemy.setCurStatus(Enemy.status.STATUS_DYING);
 
-                    } else if (enemy.shouldMove()) { // not dead -> should the enemy move?
+                    } else if (enemy.isTimeToMove()) { // not dead -> should the enemy move?
                         try {
                             Enemy.status newStatus = EnemyAi.computeNextMove(map.getMapPointMatrix(), map.getMapWidth(),
                                     map.getMapHeight(), this, enemy); // try to compute the nex move.

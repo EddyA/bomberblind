@@ -1,9 +1,9 @@
 package sprites.settled.abstracts;
 
-import java.awt.Image;
-
 import sprites.Sprite;
 import utils.Tools;
+
+import java.awt.*;
 
 /**
  * Abstract class of a settled sprite.
