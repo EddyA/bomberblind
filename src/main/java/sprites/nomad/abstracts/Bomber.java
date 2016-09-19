@@ -1,9 +1,9 @@
 package sprites.nomad.abstracts;
 
-import java.awt.*;
-
 import static sprites.nomad.abstracts.Bomber.status.STATUS_DYING;
 import static sprites.nomad.abstracts.Bomber.status.STATUS_WAITING;
+
+import java.awt.Image;
 
 /**
  * Abstract class of a bomber.
@@ -169,14 +169,6 @@ public abstract class Bomber extends Nomad {
         this.lastStatus = lastStatus;
     }
 
-    public void setInitialXMap(int initialXMap) {
-        this.initialXMap = initialXMap;
-    }
-
-    public void setInitialYMap(int initialYMap) {
-        this.initialYMap = initialYMap;
-    }
-
     public void setInvincible(boolean isInvincible) {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         if (isInvincible) {
@@ -184,10 +176,6 @@ public abstract class Bomber extends Nomad {
         } else {
             this.lastInvincibilityTs = curTs - invincibilityTime - 1;
         }
-    }
-
-    public void setInvincibilityTime(int invincibilityTime) {
-        this.invincibilityTime = invincibilityTime;
     }
 
     public void setLastInvincibilityTs(long lastInvincibilityTs) {

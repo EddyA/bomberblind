@@ -1,9 +1,9 @@
 package sprites.nomad.abstracts;
 
-import java.awt.*;
-
 import static sprites.nomad.abstracts.Enemy.status.STATUS_DYING;
 import static sprites.nomad.abstracts.Enemy.status.STATUS_WALKING_FRONT;
+
+import java.awt.Image;
 
 /**
  * Abstract class of an enemy.

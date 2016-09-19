@@ -1,3 +1,15 @@
+import static images.ImagesLoader.IMAGE_SIZE;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JPanel;
+
 import exceptions.CannotCreateMapElementException;
 import exceptions.InvalidMapConfigurationException;
 import map.ctrl.NomadMethods;
@@ -9,20 +21,7 @@ import sprites.nomad.abstracts.Bomber;
 import utils.Tools;
 import utils.Tuple2;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static images.ImagesLoader.IMAGE_SIZE;
-
 public class GameJpanel extends JPanel implements Runnable, KeyListener {
-
-    private final int MAP_WIDTH = 80;
-    private final int MAP_HEIGHT = 32;
 
     private map.abstracts.Map map;
     private BlueBomber mainBomber;
@@ -80,15 +79,15 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private void updateMapStartPosOnScreen() {
         if (mainBomber.getXMap() < getWidth() / 2) {
             xMapStartPosOnScreen = 0;
-        } else if (mainBomber.getXMap() > (MAP_WIDTH * IMAGE_SIZE) - (getWidth() / 2)) {
-            xMapStartPosOnScreen = (MAP_WIDTH * IMAGE_SIZE) - getWidth();
+        } else if (mainBomber.getXMap() > (map.getMapWidth() * IMAGE_SIZE) - (getWidth() / 2)) {
+            xMapStartPosOnScreen = (map.getMapWidth() * IMAGE_SIZE) - getWidth();
         } else {
             xMapStartPosOnScreen = mainBomber.getXMap() - (getWidth() / 2);
         }
         if (mainBomber.getYMap() < getHeight() / 2) {
             yMapStartPosOnScreen = 0;
-        } else if (mainBomber.getYMap() > (MAP_HEIGHT * IMAGE_SIZE) - (getHeight() / 2)) {
-            yMapStartPosOnScreen = (MAP_HEIGHT * IMAGE_SIZE) - getHeight();
+        } else if (mainBomber.getYMap() > (map.getMapHeight() * IMAGE_SIZE) - (getHeight() / 2)) {
+            yMapStartPosOnScreen = (map.getMapHeight() * IMAGE_SIZE) - getHeight();
         } else {
             yMapStartPosOnScreen = mainBomber.getYMap() - (getHeight() / 2);
         }
@@ -108,10 +107,10 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        Long keyCode = Long.valueOf(e.getKeyCode());
+        Long keyCode = (long) e.getKeyCode();
         Long lastKeyCode = pressedKeyList.get(pressedKeyList.size() - 1);
         if (!keyCode.equals(lastKeyCode)) {
-            pressedKeyList.add(Long.valueOf(e.getKeyCode()));
+            pressedKeyList.add((long) e.getKeyCode());
         }
     }
 

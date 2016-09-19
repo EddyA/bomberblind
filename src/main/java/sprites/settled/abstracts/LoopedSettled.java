@@ -30,6 +30,10 @@ public abstract class LoopedSettled extends Settled {
         this.maxNbLoop = maxNbLoop;
     }
 
+    public int getMaxNbLoop() {
+        return maxNbLoop;
+    }
+
     @Override
     public boolean isFinished() {
         return getCurLoopIdx() == maxNbLoop;

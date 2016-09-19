@@ -1,8 +1,8 @@
 package sprites.nomad.abstracts;
 
-import sprites.Sprite;
+import java.awt.Image;
 
-import java.awt.*;
+import sprites.Sprite;
 
 /**
  * Abstract class of a nomad.
@@ -36,14 +36,6 @@ public abstract class Nomad extends Sprite {
         return moveTime;
     }
 
-    public void setMoveTime(int moveTime) {
-        this.moveTime = moveTime;
-    }
-
-    public long getLastMoveTs() {
-        return lastMoveTs;
-    }
-
     public void setLastMoveTs(long lastMoveTs) {
         this.lastMoveTs = lastMoveTs;
     }
@@ -70,10 +62,6 @@ public abstract class Nomad extends Sprite {
 
     public void setCurImageIdx(int curImageIdx) {
         this.curImageIdx = curImageIdx;
-    }
-
-    public void setCurImage(Image curImage) {
-        this.curImage = curImage;
     }
 
     /**

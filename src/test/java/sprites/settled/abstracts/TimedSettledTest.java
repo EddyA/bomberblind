@@ -11,8 +11,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import images.ImagesLoader;
-import sprites.settled.Bomb;
+import sprites.settled.Flame;
 import utils.CurrentTimeSupplier;
+import utils.Tools;
 
 public class TimedSettledTest implements WithAssertions {
 
@@ -22,26 +23,45 @@ public class TimedSettledTest implements WithAssertions {
     }
 
     @Test
-    public void isFinishedShouldReturnFalseWhileTimeIsNotReached() throws Exception {
-        Bomb bomb = new Bomb(5, 4, 3);
+    public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
+        Flame flame = new Flame(5, 4);
 
-        // mock CurrentTimeSupplier class to set currentTimeMillis to DURATION_TIME - 1 (1ms before stopping).
-        CurrentTimeSupplier currentTimeSupplier = mock(CurrentTimeSupplier.class);
-        Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(bomb.getStartTs() + Bomb.DURATION_TIME - 1));
-        bomb.setCurrentTimeSupplier(currentTimeSupplier);
-
-        assertThat(bomb.isFinished()).isFalse();
+        // check members value.
+        assertThat(flame.getRowIdx()).isEqualTo(5);
+        assertThat(flame.getColIdx()).isEqualTo(4);
+        assertThat(flame.getXMap()).isEqualTo(Tools.getCaseCentreAbscissa(4));
+        assertThat(flame.getYMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
+        assertThat(flame.getImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameMatrixRowIdx]);
+        assertThat(flame.getNbImages()).isEqualTo(ImagesLoader.NB_FLAME_FRAME);
+        assertThat(flame.getRefreshTime()).isEqualTo(Flame.REFRESH_TIME);
+        assertThat(flame.getDurationTime()).isEqualTo(Flame.DURATION_TIME);
     }
 
     @Test
-    public void isFinishedShouldReturnTrueWhenTimeIsReached() throws Exception {
-        Bomb bomb = new Bomb(5, 4, 3);
+    public void isFinishedShouldReturnFalse() throws Exception {
+        Flame flame = new Flame(5, 4);
 
-        // mock CurrentTimeSupplier class to set currentTimeMillis to DURATION_TIME (time has been reached.).
+        // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.
         CurrentTimeSupplier currentTimeSupplier = mock(CurrentTimeSupplier.class);
-        Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(bomb.getStartTs() + Bomb.DURATION_TIME));
-        bomb.setCurrentTimeSupplier(currentTimeSupplier);
+        Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(1000L));
+        flame.setCurrentTimeSupplier(currentTimeSupplier);
 
-        assertThat(bomb.isFinished()).isTrue();
+        // set the start time.
+        flame.setStartTs(1000L - Flame.DURATION_TIME + 1);
+        assertThat(flame.isFinished()).isFalse();
+    }
+
+    @Test
+    public void isFinishedShouldReturnTrue() throws Exception {
+        Flame flame = new Flame(5, 4);
+
+        // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.
+        CurrentTimeSupplier currentTimeSupplier = mock(CurrentTimeSupplier.class);
+        Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(1000L));
+        flame.setCurrentTimeSupplier(currentTimeSupplier);
+
+        // set the start time.
+        flame.setStartTs(1000L - Flame.DURATION_TIME);
+        assertThat(flame.isFinished()).isTrue();
     }
 }

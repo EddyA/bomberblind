@@ -37,6 +37,4 @@ public class BlueBomber extends Bomber {
                 MOVING_TIME,
                 INVINCIBLE_TIME);
     }
-
-    public BlueBomber() {}
 }

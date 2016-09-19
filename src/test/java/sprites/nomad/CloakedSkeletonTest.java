@@ -38,6 +38,6 @@ public class CloakedSkeletonTest implements WithAssertions {
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkRightMatrixRowIdx]);
         assertThat(cloakedSkeleton.getNbWalkFrame()).isEqualTo(ImagesLoader.NB_ENEMY_WALK_FRAME);
         assertThat(cloakedSkeleton.getRefreshTime()).isEqualTo(CloakedSkeleton.REFRESH_TIME);
-        assertThat(cloakedSkeleton.getMoveTime()).isEqualTo(CloakedSkeleton.MOVE_TIME);
+        assertThat(cloakedSkeleton.getMoveTime()).isEqualTo(CloakedSkeleton.MOVING_TIME);
     }
 }

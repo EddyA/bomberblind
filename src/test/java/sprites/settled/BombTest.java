@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import images.ImagesLoader;
-import sprites.settled.Bomb;
 import utils.Tools;
 
 public class BombTest implements WithAssertions {
@@ -29,7 +28,7 @@ public class BombTest implements WithAssertions {
         assertThat(bomb.getImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bombMatrixRowIdx]);
         assertThat(bomb.getNbImages()).isEqualTo(ImagesLoader.NB_BOMB_FRAME);
         assertThat(bomb.getRefreshTime()).isEqualTo(Bomb.REFRESH_TIME);
-        assertThat(bomb.getTime()).isEqualTo(Bomb.DURATION_TIME);
+        assertThat(bomb.getDurationTime()).isEqualTo(Bomb.DURATION_TIME);
     }
 
     @Test

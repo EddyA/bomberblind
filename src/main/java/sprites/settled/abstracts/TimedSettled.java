@@ -1,47 +1,47 @@
 package sprites.settled.abstracts;
 
-import java.awt.*;
+import java.awt.Image;
 
 /**
  * Abstract class of a timed sprites.
- * The sprite loops during a certain time.
+ * The sprite loops during a certain durationTime.
  */
 public abstract class TimedSettled extends Settled {
 
-    private final int time; // time the sprite must loop (in ms).
-    private final long startTs; // start timestamp.
+    private final int durationTime; // durationTime the sprite must loop (in ms).
+    private long startTs; // start timestamp.
 
     /**
      * Create a timed settled.
      *
-     * @param rowIdx      the map row index of the sprite
-     * @param colIdx      the map col index of the sprite
+     * @param rowIdx the map row index of the sprite
+     * @param colIdx the map col index of the sprite
      * @param refreshTime the sprite refreshTime (i.e. fps)
-     * @param images      the sprite's array of images
-     * @param nbImages    the number of images
-     * @param time        the time the sprite must loop
+     * @param images the sprite's array of images
+     * @param nbImages the number of images
+     * @param durationTime the durationTime the sprite must loop
      */
     public TimedSettled(int rowIdx,
                         int colIdx,
                         int refreshTime,
                         Image[] images,
                         int nbImages,
-                        int time) {
+            int durationTime) {
         super(rowIdx, colIdx, refreshTime, images, nbImages);
-        this.time = time;
-        this.startTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
+        this.durationTime = durationTime;
+        this.startTs = currentTimeSupplier.get().toEpochMilli(); // get the current durationTime.
     }
 
-    public int getTime() {
-        return time;
+    public int getDurationTime() {
+        return durationTime;
     }
 
-    public long getStartTs() {
-        return startTs;
+    public void setStartTs(long startTs) {
+        this.startTs = startTs;
     }
 
     @Override
     public boolean isFinished() {
-        return currentTimeSupplier.get().toEpochMilli() - startTs >= time;
+        return currentTimeSupplier.get().toEpochMilli() - startTs >= durationTime;
     }
 }

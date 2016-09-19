@@ -1,18 +1,19 @@
 package sprites.nomad.abstracts;
 
-import images.ImagesLoader;
-import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-import sprites.nomad.BlueBomber;
-import utils.CurrentTimeSupplier;
+import static images.ImagesLoader.NB_BOMBER_WAIT_FRAME;
+import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
 import java.time.Instant;
 
-import static images.ImagesLoader.NB_BOMBER_WAIT_FRAME;
-import static org.mockito.Mockito.mock;
+import org.assertj.core.api.WithAssertions;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import images.ImagesLoader;
+import sprites.nomad.BlueBomber;
+import utils.CurrentTimeSupplier;
 
 public class NomadTest implements WithAssertions {
 
@@ -65,25 +66,26 @@ public class NomadTest implements WithAssertions {
     }
 
     @Test
-    public void updateImageWithANewStatusShouldSetMembersWithTheExpectedValues() throws Exception {
+    public void updateImageShouldDoNothing() throws Exception {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
-        Mockito.when(spyedBlueBomber.updateStatus()).thenReturn(true);
+        Mockito.when(spyedBlueBomber.updateStatus()).thenReturn(false);
+        Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(false);
 
         // set nomad.
         spyedBlueBomber.setImages(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
         spyedBlueBomber.setNbImages(NB_BOMBER_WAIT_FRAME);
-        spyedBlueBomber.setCurImageIdx(1); // index != 0.
+        spyedBlueBomber.setCurImageIdx(1);
 
         // call & check.
         spyedBlueBomber.updateImage();
-        assertThat(spyedBlueBomber.getCurImageIdx()).isEqualTo(0);
+        assertThat(spyedBlueBomber.getCurImageIdx()).isEqualTo(1);
         assertThat(spyedBlueBomber.getCurImage())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx][0]);
+                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx][1]);
     }
 
     @Test
-    public void updateImageShouldIncreaseTheCurImageIdx() throws Exception {
+    public void updateImageShouldIncreaseCurImageIdx() throws Exception {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
         Mockito.when(spyedBlueBomber.updateStatus()).thenReturn(false);
@@ -102,7 +104,26 @@ public class NomadTest implements WithAssertions {
     }
 
     @Test
-    public void updateImageWithAReachedRefreshTimeAndImageIdxShouldSetMembersWithTheExpectedValues() throws Exception {
+    public void updateImageWithANewStatusShouldSetCurImageIdxTo0() throws Exception {
+        BlueBomber blueBomber = new BlueBomber(5, 4);
+        BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
+        Mockito.when(spyedBlueBomber.updateStatus()).thenReturn(true);
+        Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(false);
+
+        // set nomad.
+        spyedBlueBomber.setImages(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
+        spyedBlueBomber.setNbImages(NB_BOMBER_WAIT_FRAME);
+        spyedBlueBomber.setCurImageIdx(1); // index != 0.
+
+        // call & check.
+        spyedBlueBomber.updateImage();
+        assertThat(spyedBlueBomber.getCurImageIdx()).isEqualTo(0);
+        assertThat(spyedBlueBomber.getCurImage())
+                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx][0]);
+    }
+
+    @Test
+    public void updateImageWithTheLastImageShouldSetCurImageIdxTo0() throws Exception {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
         Mockito.when(spyedBlueBomber.updateStatus()).thenReturn(false);
@@ -111,8 +132,7 @@ public class NomadTest implements WithAssertions {
         // set nomad.
         spyedBlueBomber.setImages(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
         spyedBlueBomber.setNbImages(NB_BOMBER_WAIT_FRAME);
-        // set the current image index to reach the sprite's number of images during the next updateImage() call.
-        spyedBlueBomber.setCurImageIdx(NB_BOMBER_WAIT_FRAME - 1);
+        spyedBlueBomber.setCurImageIdx(NB_BOMBER_WAIT_FRAME - 1); // last sprite's image.
 
         // call & check.
         spyedBlueBomber.updateImage();
