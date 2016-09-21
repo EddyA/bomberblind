@@ -16,8 +16,9 @@ import map.ctrl.NomadMethods;
 import map.zelda.ZeldaMap;
 import map.zelda.ZeldaMapProperties;
 import map.zelda.ZeldaMapSetting;
-import sprites.nomad.BlueBomber;
-import sprites.nomad.abstracts.Bomber;
+import sprite.nomad.BlueBomber;
+import sprite.nomad.abstracts.Bomber;
+import spriteList.SpriteList;
 import utils.Tools;
 import utils.Tuple2;
 
@@ -25,8 +26,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     private map.abstracts.Map map;
     private BlueBomber mainBomber;
-    private NomadList nomadList;
-    private SettledList settledList;
+    private SpriteList spriteList;
     private List<Long> pressedKeyList;
 
     // this members allow printing map from a certain point.
@@ -45,20 +45,21 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         map = new ZeldaMap(new ZeldaMapSetting(mapProperties), widthScreen, heightScreen);
         map.generateMap();
 
-        // create a list of sprites.
-        nomadList = new NomadList(map, widthScreen, heightScreen);
-        settledList = new SettledList(map, widthScreen, heightScreen);
+        // create a list of sprite.
+        spriteList = new SpriteList(map, widthScreen, heightScreen);
 
         // create the main bomber and add it to the list of abstracts.
         Tuple2<Integer, Integer> bbManInitialPosition = map.computeInitialBbManPosition();
         mainBomber = new BlueBomber(bbManInitialPosition.getFirst(), bbManInitialPosition.getSecond());
-        nomadList.addMainBomber(mainBomber);
+        spriteList.addMainBomber(mainBomber);
 
         // ToDo: Just a test ...
-        nomadList.addCloakedSkeleton(bbManInitialPosition.getFirst() - IMAGE_SIZE, bbManInitialPosition.getSecond());
-        nomadList.addCloakedSkeleton(bbManInitialPosition.getFirst() - IMAGE_SIZE * 2, bbManInitialPosition.getSecond());
-        nomadList.addCloakedSkeleton(bbManInitialPosition.getFirst() + IMAGE_SIZE, bbManInitialPosition.getSecond());
-        nomadList.addCloakedSkeleton(bbManInitialPosition.getFirst() + IMAGE_SIZE * 2, bbManInitialPosition.getSecond());
+        spriteList.addCloakedSkeleton(bbManInitialPosition.getFirst() - IMAGE_SIZE, bbManInitialPosition.getSecond());
+        spriteList.addCloakedSkeleton(bbManInitialPosition.getFirst() - IMAGE_SIZE * 2,
+                bbManInitialPosition.getSecond());
+        spriteList.addCloakedSkeleton(bbManInitialPosition.getFirst() + IMAGE_SIZE, bbManInitialPosition.getSecond());
+        spriteList.addCloakedSkeleton(bbManInitialPosition.getFirst() + IMAGE_SIZE * 2,
+                bbManInitialPosition.getSecond());
 
         // create a list to handle pressed key.
         pressedKeyList = new ArrayList<>();
@@ -98,8 +99,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         Graphics2D g2d = (Graphics2D) g;
         try {
             map.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
-            settledList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
-            nomadList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
+            spriteList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
         } catch (Exception e) {
             System.err.println("GameJPanel.paintComponent(): " + e.getMessage());
         }
@@ -265,7 +265,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case KeyEvent.VK_B: {
-                            settledList.addBomb(Tools.getCharRowIdx(mainBomber.getYMap()),
+                        spriteList.addBomb(Tools.getCharRowIdx(mainBomber.getYMap()),
                                     Tools.getCharColIdx(mainBomber.getXMap()), 5);
                             break;
                         }
@@ -276,8 +276,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                     }
                     updateMapStartPosOnScreen();
                 }
-                settledList.updateStatusAndClean();
-                nomadList.updateStatusAndClean();
+                spriteList.updateStatusAndClean();
                 repaint();
                 Thread.sleep(4);
             } catch (InterruptedException e) {

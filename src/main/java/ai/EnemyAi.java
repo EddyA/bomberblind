@@ -1,16 +1,27 @@
 package ai;
 
-import exceptions.CannotMoveNomadException;
-import map.MapPoint;
-import sprites.nomad.abstracts.Enemy;
-import sprites.nomad.abstracts.Nomad;
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static map.ctrl.NomadMethods.isNomadCrossingBomb;
+import static map.ctrl.NomadMethods.isNomadCrossingMapLimit;
+import static map.ctrl.NomadMethods.isNomadCrossingObstacle;
+import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
+import static sprite.nomad.abstracts.Enemy.status.STATUS_WALKING_BACK;
+import static sprite.nomad.abstracts.Enemy.status.STATUS_WALKING_FRONT;
+import static sprite.nomad.abstracts.Enemy.status.STATUS_WALKING_LEFT;
+import static sprite.nomad.abstracts.Enemy.status.STATUS_WALKING_RIGHT;
 
 import java.awt.event.KeyEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
-import static map.ctrl.NomadMethods.*;
-import static sprites.nomad.abstracts.Enemy.status.*;
-import static sprites.NomadCtrl.isNomadCrossingEnemy;
+import exceptions.CannotMoveNomadException;
+import map.MapPoint;
+import sprite.abstracts.Sprite;
+import sprite.nomad.abstracts.Enemy;
 
 public class EnemyAi {
 
@@ -35,7 +46,7 @@ public class EnemyAi {
      * @return the updated curStatus
      */
     public static Enemy.status computeNextMove(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
-                                               List<Nomad> nomadList, Enemy enemy) throws CannotMoveNomadException {
+            List<Sprite> nomadList, Enemy enemy) throws CannotMoveNomadException {
         if (!moveList.contains(enemy.getCurStatus())) {
             throw new RuntimeException("the provided curStatus is not valid.");
         }
