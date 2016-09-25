@@ -22,12 +22,12 @@ public class CloakedSkeleton extends Enemy {
         super(xMap,
                 yMap,
                 ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonDeathMatrixRowIdx],
-                ImagesLoader.NB_ENEMY_DEATH_FRAME,
+                ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME,
                 ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkBackMatrixRowIdx],
                 ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkFrontMatrixRowIdx],
                 ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkLeftMatrixRowIdx],
                 ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkRightMatrixRowIdx],
-                ImagesLoader.NB_ENEMY_WALK_FRAME,
+                ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME,
                 REFRESH_TIME,
                 MOVING_TIME);
     }

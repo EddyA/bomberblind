@@ -51,14 +51,14 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         // create the main bomber and add it to the list of abstracts.
         Tuple2<Integer, Integer> bbManInitialPosition = map.computeInitialBbManPosition();
         mainBomber = new BlueBomber(bbManInitialPosition.getFirst(), bbManInitialPosition.getSecond());
-        spriteList.addMainBomber(mainBomber);
+        spriteList.addBomber(mainBomber);
 
         // ToDo: Just a test ...
         spriteList.addCloakedSkeleton(bbManInitialPosition.getFirst() - IMAGE_SIZE, bbManInitialPosition.getSecond());
         spriteList.addCloakedSkeleton(bbManInitialPosition.getFirst() - IMAGE_SIZE * 2,
                 bbManInitialPosition.getSecond());
-        spriteList.addCloakedSkeleton(bbManInitialPosition.getFirst() + IMAGE_SIZE, bbManInitialPosition.getSecond());
-        spriteList.addCloakedSkeleton(bbManInitialPosition.getFirst() + IMAGE_SIZE * 2,
+        spriteList.addMummy(bbManInitialPosition.getFirst() + IMAGE_SIZE, bbManInitialPosition.getSecond());
+        spriteList.addMummy(bbManInitialPosition.getFirst() + IMAGE_SIZE * 2,
                 bbManInitialPosition.getSecond());
 
         // create a list to handle pressed key.

@@ -16,7 +16,7 @@ public class ImagesLoader {
     public final static int IMAGE_SIZE = 30; // size of an 'Image' in pixels (30*30).
 
     public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
-    protected final static int NB_MATRIX_ROW = 29;
+    protected final static int NB_MATRIX_ROW = 34;
     protected final static int NB_MATRIX_COL = 80;
 
     // images location.
@@ -26,7 +26,7 @@ public class ImagesLoader {
     private final static String FLAME_SKIN_DIR = "/images/flame";
     private final static String SCENE_SKIN_DIR = "/images/scene";
 
-    // bbmans:
+    // Bomber:
     public final static int NB_BOMBER_DEATH_FRAME = 9;
     public final static int NB_BOMBER_WAIT_FRAME = 4;
     public final static int NB_BOMBER_WALK_FRAME = 4;
@@ -42,17 +42,25 @@ public class ImagesLoader {
     public static int blueBomberWinMatrixRowIdx;
 
     // enemies:
-    public final static int NB_ENEMY_DEATH_FRAME = 4;
-    public final static int NB_ENEMY_WALK_FRAME = 4;
-
     // - cloaked skeleton.
+    public final static int NB_CLOAKED_SKELETON_DEATH_FRAME = 4;
+    public final static int NB_CLOAKED_SKELETON_WALK_FRAME = 4;
     public static int cloakedSkeletonDeathMatrixRowIdx;
     public static int cloakedSkeletonWalkBackMatrixRowIdx;
     public static int cloakedSkeletonWalkFrontMatrixRowIdx;
     public static int cloakedSkeletonWalkLeftMatrixRowIdx;
     public static int cloakedSkeletonWalkRightMatrixRowIdx;
 
-    // sprites:
+    // - mummy.
+    public final static int NB_MUMMY_DEATH_FRAME = 2;
+    public final static int NB_MUMMY_WALK_FRAME = 2;
+    public static int mummyDeathMatrixRowIdx;
+    public static int mummyWalkBackMatrixRowIdx;
+    public static int mummyWalkFrontMatrixRowIdx;
+    public static int mummyWalkLeftMatrixRowIdx;
+    public static int mummyWalkRightMatrixRowIdx;
+
+    // settled:
     public final static int NB_BOMB_FRAME = 4;
     public static int bombMatrixRowIdx;
     public final static int NB_FLAME_FRAME = 3;
@@ -158,33 +166,60 @@ public class ImagesLoader {
 
         // enemies:
         // - cloaked skeleton.
-        for (int i = 0; i < NB_ENEMY_DEATH_FRAME; i++) {
+        for (int i = 0; i < NB_CLOAKED_SKELETON_DEATH_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/cloaked_skeleton/dead_" + imageIdx + ".png");
         }
         cloakedSkeletonDeathMatrixRowIdx = rowIdx++;
-        for (int i = 0; i < NB_ENEMY_WALK_FRAME; i++) {
+        for (int i = 0; i < NB_CLOAKED_SKELETON_WALK_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/cloaked_skeleton/walk_back_" + imageIdx + ".png");
         }
         cloakedSkeletonWalkBackMatrixRowIdx = rowIdx++;
-        for (int i = 0; i < NB_ENEMY_WALK_FRAME; i++) {
+        for (int i = 0; i < NB_CLOAKED_SKELETON_WALK_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/cloaked_skeleton/walk_front_" + imageIdx + ".png");
         }
         cloakedSkeletonWalkFrontMatrixRowIdx = rowIdx++;
-        for (int i = 0; i < NB_ENEMY_WALK_FRAME; i++) {
+        for (int i = 0; i < NB_CLOAKED_SKELETON_WALK_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/cloaked_skeleton/walk_left_" + imageIdx + ".png");
         }
         cloakedSkeletonWalkLeftMatrixRowIdx = rowIdx++;
-        for (int i = 0; i < NB_ENEMY_WALK_FRAME; i++) {
+        for (int i = 0; i < NB_CLOAKED_SKELETON_WALK_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/cloaked_skeleton/walk_right_" + imageIdx + ".png");
         }
         cloakedSkeletonWalkRightMatrixRowIdx = rowIdx++;
 
-        // sprites:
+        // - mummy.
+        for (int i = 0; i < NB_MUMMY_DEATH_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/mummy/dead_" + imageIdx + ".png");
+        }
+        mummyDeathMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MUMMY_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/mummy/walk_back_" + imageIdx + ".png");
+        }
+        mummyWalkBackMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MUMMY_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/mummy/walk_front_" + imageIdx + ".png");
+        }
+        mummyWalkFrontMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MUMMY_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/mummy/walk_left_" + imageIdx + ".png");
+        }
+        mummyWalkLeftMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MUMMY_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/mummy/walk_right_" + imageIdx + ".png");
+        }
+        mummyWalkRightMatrixRowIdx = rowIdx++;
+
+        // settled:
         for (int i = 0; i < NB_BOMB_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(BOMB_SKIN_DIR + "/bomb_" + imageIdx + ".png");

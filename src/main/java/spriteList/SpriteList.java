@@ -1,27 +1,28 @@
 package spriteList;
 
-import static map.ctrl.NomadMethods.isNomadBurning;
-import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
-
-import java.awt.Graphics2D;
-import java.util.LinkedList;
-import java.util.ListIterator;
-
 import ai.EnemyAi;
 import exceptions.CannotMoveNomadException;
 import map.abstracts.Map;
 import sprite.abstracts.Sprite;
 import sprite.nomad.CloakedSkeleton;
+import sprite.nomad.Mummy;
 import sprite.nomad.abstracts.Bomber;
 import sprite.nomad.abstracts.Enemy;
 import sprite.settled.Bomb;
 import sprite.settled.ConclusionFlame;
 import sprite.settled.Flame;
 
+import java.awt.*;
+import java.util.LinkedList;
+import java.util.ListIterator;
+
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
+
 public class SpriteList extends LinkedList<Sprite> {
 
     // create a temporary list to manage addings and avoid concurent accesses.
-    LinkedList<Sprite> tmpList = new LinkedList<>();
+    private LinkedList<Sprite> tmpList = new LinkedList<>();
 
     private Map map;
     private int screenWidth; // widht of the screen (expressed in pixel).
@@ -33,13 +34,31 @@ public class SpriteList extends LinkedList<Sprite> {
         this.screenHeight = screenHeight;
     }
 
+    // ------ //
+    // BOMBER //
+    // ------ //
+
     /**
      * Add the main bomber to the list.
      *
      * @param bomber the bomber to add
      */
-    public void addMainBomber(Bomber bomber) {
+    public void addBomber(Bomber bomber) {
         this.add(bomber);
+    }
+
+    // ------- //
+    // ENEMIES //
+    // ------- //
+
+    /**
+     * Add a mummy to the list.
+     *
+     * @param xMap the abscissa of the mummy
+     * @param yMap the ordinate of the mummy
+     */
+    public void addMummy(int xMap, int yMap) {
+        this.add(new Mummy(xMap, yMap));
     }
 
     /**
@@ -52,14 +71,18 @@ public class SpriteList extends LinkedList<Sprite> {
         this.add(new CloakedSkeleton(xMap, yMap));
     }
 
+    // ------- //
+    // SETTLED //
+    // ------- //
+
     /**
      * Add a bomb to the list.
      *
-     * @param rowIdx the map row index of the bomb
-     * @param colIdx the map column index of the bomb
+     * @param rowIdx    the map row index of the bomb
+     * @param colIdx    the map column index of the bomb
      * @param flameSize the flame size of the bomb
      */
-    public synchronized void addBomb(int rowIdx, int colIdx, int flameSize) {
+    public void addBomb(int rowIdx, int colIdx, int flameSize) {
         addBomb(this, rowIdx, colIdx, flameSize);
     }
 
@@ -68,52 +91,27 @@ public class SpriteList extends LinkedList<Sprite> {
      * The bomb is adding if:
      * - no bomb is already in place.
      *
-     * @param list the list into which putting the bomb
-     * @param rowIdx the map row index of the bomb
-     * @param colIdx the map column index of the bomb
+     * @param list      the list into which putting the bomb
+     * @param rowIdx    the map row index of the bomb
+     * @param colIdx    the map column index of the bomb
      * @param flameSize the flame size of the bomb
      */
     private void addBomb(LinkedList<Sprite> list, int rowIdx, int colIdx, int flameSize) {
-        if (!map.getMapPointMatrix()[rowIdx][colIdx].isBombing()) {
+        if (map.getMapPointMatrix()[rowIdx][colIdx].isPathway() &&
+                !map.getMapPointMatrix()[rowIdx][colIdx].isBombing() &&
+                !map.getMapPointMatrix()[rowIdx][colIdx].isBurning()) {
             map.getMapPointMatrix()[rowIdx][colIdx].setBombing(true);
             list.add(new Bomb(rowIdx, colIdx, flameSize));
         }
     }
 
     /**
-     * Add a flame to a list.
-     *
-     * @param list the list into which putting the flame
-     * @param rowIdx the map row index of the flame
-     * @param colIdx the map column index of the flame
-     * @return true if the flame can be propagated, false it is stopped
-     */
-    private boolean addFlame(LinkedList<Sprite> list, int rowIdx, int colIdx) {
-        if (map.getMapPointMatrix()[rowIdx][colIdx].isPathway()) {
-            map.getMapPointMatrix()[rowIdx][colIdx].addFlame();
-            map.getMapPointMatrix()[rowIdx][colIdx].setImageAsBurned();
-            list.add(new Flame(rowIdx, colIdx));
-            return true; // the next case can burn.
-        } else if (map.getMapPointMatrix()[rowIdx][colIdx].isMutable() ||
-                map.getMapPointMatrix()[rowIdx][colIdx].isBombing()) {
-            map.getMapPointMatrix()[rowIdx][colIdx].setPathway(true);
-            map.getMapPointMatrix()[rowIdx][colIdx].setMutable(false);
-            map.getMapPointMatrix()[rowIdx][colIdx].addFlame();
-            map.getMapPointMatrix()[rowIdx][colIdx].setImageAsBurned();
-            list.add(new Flame(rowIdx, colIdx));
-            return false; // the next case should not burn.
-        } else {
-            return false; // the next case should not burn.
-        }
-    }
-
-    /**
      * Add a set of flames to represent a bomb explosion.
      *
-     * @param list the list into which putting the flames
+     * @param list          the list into which putting the flames
      * @param centralRowIdx the map row index of the central flame
      * @param centralColIdx the map column index of the central flame
-     * @param flameSize the flame size
+     * @param flameSize     the flame size
      */
     private void addFlames(LinkedList<Sprite> list, int centralRowIdx, int centralColIdx, int flameSize) {
 
@@ -126,7 +124,7 @@ public class SpriteList extends LinkedList<Sprite> {
 
         // place right flames.
         for (int i = 1, j = centralColIdx + 1; i <= flameSize && j < map.getMapWidth(); i++, j++) { // from center to
-                                                                                                    // right.
+            // right.
             if (!addFlame(list, centralRowIdx, centralColIdx + i)) {
                 break; // break loop.
             }
@@ -153,7 +151,7 @@ public class SpriteList extends LinkedList<Sprite> {
         addFlame(list, centralRowIdx, centralColIdx); // central case.
 
         for (int i = 1, j = centralRowIdx + 1; i <= flameSize && j < map.getMapHeight(); i++, j++) { // from center to
-                                                                                                     // lower.
+            // lower.
             if (!addFlame(list, centralRowIdx + i, centralColIdx)) {
                 break; // break loop.
             }
@@ -161,21 +159,54 @@ public class SpriteList extends LinkedList<Sprite> {
     }
 
     /**
+     * Add a flame to a list.
+     *
+     * @param list   the list into which putting the flame
+     * @param rowIdx the map row index of the flame
+     * @param colIdx the map column index of the flame
+     * @return true if the flame can be propagated, false it is stopped
+     */
+    private boolean addFlame(LinkedList<Sprite> list, int rowIdx, int colIdx) {
+        if (map.getMapPointMatrix()[rowIdx][colIdx].isPathway()) {
+            map.getMapPointMatrix()[rowIdx][colIdx].addFlame();
+            map.getMapPointMatrix()[rowIdx][colIdx].setImageAsBurned();
+            list.add(new Flame(rowIdx, colIdx));
+            return true; // the next case can burn.
+        } else if (map.getMapPointMatrix()[rowIdx][colIdx].isMutable() ||
+                map.getMapPointMatrix()[rowIdx][colIdx].isBombing()) {
+            map.getMapPointMatrix()[rowIdx][colIdx].setPathway(true);
+            map.getMapPointMatrix()[rowIdx][colIdx].setMutable(false);
+            map.getMapPointMatrix()[rowIdx][colIdx].addFlame();
+            map.getMapPointMatrix()[rowIdx][colIdx].setImageAsBurned();
+            list.add(new Flame(rowIdx, colIdx));
+            return false; // the next case should not burn.
+        } else {
+            return false; // the next case should not burn.
+        }
+    }
+
+    /**
      * Add a conclusion flame to a list.
      *
-     * @param list the list into which putting the flame
+     * @param list   the list into which putting the flame
      * @param rowIdx the map row index of the flame
      * @param colIdx the map column index of the flame
      */
-    private void addFlameEnd(LinkedList<Sprite> list, int rowIdx, int colIdx) {
-        list.add(new ConclusionFlame(rowIdx, colIdx));
+    private void addConclusionFlame(LinkedList<Sprite> list, int rowIdx, int colIdx) {
+        if (map.getMapPointMatrix()[rowIdx][colIdx].isBurning()) {
+            list.add(new ConclusionFlame(rowIdx, colIdx));
+        }
     }
+
+    // ------- //
+    // CONTROL //
+    // ------- //
 
     /**
      * Update curStatus of nomads.
      */
     public synchronized void updateStatusAndClean() {
-        for (ListIterator<Sprite> iterator = this.listIterator(); iterator.hasNext();) {
+        for (ListIterator<Sprite> iterator = this.listIterator(); iterator.hasNext(); ) {
             Sprite sprite = iterator.next();
 
             if (sprite.getClass().getSuperclass().getSimpleName().equals("Bomber")) { // it is a bomber.
@@ -212,22 +243,22 @@ public class SpriteList extends LinkedList<Sprite> {
 
                             enemy.setCurStatus(newStatus); // if the previous function has not thrown an exception.
                             switch (enemy.getCurStatus()) {
-                            case STATUS_WALKING_BACK: {
-                                sprite.setYMap(sprite.getYMap() - 1);
-                                break;
-                            }
-                            case STATUS_WALKING_FRONT: {
-                                sprite.setYMap(sprite.getYMap() + 1);
-                                break;
-                            }
-                            case STATUS_WALKING_LEFT: {
-                                sprite.setXMap(sprite.getXMap() - 1);
-                                break;
-                            }
-                            case STATUS_WALKING_RIGHT: {
-                                sprite.setXMap(sprite.getXMap() + 1);
-                                break;
-                            }
+                                case STATUS_WALKING_BACK: {
+                                    sprite.setYMap(sprite.getYMap() - 1);
+                                    break;
+                                }
+                                case STATUS_WALKING_FRONT: {
+                                    sprite.setYMap(sprite.getYMap() + 1);
+                                    break;
+                                }
+                                case STATUS_WALKING_LEFT: {
+                                    sprite.setXMap(sprite.getXMap() - 1);
+                                    break;
+                                }
+                                case STATUS_WALKING_RIGHT: {
+                                    sprite.setXMap(sprite.getXMap() + 1);
+                                    break;
+                                }
                             }
                         } catch (CannotMoveNomadException e) {
                             // nothing to do, just wait for the next iteration.
@@ -239,7 +270,7 @@ public class SpriteList extends LinkedList<Sprite> {
 
                 // is it finished?
                 if (bomb.isFinished() ||
-                // OR is it on a burning case?
+                        // OR is it on a burning case?
                         map.getMapPointMatrix()[bomb.getRowIdx()][bomb.getColIdx()].isBurning()) {
                     // create flames.
                     addFlames(tmpList, bomb.getRowIdx(), bomb.getColIdx(), bomb.getFlameSize());
@@ -252,7 +283,7 @@ public class SpriteList extends LinkedList<Sprite> {
                 // is it finished?
                 if (flame.isFinished()) {
                     // create conclusion flames.
-                    addFlameEnd(tmpList, flame.getRowIdx(), flame.getColIdx());
+                    addConclusionFlame(tmpList, flame.getRowIdx(), flame.getColIdx());
                     map.getMapPointMatrix()[flame.getRowIdx()][flame.getColIdx()].removeFlame();
                     iterator.remove(); // remove it from the list.
                 }
@@ -272,7 +303,7 @@ public class SpriteList extends LinkedList<Sprite> {
     /**
      * Paint the visible nomads on screen.
      *
-     * @param g the graphics context
+     * @param g    the graphics context
      * @param xMap the map abscissa from which painting nomads
      * @param yMap the map ordinate from which painting nomads
      */
@@ -284,7 +315,7 @@ public class SpriteList extends LinkedList<Sprite> {
             if ((sprite.getYMap() >= yMap
                     && sprite.getYMap() <= yMap + sprite.getCurImage().getWidth(null) + screenHeight)
                     && (sprite.getXMap() >= xMap
-                            && sprite.getXMap() <= xMap + sprite.getCurImage().getHeight(null) / 2 + screenWidth)) {
+                    && sprite.getXMap() <= xMap + sprite.getCurImage().getHeight(null) / 2 + screenWidth)) {
                 sprite.paintBuffer(g, sprite.getXMap() - xMap, sprite.getYMap() - yMap);
             }
         }
