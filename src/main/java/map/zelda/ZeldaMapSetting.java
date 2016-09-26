@@ -1,5 +1,8 @@
 package map.zelda;
 
+import exceptions.InvalidMapConfigurationException;
+import exceptions.InvalidMapPropertiesException;
+import map.abstracts.MapProperties;
 import map.abstracts.MapSettings;
 
 /**
@@ -22,19 +25,24 @@ public class ZeldaMapSetting extends MapSettings {
     private int perSingleObstacle; // the percentage of single obstacle to place among available cases.
     private int perSingleDynPathway; // the percentage of dynamic pathway to place among available cases.
 
-    public ZeldaMapSetting(ZeldaMapProperties mapConfiguration) {
+    public ZeldaMapSetting(MapProperties mapConfiguration) throws InvalidMapPropertiesException {
         super(mapConfiguration);
-        this.verticalMargin = mapConfiguration.getMapMarginVertical();
-        this.horizontalMargin = mapConfiguration.getMapMarginHorizontal();
-        this.nbWood1 = mapConfiguration.getMapElementNbWood1();
-        this.nbWood2 = mapConfiguration.getMapElementNbWood2();
-        this.nbTree1 = mapConfiguration.getMapElementNbTree1();
-        this.nbTree2 = mapConfiguration.getMapElementNbTree2();
-        this.nbPuddle1 = mapConfiguration.getMapElementNbPuddle1();
-        this.nbPuddle2 = mapConfiguration.getMapElementNbPuddle2();
-        this.perSingleMutable = mapConfiguration.getMapElementPerSingleMutable();
-        this.perSingleObstacle = mapConfiguration.getMapElementPerSingleObstacle();
-        this.perSingleDynPathway = mapConfiguration.getMapElementPerSingleDynPathway();
+        if (mapConfiguration.getClass().getSimpleName().equals("ZeldaMapProperties")) {
+            ZeldaMapProperties zeldaMapProperties = (ZeldaMapProperties) mapConfiguration;
+            this.verticalMargin = zeldaMapProperties.getMapMarginVertical();
+            this.horizontalMargin = zeldaMapProperties.getMapMarginHorizontal();
+            this.nbWood1 = zeldaMapProperties.getMapElementNbWood1();
+            this.nbWood2 = zeldaMapProperties.getMapElementNbWood2();
+            this.nbTree1 = zeldaMapProperties.getMapElementNbTree1();
+            this.nbTree2 = zeldaMapProperties.getMapElementNbTree2();
+            this.nbPuddle1 = zeldaMapProperties.getMapElementNbPuddle1();
+            this.nbPuddle2 = zeldaMapProperties.getMapElementNbPuddle2();
+            this.perSingleMutable = zeldaMapProperties.getMapElementPerSingleMutable();
+            this.perSingleObstacle = zeldaMapProperties.getMapElementPerSingleObstacle();
+            this.perSingleDynPathway = zeldaMapProperties.getMapElementPerSingleDynPathway();
+        } else {
+            throw new InvalidMapPropertiesException("the provided MapProperties is badly typed.");
+        }
     }
 
     public int getVerticalMargin() {

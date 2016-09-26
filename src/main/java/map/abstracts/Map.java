@@ -11,12 +11,12 @@ public abstract class Map {
 
     // map information.
     protected MapPoint[][] mapPointMatrix;
-    protected int mapWidth; // width of the map (expressed in MapPoint).
-    protected int mapHeight; // height of the map (expressed in MapPoint).
+    private int mapWidth; // width of the map (expressed in MapPoint).
+    private int mapHeight; // height of the map (expressed in MapPoint).
 
     // screen information.
-    protected int screenWidth; // widht of the screen (expressed in pixel).
-    protected int screenHeight; // height of the screen (expressed in pixel).
+    private int screenWidth; // widht of the screen (expressed in pixel).
+    private int screenHeight; // height of the screen (expressed in pixel).
 
     public Map(MapSettings mapSettings, int screenWidth, int screenHeight) {
         this.mapWidth = mapSettings.getMapWidth();

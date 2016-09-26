@@ -98,9 +98,6 @@ public abstract class Bomber extends Nomad {
         this.initialYMap = yMap;
     }
 
-    public Bomber() {
-    }
-
     public Image[] getDeathImages() {
         return deathImages;
     }

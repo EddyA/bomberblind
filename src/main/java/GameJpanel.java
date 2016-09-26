@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import exceptions.CannotCreateMapElementException;
 import exceptions.InvalidMapConfigurationException;
+import exceptions.InvalidMapPropertiesException;
 import map.ctrl.NomadMethods;
 import map.zelda.ZeldaMap;
 import map.zelda.ZeldaMapProperties;
@@ -22,7 +23,7 @@ import spriteList.SpriteList;
 import utils.Tools;
 import utils.Tuple2;
 
-public class GameJpanel extends JPanel implements Runnable, KeyListener {
+class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     private map.abstracts.Map map;
     private BlueBomber mainBomber;
@@ -33,22 +34,20 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private int xMapStartPosOnScreen;
     private int yMapStartPosOnScreen;
 
-    GameJpanel(int widthScreen, int heightScreen)
-            throws IOException, InvalidMapConfigurationException, CannotCreateMapElementException {
+    GameJpanel(int widthScreen, int heightScreen) throws IOException, InvalidMapPropertiesException,
+            InvalidMapConfigurationException, CannotCreateMapElementException {
 
-        // get the map properties.
-        ZeldaMapProperties mapProperties = new ZeldaMapProperties("/zelda.map.properties")
-                .loadProperties()
-                .checkProperties();
-
-        // create the map.
-        map = new ZeldaMap(new ZeldaMapSetting(mapProperties), widthScreen, heightScreen);
+        map = new ZeldaMap(
+                new ZeldaMapSetting(
+                        new ZeldaMapProperties("/zelda.map.properties").loadProperties().checkProperties()),
+                widthScreen,
+                heightScreen);
         map.generateMap();
 
-        // create a list of sprite.
+        // create the sprite list.
         spriteList = new SpriteList(map, widthScreen, heightScreen);
 
-        // create the main bomber and add it to the list of abstracts.
+        // create the main bomber and add it to the sprite list.
         Tuple2<Integer, Integer> bbManInitialPosition = map.computeInitialBbManPosition();
         mainBomber = new BlueBomber(bbManInitialPosition.getFirst(), bbManInitialPosition.getSecond());
         spriteList.addBomber(mainBomber);
@@ -61,9 +60,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         spriteList.addMummy(bbManInitialPosition.getFirst() + IMAGE_SIZE * 2,
                 bbManInitialPosition.getSecond());
 
-        // create a list to handle pressed key.
+        // create a list to handle pressed keys.
         pressedKeyList = new ArrayList<>();
-        pressedKeyList.add(0L); // add the "wait" curStatus.
+        pressedKeyList.add(0L); // add the "wait" status.
 
         setFocusable(true);
         requestFocusInWindow();

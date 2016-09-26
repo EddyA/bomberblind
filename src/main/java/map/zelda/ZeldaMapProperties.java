@@ -76,7 +76,7 @@ public class ZeldaMapProperties extends MapProperties {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY));
     }
 
-    public ZeldaMapProperties loadProperties()
+    public MapProperties loadProperties()
             throws IllegalArgumentException, IOException, InvalidMapConfigurationException {
         Preconditions.checkArgument((mapPropertiesFile != null) &&
                 !mapPropertiesFile.isEmpty(), "map properties file not set.");
@@ -89,7 +89,7 @@ public class ZeldaMapProperties extends MapProperties {
         return this;
     }
 
-    public ZeldaMapProperties checkProperties() throws InvalidMapConfigurationException {
+    public MapProperties checkProperties() throws InvalidMapConfigurationException {
         if (!isValidInteger(properties.getProperty(MAP_SIZE_WIDTH)) ||
                 !isValidInteger(properties.getProperty(MAP_SIZE_HEIGHT)) ||
                 !isValidInteger(properties.getProperty(MAP_MARGIN_VERTICAL)) ||

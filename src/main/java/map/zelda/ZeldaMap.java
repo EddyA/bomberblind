@@ -16,8 +16,8 @@ import static map.ctrl.PatternMethods.placeSouthEdgeOnMap;
 import static map.zelda.ZeldaMapPatterns.*;
 
 public class ZeldaMap extends map.abstracts.Map {
-    protected ZeldaMapSetting zeldaMapSetting;
-    protected MapPoint castleStartPoint; // castle start point (north/west MapPoint).
+    private ZeldaMapSetting zeldaMapSetting;
+    private MapPoint castleStartPoint; // castle start point (north/west MapPoint).
 
     public ZeldaMap(ZeldaMapSetting zeldaMapSetting, int screenWidth, int screenHeight)
             throws IOException, InvalidMapConfigurationException, CannotCreateMapElementException {
