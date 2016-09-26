@@ -114,7 +114,7 @@ public abstract class Enemy extends Nomad {
 
     @Override
     public boolean isFinished() {
-        return ((curStatus == STATUS_DYING) && (getCurImageIdx() == (getNbImages() - 1)));
+        return ((curStatus == STATUS_DYING) && (curImageIdx == nbImages - 1));
     }
 
     @Override
@@ -134,28 +134,28 @@ public abstract class Enemy extends Nomad {
     public void updateSprite() {
         switch (curStatus) {
             case STATUS_DYING: {
-                setImages(deathImages);
-                setNbImages(nbDeathFrame);
+                images = deathImages;
+                nbImages = nbDeathFrame;
                 break;
             }
             case STATUS_WALKING_BACK: {
-                setImages(walkBackImages);
-                setNbImages(nbWalkFrame);
+                images = walkBackImages;
+                nbImages = nbWalkFrame;
                 break;
             }
             case STATUS_WALKING_FRONT: {
-                setImages(walkFrontImages);
-                setNbImages(nbWalkFrame);
+                images = walkFrontImages;
+                nbImages = nbWalkFrame;
                 break;
             }
             case STATUS_WALKING_LEFT: {
-                setImages(walkLeftImages);
-                setNbImages(nbWalkFrame);
+                images = walkLeftImages;
+                nbImages = nbWalkFrame;
                 break;
             }
             case STATUS_WALKING_RIGHT: {
-                setImages(walkRightImages);
-                setNbImages(nbWalkFrame);
+                images = walkRightImages;
+                nbImages = nbWalkFrame;
                 break;
             }
         }

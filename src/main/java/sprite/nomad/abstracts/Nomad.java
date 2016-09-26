@@ -1,17 +1,17 @@
 package sprite.nomad.abstracts;
 
-import java.awt.Image;
-
 import sprite.abstracts.Sprite;
+
+import java.awt.*;
 
 /**
  * Abstract class of a nomad.
  */
 public abstract class Nomad extends Sprite {
 
-    private Image[] images; // array of image according to the current sprite's status.
-    private int nbImages; // number of images of the array of image.
-    private int curImageIdx; // sprite's current image index.
+    protected Image[] images; // array of image according to the current sprite's status.
+    protected int nbImages; // number of images of the array of image.
+    protected int curImageIdx; // sprite's current image index.
     private Image curImage; // sprite's current image.
 
     private int moveTime; // move time (in ms, defining the nomad's move speed).
@@ -25,12 +25,10 @@ public abstract class Nomad extends Sprite {
      * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
      * @param moveTime    the move time (i.e. defining the nomad move speed)
      */
-    public Nomad(int xMap, int yMap, int refreshTime, int moveTime) {
+    Nomad(int xMap, int yMap, int refreshTime, int moveTime) {
         super(xMap, yMap, refreshTime);
         this.moveTime = moveTime;
     }
-
-    public Nomad() {}
 
     public int getMoveTime() {
         return moveTime;
@@ -38,30 +36,6 @@ public abstract class Nomad extends Sprite {
 
     public void setLastMoveTs(long lastMoveTs) {
         this.lastMoveTs = lastMoveTs;
-    }
-
-    public Image[] getImages() {
-        return images;
-    }
-
-    public int getNbImages() {
-        return nbImages;
-    }
-
-    public int getCurImageIdx() {
-        return curImageIdx;
-    }
-
-    public void setImages(Image[] images) {
-        this.images = images;
-    }
-
-    public void setNbImages(int nbImages) {
-        this.nbImages = nbImages;
-    }
-
-    public void setCurImageIdx(int curImageIdx) {
-        this.curImageIdx = curImageIdx;
     }
 
     /**

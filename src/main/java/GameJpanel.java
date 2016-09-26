@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -17,6 +18,7 @@ import map.ctrl.NomadMethods;
 import map.zelda.ZeldaMap;
 import map.zelda.ZeldaMapProperties;
 import map.zelda.ZeldaMapSetting;
+import sprite.abstracts.Sprite;
 import sprite.nomad.BlueBomber;
 import sprite.nomad.abstracts.Bomber;
 import spriteList.SpriteList;
@@ -276,6 +278,17 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                     updateMapStartPosOnScreen();
                 }
                 spriteList.updateStatusAndClean();
+
+                // update the list order to handle the sprites superposition.
+                spriteList.sort((o1, o2) -> {
+                    if (o1.getYMap() < o2.getYMap()) {
+                        return -1;
+                    } else if (o1.getYMap() > o2.getYMap()) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
                 repaint();
                 Thread.sleep(4);
             } catch (InterruptedException e) {

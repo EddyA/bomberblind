@@ -1,9 +1,9 @@
 package sprite.nomad.abstracts;
 
+import java.awt.*;
+
 import static sprite.nomad.abstracts.Bomber.status.STATUS_DYING;
 import static sprite.nomad.abstracts.Bomber.status.STATUS_WAITING;
-
-import java.awt.Image;
 
 /**
  * Abstract class of a bomber.
@@ -207,7 +207,7 @@ public abstract class Bomber extends Nomad {
 
     @Override
     public boolean isFinished() {
-        return ((curStatus == STATUS_DYING) && (getCurImageIdx() == (getNbImages() - 1)));
+        return ((curStatus == STATUS_DYING) && (curImageIdx == nbImages - 1));
     }
 
     @Override
@@ -227,38 +227,38 @@ public abstract class Bomber extends Nomad {
     public void updateSprite() {
         switch (curStatus) {
             case STATUS_DYING: {
-                setImages(deathImages);
-                setNbImages(nbDeathFrame);
+                images = deathImages;
+                nbImages = nbDeathFrame;
                 break;
             }
             case STATUS_WAITING: {
-                setImages(waitImages);
-                setNbImages(nbWaitFrame);
+                images = waitImages;
+                nbImages = nbWaitFrame;
                 break;
             }
             case STATUS_WALKING_BACK: {
-                setImages(walkBackImages);
-                setNbImages(nbWalkFrame);
+                images = walkBackImages;
+                nbImages = nbWalkFrame;
                 break;
             }
             case STATUS_WALKING_FRONT: {
-                setImages(walkFrontImages);
-                setNbImages(nbWalkFrame);
+                images = walkFrontImages;
+                nbImages = nbWalkFrame;
                 break;
             }
             case STATUS_WALKING_LEFT: {
-                setImages(walkLeftImages);
-                setNbImages(nbWalkFrame);
+                images = walkLeftImages;
+                nbImages = nbWalkFrame;
                 break;
             }
             case STATUS_WALKING_RIGHT: {
-                setImages(walkRightImages);
-                setNbImages(nbWalkFrame);
+                images = walkRightImages;
+                nbImages = nbWalkFrame;
                 break;
             }
             case STATUS_WON: {
-                setImages(winImages);
-                setNbImages(nbWinFrame);
+                images = winImages;
+                nbImages = nbWinFrame;
                 break;
             }
             default: {

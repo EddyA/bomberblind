@@ -102,51 +102,51 @@ public class BomberTest implements WithAssertions {
         // dying.
         blueBomber.setCurStatus(Bomber.status.STATUS_DYING);
         blueBomber.updateSprite();
-        assertThat(blueBomber.getImages())
+        assertThat(blueBomber.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberDeathMatrixRowIdx]);
-        assertThat(blueBomber.getNbImages()).isEqualTo(ImagesLoader.NB_BOMBER_DEATH_FRAME);
+        assertThat(blueBomber.nbImages).isEqualTo(ImagesLoader.NB_BOMBER_DEATH_FRAME);
 
         // wait.
         blueBomber.setCurStatus(Bomber.status.STATUS_WAITING);
         blueBomber.updateSprite();
-        assertThat(blueBomber.getImages())
+        assertThat(blueBomber.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
-        assertThat(blueBomber.getNbImages()).isEqualTo(ImagesLoader.NB_BOMBER_WAIT_FRAME);
+        assertThat(blueBomber.nbImages).isEqualTo(ImagesLoader.NB_BOMBER_WAIT_FRAME);
 
         // walking back.
         blueBomber.setCurStatus(Bomber.status.STATUS_WALKING_BACK);
         blueBomber.updateSprite();
-        assertThat(blueBomber.getImages())
+        assertThat(blueBomber.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkBackMatrixRowIdx]);
-        assertThat(blueBomber.getNbImages()).isEqualTo(ImagesLoader.NB_BOMBER_WALK_FRAME);
+        assertThat(blueBomber.nbImages).isEqualTo(ImagesLoader.NB_BOMBER_WALK_FRAME);
 
         // walking front.
         blueBomber.setCurStatus(Bomber.status.STATUS_WALKING_FRONT);
         blueBomber.updateSprite();
-        assertThat(blueBomber.getImages())
+        assertThat(blueBomber.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkFrontMatrixRowIdx]);
-        assertThat(blueBomber.getNbImages()).isEqualTo(ImagesLoader.NB_BOMBER_WALK_FRAME);
+        assertThat(blueBomber.nbImages).isEqualTo(ImagesLoader.NB_BOMBER_WALK_FRAME);
 
         // walking left.
         blueBomber.setCurStatus(Bomber.status.STATUS_WALKING_LEFT);
         blueBomber.updateSprite();
-        assertThat(blueBomber.getImages())
+        assertThat(blueBomber.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkLeftMatrixRowIdx]);
-        assertThat(blueBomber.getNbImages()).isEqualTo(ImagesLoader.NB_BOMBER_WALK_FRAME);
+        assertThat(blueBomber.nbImages).isEqualTo(ImagesLoader.NB_BOMBER_WALK_FRAME);
 
         // walking right.
         blueBomber.setCurStatus(Bomber.status.STATUS_WALKING_RIGHT);
         blueBomber.updateSprite();
-        assertThat(blueBomber.getImages())
+        assertThat(blueBomber.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkRightMatrixRowIdx]);
-        assertThat(blueBomber.getNbImages()).isEqualTo(ImagesLoader.NB_BOMBER_WALK_FRAME);
+        assertThat(blueBomber.nbImages).isEqualTo(ImagesLoader.NB_BOMBER_WALK_FRAME);
 
         // win.
         blueBomber.setCurStatus(Bomber.status.STATUS_WON);
         blueBomber.updateSprite();
-        assertThat(blueBomber.getImages())
+        assertThat(blueBomber.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWinMatrixRowIdx]);
-        assertThat(blueBomber.getNbImages()).isEqualTo(ImagesLoader.NB_BOMBER_WIN_FRAME);
+        assertThat(blueBomber.nbImages).isEqualTo(ImagesLoader.NB_BOMBER_WIN_FRAME);
     }
 
     @Test
@@ -156,7 +156,7 @@ public class BomberTest implements WithAssertions {
         // set test.
         blueBomber.setCurStatus(STATUS_DYING);
         blueBomber.updateSprite();
-        blueBomber.setCurImageIdx(ImagesLoader.NB_BOMBER_DEATH_FRAME - 1);
+        blueBomber.curImageIdx = ImagesLoader.NB_BOMBER_DEATH_FRAME - 1;
 
         // call & check.
         assertThat(blueBomber.isFinished()).isTrue();
@@ -169,7 +169,7 @@ public class BomberTest implements WithAssertions {
         // set test.
         blueBomber.setCurStatus(STATUS_WALKING_RIGHT);
         blueBomber.updateSprite();
-        blueBomber.setCurImageIdx(ImagesLoader.NB_BOMBER_DEATH_FRAME - 1);
+        blueBomber.curImageIdx = ImagesLoader.NB_BOMBER_DEATH_FRAME - 1;
 
         // call & check.
         assertThat(blueBomber.isFinished()).isFalse();
@@ -182,7 +182,7 @@ public class BomberTest implements WithAssertions {
         // set test.
         blueBomber.setCurStatus(STATUS_DYING);
         blueBomber.updateSprite();
-        blueBomber.setCurImageIdx(0);
+        blueBomber.curImageIdx = 0;
 
         // call & check.
         assertThat(blueBomber.isFinished()).isFalse();

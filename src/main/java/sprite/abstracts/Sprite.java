@@ -30,8 +30,6 @@ public abstract class Sprite {
         this.refreshTime = refreshTime;
     }
 
-    protected Sprite() { }
-
     /**
      * @return the sprite's abscissa on the map.
      */
