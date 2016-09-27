@@ -16,7 +16,7 @@ public class ImagesLoader {
     public final static int IMAGE_SIZE = 30; // size of an 'Image' in pixels (30*30).
 
     public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
-    protected final static int NB_MATRIX_ROW = 34;
+    protected final static int NB_MATRIX_ROW = 39;
     protected final static int NB_MATRIX_COL = 80;
 
     // images location.
@@ -26,7 +26,7 @@ public class ImagesLoader {
     private final static String FLAME_SKIN_DIR = "/images/flame";
     private final static String SCENE_SKIN_DIR = "/images/scene";
 
-    // Bomber:
+    // bomber:
     public final static int NB_BOMBER_DEATH_FRAME = 9;
     public final static int NB_BOMBER_WAIT_FRAME = 4;
     public final static int NB_BOMBER_WALK_FRAME = 4;
@@ -59,6 +59,15 @@ public class ImagesLoader {
     public static int mummyWalkFrontMatrixRowIdx;
     public static int mummyWalkLeftMatrixRowIdx;
     public static int mummyWalkRightMatrixRowIdx;
+
+    // - mecanic angel.
+    public final static int NB_MECA_ANGEL_DEATH_FRAME = 2;
+    public final static int NB_MECA_ANGEL_WALK_FRAME = 2;
+    public static int mecaAngelDeathMatrixRowIdx;
+    public static int mecaAngelWalkBackMatrixRowIdx;
+    public static int mecaAngelWalkFrontMatrixRowIdx;
+    public static int mecaAngelWalkLeftMatrixRowIdx;
+    public static int mecaAngelWalkRightMatrixRowIdx;
 
     // settled:
     public final static int NB_BOMB_FRAME = 4;
@@ -193,12 +202,12 @@ public class ImagesLoader {
         cloakedSkeletonWalkRightMatrixRowIdx = rowIdx++;
 
         // - mummy.
-        for (int i = 0; i < NB_MUMMY_DEATH_FRAME; i++) {
+        for (int i = 0; i < NB_MECA_ANGEL_DEATH_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/mummy/dead_" + imageIdx + ".png");
         }
         mummyDeathMatrixRowIdx = rowIdx++;
-        for (int i = 0; i < NB_MUMMY_WALK_FRAME; i++) {
+        for (int i = 0; i < NB_MECA_ANGEL_WALK_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/mummy/walk_back_" + imageIdx + ".png");
         }
@@ -218,6 +227,33 @@ public class ImagesLoader {
             imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/mummy/walk_right_" + imageIdx + ".png");
         }
         mummyWalkRightMatrixRowIdx = rowIdx++;
+
+        // - mecanical angel.
+        for (int i = 0; i < NB_MECA_ANGEL_DEATH_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/meca_angel/dead_" + imageIdx + ".png");
+        }
+        mecaAngelDeathMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MECA_ANGEL_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/meca_angel/walk_back_" + imageIdx + ".png");
+        }
+        mecaAngelWalkBackMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MECA_ANGEL_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/meca_angel/walk_front_" + imageIdx + ".png");
+        }
+        mecaAngelWalkFrontMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MECA_ANGEL_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/meca_angel/walk_left_" + imageIdx + ".png");
+        }
+        mecaAngelWalkLeftMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MECA_ANGEL_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/meca_angel/walk_right_" + imageIdx + ".png");
+        }
+        mecaAngelWalkRightMatrixRowIdx = rowIdx++;
 
         // settled:
         for (int i = 0; i < NB_BOMB_FRAME; i++) {

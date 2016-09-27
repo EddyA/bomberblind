@@ -6,7 +6,7 @@ import sprite.nomad.abstracts.Enemy;
 public class Mummy extends Enemy {
 
     public final static int REFRESH_TIME = 300;
-    public final static int MOVING_TIME = 50;
+    public final static int MOVING_TIME = 40;
 
     /**
      * Create a cloaked skeleton.

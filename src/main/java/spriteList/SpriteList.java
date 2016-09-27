@@ -1,23 +1,24 @@
 package spriteList;
 
-import static map.ctrl.NomadMethods.isNomadBurning;
-import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
-
-import java.awt.Graphics2D;
-import java.util.LinkedList;
-import java.util.ListIterator;
-
 import ai.EnemyAi;
 import exceptions.CannotMoveNomadException;
 import map.abstracts.Map;
 import sprite.abstracts.Sprite;
 import sprite.nomad.CloakedSkeleton;
+import sprite.nomad.MecaAngel;
 import sprite.nomad.Mummy;
 import sprite.nomad.abstracts.Bomber;
 import sprite.nomad.abstracts.Enemy;
 import sprite.settled.Bomb;
 import sprite.settled.ConclusionFlame;
 import sprite.settled.Flame;
+
+import java.awt.*;
+import java.util.LinkedList;
+import java.util.ListIterator;
+
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
 
 public class SpriteList extends LinkedList<Sprite> {
 
@@ -69,6 +70,16 @@ public class SpriteList extends LinkedList<Sprite> {
      */
     public void addCloakedSkeleton(int xMap, int yMap) {
         this.add(new CloakedSkeleton(xMap, yMap));
+    }
+
+    /**
+     * Add a meca angel to the list.
+     *
+     * @param xMap the abscissa of the meca angel
+     * @param yMap the ordinate of the meca angel
+     */
+    public void addMecaAngel(int xMap, int yMap) {
+        this.add(new MecaAngel(xMap, yMap));
     }
 
     // ------- //

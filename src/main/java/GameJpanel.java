@@ -54,9 +54,9 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
 
         // ToDo: Just a test ...
         spriteList.addCloakedSkeleton(bbManInitialPosition.getFirst() - IMAGE_SIZE, bbManInitialPosition.getSecond());
-        spriteList.addCloakedSkeleton(bbManInitialPosition.getFirst() - IMAGE_SIZE * 2,
+        spriteList.addMecaAngel(bbManInitialPosition.getFirst() - IMAGE_SIZE * 2,
                 bbManInitialPosition.getSecond());
-        spriteList.addMummy(bbManInitialPosition.getFirst() + IMAGE_SIZE, bbManInitialPosition.getSecond());
+        spriteList.addMecaAngel(bbManInitialPosition.getFirst() + IMAGE_SIZE, bbManInitialPosition.getSecond());
         spriteList.addMummy(bbManInitialPosition.getFirst() + IMAGE_SIZE * 2,
                 bbManInitialPosition.getSecond());
 

@@ -9,7 +9,7 @@ import sprite.nomad.abstracts.Enemy;
 public class CloakedSkeleton extends Enemy {
 
     public final static int REFRESH_TIME = 100;
-    public final static int MOVING_TIME = 10;
+    public final static int MOVING_TIME = 25;
 
     /**
      * Create a cloaked skeleton.
