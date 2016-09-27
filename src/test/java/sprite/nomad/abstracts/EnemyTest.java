@@ -1,14 +1,18 @@
 package sprite.nomad.abstracts;
 
-import images.ImagesLoader;
-import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
-import sprite.nomad.CloakedSkeleton;
+import static sprite.nomad.abstracts.Enemy.status.STATUS_DYING;
+import static sprite.nomad.abstracts.Enemy.status.STATUS_WALKING_FRONT;
+import static sprite.nomad.abstracts.Enemy.status.STATUS_WALKING_LEFT;
+import static sprite.nomad.abstracts.Enemy.status.STATUS_WALKING_RIGHT;
 
 import java.io.IOException;
 
-import static sprite.nomad.abstracts.Enemy.status.*;
+import org.assertj.core.api.WithAssertions;
+import org.junit.Before;
+import org.junit.Test;
+
+import images.ImagesLoader;
+import sprite.nomad.CloakedSkeleton;
 
 public class EnemyTest implements WithAssertions {
 
@@ -119,6 +123,14 @@ public class EnemyTest implements WithAssertions {
         assertThat(cloakedSkeleton.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkRightMatrixRowIdx]);
         assertThat(cloakedSkeleton.nbImages).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
+    }
+
+    @Test
+    public void isInvincibleShouldReturnFalse() throws Exception {
+        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
+
+        // call & check.
+        assertThat(cloakedSkeleton.isInvincible()).isFalse();
     }
 
     @Test

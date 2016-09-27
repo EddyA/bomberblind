@@ -1,5 +1,12 @@
 package spriteList;
 
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
+
+import java.awt.Graphics2D;
+import java.util.LinkedList;
+import java.util.ListIterator;
+
 import ai.EnemyAi;
 import exceptions.CannotMoveNomadException;
 import map.abstracts.Map;
@@ -11,13 +18,6 @@ import sprite.nomad.abstracts.Enemy;
 import sprite.settled.Bomb;
 import sprite.settled.ConclusionFlame;
 import sprite.settled.Flame;
-
-import java.awt.*;
-import java.util.LinkedList;
-import java.util.ListIterator;
-
-import static map.ctrl.NomadMethods.isNomadBurning;
-import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
 
 public class SpriteList extends LinkedList<Sprite> {
 
@@ -312,11 +312,14 @@ public class SpriteList extends LinkedList<Sprite> {
         // paint sprites.
         for (Sprite sprite : this) {
             sprite.updateImage();
-            if ((sprite.getYMap() >= yMap
-                    && sprite.getYMap() <= yMap + sprite.getCurImage().getWidth(null) + screenHeight)
-                    && (sprite.getXMap() >= xMap
-                    && sprite.getXMap() <= xMap + sprite.getCurImage().getHeight(null) / 2 + screenWidth)) {
-                sprite.paintBuffer(g, sprite.getXMap() - xMap, sprite.getYMap() - yMap);
+            if ((sprite.getCurImage() != null) && // happens when the bomber is invincible.
+                    !sprite.isFinished()) {
+                if ((sprite.getYMap() >= yMap)
+                        && (sprite.getYMap() <= yMap + sprite.getCurImage().getWidth(null) + screenHeight)
+                        && (sprite.getXMap() >= xMap)
+                        && (sprite.getXMap() <= xMap + sprite.getCurImage().getHeight(null) / 2 + screenWidth)) {
+                    sprite.paintBuffer(g, sprite.getXMap() - xMap, sprite.getYMap() - yMap);
+                }
             }
         }
     }

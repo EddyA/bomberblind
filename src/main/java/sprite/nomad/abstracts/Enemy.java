@@ -104,12 +104,17 @@ public abstract class Enemy extends Nomad {
         this.lastStatus = lastStatus;
     }
 
+    public Enemy.status getCurStatus() {
+        return curStatus;
+    }
+
     public void setCurStatus(Enemy.status curStatus) {
         this.curStatus = curStatus;
     }
 
-    public Enemy.status getCurStatus() {
-        return curStatus;
+    @Override
+    public boolean isInvincible() {
+        return false;
     }
 
     @Override
@@ -121,8 +126,8 @@ public abstract class Enemy extends Nomad {
     public boolean updateStatus() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         if ((curStatus != lastStatus) || // either the status has changed
-                (getLastRefreshTs() == 0)) { // or it is the 1st call to that function.
-            setLastRefreshTs(curTs);
+                (lastRefreshTs == 0)) { // or it is the 1st call to that function.
+            lastRefreshTs = curTs;
             lastStatus = curStatus;
             return true;
         } else {

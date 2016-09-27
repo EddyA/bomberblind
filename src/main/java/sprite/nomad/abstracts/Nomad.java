@@ -1,8 +1,8 @@
 package sprite.nomad.abstracts;
 
-import sprite.abstracts.Sprite;
+import java.awt.Image;
 
-import java.awt.*;
+import sprite.abstracts.Sprite;
 
 /**
  * Abstract class of a nomad.
@@ -16,6 +16,8 @@ public abstract class Nomad extends Sprite {
 
     private int moveTime; // move time (in ms, defining the nomad's move speed).
     private long lastMoveTs; // last move timestamp.
+
+    private int invincibleFrameIdx; // current invincible frame index.
 
     /**
      * Create a nomad.
@@ -66,6 +68,11 @@ public abstract class Nomad extends Sprite {
      */
     public abstract void updateSprite();
 
+    /**
+     * @return true if the sprite is invicible, false otherwise.
+     */
+    public abstract boolean isInvincible();
+
     @Override
     public abstract boolean isFinished();
 
@@ -82,6 +89,11 @@ public abstract class Nomad extends Sprite {
                         (++curImageIdx == nbImages))) { // AND it is the end of the sprite).
             curImageIdx = 0;
         }
-        curImage = images[curImageIdx];
+        if (isInvincible() &&
+                invincibleFrameIdx++ % 60 > 30) {
+            curImage = null;
+        } else {
+            curImage = images[curImageIdx];
+        }
     }
 }

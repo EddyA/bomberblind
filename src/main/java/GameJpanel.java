@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -18,7 +17,6 @@ import map.ctrl.NomadMethods;
 import map.zelda.ZeldaMap;
 import map.zelda.ZeldaMapProperties;
 import map.zelda.ZeldaMapSetting;
-import sprite.abstracts.Sprite;
 import sprite.nomad.BlueBomber;
 import sprite.nomad.abstracts.Bomber;
 import spriteList.SpriteList;
@@ -292,7 +290,7 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                 repaint();
                 Thread.sleep(4);
             } catch (InterruptedException e) {
-                System.err.println("Unexpected exception: " + e.getMessage());
+                System.err.println("Unexpected exception: " + e.getStackTrace());
             }
         }
     }

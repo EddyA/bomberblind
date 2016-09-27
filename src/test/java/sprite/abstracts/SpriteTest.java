@@ -40,7 +40,7 @@ public class SpriteTest implements WithAssertions {
         blueBomber.setCurrentTimeSupplier(currentTimeSupplier);
 
         // current time - last refresh time - 1 < 1000ms -> should return false.
-        blueBomber.setLastRefreshTs(1000L - BlueBomber.REFRESH_TIME + 1);
+        blueBomber.lastRefreshTs = 1000L - BlueBomber.REFRESH_TIME + 1;
 
         // check value.
         assertThat(blueBomber.isTimeToRefresh()).isFalse();
@@ -56,7 +56,7 @@ public class SpriteTest implements WithAssertions {
         blueBomber.setCurrentTimeSupplier(currentTimeSupplier);
 
         // current time - last refresh time >= 1000ms -> should return false.
-        blueBomber.setLastRefreshTs(1000L - BlueBomber.REFRESH_TIME);
+        blueBomber.lastRefreshTs = 1000L - BlueBomber.REFRESH_TIME;
 
         // check value.
         assertThat(blueBomber.isTimeToRefresh()).isTrue();

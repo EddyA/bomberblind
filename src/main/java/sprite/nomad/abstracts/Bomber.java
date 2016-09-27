@@ -191,15 +191,13 @@ public abstract class Bomber extends Nomad {
      * This function is mainly used to re-init the bomber after he died.
      */
     public void init() {
-        super.setXMap(initialXMap);
-        super.setYMap(initialYMap);
+        xMap = initialXMap;
+        yMap = initialYMap;
         curStatus = STATUS_WAITING;
         setInvincible(true);
     }
 
-    /**
-     * @return true if the bomber is invicible, false otherwise.
-     */
+    @Override
     public boolean isInvincible() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         return lastInvincibilityTs + invincibilityTime >= curTs;
@@ -214,8 +212,8 @@ public abstract class Bomber extends Nomad {
     public boolean updateStatus() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         if ((curStatus != lastStatus) || // either the status has changed
-                (getLastRefreshTs() == 0)) { // or it is the 1st call to that function.
-            setLastRefreshTs(curTs);
+                (lastRefreshTs == 0)) { // or it is the 1st call to that function.
+            lastRefreshTs = curTs;
             lastStatus = curStatus;
             return true;
         } else {

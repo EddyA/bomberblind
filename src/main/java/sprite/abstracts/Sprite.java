@@ -11,11 +11,11 @@ import utils.CurrentTimeSupplier;
 public abstract class Sprite {
     protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
-    private int xMap; // abscissa on map.
-    private int yMap; // ordinate on map.
+    protected int xMap; // abscissa on map.
+    protected int yMap; // ordinate on map.
 
     private int refreshTime; // refresh time (in ms).
-    private long lastRefreshTs; // last refresh timestamp.
+    protected long lastRefreshTs; // last refresh timestamp.
 
     /**
      * Create a settled sprite.
@@ -60,10 +60,6 @@ public abstract class Sprite {
 
     public int getRefreshTime() {
         return refreshTime;
-    }
-
-    protected long getLastRefreshTs() {
-        return lastRefreshTs;
     }
 
     public void setLastRefreshTs(long lastRefreshTs) {
@@ -114,7 +110,8 @@ public abstract class Sprite {
      * @param yScreen the map's ordinate from which painting
      */
     public void paintBuffer(Graphics2D g, int xScreen, int yScreen) {
-        if ((getCurImage() != null) && !isFinished()) {
+        if ((getCurImage() != null) // happens when the bomber is invincible.
+                && !isFinished()) {
             int xImage = xScreen - getCurImage().getWidth(null) / 2;
             int yImage = yScreen - getCurImage().getHeight(null);
             g.drawImage(getCurImage(), xImage, yImage, null);

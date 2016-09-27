@@ -43,7 +43,7 @@ public class EnemyAi {
      * @param mapHeight      the map height
      * @param nomadList      the list of nomads
      * @param enemy          the enemy to move
-     * @return the updated curStatus
+     * @return the updated status
      */
     public static Enemy.status computeNextMove(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
             List<Sprite> nomadList, Enemy enemy) throws CannotMoveNomadException {
@@ -51,7 +51,7 @@ public class EnemyAi {
             throw new RuntimeException("the provided curStatus is not valid.");
         }
 
-        // create a set of checked curStatus.
+        // create a set of checked status.
         Set<Enemy.status> checkedStatus = new HashSet<>();
 
         Enemy.status curCheckedStatus = enemy.getCurStatus();
