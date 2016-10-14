@@ -9,7 +9,7 @@ import static sprite.nomad.abstracts.EnemyA.status.STATUS_WALKING_RIGHT;
 
 import java.util.LinkedList;
 
-import ai.EnemyAI;
+import ai.EnemyAi;
 import exceptions.CannotMoveNomadException;
 import map.MapPoint;
 import sprite.abstracts.Sprite;
@@ -80,7 +80,7 @@ public class ActionMethods {
 
             } else if (enemy.isTimeToMove()) { // not dead -> should the enemy move?
                 try {
-                    Direction newDirection = EnemyAI.computeNextDirection(mapPointMatrix,
+                    Direction newDirection = EnemyAi.computeNextDirection(mapPointMatrix,
                             mapWidth, mapHeight, list, enemy.getCurDirection().orElse(null),
                             enemy.getXMap(), enemy.getYMap(), enemy.getUid()); // try to compute the next move.
                     switch (newDirection) {
