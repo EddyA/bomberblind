@@ -1,6 +1,7 @@
 package sprite.settled;
 
 import images.ImagesLoader;
+import sprite.SpriteType;
 import sprite.settled.abstracts.LoopedSettled;
 
 /**
@@ -20,6 +21,7 @@ public class ConclusionFlame extends LoopedSettled {
     public ConclusionFlame(int rowIdx, int colIdx) {
         super(rowIdx,
                 colIdx,
+                SpriteType.CONCLUSION_FLAME,
                 REFRESH_TIME,
                 ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx],
                 ImagesLoader.NB_FLAME_END_FRAME,

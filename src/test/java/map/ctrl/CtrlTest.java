@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import map.MapPoint;
 
-public class NomadMethodsTest implements WithAssertions {
+public class CtrlTest implements WithAssertions {
 
     private final int MAP_WIDTH = 20;
     private final int MAP_HEIGHT = 10;

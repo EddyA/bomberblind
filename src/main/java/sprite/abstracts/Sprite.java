@@ -3,16 +3,21 @@ package sprite.abstracts;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
+import sprite.SpriteType;
 import utils.CurrentTimeSupplier;
+import utils.UIDSupplier;
 
 /**
  * Abstract class of a sprite.
  */
 public abstract class Sprite {
     protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
+    protected UIDSupplier uidSupplier = new UIDSupplier();
 
     protected int xMap; // abscissa on map.
     protected int yMap; // ordinate on map.
+    protected int uid; // unique id.
+    protected SpriteType spriteType; // type of sprite.
 
     private int refreshTime; // refresh time (in ms).
     protected long lastRefreshTs; // last refresh timestamp.
@@ -22,40 +27,43 @@ public abstract class Sprite {
      *
      * @param xMap        the sprite's abscissa
      * @param yMap        the sprite's ordinate
+     * @param spriteType  the sprite's type
      * @param refreshTime the sprite refreshTime (i.e. fps)
      */
-    public Sprite(int xMap, int yMap, int refreshTime) {
+    public Sprite(int xMap, int yMap, SpriteType spriteType, int refreshTime) {
         this.xMap = xMap;
         this.yMap = yMap;
+        this.spriteType = spriteType;
+        this.uid = uidSupplier.get();
         this.refreshTime = refreshTime;
     }
 
-    /**
-     * @return the sprite's abscissa on the map.
-     */
     public int getXMap() {
         return xMap;
     }
 
-    /**
-     * Set the sprite's abscissa on the map.
-     */
     public void setXMap(int xMap) {
         this.xMap = xMap;
     }
 
-    /**
-     * @return the sprite's ordinate on the map.
-     */
     public int getYMap() {
         return yMap;
     }
 
-    /**
-     * Set the sprite's ordinate on the map.
-     */
     public void setYMap(int yMap) {
         this.yMap = yMap;
+    }
+
+    public SpriteType getSpriteType() {
+        return spriteType;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 
     public int getRefreshTime() {

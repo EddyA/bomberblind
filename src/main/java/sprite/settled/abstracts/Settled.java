@@ -1,9 +1,10 @@
 package sprite.settled.abstracts;
 
+import java.awt.Image;
+
+import sprite.SpriteType;
 import sprite.abstracts.Sprite;
 import utils.Tools;
-
-import java.awt.*;
 
 /**
  * Abstract class of a settled sprite.
@@ -23,18 +24,15 @@ public abstract class Settled extends Sprite {
     /**
      * Create a settled sprite.
      *
-     * @param rowIdx      the map row index of the sprite
-     * @param colIdx      the map col index of the sprite
+     * @param rowIdx the map row index of the sprite
+     * @param colIdx the map col index of the sprite
+     * @param spriteType the sprite's type
      * @param refreshTime the sprite refresh time (i.e. defining the fps)
-     * @param images      the sprite's array of images
-     * @param nbImages    the number of images
+     * @param images the sprite's array of images
+     * @param nbImages the number of images
      */
-    public Settled(int rowIdx,
-                   int colIdx,
-                   int refreshTime,
-                   Image[] images,
-                   int nbImages) {
-        super(Tools.getCaseCentreAbscissa(colIdx), Tools.getCaseBottomOrdinate(rowIdx), refreshTime);
+    public Settled(int rowIdx, int colIdx, SpriteType spriteType, int refreshTime, Image[] images, int nbImages) {
+        super(Tools.getCaseCentreAbscissa(colIdx), Tools.getCaseBottomOrdinate(rowIdx), spriteType, refreshTime);
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
         this.images = images;

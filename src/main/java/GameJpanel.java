@@ -1,4 +1,9 @@
 import static images.ImagesLoader.IMAGE_SIZE;
+import static spriteList.AddingMethods.addBomb;
+import static spriteList.AddingMethods.addBomber;
+import static spriteList.AddingMethods.addCloakedSkeleton;
+import static spriteList.AddingMethods.addMecaAngel;
+import static spriteList.AddingMethods.addMummy;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -50,15 +55,13 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
         // create the main bomber and add it to the sprite list.
         Tuple2<Integer, Integer> bbManInitialPosition = map.computeInitialBbManPosition();
         mainBomber = new BlueBomber(bbManInitialPosition.getFirst(), bbManInitialPosition.getSecond());
-        spriteList.addBomber(mainBomber);
+        addBomber(spriteList, mainBomber);
 
         // ToDo: Just a test ...
-        spriteList.addCloakedSkeleton(bbManInitialPosition.getFirst() - IMAGE_SIZE, bbManInitialPosition.getSecond());
-        spriteList.addMecaAngel(bbManInitialPosition.getFirst() - IMAGE_SIZE * 2,
-                bbManInitialPosition.getSecond());
-        spriteList.addMecaAngel(bbManInitialPosition.getFirst() + IMAGE_SIZE, bbManInitialPosition.getSecond());
-        spriteList.addMummy(bbManInitialPosition.getFirst() + IMAGE_SIZE * 2,
-                bbManInitialPosition.getSecond());
+        addCloakedSkeleton(spriteList, bbManInitialPosition.getFirst() - IMAGE_SIZE, bbManInitialPosition.getSecond());
+        addMecaAngel(spriteList, bbManInitialPosition.getFirst() - IMAGE_SIZE * 2, bbManInitialPosition.getSecond());
+        addMecaAngel(spriteList, bbManInitialPosition.getFirst() + IMAGE_SIZE, bbManInitialPosition.getSecond());
+        addMummy(spriteList, bbManInitialPosition.getFirst() + IMAGE_SIZE * 2, bbManInitialPosition.getSecond());
 
         // create a list to handle pressed keys.
         pressedKeyList = new ArrayList<>();
@@ -264,8 +267,8 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case KeyEvent.VK_B: {
-                        spriteList.addBomb(Tools.getCharRowIdx(mainBomber.getYMap()),
-                                    Tools.getCharColIdx(mainBomber.getXMap()), 5);
+                        addBomb(spriteList, map.getMapPointMatrix(), Tools.getCharRowIdx(mainBomber.getYMap()),
+                                Tools.getCharColIdx(mainBomber.getXMap()), 5);
                             break;
                         }
                         case KeyEvent.VK_W: {

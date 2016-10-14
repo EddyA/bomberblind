@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static sprite.nomad.abstracts.Enemy.status.STATUS_WALKING_FRONT;
+import static sprite.nomad.abstracts.EnemyA.status.STATUS_WALKING_FRONT;
 
 public class CloakedSkeletonTest implements WithAssertions {
 

@@ -2,6 +2,7 @@ package sprite.nomad.abstracts;
 
 import java.awt.Image;
 
+import sprite.SpriteType;
 import sprite.abstracts.Sprite;
 
 /**
@@ -22,13 +23,14 @@ public abstract class Nomad extends Sprite {
     /**
      * Create a nomad.
      *
-     * @param xMap        abscissa on the map.
-     * @param yMap        ordinate on the map.
+     * @param xMap abscissa on the map.
+     * @param yMap ordinate on the map.
+     * @param spriteType the sprite's type
      * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
-     * @param moveTime    the move time (i.e. defining the nomad move speed)
+     * @param moveTime the move time (i.e. defining the nomad move speed)
      */
-    Nomad(int xMap, int yMap, int refreshTime, int moveTime) {
-        super(xMap, yMap, refreshTime);
+    Nomad(int xMap, int yMap, SpriteType spriteType, int refreshTime, int moveTime) {
+        super(xMap, yMap, spriteType, refreshTime);
         this.moveTime = moveTime;
     }
 

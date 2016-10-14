@@ -1,9 +1,11 @@
 package sprite.nomad.abstracts;
 
-import java.awt.*;
-
 import static sprite.nomad.abstracts.Bomber.status.STATUS_DYING;
 import static sprite.nomad.abstracts.Bomber.status.STATUS_WAITING;
+
+import java.awt.Image;
+
+import sprite.SpriteType;
 
 /**
  * Abstract class of a bomber.
@@ -47,25 +49,27 @@ public abstract class Bomber extends Nomad {
     /**
      * Create a bomber.
      *
-     * @param xMap            abscissa on the map
-     * @param yMap            ordinate on the map
-     * @param deathImages     the array of image for the "death" status
-     * @param nbDeathFrame    the number of images of the "death" array
-     * @param waitImages      the array of image for the "wait" status
-     * @param nbWaitFrame     the number of images of the "wait" array
-     * @param walkBackImages  the array of images for the "walk back" status
+     * @param xMap abscissa on the map
+     * @param yMap ordinate on the map
+     * @param spriteType the sprite's type
+     * @param deathImages the array of image for the "death" status
+     * @param nbDeathFrame the number of images of the "death" array
+     * @param waitImages the array of image for the "wait" status
+     * @param nbWaitFrame the number of images of the "wait" array
+     * @param walkBackImages the array of images for the "walk back" status
      * @param walkFrontImages the array of images for the "walk front" status
-     * @param walkLeftImages  the array of images for the "walk left" status
+     * @param walkLeftImages the array of images for the "walk left" status
      * @param walkRightImages the array of images for the "walk right" status
-     * @param nbWalkFrame     number of images of the "walk" arrays
-     * @param winImages       the array of image for the "win" status
-     * @param nbWinFrame      the number of images of the "win" array
-     * @param refreshTime     the sprite refresh time (i.e. defining the image/sec)
-     * @param moveTime        the move time (i.e. defining the nomad move speed)
-     * @param invincibleTime  the time the bomber should be invicible after being revived
+     * @param nbWalkFrame number of images of the "walk" arrays
+     * @param winImages the array of image for the "win" status
+     * @param nbWinFrame the number of images of the "win" array
+     * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
+     * @param moveTime the move time (i.e. defining the nomad move speed)
+     * @param invincibleTime the time the bomber should be invicible after being revived
      */
     public Bomber(int xMap,
                   int yMap,
+            SpriteType spriteType,
                   Image[] deathImages,
                   int nbDeathFrame,
                   Image[] waitImages,
@@ -80,7 +84,7 @@ public abstract class Bomber extends Nomad {
                   int refreshTime,
                   int moveTime,
                   int invincibleTime) {
-        super(xMap, yMap, refreshTime, moveTime);
+        super(xMap, yMap, spriteType, refreshTime, moveTime);
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
         this.waitImages = waitImages;

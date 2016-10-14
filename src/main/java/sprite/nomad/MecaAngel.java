@@ -1,12 +1,13 @@
 package sprite.nomad;
 
 import images.ImagesLoader;
-import sprite.nomad.abstracts.Enemy;
+import sprite.SpriteType;
+import sprite.nomad.abstracts.EnemyA;
 
 /**
  * A mecanical angel.
  */
-public class MecaAngel extends Enemy {
+public class MecaAngel extends EnemyA {
 
     public final static int REFRESH_TIME = 100;
     public final static int MOVING_TIME = 10;
@@ -21,6 +22,7 @@ public class MecaAngel extends Enemy {
                      int yMap) {
         super(xMap,
                 yMap,
+                SpriteType.ENEMY,
                 ImagesLoader.imagesMatrix[ImagesLoader.mecaAngelDeathMatrixRowIdx],
                 ImagesLoader.NB_MECA_ANGEL_DEATH_FRAME,
                 ImagesLoader.imagesMatrix[ImagesLoader.mecaAngelWalkBackMatrixRowIdx],

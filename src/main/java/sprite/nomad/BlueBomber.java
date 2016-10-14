@@ -1,6 +1,7 @@
 package sprite.nomad;
 
 import images.ImagesLoader;
+import sprite.SpriteType;
 import sprite.nomad.abstracts.Bomber;
 
 /**
@@ -22,6 +23,7 @@ public class BlueBomber extends Bomber {
                       int yMap) {
         super(xMap,
                 yMap,
+                SpriteType.BOMBER,
                 ImagesLoader.imagesMatrix[ImagesLoader.blueBomberDeathMatrixRowIdx],
                 ImagesLoader.NB_BOMBER_DEATH_FRAME,
                 ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx],

@@ -1,12 +1,13 @@
 package sprite.nomad;
 
 import images.ImagesLoader;
-import sprite.nomad.abstracts.Enemy;
+import sprite.SpriteType;
+import sprite.nomad.abstracts.EnemyA;
 
 /**
  * A cloaked skeleton.
  */
-public class CloakedSkeleton extends Enemy {
+public class CloakedSkeleton extends EnemyA {
 
     public final static int REFRESH_TIME = 100;
     public final static int MOVING_TIME = 25;
@@ -21,6 +22,7 @@ public class CloakedSkeleton extends Enemy {
                            int yMap) {
         super(xMap,
                 yMap,
+                SpriteType.ENEMY,
                 ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonDeathMatrixRowIdx],
                 ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME,
                 ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkBackMatrixRowIdx],

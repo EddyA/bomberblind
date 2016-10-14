@@ -1,6 +1,7 @@
 package sprite.settled;
 
 import images.ImagesLoader;
+import sprite.SpriteType;
 import sprite.settled.abstracts.TimedSettled;
 
 /**
@@ -22,6 +23,7 @@ public class Bomb extends TimedSettled {
     public Bomb(int rowIdx, int colIdx, int flameSize) {
         super(rowIdx,
                 colIdx,
+                SpriteType.BOMB,
                 REFRESH_TIME,
                 ImagesLoader.imagesMatrix[ImagesLoader.bombMatrixRowIdx],
                 ImagesLoader.NB_BOMB_FRAME,

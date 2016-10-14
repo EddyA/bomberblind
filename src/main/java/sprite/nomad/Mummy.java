@@ -1,9 +1,10 @@
 package sprite.nomad;
 
 import images.ImagesLoader;
-import sprite.nomad.abstracts.Enemy;
+import sprite.SpriteType;
+import sprite.nomad.abstracts.EnemyA;
 
-public class Mummy extends Enemy {
+public class Mummy extends EnemyA {
 
     public final static int REFRESH_TIME = 300;
     public final static int MOVING_TIME = 40;
@@ -18,6 +19,7 @@ public class Mummy extends Enemy {
                  int yMap) {
         super(xMap,
                 yMap,
+                SpriteType.ENEMY,
                 ImagesLoader.imagesMatrix[ImagesLoader.mummyDeathMatrixRowIdx],
                 ImagesLoader.NB_MUMMY_DEATH_FRAME,
                 ImagesLoader.imagesMatrix[ImagesLoader.mummyWalkBackMatrixRowIdx],

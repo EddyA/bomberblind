@@ -1,6 +1,8 @@
 package sprite.settled.abstracts;
 
-import java.awt.*;
+import java.awt.Image;
+
+import sprite.SpriteType;
 
 /**
  * Abstract class of a looped settled sprite.
@@ -13,20 +15,17 @@ public abstract class LoopedSettled extends Settled {
     /**
      * Create a looped settled.
      *
-     * @param rowIdx      the map row index of the sprite
-     * @param colIdx      the map col index of the sprite
+     * @param rowIdx the map row index of the sprite
+     * @param colIdx the map col index of the sprite
+     * @param spriteType the sprite's type
      * @param refreshTime the sprite refreshTime (i.e. fps)
-     * @param images      the sprite's array of images
-     * @param nbImages    the number of images
-     * @param maxNbLoop   the max number of times the sprite must loop
+     * @param images the sprite's array of images
+     * @param nbImages the number of images
+     * @param maxNbLoop the max number of times the sprite must loop
      */
-    public LoopedSettled(int rowIdx,
-                         int colIdx,
-                         int refreshTime,
-                         Image[] images,
-                         int nbImages,
-                         int maxNbLoop) {
-        super(rowIdx, colIdx, refreshTime, images, nbImages);
+    public LoopedSettled(int rowIdx, int colIdx, SpriteType spriteType, int refreshTime, Image[] images, int nbImages,
+            int maxNbLoop) {
+        super(rowIdx, colIdx, spriteType, refreshTime, images, nbImages);
         this.maxNbLoop = maxNbLoop;
     }
 
