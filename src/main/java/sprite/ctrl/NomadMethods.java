@@ -21,7 +21,7 @@ public class NomadMethods {
     public static boolean isNomadCrossingEnemy(java.util.List<Sprite> spriteList, int xChar, int yChar, int uid) {
         boolean isCrossing = false;
         for (Sprite curSprite : spriteList) {
-            if (curSprite.getClass().getSuperclass().getSimpleName().equals("EnemyA") && // it is an enemy
+            if (curSprite.getClass().getSuperclass().getSimpleName().equals("Enemy") && // it is an enemy
                     curSprite.getUid() != uid) { // AND the checked abstracts is not the one provided.
 
                 // the right bound of the provided abstracts is between the left & the right side of the checked one.

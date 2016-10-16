@@ -2,9 +2,9 @@ package sprite.nomad;
 
 import images.ImagesLoader;
 import sprite.SpriteType;
-import sprite.nomad.abstracts.EnemyA;
+import sprite.nomad.abstracts.Enemy;
 
-public class Mummy extends EnemyA {
+public class Mummy extends Enemy {
 
     public final static int REFRESH_TIME = 300;
     public final static int MOVING_TIME = 40;

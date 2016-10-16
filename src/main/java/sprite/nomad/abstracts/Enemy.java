@@ -1,7 +1,7 @@
 package sprite.nomad.abstracts;
 
-import static sprite.nomad.abstracts.EnemyA.status.STATUS_DYING;
-import static sprite.nomad.abstracts.EnemyA.status.STATUS_WALKING_FRONT;
+import static sprite.nomad.abstracts.Enemy.status.STATUS_DYING;
+import static sprite.nomad.abstracts.Enemy.status.STATUS_WALKING_FRONT;
 
 import java.awt.Image;
 import java.util.Optional;
@@ -12,7 +12,7 @@ import utils.Direction;
 /**
  * Abstract class of an enemy.
  */
-public abstract class EnemyA extends Nomad {
+public abstract class Enemy extends Nomad {
 
     /**
      * enum the different available status of an enemy.
@@ -52,9 +52,9 @@ public abstract class EnemyA extends Nomad {
      * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
      * @param moveTime the move time (i.e. defining the nomad move speed)
      */
-    public EnemyA(int xMap,
+    public Enemy(int xMap,
                  int yMap,
-            SpriteType spriteType,
+                 SpriteType spriteType,
                  Image[] deathImages,
                  int nbDeathFrame,
                  Image[] walkBackImages,
@@ -110,11 +110,11 @@ public abstract class EnemyA extends Nomad {
         this.lastStatus = lastStatus;
     }
 
-    public EnemyA.status getCurStatus() {
+    public Enemy.status getCurStatus() {
         return curStatus;
     }
 
-    public void setCurStatus(EnemyA.status curStatus) {
+    public void setCurStatus(Enemy.status curStatus) {
         this.curStatus = curStatus;
     }
 

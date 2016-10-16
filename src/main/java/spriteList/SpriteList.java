@@ -7,7 +7,7 @@ import java.util.ListIterator;
 import map.abstracts.Map;
 import sprite.abstracts.Sprite;
 import sprite.nomad.abstracts.Bomber;
-import sprite.nomad.abstracts.EnemyA;
+import sprite.nomad.abstracts.Enemy;
 import sprite.settled.Bomb;
 import sprite.settled.ConclusionFlame;
 import sprite.settled.Flame;
@@ -42,7 +42,7 @@ public class SpriteList extends LinkedList<Sprite> {
             }
             case ENEMY: {
                 shouldBeRemoved = ActionMethods.processEnemyA(this, map.getMapPointMatrix(), map.getMapWidth(),
-                        map.getMapHeight(), (EnemyA) sprite);
+                        map.getMapHeight(), (Enemy) sprite);
                 break;
             }
             case BOMB: {

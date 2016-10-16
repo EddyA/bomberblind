@@ -2,12 +2,12 @@ package sprite.nomad;
 
 import images.ImagesLoader;
 import sprite.SpriteType;
-import sprite.nomad.abstracts.EnemyA;
+import sprite.nomad.abstracts.Enemy;
 
 /**
  * A mecanical angel.
  */
-public class MecaAngel extends EnemyA {
+public class MecaAngel extends Enemy {
 
     public final static int REFRESH_TIME = 100;
     public final static int MOVING_TIME = 10;

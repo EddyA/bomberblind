@@ -1,9 +1,9 @@
 package sprite.nomad.abstracts;
 
-import static sprite.nomad.abstracts.EnemyA.status.STATUS_DYING;
-import static sprite.nomad.abstracts.EnemyA.status.STATUS_WALKING_FRONT;
-import static sprite.nomad.abstracts.EnemyA.status.STATUS_WALKING_LEFT;
-import static sprite.nomad.abstracts.EnemyA.status.STATUS_WALKING_RIGHT;
+import static sprite.nomad.abstracts.Enemy.status.STATUS_DYING;
+import static sprite.nomad.abstracts.Enemy.status.STATUS_WALKING_FRONT;
+import static sprite.nomad.abstracts.Enemy.status.STATUS_WALKING_LEFT;
+import static sprite.nomad.abstracts.Enemy.status.STATUS_WALKING_RIGHT;
 
 import java.io.IOException;
 
@@ -14,7 +14,7 @@ import org.junit.Test;
 import images.ImagesLoader;
 import sprite.nomad.CloakedSkeleton;
 
-public class EnemyATest implements WithAssertions {
+public class EnemyTest implements WithAssertions {
 
     @Before
     public void fillImagesMatrix() throws IOException {
@@ -90,35 +90,35 @@ public class EnemyATest implements WithAssertions {
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
 
         // dying.
-        cloakedSkeleton.setCurStatus(EnemyA.status.STATUS_DYING);
+        cloakedSkeleton.setCurStatus(Enemy.status.STATUS_DYING);
         cloakedSkeleton.updateSprite();
         assertThat(cloakedSkeleton.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonDeathMatrixRowIdx]);
         assertThat(cloakedSkeleton.nbImages).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME);
 
         // walking back.
-        cloakedSkeleton.setCurStatus(EnemyA.status.STATUS_WALKING_BACK);
+        cloakedSkeleton.setCurStatus(Enemy.status.STATUS_WALKING_BACK);
         cloakedSkeleton.updateSprite();
         assertThat(cloakedSkeleton.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkBackMatrixRowIdx]);
         assertThat(cloakedSkeleton.nbImages).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
 
         // walking front.
-        cloakedSkeleton.setCurStatus(EnemyA.status.STATUS_WALKING_FRONT);
+        cloakedSkeleton.setCurStatus(Enemy.status.STATUS_WALKING_FRONT);
         cloakedSkeleton.updateSprite();
         assertThat(cloakedSkeleton.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkFrontMatrixRowIdx]);
         assertThat(cloakedSkeleton.nbImages).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
 
         // walking left.
-        cloakedSkeleton.setCurStatus(EnemyA.status.STATUS_WALKING_LEFT);
+        cloakedSkeleton.setCurStatus(Enemy.status.STATUS_WALKING_LEFT);
         cloakedSkeleton.updateSprite();
         assertThat(cloakedSkeleton.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkLeftMatrixRowIdx]);
         assertThat(cloakedSkeleton.nbImages).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
 
         // walking right.
-        cloakedSkeleton.setCurStatus(EnemyA.status.STATUS_WALKING_RIGHT);
+        cloakedSkeleton.setCurStatus(Enemy.status.STATUS_WALKING_RIGHT);
         cloakedSkeleton.updateSprite();
         assertThat(cloakedSkeleton.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkRightMatrixRowIdx]);
