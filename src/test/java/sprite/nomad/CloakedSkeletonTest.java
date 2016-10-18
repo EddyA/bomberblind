@@ -1,13 +1,14 @@
 package sprite.nomad;
 
-import images.ImagesLoader;
+import static sprite.nomad.abstracts.Enemy.Action.ACTION_WALKING;
+
+import java.io.IOException;
+
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-
-import static sprite.nomad.abstracts.Enemy.status.STATUS_WALKING_FRONT;
+import images.ImagesLoader;
 
 public class CloakedSkeletonTest implements WithAssertions {
 
@@ -23,8 +24,8 @@ public class CloakedSkeletonTest implements WithAssertions {
         // check members value.
         assertThat(cloakedSkeleton.getXMap()).isEqualTo(15);
         assertThat(cloakedSkeleton.getYMap()).isEqualTo(30);
-        assertThat(cloakedSkeleton.getCurStatus()).isEqualTo(STATUS_WALKING_FRONT);
-        assertThat(cloakedSkeleton.getLastStatus()).isEqualTo(STATUS_WALKING_FRONT);
+        assertThat(cloakedSkeleton.getCurAction()).isEqualTo(ACTION_WALKING);
+        assertThat(cloakedSkeleton.getLastAction()).isEqualTo(ACTION_WALKING);
         assertThat(cloakedSkeleton.getDeathImages())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonDeathMatrixRowIdx]);
         assertThat(cloakedSkeleton.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME);

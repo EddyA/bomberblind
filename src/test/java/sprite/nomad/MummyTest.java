@@ -1,13 +1,14 @@
 package sprite.nomad;
 
-import images.ImagesLoader;
+import static sprite.nomad.abstracts.Enemy.Action.ACTION_WALKING;
+
+import java.io.IOException;
+
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-
-import static sprite.nomad.abstracts.Enemy.status.STATUS_WALKING_FRONT;
+import images.ImagesLoader;
 
 public class MummyTest implements WithAssertions {
 
@@ -23,8 +24,8 @@ public class MummyTest implements WithAssertions {
         // check members value.
         assertThat(mummy.getXMap()).isEqualTo(15);
         assertThat(mummy.getYMap()).isEqualTo(30);
-        assertThat(mummy.getCurStatus()).isEqualTo(STATUS_WALKING_FRONT);
-        assertThat(mummy.getLastStatus()).isEqualTo(STATUS_WALKING_FRONT);
+        assertThat(mummy.getCurAction()).isEqualTo(ACTION_WALKING);
+        assertThat(mummy.getLastAction()).isEqualTo(ACTION_WALKING);
         assertThat(mummy.getDeathImages())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.mummyDeathMatrixRowIdx]);
         assertThat(mummy.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_MUMMY_DEATH_FRAME);

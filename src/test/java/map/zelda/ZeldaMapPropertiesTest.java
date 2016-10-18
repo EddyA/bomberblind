@@ -1,7 +1,7 @@
 package map.zelda;
 
-import exceptions.InvalidMapConfigurationException;
-import map.zelda.ZeldaMapProperties;
+import exceptions.InvalidConfigurationException;
+
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -51,7 +51,7 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
     public void loadPropertiesWithUnknownParameterShouldThrowExpectedException() throws Exception {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties("badFilePath");
         assertThatThrownBy(zeldaMapProperties::loadProperties)
-                .isInstanceOf(InvalidMapConfigurationException.class)
+                .isInstanceOf(InvalidConfigurationException.class)
                 .hasMessage("'badFilePath' file not found.");
     }
 
@@ -65,7 +65,7 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
                 "notAnIntegerConvertibleString");
 
         assertThatThrownBy(zeldaMapProperties::checkProperties)
-                .isInstanceOf(InvalidMapConfigurationException.class)
+                .isInstanceOf(InvalidConfigurationException.class)
                 .hasMessage("'/test.zelda.map.properties' is not a valid properties file: "
                         + "some field are missing or not integer convertible.");
     }
@@ -79,7 +79,7 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
         zeldaMapProperties.getProperties().remove(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY);
 
         assertThatThrownBy(zeldaMapProperties::checkProperties)
-                .isInstanceOf(InvalidMapConfigurationException.class)
+                .isInstanceOf(InvalidConfigurationException.class)
                 .hasMessage("'/test.zelda.map.properties' is not a valid properties file: "
                         + "some field are missing or not integer convertible.");
     }
@@ -95,7 +95,7 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
         zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY, "30");
 
         assertThatThrownBy(zeldaMapProperties::checkProperties)
-                .isInstanceOf(InvalidMapConfigurationException.class)
+                .isInstanceOf(InvalidConfigurationException.class)
                 .hasMessage("'/test.zelda.map.properties' is not a valid properties file: "
                         + "sum of the percentage cannot exceed 100.");
     }

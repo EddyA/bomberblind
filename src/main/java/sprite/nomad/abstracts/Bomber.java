@@ -1,11 +1,13 @@
 package sprite.nomad.abstracts;
 
-import static sprite.nomad.abstracts.Bomber.status.STATUS_DYING;
-import static sprite.nomad.abstracts.Bomber.status.STATUS_WAITING;
+import static sprite.nomad.abstracts.Bomber.Action.STATUS_DYING;
+import static sprite.nomad.abstracts.Bomber.Action.STATUS_WAITING;
+import static sprite.nomad.abstracts.Bomber.Action.STATUS_WALKING;
 
 import java.awt.Image;
 
 import sprite.SpriteType;
+import utils.Direction;
 
 /**
  * Abstract class of a bomber.
@@ -13,15 +15,12 @@ import sprite.SpriteType;
 public abstract class Bomber extends Nomad {
 
     /**
-     * enum the different available status of a bomber.
+     * enum the different available action of a bomber.
      */
-    public enum status {
+    public enum Action {
         STATUS_DYING,
         STATUS_WAITING,
-        STATUS_WALKING_BACK,
-        STATUS_WALKING_FRONT,
-        STATUS_WALKING_LEFT,
-        STATUS_WALKING_RIGHT,
+        STATUS_WALKING,
         STATUS_WON
     }
 
@@ -37,8 +36,10 @@ public abstract class Bomber extends Nomad {
     private Image[] winImages;
     private int nbWinFrame;
 
-    private Bomber.status curStatus = STATUS_WAITING; // current status.
-    private Bomber.status lastStatus = STATUS_WAITING; // last curStatus.
+    private Action curAction = STATUS_WAITING; // current action.
+    private Action lastAction = curAction; // last action.
+    private Direction curDirection; // current direction.
+    private Direction lastDirection; // last direction.
 
     private int initialXMap; // initial abscissa on map.
     private int initialYMap; // initial ordinate on map.
@@ -52,16 +53,16 @@ public abstract class Bomber extends Nomad {
      * @param xMap abscissa on the map
      * @param yMap ordinate on the map
      * @param spriteType the sprite's type
-     * @param deathImages the array of image for the "death" status
+     * @param deathImages the array of image for the "death" action
      * @param nbDeathFrame the number of images of the "death" array
-     * @param waitImages the array of image for the "wait" status
+     * @param waitImages the array of image for the "wait" action
      * @param nbWaitFrame the number of images of the "wait" array
-     * @param walkBackImages the array of images for the "walk back" status
-     * @param walkFrontImages the array of images for the "walk front" status
-     * @param walkLeftImages the array of images for the "walk left" status
-     * @param walkRightImages the array of images for the "walk right" status
+     * @param walkBackImages the array of images for the "walk back" action
+     * @param walkFrontImages the array of images for the "walk front" action
+     * @param walkLeftImages the array of images for the "walk left" action
+     * @param walkRightImages the array of images for the "walk right" action
      * @param nbWalkFrame number of images of the "walk" arrays
-     * @param winImages the array of image for the "win" status
+     * @param winImages the array of image for the "win" action
      * @param nbWinFrame the number of images of the "win" array
      * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
      * @param moveTime the move time (i.e. defining the nomad move speed)
@@ -146,8 +147,8 @@ public abstract class Bomber extends Nomad {
         return nbWinFrame;
     }
 
-    public status getLastStatus() {
-        return lastStatus;
+    public Action getLastAction() {
+        return lastAction;
     }
 
     public int getInitialXMap() {
@@ -166,8 +167,8 @@ public abstract class Bomber extends Nomad {
         return lastInvincibilityTs;
     }
 
-    public void setLastStatus(status lastStatus) {
-        this.lastStatus = lastStatus;
+    public void setLastAction(Action lastAction) {
+        this.lastAction = lastAction;
     }
 
     public void setInvincible(boolean isInvincible) {
@@ -183,12 +184,20 @@ public abstract class Bomber extends Nomad {
         this.lastInvincibilityTs = lastInvincibilityTs;
     }
 
-    public void setCurStatus(Bomber.status curStatus) {
-        this.curStatus = curStatus;
+    public void setCurAction(Action curAction) {
+        this.curAction = curAction;
     }
 
-    public Bomber.status getCurStatus() {
-        return curStatus;
+    public Action getCurAction() {
+        return curAction;
+    }
+
+    public void setCurDirection(Direction curDirection) {
+        this.curDirection = curDirection;
+    }
+
+    public void setLastDirection(Direction lastDirection) {
+        this.lastDirection = lastDirection;
     }
 
     /**
@@ -197,28 +206,23 @@ public abstract class Bomber extends Nomad {
     public void init() {
         xMap = initialXMap;
         yMap = initialYMap;
-        curStatus = STATUS_WAITING;
+        curAction = STATUS_WAITING;
         setInvincible(true);
     }
 
-    @Override
-    public boolean isInvincible() {
-        long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
-        return lastInvincibilityTs + invincibilityTime >= curTs;
-    }
-
-    @Override
-    public boolean isFinished() {
-        return ((curStatus == STATUS_DYING) && (curImageIdx == nbImages - 1));
+    public boolean actionHasChanged() {
+        return ((curAction != lastAction) ||
+                (curAction == STATUS_WALKING && curDirection != lastDirection));
     }
 
     @Override
     public boolean updateStatus() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
-        if ((curStatus != lastStatus) || // either the status has changed
+        if ((actionHasChanged()) || // either the action has changed
                 (lastRefreshTs == 0)) { // or it is the 1st call to that function.
             lastRefreshTs = curTs;
-            lastStatus = curStatus;
+            lastAction = curAction;
+            lastDirection = curDirection;
             return true;
         } else {
             return false;
@@ -227,7 +231,7 @@ public abstract class Bomber extends Nomad {
 
     @Override
     public void updateSprite() {
-        switch (curStatus) {
+        switch (curAction) {
             case STATUS_DYING: {
                 images = deathImages;
                 nbImages = nbDeathFrame;
@@ -238,34 +242,50 @@ public abstract class Bomber extends Nomad {
                 nbImages = nbWaitFrame;
                 break;
             }
-            case STATUS_WALKING_BACK: {
+        case STATUS_WALKING: {
+            switch (curDirection) {
+            case NORTH: {
                 images = walkBackImages;
                 nbImages = nbWalkFrame;
                 break;
             }
-            case STATUS_WALKING_FRONT: {
+            case SOUTH: {
                 images = walkFrontImages;
                 nbImages = nbWalkFrame;
                 break;
             }
-            case STATUS_WALKING_LEFT: {
+            case WEST: {
                 images = walkLeftImages;
                 nbImages = nbWalkFrame;
                 break;
             }
-            case STATUS_WALKING_RIGHT: {
+            case EAST: {
                 images = walkRightImages;
                 nbImages = nbWalkFrame;
                 break;
             }
+            }
+            break;
+        }
             case STATUS_WON: {
                 images = winImages;
                 nbImages = nbWinFrame;
                 break;
             }
             default: {
-                throw new RuntimeException("another status is not allowed here, please check the algorithm.");
+            throw new RuntimeException("another action is not allowed here, please check the algorithm.");
             }
         }
+    }
+
+    @Override
+    public boolean isInvincible() {
+        long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
+        return lastInvincibilityTs + invincibilityTime >= curTs;
+    }
+
+    @Override
+    public boolean isFinished() {
+        return ((curAction == STATUS_DYING) && (curImageIdx == nbImages - 1));
     }
 }

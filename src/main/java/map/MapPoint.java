@@ -114,7 +114,7 @@ public class MapPoint {
      * Set the image to burned.
      */
     public void setImageAsBurned() {
-        image = ImagesLoader.imagesMatrix[ImagesLoader.singleBoomMatrixRowIdx][0]; // updateStatusAndClean image.
+        image = ImagesLoader.imagesMatrix[ImagesLoader.singleBoomMatrixRowIdx][0]; // update image.
     }
 
     /**
@@ -130,7 +130,7 @@ public class MapPoint {
             long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
             if (curTs - lastRefreshTs > refreshTime) { // if it is time to refresh.
                 lastRefreshTs = curTs;
-                if (++curImageIdx == nbImages) curImageIdx = 0; // updateStatusAndClean the image to display.
+                if (++curImageIdx == nbImages) curImageIdx = 0; // update the image to display.
             }
             imageToPaint = images[curImageIdx];
         }

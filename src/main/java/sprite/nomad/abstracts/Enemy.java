@@ -1,10 +1,9 @@
 package sprite.nomad.abstracts;
 
-import static sprite.nomad.abstracts.Enemy.status.STATUS_DYING;
-import static sprite.nomad.abstracts.Enemy.status.STATUS_WALKING_FRONT;
+import static sprite.nomad.abstracts.Enemy.Action.ACTION_DYING;
+import static sprite.nomad.abstracts.Enemy.Action.ACTION_WALKING;
 
 import java.awt.Image;
-import java.util.Optional;
 
 import sprite.SpriteType;
 import utils.Direction;
@@ -15,14 +14,10 @@ import utils.Direction;
 public abstract class Enemy extends Nomad {
 
     /**
-     * enum the different available status of an enemy.
+     * enum the different available action of an enemy.
      */
-    public enum status {
-        STATUS_DYING,
-        STATUS_WALKING_BACK,
-        STATUS_WALKING_FRONT,
-        STATUS_WALKING_LEFT,
-        STATUS_WALKING_RIGHT
+    public enum Action {
+        ACTION_DYING, ACTION_WALKING
     }
 
     private final Image[] deathImages;
@@ -33,8 +28,10 @@ public abstract class Enemy extends Nomad {
     private final Image[] walkRightImages;
     private final int nbWalkFrame;
 
-    private status curStatus = STATUS_WALKING_FRONT; // current status.
-    private status lastStatus = STATUS_WALKING_FRONT; // last status.
+    private Action curAction = ACTION_WALKING; // current action.
+    private Action lastAction = curAction; // last action.
+    private Direction curDirection = Direction.getRandomDirection(); // init the current direction with a random one.
+    private Direction lastDirection = curDirection; // last direction.
 
     /**
      * Create an enemy.
@@ -42,12 +39,12 @@ public abstract class Enemy extends Nomad {
      * @param xMap abscissa on the map
      * @param yMap ordinate on the map
      * @param spriteType the sprite's type
-     * @param deathImages the array of image for the "death" status
+     * @param deathImages the array of image for the "death" action
      * @param nbDeathFrame the number of images of the "death" array
-     * @param walkBackImages the array of images for the "walk back" status
-     * @param walkFrontImages the array of images for the "walk front" status
-     * @param walkLeftImages the array of images for the "walk left" status
-     * @param walkRightImages the array of images for the "walk right" status
+     * @param walkBackImages the array of images for the "walk back" action
+     * @param walkFrontImages the array of images for the "walk front" action
+     * @param walkLeftImages the array of images for the "walk left" action
+     * @param walkRightImages the array of images for the "walk right" action
      * @param nbWalkFrame number of images of the "walk" arrays
      * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
      * @param moveTime the move time (i.e. defining the nomad move speed)
@@ -102,47 +99,47 @@ public abstract class Enemy extends Nomad {
         return nbWalkFrame;
     }
 
-    public status getLastStatus() {
-        return lastStatus;
+    public Action getCurAction() {
+        return curAction;
     }
 
-    public void setLastStatus(status lastStatus) {
-        this.lastStatus = lastStatus;
+    public void setCurAction(Action curAction) {
+        this.curAction = curAction;
     }
 
-    public Enemy.status getCurStatus() {
-        return curStatus;
+    public Direction getCurDirection() {
+        return curDirection;
     }
 
-    public void setCurStatus(Enemy.status curStatus) {
-        this.curStatus = curStatus;
+    public void setCurDirection(Direction curDirection) {
+        this.curDirection = curDirection;
     }
 
-    /**
-     * @return the current direction according to the current status.
-     */
-    public Optional<Direction> getCurDirection() {
-        switch (curStatus) {
-        case STATUS_WALKING_BACK:
-            return Optional.of(Direction.NORTH);
-        case STATUS_WALKING_FRONT:
-            return Optional.of(Direction.SOUTH);
-        case STATUS_WALKING_LEFT:
-            return Optional.of(Direction.WEST);
-        case STATUS_WALKING_RIGHT:
-            return Optional.of(Direction.EAST);
-        default:
-            return Optional.empty();
-        }
+    public Action getLastAction() {
+        return lastAction;
+    }
+
+    public void setLastAction(Action lastAction) {
+        this.lastAction = lastAction;
+    }
+
+    public void setLastDirection(Direction lastDirection) {
+        this.lastDirection = lastDirection;
+    }
+
+    public boolean statusHasChanged() {
+        return ((curAction != lastAction) ||
+                (curAction == ACTION_WALKING && curDirection != lastDirection));
     }
 
     @Override
     public boolean updateStatus() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
-        if ((curStatus != lastStatus) || // either the status has changed
+        if ((statusHasChanged()) || // either the action has changed
                 (lastRefreshTs == 0)) { // or it is the 1st call to that function.
             lastRefreshTs = curTs;
-            lastStatus = curStatus;
+            lastAction = curAction;
+            lastDirection = curDirection;
             return true;
         } else {
             return false;
@@ -151,32 +148,37 @@ public abstract class Enemy extends Nomad {
 
     @Override
     public void updateSprite() {
-        switch (curStatus) {
-            case STATUS_DYING: {
+        switch (curAction) {
+        case ACTION_DYING: {
                 images = deathImages;
                 nbImages = nbDeathFrame;
                 break;
-            }
-            case STATUS_WALKING_BACK: {
+        }
+        case ACTION_WALKING: {
+            switch (curDirection) {
+            case NORTH: {
                 images = walkBackImages;
                 nbImages = nbWalkFrame;
                 break;
             }
-            case STATUS_WALKING_FRONT: {
+            case SOUTH: {
                 images = walkFrontImages;
                 nbImages = nbWalkFrame;
                 break;
             }
-            case STATUS_WALKING_LEFT: {
+            case WEST: {
                 images = walkLeftImages;
                 nbImages = nbWalkFrame;
                 break;
             }
-            case STATUS_WALKING_RIGHT: {
+            case EAST: {
                 images = walkRightImages;
                 nbImages = nbWalkFrame;
                 break;
             }
+            }
+            break;
+        }
         }
     }
 
@@ -187,6 +189,6 @@ public abstract class Enemy extends Nomad {
 
     @Override
     public boolean isFinished() {
-        return ((curStatus == STATUS_DYING) && (curImageIdx == nbImages - 1));
+        return ((curAction == ACTION_DYING) && (curImageIdx == nbImages - 1));
     }
 }

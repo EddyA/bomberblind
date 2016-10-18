@@ -1,4 +1,10 @@
-package spriteList;
+package spriteList.ctrl;
+
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
+import static sprite.nomad.abstracts.Enemy.Action.ACTION_WALKING;
+
+import java.util.LinkedList;
 
 import ai.EnemyAi;
 import exceptions.CannotMoveNomadException;
@@ -11,18 +17,12 @@ import sprite.settled.ConclusionFlame;
 import sprite.settled.Flame;
 import utils.Direction;
 
-import java.util.LinkedList;
-
-import static map.ctrl.NomadMethods.isNomadBurning;
-import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
-import static sprite.nomad.abstracts.Enemy.status.*;
-
 /**
  * Define a collection of methods to process sprites.
  * These methods can:
- * - update the sprite's status (e.g. change the enemy direction),
+ * - update the sprite's action (e.g. change the enemy direction),
  * - check if the sprite should be remove from the list of sprites (e.g. the enemy is dead),
- * - add other sprites according to the sprite's status (e.g. add flames if a bomb is exploding).
+ * - add other sprites according to the sprite's action (e.g. add flames if a bomb is exploding).
  */
 public class ActionMethods {
 
@@ -39,13 +39,13 @@ public class ActionMethods {
     public static boolean processBomber(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, Bomber bomber) {
         if (bomber.isFinished()) {
             bomber.init();
-        } else if (bomber.getCurStatus() != Bomber.status.STATUS_DYING) { // not finished and not dead.
+        } else if (bomber.getCurAction() != Bomber.Action.STATUS_DYING) { // not finished and not dead.
 
             // should the bomber die?
             if (!bomber.isInvincible() &&
                     (isNomadBurning(mapPointMatrix, bomber.getXMap(), bomber.getYMap()) ||
                             isNomadCrossingEnemy(list, bomber.getXMap(), bomber.getYMap(), bomber.getUid()))) {
-                bomber.setCurStatus(Bomber.status.STATUS_DYING);
+                bomber.setCurAction(Bomber.Action.STATUS_DYING);
             }
         }
         return false;
@@ -68,36 +68,36 @@ public class ActionMethods {
         boolean shouldBeRemoved = false;
         if (enemy.isFinished()) {
             shouldBeRemoved = true;
-        } else if (enemy.getCurStatus() != Enemy.status.STATUS_DYING) { // not finished and not dying.
+        } else if (enemy.getCurAction() != Enemy.Action.ACTION_DYING) { // not finished and not dying.
 
             // should the enemy die?
             if (isNomadBurning(mapPointMatrix, enemy.getXMap(), enemy.getYMap())) {
-                enemy.setCurStatus(Enemy.status.STATUS_DYING);
+                enemy.setCurAction(Enemy.Action.ACTION_DYING);
 
             } else if (enemy.isTimeToMove()) { // not dead -> should the enemy move?
                 try {
-                    Direction newDirection = EnemyAi.computeNextDirection(mapPointMatrix,
-                            mapWidth, mapHeight, list, enemy.getCurDirection().orElse(null),
-                            enemy.getXMap(), enemy.getYMap(), enemy.getUid()); // compute the next move.
+                    // compute the next direction.
+                    Direction newDirection = EnemyAi.computeNextDirection(mapPointMatrix, mapWidth, mapHeight, list,
+                            enemy.getCurDirection(), enemy.getXMap(), enemy.getYMap(), enemy.getUid());
+
+                    // assign the new direction.
+                    enemy.setCurAction(ACTION_WALKING);
+                    enemy.setCurDirection(newDirection);
                     switch (newDirection) {
                         case NORTH: {
                             enemy.setYMap(enemy.getYMap() - 1);
-                            enemy.setCurStatus(STATUS_WALKING_BACK);
                             break;
                         }
                         case SOUTH: {
                             enemy.setYMap(enemy.getYMap() + 1);
-                            enemy.setCurStatus(STATUS_WALKING_FRONT);
                             break;
                         }
                         case WEST: {
                             enemy.setXMap(enemy.getXMap() - 1);
-                            enemy.setCurStatus(STATUS_WALKING_LEFT);
                             break;
                         }
                         case EAST: {
                             enemy.setXMap(enemy.getXMap() + 1);
-                            enemy.setCurStatus(STATUS_WALKING_RIGHT);
                             break;
                         }
                     }

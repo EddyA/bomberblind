@@ -1,14 +1,15 @@
 package map.zelda;
 
-import com.google.common.base.Preconditions;
-import exceptions.InvalidMapConfigurationException;
-import map.abstracts.MapProperties;
+import static utils.Tools.isValidInteger;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import static utils.Tools.isValidInteger;
+import com.google.common.base.Preconditions;
+
+import exceptions.InvalidConfigurationException;
+import map.abstracts.MapProperties;
 
 /**
  * This class extends {@link MapProperties}.
@@ -77,19 +78,19 @@ public class ZeldaMapProperties extends MapProperties {
     }
 
     public MapProperties loadProperties()
-            throws IllegalArgumentException, IOException, InvalidMapConfigurationException {
-        Preconditions.checkArgument((mapPropertiesFile != null) &&
-                !mapPropertiesFile.isEmpty(), "map properties file not set.");
-        URL configurationFile = ZeldaMapProperties.class.getResource(mapPropertiesFile);
+            throws IllegalArgumentException, IOException, InvalidConfigurationException {
+        Preconditions.checkArgument((propertiesFile != null) &&
+                !propertiesFile.isEmpty(), "map properties file not set.");
+        URL configurationFile = ZeldaMapProperties.class.getResource(propertiesFile);
         if (configurationFile == null) {
-            throw new InvalidMapConfigurationException("'" + mapPropertiesFile + "' file not found.");
+            throw new InvalidConfigurationException("'" + propertiesFile + "' file not found.");
         }
         InputStream inputStream = configurationFile.openStream();
         properties.load(inputStream);
         return this;
     }
 
-    public MapProperties checkProperties() throws InvalidMapConfigurationException {
+    public MapProperties checkProperties() throws InvalidConfigurationException {
         if (!isValidInteger(properties.getProperty(MAP_SIZE_WIDTH)) ||
                 !isValidInteger(properties.getProperty(MAP_SIZE_HEIGHT)) ||
                 !isValidInteger(properties.getProperty(MAP_MARGIN_VERTICAL)) ||
@@ -103,14 +104,14 @@ public class ZeldaMapProperties extends MapProperties {
                 !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_MUTABLE)) ||
                 !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_OBSTACLE)) ||
                 !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY))) {
-            throw new InvalidMapConfigurationException("'" + mapPropertiesFile + "' is not a valid properties file: "
+            throw new InvalidConfigurationException("'" + propertiesFile + "' is not a valid properties file: "
                     + "some field are missing or not integer convertible.");
         }
         int perSingleMutable = Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_MUTABLE));
         int perSingleObstacle = Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_OBSTACLE));
         int perSingleDynamicPathway = Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY));
         if (perSingleMutable + perSingleObstacle + perSingleDynamicPathway > 100) {
-            throw new InvalidMapConfigurationException("'" + mapPropertiesFile + "' is not a valid properties file: "
+            throw new InvalidConfigurationException("'" + propertiesFile + "' is not a valid properties file: "
                     + "sum of the percentage cannot exceed 100.");
         }
         return this;

@@ -1,7 +1,7 @@
 package map.zelda;
 
 import exceptions.CannotCreateMapElementException;
-import exceptions.InvalidMapConfigurationException;
+import exceptions.InvalidConfigurationException;
 import map.MapPattern;
 import map.MapPoint;
 import map.ctrl.GenerationMethods;
@@ -20,7 +20,7 @@ public class ZeldaMap extends map.abstracts.Map {
     private MapPoint castleStartPoint; // castle start point (north/west MapPoint).
 
     public ZeldaMap(ZeldaMapSetting zeldaMapSetting, int screenWidth, int screenHeight)
-            throws IOException, InvalidMapConfigurationException, CannotCreateMapElementException {
+            throws IOException, InvalidConfigurationException, CannotCreateMapElementException {
         super(zeldaMapSetting, screenWidth, screenHeight);
         this.zeldaMapSetting = zeldaMapSetting;
         this.mapPointMatrix = new MapPoint[zeldaMapSetting.getMapHeight()][zeldaMapSetting.getMapWidth()];
@@ -31,6 +31,7 @@ public class ZeldaMap extends map.abstracts.Map {
         }
     }
 
+    @Override
     public void generateMap() throws CannotCreateMapElementException {
         int maxNbTry = 10;
 
@@ -62,6 +63,7 @@ public class ZeldaMap extends map.abstracts.Map {
                 zeldaMapSetting.getPerSingleMutable(), zeldaMapSetting.getPerSingleObstacle(), zeldaMapSetting.getPerSingleDynPathway());
     }
 
+    @Override
     public Tuple2<Integer, Integer> computeInitialBbManPosition() {
 
         // compute the initial Bomber position in order to be in front of the 1st castle door.

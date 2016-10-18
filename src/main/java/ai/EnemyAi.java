@@ -29,13 +29,13 @@ public class EnemyAi {
      * @param xMap the enemy's abscissa
      * @param yMap the enemy's ordinate
      * @param uid the enemy's uid
-     * @return the updated status
+     * @return the updated action
      */
     public static Direction computeNextDirection(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
             List<Sprite> spriteList, Direction curDirection, int xMap, int yMap, int uid)
             throws CannotMoveNomadException {
 
-        // create a set of checked status.
+        // create a set of checked action.
         Set<Direction> checkedDirections = new HashSet<>();
 
         // if a (current) direction is set, firstly try to continue on that way, randomly get one otherwise.

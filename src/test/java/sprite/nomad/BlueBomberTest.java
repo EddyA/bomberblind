@@ -1,13 +1,14 @@
 package sprite.nomad;
 
-import images.ImagesLoader;
+import static sprite.nomad.abstracts.Bomber.Action.STATUS_WAITING;
+
+import java.io.IOException;
+
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-
-import static sprite.nomad.abstracts.Bomber.status.STATUS_WAITING;
+import images.ImagesLoader;
 
 public class BlueBomberTest implements WithAssertions {
 
@@ -25,8 +26,8 @@ public class BlueBomberTest implements WithAssertions {
         assertThat(blueBomber.getYMap()).isEqualTo(20);
         assertThat(blueBomber.getInitialXMap()).isEqualTo(blueBomber.getXMap());
         assertThat(blueBomber.getInitialYMap()).isEqualTo(blueBomber.getYMap());
-        assertThat(blueBomber.getCurStatus()).isEqualTo(STATUS_WAITING);
-        assertThat(blueBomber.getLastStatus()).isEqualTo(STATUS_WAITING);
+        assertThat(blueBomber.getCurAction()).isEqualTo(STATUS_WAITING);
+        assertThat(blueBomber.getLastAction()).isEqualTo(STATUS_WAITING);
         assertThat(blueBomber.getDeathImages()).
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberDeathMatrixRowIdx]);
         assertThat(blueBomber.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_BOMBER_DEATH_FRAME);

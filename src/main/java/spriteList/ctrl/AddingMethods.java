@@ -1,4 +1,4 @@
-package spriteList;
+package spriteList.ctrl;
 
 import java.util.LinkedList;
 
@@ -13,32 +13,24 @@ import sprite.settled.ConclusionFlame;
 import sprite.settled.Flame;
 
 /**
- * A collection of methods to add sprites to a list according to a map setting/status.
+ * A collection of methods to add sprites to a list according to a map status.
  */
 public class AddingMethods {
 
     /**
-     * Add the main bomber to the list.
+     * Add a bomber to the list.
      *
-     * @param bomber the bomber to add
+     * @param list the list into which adding the sprite
+     * @param bomber bomber the bomber to add
      */
     public static void addBomber(LinkedList<Sprite> list, Bomber bomber) {
         list.add(bomber);
     }
 
     /**
-     * Add a mummy to the list.
-     *
-     * @param xMap the abscissa of the mummy
-     * @param yMap the ordinate of the mummy
-     */
-    public static void addMummy(LinkedList<Sprite> list, int xMap, int yMap) {
-        list.add(new Mummy(xMap, yMap));
-    }
-
-    /**
      * Add a cloaked skeleton to the list.
      *
+     * @param list the list into which adding the sprite
      * @param xMap the abscissa of the cloaked skeleton
      * @param yMap the ordinate of the cloaked skeleton
      */
@@ -49,11 +41,23 @@ public class AddingMethods {
     /**
      * Add a meca angel to the list.
      *
+     * @param list the list into which adding the sprite
      * @param xMap the abscissa of the meca angel
      * @param yMap the ordinate of the meca angel
      */
     public static void addMecaAngel(LinkedList<Sprite> list, int xMap, int yMap) {
         list.add(new MecaAngel(xMap, yMap));
+    }
+
+    /**
+     * Add a mummy to the list.
+     *
+     * @param list the list into which adding the sprite
+     * @param xMap the abscissa of the mummy
+     * @param yMap the ordinate of the mummy
+     */
+    public static void addMummy(LinkedList<Sprite> list, int xMap, int yMap) {
+        list.add(new Mummy(xMap, yMap));
     }
 
     /**
@@ -63,8 +67,8 @@ public class AddingMethods {
      * - AND it is not a bombing case,
      * - AND it is not a burning case.
      *
+     * @param list the list into which adding the bomb
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param list the list into which putting the bomb
      * @param rowIdx the map row index of the bomb
      * @param colIdx the map column index of the bomb
      * @param flameSize the flame size of the bomb
@@ -85,8 +89,8 @@ public class AddingMethods {
      * - it is a pathway, in this case the function returns true as the flame can be propagated,
      * - OR it is a mutable or a bomb, in this case the function returns false as the flame cannot be propagated.
      *
+     * @param list the list into which adding the flame
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param list the list into which putting the flame
      * @param rowIdx the map row index of the flame
      * @param colIdx the map column index of the flame
      * @return true if the flame can be propagated, false it is stopped
@@ -114,10 +118,10 @@ public class AddingMethods {
     /**
      * Add a set of flames to represent a bomb explosion.
      *
+     * @param list the list into which adding the flames
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth the map width
      * @param mapHeight the map height
-     * @param list the list into which putting the flames
      * @param centralRowIdx the map row index of the central flame
      * @param centralColIdx the map column index of the central flame
      * @param flameSize the flame size
@@ -173,8 +177,8 @@ public class AddingMethods {
      * The conclusion flame is adding if:
      * - it is a burning case.
      *
+     * @param list the list into which adding the flame
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param list the list into which putting the flame
      * @param rowIdx the map row index of the flame
      * @param colIdx the map column index of the flame
      */

@@ -1,19 +1,23 @@
 package sprite.nomad.abstracts;
 
-import images.ImagesLoader;
-import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-import sprite.nomad.BlueBomber;
-import utils.CurrentTimeSupplier;
+import static org.mockito.Mockito.mock;
+import static sprite.nomad.BlueBomber.INVINCIBLE_TIME;
+import static sprite.nomad.abstracts.Bomber.Action.STATUS_DYING;
+import static sprite.nomad.abstracts.Bomber.Action.STATUS_WAITING;
+import static sprite.nomad.abstracts.Bomber.Action.STATUS_WALKING;
 
 import java.io.IOException;
 import java.time.Instant;
 
-import static org.mockito.Mockito.mock;
-import static sprite.nomad.BlueBomber.INVINCIBLE_TIME;
-import static sprite.nomad.abstracts.Bomber.status.*;
+import org.assertj.core.api.WithAssertions;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import images.ImagesLoader;
+import sprite.nomad.BlueBomber;
+import utils.CurrentTimeSupplier;
+import utils.Direction;
 
 public class BomberTest implements WithAssertions {
 
@@ -31,8 +35,8 @@ public class BomberTest implements WithAssertions {
         assertThat(blueBomber.getYMap()).isEqualTo(30);
         assertThat(blueBomber.getInitialXMap()).isEqualTo(blueBomber.getXMap());
         assertThat(blueBomber.getInitialYMap()).isEqualTo(blueBomber.getYMap());
-        assertThat(blueBomber.getCurStatus()).isEqualTo(STATUS_WAITING);
-        assertThat(blueBomber.getLastStatus()).isEqualTo(STATUS_WAITING);
+        assertThat(blueBomber.getCurAction()).isEqualTo(STATUS_WAITING);
+        assertThat(blueBomber.getLastAction()).isEqualTo(STATUS_WAITING);
         assertThat(blueBomber.getDeathImages()).
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberDeathMatrixRowIdx]);
         assertThat(blueBomber.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_BOMBER_DEATH_FRAME);
@@ -57,12 +61,42 @@ public class BomberTest implements WithAssertions {
     }
 
     @Test
+    public void statusHasChangedShouldReturnFalse() {
+        BlueBomber blueBomber = new BlueBomber(15, 30);
+
+        // set test.
+        blueBomber.setCurAction(STATUS_WALKING);
+        blueBomber.setCurDirection(Direction.NORTH);
+        blueBomber.setLastAction(STATUS_WALKING);
+        blueBomber.setLastDirection(Direction.NORTH);
+
+        // call & check.
+        assertThat(blueBomber.actionHasChanged()).isFalse();
+    }
+
+    @Test
+    public void statusHasChangedShouldReturnTrue() {
+        BlueBomber blueBomber = new BlueBomber(15, 30);
+
+        // set test.
+        blueBomber.setCurAction(STATUS_WALKING);
+        blueBomber.setCurDirection(Direction.NORTH);
+        blueBomber.setLastAction(STATUS_WALKING);
+        blueBomber.setLastDirection(Direction.SOUTH);
+
+        // call & check.
+        assertThat(blueBomber.actionHasChanged()).isTrue();
+    }
+
+    @Test
     public void updateStatusShouldReturnFalse() throws Exception {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
-        blueBomber.setCurStatus(STATUS_WALKING_LEFT);
-        blueBomber.setLastStatus(STATUS_WALKING_LEFT); // last status == current status.
+        blueBomber.setCurAction(STATUS_WALKING);
+        blueBomber.setCurDirection(Direction.NORTH);
+        blueBomber.setLastAction(STATUS_WALKING);
+        blueBomber.setLastDirection(Direction.NORTH);
         blueBomber.setLastRefreshTs(1); // NOT the first call.
 
         // call & check.
@@ -74,8 +108,6 @@ public class BomberTest implements WithAssertions {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
-        blueBomber.setCurStatus(STATUS_WALKING_LEFT);
-        blueBomber.setLastStatus(STATUS_WALKING_LEFT); // last status == current status.
         blueBomber.setLastRefreshTs(0); // first call.
 
         // call & check.
@@ -87,8 +119,8 @@ public class BomberTest implements WithAssertions {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
-        blueBomber.setCurStatus(STATUS_WALKING_LEFT);
-        blueBomber.setLastStatus(STATUS_WALKING_RIGHT); // last status != current status.
+        blueBomber.setCurAction(STATUS_WAITING);
+        blueBomber.setLastAction(STATUS_WALKING); // last action != current action.
         blueBomber.setLastRefreshTs(1); // NOT the first call.
 
         // call & check.
@@ -100,49 +132,53 @@ public class BomberTest implements WithAssertions {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // dying.
-        blueBomber.setCurStatus(Bomber.status.STATUS_DYING);
+        blueBomber.setCurAction(Bomber.Action.STATUS_DYING);
         blueBomber.updateSprite();
         assertThat(blueBomber.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberDeathMatrixRowIdx]);
         assertThat(blueBomber.nbImages).isEqualTo(ImagesLoader.NB_BOMBER_DEATH_FRAME);
 
         // wait.
-        blueBomber.setCurStatus(Bomber.status.STATUS_WAITING);
+        blueBomber.setCurAction(Bomber.Action.STATUS_WAITING);
         blueBomber.updateSprite();
         assertThat(blueBomber.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
         assertThat(blueBomber.nbImages).isEqualTo(ImagesLoader.NB_BOMBER_WAIT_FRAME);
 
         // walking back.
-        blueBomber.setCurStatus(Bomber.status.STATUS_WALKING_BACK);
+        blueBomber.setCurAction(Bomber.Action.STATUS_WALKING);
+        blueBomber.setCurDirection(Direction.NORTH);
         blueBomber.updateSprite();
         assertThat(blueBomber.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkBackMatrixRowIdx]);
         assertThat(blueBomber.nbImages).isEqualTo(ImagesLoader.NB_BOMBER_WALK_FRAME);
 
         // walking front.
-        blueBomber.setCurStatus(Bomber.status.STATUS_WALKING_FRONT);
+        blueBomber.setCurAction(Bomber.Action.STATUS_WALKING);
+        blueBomber.setCurDirection(Direction.SOUTH);
         blueBomber.updateSprite();
         assertThat(blueBomber.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkFrontMatrixRowIdx]);
         assertThat(blueBomber.nbImages).isEqualTo(ImagesLoader.NB_BOMBER_WALK_FRAME);
 
         // walking left.
-        blueBomber.setCurStatus(Bomber.status.STATUS_WALKING_LEFT);
+        blueBomber.setCurAction(Bomber.Action.STATUS_WALKING);
+        blueBomber.setCurDirection(Direction.WEST);
         blueBomber.updateSprite();
         assertThat(blueBomber.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkLeftMatrixRowIdx]);
         assertThat(blueBomber.nbImages).isEqualTo(ImagesLoader.NB_BOMBER_WALK_FRAME);
 
         // walking right.
-        blueBomber.setCurStatus(Bomber.status.STATUS_WALKING_RIGHT);
+        blueBomber.setCurAction(Bomber.Action.STATUS_WALKING);
+        blueBomber.setCurDirection(Direction.EAST);
         blueBomber.updateSprite();
         assertThat(blueBomber.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWalkRightMatrixRowIdx]);
         assertThat(blueBomber.nbImages).isEqualTo(ImagesLoader.NB_BOMBER_WALK_FRAME);
 
         // win.
-        blueBomber.setCurStatus(Bomber.status.STATUS_WON);
+        blueBomber.setCurAction(Bomber.Action.STATUS_WON);
         blueBomber.updateSprite();
         assertThat(blueBomber.images)
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWinMatrixRowIdx]);
@@ -154,7 +190,7 @@ public class BomberTest implements WithAssertions {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
-        blueBomber.setCurStatus(STATUS_DYING);
+        blueBomber.setCurAction(STATUS_DYING);
         blueBomber.updateSprite();
         blueBomber.curImageIdx = ImagesLoader.NB_BOMBER_DEATH_FRAME - 1;
 
@@ -167,7 +203,8 @@ public class BomberTest implements WithAssertions {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
-        blueBomber.setCurStatus(STATUS_WALKING_RIGHT);
+        blueBomber.setCurAction(STATUS_WALKING);
+        blueBomber.setCurDirection(Direction.NORTH);
         blueBomber.updateSprite();
         blueBomber.curImageIdx = ImagesLoader.NB_BOMBER_DEATH_FRAME - 1;
 
@@ -180,7 +217,7 @@ public class BomberTest implements WithAssertions {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
-        blueBomber.setCurStatus(STATUS_DYING);
+        blueBomber.setCurAction(STATUS_DYING);
         blueBomber.updateSprite();
         blueBomber.curImageIdx = 0;
 
@@ -198,7 +235,7 @@ public class BomberTest implements WithAssertions {
         blueBomber.setCurrentTimeSupplier(currentTimeSupplier);
 
         // set test (update members with value != than the expected ones).
-        blueBomber.setCurStatus(STATUS_DYING);
+        blueBomber.setCurAction(STATUS_DYING);
         blueBomber.setXMap(30);
         blueBomber.setYMap(40);
         blueBomber.setInvincible(false);
@@ -207,7 +244,7 @@ public class BomberTest implements WithAssertions {
         blueBomber.init();
         assertThat(blueBomber.getXMap()).isEqualTo(blueBomber.getInitialXMap());
         assertThat(blueBomber.getYMap()).isEqualTo(blueBomber.getInitialYMap());
-        assertThat(blueBomber.getCurStatus()).isEqualTo(STATUS_WAITING);
+        assertThat(blueBomber.getCurAction()).isEqualTo(STATUS_WAITING);
         assertThat(blueBomber.isInvincible()).isEqualTo(true);
         assertThat(blueBomber.getLastInvincibilityTs()).isEqualTo(1000L);
     }
@@ -222,7 +259,7 @@ public class BomberTest implements WithAssertions {
         blueBomber.setCurrentTimeSupplier(currentTimeSupplier);
 
         // set test.
-        blueBomber.setCurStatus(STATUS_WAITING);
+        blueBomber.setCurAction(STATUS_WAITING);
         blueBomber.setInvincible(true); // set to invincible.
 
         // 1st case: should continue to be invincible.

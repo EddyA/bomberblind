@@ -1,7 +1,6 @@
 package map.zelda;
 
-import exceptions.InvalidMapConfigurationException;
-import exceptions.InvalidMapPropertiesException;
+import exceptions.InvalidPropertiesException;
 import map.abstracts.MapProperties;
 import map.abstracts.MapSettings;
 
@@ -25,7 +24,7 @@ public class ZeldaMapSetting extends MapSettings {
     private int perSingleObstacle; // the percentage of single obstacle to place among available cases.
     private int perSingleDynPathway; // the percentage of dynamic pathway to place among available cases.
 
-    public ZeldaMapSetting(MapProperties mapConfiguration) throws InvalidMapPropertiesException {
+    public ZeldaMapSetting(MapProperties mapConfiguration) throws InvalidPropertiesException {
         super(mapConfiguration);
         if (mapConfiguration.getClass().getSimpleName().equals("ZeldaMapProperties")) {
             ZeldaMapProperties zeldaMapProperties = (ZeldaMapProperties) mapConfiguration;
@@ -41,7 +40,7 @@ public class ZeldaMapSetting extends MapSettings {
             this.perSingleObstacle = zeldaMapProperties.getMapElementPerSingleObstacle();
             this.perSingleDynPathway = zeldaMapProperties.getMapElementPerSingleDynPathway();
         } else {
-            throw new InvalidMapPropertiesException("the provided MapProperties is badly typed.");
+            throw new InvalidPropertiesException("the provided MapProperties is badly typed.");
         }
     }
 

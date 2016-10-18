@@ -10,7 +10,7 @@ import sprite.abstracts.Sprite;
  */
 public abstract class Nomad extends Sprite {
 
-    protected Image[] images; // array of image according to the current sprite's status.
+    protected Image[] images; // array of image according to the current sprite's action.
     protected int nbImages; // number of images of the array of image.
     protected int curImageIdx; // sprite's current image index.
     private Image curImage; // sprite's current image.
@@ -59,14 +59,14 @@ public abstract class Nomad extends Sprite {
     }
 
     /**
-     * Update the nomad status.
+     * Update the nomad action.
      *
-     * @return true if the status changed, flase otherwise.
+     * @return true if the action changed, flase otherwise.
      */
     public abstract boolean updateStatus();
 
     /**
-     * Update the array of image according to the current sprite's status.
+     * Update the array of image according to the current sprite's action.
      */
     public abstract void updateSprite();
 
@@ -86,7 +86,7 @@ public abstract class Nomad extends Sprite {
     @Override
     public void updateImage() {
         updateSprite();
-        if (updateStatus() || // the status has changed
+        if (updateStatus() || // the action has changed
                 (isTimeToRefresh() && // OR (it is time to refresh
                         (++curImageIdx == nbImages))) { // AND it is the end of the sprite).
             curImageIdx = 0;
