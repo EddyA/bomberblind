@@ -17,7 +17,7 @@ import exceptions.InvalidConfigurationException;
 
 public class SpritesProperties {
 
-    final private static String SPRITES_ENEMY_CLOAKED_SKELETON = "sprite.enemy.cloaked.skeleton";
+    final protected static String SPRITES_ENEMY_CLOAKED_SKELETON = "sprite.enemy.cloaked.skeleton";
     final private static String SPRITES_ENEMY_MECA_ANGEL = "sprite.enemy.meca.angel";
     final private static String SPRITES_ENEMY_MUMMY = "sprite.enemy.mummy";
 
