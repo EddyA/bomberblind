@@ -63,8 +63,7 @@ public class AddingMethods {
     /**
      * Add a bomb to a list.
      * The bomb is adding if:
-     * - it is a pathway,
-     * - AND it is not a bombing case,
+     * - it is not a bombing case,
      * - AND it is not a burning case.
      *
      * @param list the list into which adding the bomb
@@ -75,9 +74,9 @@ public class AddingMethods {
      */
     public static void addBomb(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int rowIdx, int colIdx,
             int flameSize) {
-        if (mapPointMatrix[rowIdx][colIdx].isPathway() &&
-                !mapPointMatrix[rowIdx][colIdx].isBombing() &&
-                !mapPointMatrix[rowIdx][colIdx].isBurning()) {
+        if (!mapPointMatrix[rowIdx][colIdx].isBombing() && // to avoid adding several bombs when key is pressed.
+                !mapPointMatrix[rowIdx][colIdx].isBurning()) { // to avoid adding a bomb on a burning case when the
+                                                               // character is invicible.
             mapPointMatrix[rowIdx][colIdx].setBombing(true);
             list.add(new Bomb(rowIdx, colIdx, flameSize));
         }
@@ -100,7 +99,7 @@ public class AddingMethods {
             mapPointMatrix[rowIdx][colIdx].addFlame();
             mapPointMatrix[rowIdx][colIdx].setImageAsBurned();
             list.add(new Flame(rowIdx, colIdx));
-            return true; // the next case can burn.
+            return true; // the next case should be tested.
         } else if (mapPointMatrix[rowIdx][colIdx].isMutable() ||
                 mapPointMatrix[rowIdx][colIdx].isBombing()) {
             mapPointMatrix[rowIdx][colIdx].setPathway(true);
@@ -108,9 +107,9 @@ public class AddingMethods {
             mapPointMatrix[rowIdx][colIdx].addFlame();
             mapPointMatrix[rowIdx][colIdx].setImageAsBurned();
             list.add(new Flame(rowIdx, colIdx));
-            return false; // the next case should not burn.
+            return false; // the next case should NOT be tested.
         } else {
-            return false; // the next case should not burn.
+            return false; // the next case should NOT be tested.
         }
 
     }
@@ -137,45 +136,30 @@ public class AddingMethods {
         }
 
         // place right flames.
-        for (int i = 1, j = centralColIdx + 1; i <= flameSize && j < mapWidth; i++, j++) { // from center to
-            // right.
+        for (int i = 1, j = centralColIdx + 1; i <= flameSize && j < mapWidth; i++, j++) { // from center to right.
             if (!addFlame(list, mapPointMatrix, centralRowIdx, centralColIdx + i)) {
                 break; // break loop.
             }
         }
 
-        // in order to display flames in a good order, we must parse that axis before burning cases.
-        int rowIdx = 0;
-        for (int i = 1, j = centralRowIdx - 1; i <= flameSize && j >= 0; i++, j--) { // from center to upper.
-            if (mapPointMatrix[centralRowIdx - i][centralColIdx].isPathway()) {
-                // as a pathway, this case must burn -> check the following one.
-                rowIdx++;
-            } else if (mapPointMatrix[centralRowIdx - i][centralColIdx].isMutable() ||
-                    mapPointMatrix[centralRowIdx - i][centralColIdx].isBombing()) {
-                // as a mutable, this case must burn -> stop here.
-                rowIdx++;
-                break;
-            } else {
-                break; // as an obstacle, stop here.
+        // place upper flames.
+        for (int i = 1, j = centralRowIdx - 1; i <= flameSize && j >= 0; i++, j--) { // from center to top.
+            if (!addFlame(list, mapPointMatrix, centralRowIdx - i, centralColIdx)) {
+                break; // break loop.
             }
         }
-        for (int i = rowIdx; i > 0; i--) { // from upper to center.
-            addFlame(list, mapPointMatrix, centralRowIdx - i, centralColIdx);
-        }
-        addFlame(list, mapPointMatrix, centralRowIdx, centralColIdx); // central case.
 
-        for (int i = 1, j = centralRowIdx + 1; i <= flameSize && j < mapHeight; i++, j++) { // from center to
-            // lower.
+        // place lower flames.
+        for (int i = 1, j = centralRowIdx + 1; i <= flameSize && j < mapHeight; i++, j++) { // from center to bottom.
             if (!addFlame(list, mapPointMatrix, centralRowIdx + i, centralColIdx)) {
                 break; // break loop.
             }
         }
+        addFlame(list, mapPointMatrix, centralRowIdx, centralColIdx); // central case.
     }
 
     /**
      * Add a conclusion flame to a list.
-     * The conclusion flame is adding if:
-     * - it is a burning case.
      *
      * @param list the list into which adding the flame
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
@@ -184,8 +168,6 @@ public class AddingMethods {
      */
     public static void addConclusionFlame(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int rowIdx,
             int colIdx) {
-        if (mapPointMatrix[rowIdx][colIdx].isBurning()) {
             list.add(new ConclusionFlame(rowIdx, colIdx));
-        }
     }
 }

@@ -10,7 +10,7 @@ import exceptions.CannotPlaceSpriteOnMapException;
 import map.MapPoint;
 import map.abstracts.Map;
 import sprite.abstracts.Sprite;
-import sprite.nomad.SimpleEnemyType;
+import sprite.nomad.EnemyType;
 import sprite.nomad.abstracts.Bomber;
 import sprite.nomad.abstracts.Enemy;
 import sprite.settled.Bomb;
@@ -54,13 +54,13 @@ public class SpriteList extends LinkedList<Sprite> {
 
         // enemies:
         // - cloaked skeleton
-        GenerationMethodes.randomlyPlaceSimpleEnemy(this, SimpleEnemyType.CLOAKED_SKELETON,
+        GenerationMethodes.randomlyPlaceSimpleEnemy(this, EnemyType.CLOAKED_SKELETON,
                 spritesSetting.getNbCloakedSkeleton(), emptyPtList);
         // - meca angel
-        GenerationMethodes.randomlyPlaceSimpleEnemy(this, SimpleEnemyType.MECA_ANGEL,
+        GenerationMethodes.randomlyPlaceSimpleEnemy(this, EnemyType.MECA_ANGEL,
                 spritesSetting.getNbMecaAngel(), emptyPtList);
         // - mummy
-        GenerationMethodes.randomlyPlaceSimpleEnemy(this, SimpleEnemyType.MUMMY,
+        GenerationMethodes.randomlyPlaceSimpleEnemy(this, EnemyType.MUMMY,
                 spritesSetting.getNbMummy(), emptyPtList);
     }
 
@@ -74,25 +74,25 @@ public class SpriteList extends LinkedList<Sprite> {
 
             switch (sprite.getSpriteType()) {
             case BOMBER: {
-                shouldBeRemoved = ActionMethods.processBomber(this, map.getMapPointMatrix(), (Bomber) sprite);
+                shouldBeRemoved = ActionMethods.processBomber(this, map.getMapPointMatrix(), (Bomber)sprite);
                 break;
             }
             case ENEMY: {
                 shouldBeRemoved = ActionMethods.processEnemyA(this, map.getMapPointMatrix(), map.getMapWidth(),
-                        map.getMapHeight(), (Enemy) sprite);
+                        map.getMapHeight(), (Enemy)sprite);
                 break;
             }
             case BOMB: {
                 shouldBeRemoved = ActionMethods.processBomb(tmpList, map.getMapPointMatrix(), map.getMapWidth(),
-                        map.getMapHeight(), (Bomb) sprite);
+                        map.getMapHeight(), (Bomb)sprite);
                 break;
             }
             case FLAME: {
-                shouldBeRemoved = ActionMethods.processFlame(tmpList, map.getMapPointMatrix(), (Flame) sprite);
+                shouldBeRemoved = ActionMethods.processFlame(tmpList, map.getMapPointMatrix(), (Flame)sprite);
                 break;
             }
             case CONCLUSION_FLAME: {
-                shouldBeRemoved = ActionMethods.processConclusionFlame((ConclusionFlame) sprite);
+                shouldBeRemoved = ActionMethods.processConclusionFlame((ConclusionFlame)sprite);
                 break;
             }
             default: {

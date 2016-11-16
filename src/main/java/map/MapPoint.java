@@ -52,6 +52,10 @@ public class MapPoint {
         this.isBombing = isBombing;
     }
 
+    public void setNbFlames(int nbFlames) {
+        this.nbFlames = nbFlames;
+    }
+
     public void addFlame() {
         this.nbFlames++;
     }

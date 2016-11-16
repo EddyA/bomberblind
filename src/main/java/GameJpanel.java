@@ -21,6 +21,7 @@ import map.ctrl.NomadMethods;
 import map.zelda.ZeldaMap;
 import map.zelda.ZeldaMapProperties;
 import map.zelda.ZeldaMapSetting;
+import sprite.SpriteType;
 import sprite.nomad.BlueBomber;
 import sprite.nomad.abstracts.Bomber;
 import spriteList.SpriteList;

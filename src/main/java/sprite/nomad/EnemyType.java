@@ -1,8 +1,8 @@
 package sprite.nomad;
 
 /**
- * Enum the different type of simple enemy.
+ * Enum the different type of enemy.
  */
-public enum SimpleEnemyType {
+public enum EnemyType {
     CLOAKED_SKELETON, MECA_ANGEL, MUMMY;
 }

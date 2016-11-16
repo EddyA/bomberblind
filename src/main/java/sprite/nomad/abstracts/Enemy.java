@@ -6,6 +6,7 @@ import static sprite.nomad.abstracts.Enemy.Action.ACTION_WALKING;
 import java.awt.Image;
 
 import sprite.SpriteType;
+import sprite.nomad.EnemyType;
 import utils.Direction;
 
 /**
@@ -20,6 +21,7 @@ public abstract class Enemy extends Nomad {
         ACTION_DYING, ACTION_WALKING
     }
 
+    private final EnemyType enemyType;
     private final Image[] deathImages;
     private final int nbDeathFrame;
     private final Image[] walkBackImages;
@@ -38,7 +40,7 @@ public abstract class Enemy extends Nomad {
      *
      * @param xMap abscissa on the map
      * @param yMap ordinate on the map
-     * @param spriteType the sprite's type
+     * @param enemyType the enemy's type
      * @param deathImages the array of image for the "death" action
      * @param nbDeathFrame the number of images of the "death" array
      * @param walkBackImages the array of images for the "walk back" action
@@ -51,7 +53,7 @@ public abstract class Enemy extends Nomad {
      */
     public Enemy(int xMap,
                  int yMap,
-                 SpriteType spriteType,
+                 EnemyType enemyType,
                  Image[] deathImages,
                  int nbDeathFrame,
                  Image[] walkBackImages,
@@ -61,7 +63,8 @@ public abstract class Enemy extends Nomad {
                  int nbWalkFrame,
                  int refreshTime,
                  int moveTime) {
-        super(xMap, yMap, spriteType, refreshTime, moveTime);
+        super(xMap, yMap, SpriteType.ENEMY, refreshTime, moveTime);
+        this.enemyType = enemyType;
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
         this.walkBackImages = walkBackImages;
@@ -69,6 +72,10 @@ public abstract class Enemy extends Nomad {
         this.walkLeftImages = walkLeftImages;
         this.walkRightImages = walkRightImages;
         this.nbWalkFrame = nbWalkFrame;
+    }
+
+    public EnemyType getEnemyType() {
+        return enemyType;
     }
 
     public Image[] getDeathImages() {

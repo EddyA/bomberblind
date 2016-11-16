@@ -10,7 +10,7 @@ import java.util.Random;
 
 import exceptions.CannotPlaceSpriteOnMapException;
 import map.MapPoint;
-import sprite.nomad.SimpleEnemyType;
+import sprite.nomad.EnemyType;
 import spriteList.SpriteList;
 
 public class GenerationMethodes {
@@ -18,13 +18,13 @@ public class GenerationMethodes {
     /**
      * Place a certain number of elements of a certain type of simple enemy.
      *
-     * @param simpleEnemyType the type of simple enemy to place
+     * @param EnemyType the type of simple enemy to place
      * @param nbElt the number of elements to place
      * @param spriteList the list into which adding the enemy
      * @param emptyPtList the list of empty points (available points to place the enemies)
      * @throws CannotPlaceSpriteOnMapException if a sprite cannot be placed on map
      */
-    public static void randomlyPlaceSimpleEnemy(SpriteList spriteList, SimpleEnemyType simpleEnemyType, int nbElt,
+    public static void randomlyPlaceSimpleEnemy(SpriteList spriteList, EnemyType EnemyType, int nbElt,
             List<MapPoint> emptyPtList) throws CannotPlaceSpriteOnMapException {
 
         for (int i = 0; i < nbElt; i++) {
@@ -38,7 +38,7 @@ public class GenerationMethodes {
             int yMap = emptyPtList.get(caseIdx).getRowIdx() * IMAGE_SIZE + IMAGE_SIZE / 2;
 
             // create the enemy.
-            switch (simpleEnemyType) {
+            switch (EnemyType) {
             case CLOAKED_SKELETON: {
                 addCloakedSkeleton(spriteList, xMap, yMap);
                 break;

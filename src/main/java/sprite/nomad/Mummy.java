@@ -1,7 +1,6 @@
 package sprite.nomad;
 
 import images.ImagesLoader;
-import sprite.SpriteType;
 import sprite.nomad.abstracts.Enemy;
 
 public class Mummy extends Enemy {
@@ -19,7 +18,7 @@ public class Mummy extends Enemy {
                  int yMap) {
         super(xMap,
                 yMap,
-                SpriteType.ENEMY,
+                EnemyType.MUMMY,
                 ImagesLoader.imagesMatrix[ImagesLoader.mummyDeathMatrixRowIdx],
                 ImagesLoader.NB_MUMMY_DEATH_FRAME,
                 ImagesLoader.imagesMatrix[ImagesLoader.mummyWalkBackMatrixRowIdx],
