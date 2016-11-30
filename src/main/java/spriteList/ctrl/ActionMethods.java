@@ -7,7 +7,7 @@ import static sprite.nomad.abstracts.Enemy.Action.ACTION_WALKING;
 import java.util.LinkedList;
 
 import ai.EnemyAi;
-import exceptions.CannotMoveNomadException;
+import exceptions.CannotMoveEnemyException;
 import map.MapPoint;
 import sprite.abstracts.Sprite;
 import sprite.nomad.abstracts.Bomber;
@@ -39,13 +39,14 @@ public class ActionMethods {
     public static boolean processBomber(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, Bomber bomber) {
         if (bomber.isFinished()) {
             bomber.init();
-        } else if (bomber.getCurAction() != Bomber.Action.STATUS_DYING) { // not finished and not dead.
+        } else if (bomber.getCurAction() != Bomber.Action.ACTION_DYING) { // not finished and not dead.
+
 
             // should the bomber die?
             if (!bomber.isInvincible() &&
                     (isNomadBurning(mapPointMatrix, bomber.getXMap(), bomber.getYMap()) ||
                             isNomadCrossingEnemy(list, bomber.getXMap(), bomber.getYMap(), bomber.getUid()))) {
-                bomber.setCurAction(Bomber.Action.STATUS_DYING);
+                bomber.setCurAction(Bomber.Action.ACTION_DYING);
             }
         }
         return false;
@@ -63,7 +64,7 @@ public class ActionMethods {
      * @param enemy          the enemy
      * @return true if the enemy should be removed from the list, false otherwise.
      */
-    public static boolean processEnemyA(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int mapWidth,
+    public static boolean processEnemy(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int mapWidth,
                                         int mapHeight, Enemy enemy) {
         boolean shouldBeRemoved = false;
         if (enemy.isFinished()) {
@@ -101,7 +102,7 @@ public class ActionMethods {
                             break;
                         }
                     }
-                } catch (CannotMoveNomadException e) {
+                } catch (CannotMoveEnemyException e) {
                     // nothing to do, just wait for the next iteration.
                 }
             }

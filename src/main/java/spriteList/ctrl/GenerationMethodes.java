@@ -1,35 +1,36 @@
 package spriteList.ctrl;
 
 import static images.ImagesLoader.IMAGE_SIZE;
-import static spriteList.ctrl.AddingMethods.addCloakedSkeleton;
-import static spriteList.ctrl.AddingMethods.addMecaAngel;
-import static spriteList.ctrl.AddingMethods.addMummy;
+import static spriteList.ctrl.AddingMethods.addEnemy;
 
 import java.util.List;
 import java.util.Random;
 
-import exceptions.CannotPlaceSpriteOnMapException;
+import exceptions.CannotPlaceEnemyOnMapException;
 import map.MapPoint;
+import sprite.nomad.CloakedSkeleton;
 import sprite.nomad.EnemyType;
+import sprite.nomad.MecaAngel;
+import sprite.nomad.Mummy;
 import spriteList.SpriteList;
 
 public class GenerationMethodes {
 
     /**
-     * Place a certain number of elements of a certain type of simple enemy.
+     * Place a certain number of elements of a certain type of enemy.
      *
-     * @param EnemyType the type of simple enemy to place
+     * @param EnemyType the type of enemy to place
      * @param nbElt the number of elements to place
      * @param spriteList the list into which adding the enemy
      * @param emptyPtList the list of empty points (available points to place the enemies)
-     * @throws CannotPlaceSpriteOnMapException if a sprite cannot be placed on map
+     * @throws CannotPlaceEnemyOnMapException if a sprite cannot be placed on map
      */
-    public static void randomlyPlaceSimpleEnemy(SpriteList spriteList, EnemyType EnemyType, int nbElt,
-            List<MapPoint> emptyPtList) throws CannotPlaceSpriteOnMapException {
+    public static void randomlyPlaceEnemy(SpriteList spriteList, EnemyType EnemyType, int nbElt,
+            List<MapPoint> emptyPtList) throws CannotPlaceEnemyOnMapException {
 
         for (int i = 0; i < nbElt; i++) {
             if (emptyPtList.isEmpty()) {
-                throw new CannotPlaceSpriteOnMapException("cannot (create) and place a sprite on map, "
+                throw new CannotPlaceEnemyOnMapException("cannot (create) and place a sprite on map, "
                         + "the list of empty point is empty.");
             }
             Random R = new Random(); // randomly get a point.
@@ -40,15 +41,15 @@ public class GenerationMethodes {
             // create the enemy.
             switch (EnemyType) {
             case CLOAKED_SKELETON: {
-                addCloakedSkeleton(spriteList, xMap, yMap);
+                addEnemy(spriteList, new CloakedSkeleton(xMap, yMap));
                 break;
             }
             case MECA_ANGEL: {
-                addMecaAngel(spriteList, xMap, yMap);
+                addEnemy(spriteList, new MecaAngel(xMap, yMap));
                 break;
             }
             case MUMMY: {
-                addMummy(spriteList, xMap, yMap);
+                addEnemy(spriteList, new Mummy(xMap, yMap));
                 break;
             }
             }

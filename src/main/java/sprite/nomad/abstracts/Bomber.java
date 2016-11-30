@@ -1,8 +1,8 @@
 package sprite.nomad.abstracts;
 
-import static sprite.nomad.abstracts.Bomber.Action.STATUS_DYING;
-import static sprite.nomad.abstracts.Bomber.Action.STATUS_WAITING;
-import static sprite.nomad.abstracts.Bomber.Action.STATUS_WALKING;
+import static sprite.nomad.abstracts.Bomber.Action.ACTION_DYING;
+import static sprite.nomad.abstracts.Bomber.Action.ACTION_WAITING;
+import static sprite.nomad.abstracts.Bomber.Action.ACTION_WALKING;
 
 import java.awt.Image;
 
@@ -18,10 +18,7 @@ public abstract class Bomber extends Nomad {
      * enum the different available action of a bomber.
      */
     public enum Action {
-        STATUS_DYING,
-        STATUS_WAITING,
-        STATUS_WALKING,
-        STATUS_WON
+        ACTION_DYING, ACTION_WAITING, ACTION_WALKING, ACTION_WINING
     }
 
     private Image[] deathImages;
@@ -36,7 +33,7 @@ public abstract class Bomber extends Nomad {
     private Image[] winImages;
     private int nbWinFrame;
 
-    private Action curAction = STATUS_WAITING; // current action.
+    private Action curAction = ACTION_WAITING; // current action.
     private Action lastAction = curAction; // last action.
     private Direction curDirection; // current direction.
     private Direction lastDirection; // last direction.
@@ -155,8 +152,16 @@ public abstract class Bomber extends Nomad {
         return initialXMap;
     }
 
+    public void setInitialXMap(int initialXMap) {
+        this.initialXMap = initialXMap;
+    }
+
     public int getInitialYMap() {
         return initialYMap;
+    }
+
+    public void setInitialYMap(int initialYMap) {
+        this.initialYMap = initialYMap;
     }
 
     public int getInvincibilityTime() {
@@ -206,13 +211,13 @@ public abstract class Bomber extends Nomad {
     public void init() {
         xMap = initialXMap;
         yMap = initialYMap;
-        curAction = STATUS_WAITING;
+        curAction = ACTION_WAITING;
         setInvincible(true);
     }
 
     public boolean actionHasChanged() {
         return ((curAction != lastAction) ||
-                (curAction == STATUS_WALKING && curDirection != lastDirection));
+                (curAction == ACTION_WALKING && curDirection != lastDirection));
     }
 
     @Override
@@ -232,17 +237,17 @@ public abstract class Bomber extends Nomad {
     @Override
     public void updateSprite() {
         switch (curAction) {
-            case STATUS_DYING: {
+        case ACTION_DYING: {
                 images = deathImages;
                 nbImages = nbDeathFrame;
                 break;
             }
-            case STATUS_WAITING: {
+        case ACTION_WAITING: {
                 images = waitImages;
                 nbImages = nbWaitFrame;
                 break;
             }
-        case STATUS_WALKING: {
+        case ACTION_WALKING: {
             switch (curDirection) {
             case NORTH: {
                 images = walkBackImages;
@@ -267,7 +272,7 @@ public abstract class Bomber extends Nomad {
             }
             break;
         }
-            case STATUS_WON: {
+        case ACTION_WINING: {
                 images = winImages;
                 nbImages = nbWinFrame;
                 break;
@@ -286,6 +291,6 @@ public abstract class Bomber extends Nomad {
 
     @Override
     public boolean isFinished() {
-        return ((curAction == STATUS_DYING) && (curImageIdx == nbImages - 1));
+        return ((curAction == ACTION_DYING) && (curImageIdx == nbImages - 1));
     }
 }

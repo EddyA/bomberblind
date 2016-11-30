@@ -109,6 +109,7 @@ public class ImagesLoader {
     public static int singleMutableMatrixRowIdx;
 
     public static int lastRowIdx; // for test purpose.
+    public static boolean imageLoaded = false; // for test purpose.
 
     /**
      * Create an 'Image' based to a relative path (from 'resources' folder).
@@ -132,6 +133,8 @@ public class ImagesLoader {
      * @throws IOException if a file does not exist
      */
     public static void fillImagesMatrix() throws IOException {
+        if (imageLoaded) return; // load once the images (test purpose).
+
         int rowIdx = 0;
         imagesMatrix = new Image[NB_MATRIX_ROW][NB_MATRIX_COL];
 
@@ -364,6 +367,7 @@ public class ImagesLoader {
         }
         singleMutableMatrixRowIdx = rowIdx;
         lastRowIdx = rowIdx;
+        imageLoaded = true;
     }
 
 

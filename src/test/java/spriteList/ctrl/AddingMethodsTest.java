@@ -13,9 +13,11 @@ import map.MapPoint;
 import sprite.SpriteType;
 import sprite.abstracts.Sprite;
 import sprite.nomad.BlueBomber;
+import sprite.nomad.CloakedSkeleton;
 import sprite.nomad.EnemyType;
 import sprite.nomad.abstracts.Bomber;
 import sprite.nomad.abstracts.Enemy;
+import sprite.settled.Bomb;
 import sprite.settled.Flame;
 import sprite.settled.abstracts.Settled;
 import utils.Tuple2;
@@ -38,27 +40,13 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addCloakedSkeletonShouldAddACloakedSkeleton() throws Exception {
+    public void addEnemyShouldAddTheEnemyToTheListOfSprite() throws Exception {
         LinkedList<Sprite> spriteList = new LinkedList<>();
-        AddingMethods.addCloakedSkeleton(spriteList, 1, 2);
+        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(1, 2);
+        AddingMethods.addEnemy(spriteList, cloakedSkeleton);
 
         // test.
-        assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.ENEMY);
-        assertThat(((Enemy) spriteList.getFirst()).getEnemyType()).isEqualTo(EnemyType.CLOAKED_SKELETON);
-        assertThat(spriteList.getFirst().getXMap()).isEqualTo(1);
-        assertThat(spriteList.getFirst().getYMap()).isEqualTo(2);
-    }
-
-    @Test
-    public void addMecaAngelShouldAddAMecaAngel() throws Exception {
-        LinkedList<Sprite> spriteList = new LinkedList<>();
-        AddingMethods.addMecaAngel(spriteList, 1, 2);
-
-        // test.
-        assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.ENEMY);
-        assertThat(((Enemy) spriteList.getFirst()).getEnemyType()).isEqualTo(EnemyType.MECA_ANGEL);
-        assertThat(spriteList.getFirst().getXMap()).isEqualTo(1);
-        assertThat(spriteList.getFirst().getYMap()).isEqualTo(2);
+        assertThat(spriteList.contains(cloakedSkeleton)).isTrue();
     }
 
     @Test
@@ -80,13 +68,14 @@ public class AddingMethodsTest implements WithAssertions {
 
         // it is a bombing case.
         mapPointMatrix[caseRowIdx][caseColIdx].setBombing(true);
-        AddingMethods.addBomb(spriteList, mapPointMatrix, caseRowIdx, caseColIdx, flameSize);
+        Bomb bomb = new Bomb(caseRowIdx, caseColIdx, flameSize);
+        AddingMethods.addBomb(spriteList, mapPointMatrix, bomb);
         assertThat(spriteList.isEmpty()).isTrue();
 
         // it is a burning case.
         mapPointMatrix[caseRowIdx][caseColIdx].setBombing(false);
         mapPointMatrix[caseRowIdx][caseColIdx].addFlame();
-        AddingMethods.addBomb(spriteList, mapPointMatrix, caseRowIdx, caseColIdx, flameSize);
+        AddingMethods.addBomb(spriteList, mapPointMatrix, bomb);
         assertThat(spriteList.isEmpty()).isTrue();
     }
 
@@ -95,6 +84,7 @@ public class AddingMethodsTest implements WithAssertions {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         int mapWidth = 10;
         int mapHeight = 8;
+        int flameSize = 3;
 
         // set map.
         MapPoint[][] mapPointMatrix = new MapPoint[mapHeight][mapWidth];
@@ -109,7 +99,8 @@ public class AddingMethodsTest implements WithAssertions {
         mapPointMatrix[caseRowIdx][caseColIdx].setNbFlames(0);
 
         // test.
-        AddingMethods.addBomb(spriteList, mapPointMatrix, caseRowIdx, caseColIdx, 3);
+        Bomb bomb = new Bomb(caseRowIdx, caseColIdx, flameSize);
+        AddingMethods.addBomb(spriteList, mapPointMatrix, bomb);
         assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.BOMB);
         assertThat(((Settled) spriteList.getFirst()).getRowIdx()).isEqualTo(caseRowIdx);
         assertThat(((Settled) spriteList.getFirst()).getColIdx()).isEqualTo(caseColIdx);

@@ -14,16 +14,16 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import exceptions.CannotCreateMapElementException;
-import exceptions.CannotPlaceSpriteOnMapException;
+import exceptions.CannotPlaceEnemyOnMapException;
 import exceptions.InvalidConfigurationException;
 import exceptions.InvalidPropertiesException;
 import map.ctrl.NomadMethods;
 import map.zelda.ZeldaMap;
 import map.zelda.ZeldaMapProperties;
 import map.zelda.ZeldaMapSetting;
-import sprite.SpriteType;
 import sprite.nomad.BlueBomber;
 import sprite.nomad.abstracts.Bomber;
+import sprite.settled.Bomb;
 import spriteList.SpriteList;
 import spriteList.SpritesProperties;
 import spriteList.SpritesSetting;
@@ -43,7 +43,7 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
     private int yMapStartPosOnScreen;
 
     GameJpanel(int widthScreen, int heightScreen) throws IOException, InvalidPropertiesException,
-            InvalidConfigurationException, CannotCreateMapElementException, CannotPlaceSpriteOnMapException {
+            InvalidConfigurationException, CannotCreateMapElementException, CannotPlaceEnemyOnMapException {
 
         // create the map.
         map = new ZeldaMap(
@@ -200,18 +200,18 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
     public void run() {
         while (true) {
             try {
-                if (mainBomber.getCurAction() != Bomber.Action.STATUS_DYING && !mainBomber.isFinished()) {
+                if (mainBomber.getCurAction() != Bomber.Action.ACTION_DYING && !mainBomber.isFinished()) {
                     switch (pressedKeyList.get(pressedKeyList.size() - 1).intValue()) {
                         case KeyEvent.VK_ESCAPE: {
                             System.exit(1);
                             break;
                         }
                         case 0: {
-                        mainBomber.setCurAction(Bomber.Action.STATUS_WAITING);
+                        mainBomber.setCurAction(Bomber.Action.ACTION_WAITING);
                             break;
                         }
                         case KeyEvent.VK_UP: {
-                        mainBomber.setCurAction(Bomber.Action.STATUS_WALKING);
+                        mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
                         mainBomber.setCurDirection(Direction.NORTH);
                             if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     mainBomber.getXMap(), mainBomber.getYMap() - 1)) {
@@ -227,7 +227,7 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case KeyEvent.VK_DOWN: {
-                        mainBomber.setCurAction(Bomber.Action.STATUS_WALKING);
+                        mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
                         mainBomber.setCurDirection(Direction.SOUTH);
                             if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     mainBomber.getXMap(), mainBomber.getYMap() + 1)) {
@@ -243,7 +243,7 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case KeyEvent.VK_LEFT: {
-                        mainBomber.setCurAction(Bomber.Action.STATUS_WALKING);
+                        mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
                         mainBomber.setCurDirection(Direction.WEST);
                             if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     mainBomber.getXMap() - 1, mainBomber.getYMap())) {
@@ -259,7 +259,7 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case KeyEvent.VK_RIGHT: {
-                        mainBomber.setCurAction(Bomber.Action.STATUS_WALKING);
+                        mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
                         mainBomber.setCurDirection(Direction.EAST);
                             if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     mainBomber.getXMap() + 1, mainBomber.getYMap())) {
@@ -275,12 +275,12 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case KeyEvent.VK_B: {
-                        addBomb(spriteList, map.getMapPointMatrix(), Tools.getCharRowIdx(mainBomber.getYMap()),
-                                Tools.getCharColIdx(mainBomber.getXMap()), 3);
+                        addBomb(spriteList, map.getMapPointMatrix(), new Bomb(Tools.getCharRowIdx(mainBomber.getYMap()),
+                                Tools.getCharColIdx(mainBomber.getXMap()), 3));
                             break;
                         }
                         case KeyEvent.VK_W: {
-                        mainBomber.setCurAction(Bomber.Action.STATUS_WON);
+                        mainBomber.setCurAction(Bomber.Action.ACTION_WINING);
                             break;
                         }
                     }

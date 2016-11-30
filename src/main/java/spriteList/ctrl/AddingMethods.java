@@ -4,10 +4,8 @@ import java.util.LinkedList;
 
 import map.MapPoint;
 import sprite.abstracts.Sprite;
-import sprite.nomad.CloakedSkeleton;
-import sprite.nomad.MecaAngel;
-import sprite.nomad.Mummy;
 import sprite.nomad.abstracts.Bomber;
+import sprite.nomad.abstracts.Enemy;
 import sprite.settled.Bomb;
 import sprite.settled.ConclusionFlame;
 import sprite.settled.Flame;
@@ -21,43 +19,20 @@ public class AddingMethods {
      * Add a bomber to the list.
      *
      * @param list the list into which adding the sprite
-     * @param bomber bomber the bomber to add
+     * @param bomber the bomber to add
      */
     public static void addBomber(LinkedList<Sprite> list, Bomber bomber) {
         list.add(bomber);
     }
 
     /**
-     * Add a cloaked skeleton to the list.
+     * Add an enemy to the list.
      *
      * @param list the list into which adding the sprite
-     * @param xMap the abscissa of the cloaked skeleton
-     * @param yMap the ordinate of the cloaked skeleton
+     * @param enemy the enemy to add
      */
-    public static void addCloakedSkeleton(LinkedList<Sprite> list, int xMap, int yMap) {
-        list.add(new CloakedSkeleton(xMap, yMap));
-    }
-
-    /**
-     * Add a meca angel to the list.
-     *
-     * @param list the list into which adding the sprite
-     * @param xMap the abscissa of the meca angel
-     * @param yMap the ordinate of the meca angel
-     */
-    public static void addMecaAngel(LinkedList<Sprite> list, int xMap, int yMap) {
-        list.add(new MecaAngel(xMap, yMap));
-    }
-
-    /**
-     * Add a mummy to the list.
-     *
-     * @param list the list into which adding the sprite
-     * @param xMap the abscissa of the mummy
-     * @param yMap the ordinate of the mummy
-     */
-    public static void addMummy(LinkedList<Sprite> list, int xMap, int yMap) {
-        list.add(new Mummy(xMap, yMap));
+    public static void addEnemy(LinkedList<Sprite> list, Enemy enemy) {
+        list.add(enemy);
     }
 
     /**
@@ -68,17 +43,15 @@ public class AddingMethods {
      *
      * @param list the list into which adding the bomb
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param rowIdx the map row index of the bomb
-     * @param colIdx the map column index of the bomb
-     * @param flameSize the flame size of the bomb
+     * @param bomb the bomb to add
      */
-    public static void addBomb(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int rowIdx, int colIdx,
-            int flameSize) {
-        if (!mapPointMatrix[rowIdx][colIdx].isBombing() && // to avoid adding several bombs when key is pressed.
-                !mapPointMatrix[rowIdx][colIdx].isBurning()) { // to avoid adding a bomb on a burning case when the
-                                                               // character is invicible.
-            mapPointMatrix[rowIdx][colIdx].setBombing(true);
-            list.add(new Bomb(rowIdx, colIdx, flameSize));
+    public static void addBomb(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, Bomb bomb) {
+        // to avoid adding several bombs when key is pressed.
+        if (!mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBombing() &&
+                // to avoid adding a bomb on a burning case when the character is invicible.
+                !mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBurning()) {
+            mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].setBombing(true);
+            list.add(bomb);
         }
     }
 

@@ -31,9 +31,10 @@ public class Bomb extends TimedSettled {
         this.flamesize = flameSize;
     }
 
-    /**
-     * @return the size of flame.
-     */
+    public void setFlamesize(int flamesize) {
+        this.flamesize = flamesize;
+    }
+
     public int getFlameSize() {
         return flamesize;
     }

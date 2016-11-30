@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import exceptions.CannotPlaceSpriteOnMapException;
+import exceptions.CannotPlaceEnemyOnMapException;
 import map.MapPoint;
 import map.abstracts.Map;
 import sprite.abstracts.Sprite;
@@ -38,9 +38,12 @@ public class SpriteList extends LinkedList<Sprite> {
     /**
      * Randomly (create) and place sprites on the map.
      *
-     * @throws CannotPlaceSpriteOnMapException if all the requested sprites cannot be placed on map
+     * @throws CannotPlaceEnemyOnMapException if all the requested sprites cannot be placed on map
      */
-    public void generateSprites() throws CannotPlaceSpriteOnMapException {
+    public void generateSprites() throws CannotPlaceEnemyOnMapException {
+        if (spritesSetting == null) {
+            throw new RuntimeException("generateSprites() cannot be called without providing a spritesSetting.");
+        }
 
         // create a list of empty points (available points to place the enemies).
         List<MapPoint> emptyPtList = new ArrayList<>();
@@ -54,13 +57,13 @@ public class SpriteList extends LinkedList<Sprite> {
 
         // enemies:
         // - cloaked skeleton
-        GenerationMethodes.randomlyPlaceSimpleEnemy(this, EnemyType.CLOAKED_SKELETON,
+        GenerationMethodes.randomlyPlaceEnemy(this, EnemyType.CLOAKED_SKELETON,
                 spritesSetting.getNbCloakedSkeleton(), emptyPtList);
         // - meca angel
-        GenerationMethodes.randomlyPlaceSimpleEnemy(this, EnemyType.MECA_ANGEL,
+        GenerationMethodes.randomlyPlaceEnemy(this, EnemyType.MECA_ANGEL,
                 spritesSetting.getNbMecaAngel(), emptyPtList);
         // - mummy
-        GenerationMethodes.randomlyPlaceSimpleEnemy(this, EnemyType.MUMMY,
+        GenerationMethodes.randomlyPlaceEnemy(this, EnemyType.MUMMY,
                 spritesSetting.getNbMummy(), emptyPtList);
     }
 
@@ -78,7 +81,7 @@ public class SpriteList extends LinkedList<Sprite> {
                 break;
             }
             case ENEMY: {
-                shouldBeRemoved = ActionMethods.processEnemyA(this, map.getMapPointMatrix(), map.getMapWidth(),
+                shouldBeRemoved = ActionMethods.processEnemy(this, map.getMapPointMatrix(), map.getMapWidth(),
                         map.getMapHeight(), (Enemy)sprite);
                 break;
             }

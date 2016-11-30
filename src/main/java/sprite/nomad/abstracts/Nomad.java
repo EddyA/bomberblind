@@ -34,6 +34,14 @@ public abstract class Nomad extends Sprite {
         this.moveTime = moveTime;
     }
 
+    public void setNbImages(int nbImages) {
+        this.nbImages = nbImages;
+    }
+
+    public void setCurImageIdx(int curImageIdx) {
+        this.curImageIdx = curImageIdx;
+    }
+
     public int getMoveTime() {
         return moveTime;
     }

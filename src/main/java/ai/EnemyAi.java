@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import exceptions.CannotMoveNomadException;
+import exceptions.CannotMoveEnemyException;
 import map.MapPoint;
 import sprite.abstracts.Sprite;
 import utils.Direction;
@@ -33,7 +33,7 @@ public class EnemyAi {
      */
     public static Direction computeNextDirection(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
             List<Sprite> spriteList, Direction curDirection, int xMap, int yMap, int uid)
-            throws CannotMoveNomadException {
+            throws CannotMoveEnemyException {
 
         // create a set of checked action.
         Set<Direction> checkedDirections = new HashSet<>();
@@ -98,7 +98,7 @@ public class EnemyAi {
                       this case happens when the abstracts is blocked by another one
                       and it cannot move during this iteration ... just wait for the next one.
                      */
-                    throw new CannotMoveNomadException("abstracts is not able to move during this iteration.");
+                    throw new CannotMoveEnemyException("abstracts is not able to move during this iteration.");
                 }
                 curCheckedDirection = Direction.getRandomDirection();
             }

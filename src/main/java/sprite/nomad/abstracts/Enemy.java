@@ -130,13 +130,17 @@ public abstract class Enemy extends Nomad {
         this.lastAction = lastAction;
     }
 
+    public Direction getLastDirection() {
+        return lastDirection;
+    }
+
     public void setLastDirection(Direction lastDirection) {
         this.lastDirection = lastDirection;
     }
 
     public boolean statusHasChanged() {
-        return ((curAction != lastAction) ||
-                (curAction == ACTION_WALKING && curDirection != lastDirection));
+        return ((!curAction.equals(lastAction)) ||
+                (curAction.equals(ACTION_WALKING) && !curDirection.equals(lastDirection)));
     }
 
     @Override
@@ -196,6 +200,6 @@ public abstract class Enemy extends Nomad {
 
     @Override
     public boolean isFinished() {
-        return ((curAction == ACTION_DYING) && (curImageIdx == nbImages - 1));
+        return ((curAction.equals(ACTION_DYING)) && (curImageIdx == nbImages - 1));
     }
 }
