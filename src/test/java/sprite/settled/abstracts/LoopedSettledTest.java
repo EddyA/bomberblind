@@ -10,7 +10,7 @@ import utils.Tools;
 import java.io.IOException;
 
 import static sprite.settled.abstracts.LoopedSettled.Status.STATUS_ALIVE;
-import static sprite.settled.abstracts.LoopedSettled.Status.STATUS_FINISHED;
+import static sprite.settled.abstracts.LoopedSettled.Status.STATUS_ENDED;
 
 public class LoopedSettledTest implements WithAssertions {
 
@@ -39,7 +39,7 @@ public class LoopedSettledTest implements WithAssertions {
         ConclusionFlame conclusionFlame = new ConclusionFlame(5, 4);
 
         // set the start time.
-        conclusionFlame.setCurLoopIdx(ConclusionFlame.NB_TIMES - 1); // sprite not finished.
+        conclusionFlame.setCurLoopIdx(ConclusionFlame.NB_TIMES - 1); // sprite not ended.
         assertThat(conclusionFlame.updateStatus()).isFalse();
         assertThat(conclusionFlame.getCurStatus()).isEqualTo(STATUS_ALIVE);
     }
@@ -49,9 +49,9 @@ public class LoopedSettledTest implements WithAssertions {
         ConclusionFlame conclusionFlame = new ConclusionFlame(5, 4);
 
         // set the start time.
-        conclusionFlame.setCurLoopIdx(ConclusionFlame.NB_TIMES); // sprite finished.
+        conclusionFlame.setCurLoopIdx(ConclusionFlame.NB_TIMES); // sprite ended.
         assertThat(conclusionFlame.updateStatus()).isTrue();
-        assertThat(conclusionFlame.getCurStatus()).isEqualTo(STATUS_FINISHED);
+        assertThat(conclusionFlame.getCurStatus()).isEqualTo(STATUS_ENDED);
     }
 
     @Test
@@ -68,7 +68,7 @@ public class LoopedSettledTest implements WithAssertions {
         ConclusionFlame conclusionFlame = new ConclusionFlame(5, 4);
 
         // set the status and check.
-        conclusionFlame.setCurStatus(STATUS_FINISHED);
+        conclusionFlame.setCurStatus(STATUS_ENDED);
         assertThat(conclusionFlame.isFinished()).isTrue();
     }
 }

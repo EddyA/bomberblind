@@ -16,7 +16,7 @@ public abstract class TimedSettled extends Settled {
      * enum the different available action of a timed settled.
      */
     public enum Status {
-        STATUS_ALIVE, STATUS_FINISHED
+        STATUS_ALIVE, STATUS_ENDED
     }
 
     private final int durationTime; // durationTime the sprite must loop (in ms).
@@ -61,7 +61,7 @@ public abstract class TimedSettled extends Settled {
     @Override
     public boolean updateStatus() {
         if (currentTimeSupplier.get().toEpochMilli() - startTs >= durationTime) {
-            curStatus = Status.STATUS_FINISHED;
+            curStatus = Status.STATUS_ENDED;
             return true;
         }
         return false;
@@ -69,6 +69,6 @@ public abstract class TimedSettled extends Settled {
 
     @Override
     public boolean isFinished() {
-        return curStatus.equals(Status.STATUS_FINISHED);
+        return curStatus.equals(Status.STATUS_ENDED);
     }
 }

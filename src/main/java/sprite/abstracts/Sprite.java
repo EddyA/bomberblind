@@ -98,7 +98,7 @@ public abstract class Sprite {
     public abstract boolean updateStatus();
 
     /**
-     * @return true if the sprite is finished, false otherwise.
+     * @return true if the sprite is ended, false otherwise.
      */
     public abstract boolean isFinished();
 

@@ -14,7 +14,7 @@ import java.time.Instant;
 
 import static org.mockito.Mockito.mock;
 import static sprite.settled.abstracts.TimedSettled.Status.STATUS_ALIVE;
-import static sprite.settled.abstracts.TimedSettled.Status.STATUS_FINISHED;
+import static sprite.settled.abstracts.TimedSettled.Status.STATUS_ENDED;
 
 public class TimedSettledTest implements WithAssertions {
 
@@ -65,7 +65,7 @@ public class TimedSettledTest implements WithAssertions {
         // set the start time.
         flame.setStartTs(3000L - Flame.DURATION_TIME);
         assertThat(flame.updateStatus()).isTrue();
-        assertThat(flame.getCurStatus()).isEqualTo(STATUS_FINISHED);
+        assertThat(flame.getCurStatus()).isEqualTo(STATUS_ENDED);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class TimedSettledTest implements WithAssertions {
         Flame flame = new Flame(5, 4);
 
         // set the status and check.
-        flame.setCurStatus(STATUS_FINISHED);
+        flame.setCurStatus(STATUS_ENDED);
         assertThat(flame.isFinished()).isTrue();
     }
 }

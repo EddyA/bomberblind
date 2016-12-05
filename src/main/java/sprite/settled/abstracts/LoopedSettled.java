@@ -5,7 +5,7 @@ import sprite.SpriteType;
 import java.awt.*;
 
 import static sprite.settled.abstracts.LoopedSettled.Status.STATUS_ALIVE;
-import static sprite.settled.abstracts.LoopedSettled.Status.STATUS_FINISHED;
+import static sprite.settled.abstracts.LoopedSettled.Status.STATUS_ENDED;
 
 /**
  * Abstract class of a looped settled sprite.
@@ -17,7 +17,7 @@ public abstract class LoopedSettled extends Settled {
      * enum the different available action of a looped settled.
      */
     public enum Status {
-        STATUS_ALIVE, STATUS_FINISHED
+        STATUS_ALIVE, STATUS_ENDED
     }
 
     private final int nbTimes; // number of times the sprite should be painted.
@@ -56,7 +56,7 @@ public abstract class LoopedSettled extends Settled {
     @Override
     public boolean updateStatus() {
         if (getCurLoopIdx() == nbTimes) {
-            curStatus = STATUS_FINISHED;
+            curStatus = STATUS_ENDED;
             return true;
         }
         return false;
@@ -64,6 +64,6 @@ public abstract class LoopedSettled extends Settled {
 
     @Override
     public boolean isFinished() {
-        return curStatus.equals(STATUS_FINISHED);
+        return curStatus.equals(STATUS_ENDED);
     }
 }

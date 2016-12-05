@@ -8,7 +8,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-import static sprite.settled.abstracts.TimedSettled.Status.STATUS_FINISHED;
+import static sprite.settled.abstracts.TimedSettled.Status.STATUS_ENDED;
 
 public class BombStepDef implements WithAssertions {
 
@@ -26,21 +26,20 @@ public class BombStepDef implements WithAssertions {
         Mockito.when(bombState.getBomb().isFinished()).thenReturn(true);
     }
 
-    @Then("^the bomb should explode$")
-    public void the_bomb_should_explode() {
-        Mockito.when(bombState.getBomb().getCurStatus()).equals(STATUS_FINISHED);
+    @Then("^the bomb should end")
+    public void the_bomb_should_end() {
+        assertThat(bombState.getBomb().getCurStatus()).isEqualTo(STATUS_ENDED);
     }
 
-    @Then("^the bomb has exploded adding the following flames:$")
-    public void the_bomb_has_exploded_adding_the_following_flames(List<MapPoint> entries) {
-        assertThat(bombState.getBomb().isFinished()).isTrue();
+    @Then("^the following flames should be added:$")
+    public void the_bomb_should_add_the_following_flames(List<MapPoint> entries) {
         for (MapPoint entry : entries) {
             assertThat(mapPointMatrixState.getMapPoint(entry.getRowIdx(), entry.getColIdx()).isBurning()).isTrue();
         }
     }
 
-    @Then("^the bomb should be removed from the sprite list$")
-    public void the_bom_should_be_removed_from_the_sprite_list() {
+    @Then("^the bomb should be marked as removable from the sprite list$")
+    public void the_bomb_should_be_marked_as_removable_from_the_sprite_list() {
         assertThat(bombState.isShouldBeRemoved()).isTrue();
     }
 }

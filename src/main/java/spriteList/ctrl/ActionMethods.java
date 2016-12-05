@@ -28,7 +28,7 @@ import static sprite.nomad.abstracts.Enemy.Action.ACTION_WALKING;
 public class ActionMethods {
 
     /**
-     * - Re-init the bomber (if the bomber is dead and the sprite finished),
+     * - Re-init the bomber (if the bomber is dead and the sprite ended),
      * - OR kill the bomber (if the bomber is on a burning case or is crossing an enemy),
      * - OR do nothing.
      *
@@ -40,7 +40,7 @@ public class ActionMethods {
     public static boolean processBomber(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, Bomber bomber) {
         if (bomber.isFinished()) {
             bomber.init();
-        } else if (bomber.getCurAction() != Bomber.Action.ACTION_DYING) { // not finished and not dead.
+        } else if (bomber.getCurAction() != Bomber.Action.ACTION_DYING) { // not ended and not dead.
 
             // should the bomber die?
             if (!bomber.isInvincible() &&
@@ -53,7 +53,7 @@ public class ActionMethods {
     }
 
     /**
-     * - Notice that the bomber must be removed from the list (if the enemy is dead and the sprite finished),
+     * - Notice that the bomber must be removed from the list (if the enemy is dead and the sprite ended),
      * - OR kill the enemy (if the enemy is on a burning case),
      * - OR compute the next direction.
      *
@@ -69,7 +69,7 @@ public class ActionMethods {
         boolean shouldBeRemoved = false;
         if (enemy.isFinished()) {
             shouldBeRemoved = true;
-        } else if (enemy.getCurAction() != Enemy.Action.ACTION_DYING) { // not finished and not dying.
+        } else if (enemy.getCurAction() != Enemy.Action.ACTION_DYING) { // not ended and not dying.
 
             // should the enemy die?
             if (isNomadBurning(mapPointMatrix, enemy.getXMap(), enemy.getYMap())) {
@@ -111,10 +111,10 @@ public class ActionMethods {
     }
 
     /**
-     * - Notice that the bomb must be removed from the list (if the sprite is finished),
+     * - Notice that the bomb must be removed from the list (if the sprite is ended),
      * -- AND add flames,
      * -- AND remove the bombing status of the relative case.
-     * - OR finished the bomb (if the bomb is on a burning case),
+     * - OR ended the bomb (if the bomb is on a burning case),
      * - OR do nothing.
      *
      * @param tmpList        the temporary list of sprites to add new elements
@@ -134,13 +134,13 @@ public class ActionMethods {
             shouldBeRemoved = true;
 
         } else if (mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBurning()) {  // is it on a burning case?
-            bomb.setCurStatus(TimedSettled.Status.STATUS_FINISHED);
+            bomb.setCurStatus(TimedSettled.Status.STATUS_ENDED);
         }
         return shouldBeRemoved;
     }
 
     /**
-     * - Notice that the flame must be removed from the list (if the sprite is finished),
+     * - Notice that the flame must be removed from the list (if the sprite is ended),
      * -- AND add a conclusion flame.
      * - OR do nothing.
      *
@@ -162,7 +162,7 @@ public class ActionMethods {
     }
 
     /**
-     * - Notice that the conclusion flame must be removed from the list (if the sprite is finished),
+     * - Notice that the conclusion flame must be removed from the list (if the sprite is ended),
      * - OR do nothing.
      *
      * @param conclusionFlame the conclusion flame
