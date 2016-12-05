@@ -2,6 +2,7 @@ package glue;
 
 import org.assertj.core.api.WithAssertions;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import spriteList.ctrl.ActionMethods;
 
@@ -33,13 +34,15 @@ public class ActionMethodsStepDef implements WithAssertions {
 
     @When("^processing the enemy$")
     public void processing_the_enemy() {
-        ActionMethods.processEnemy(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(),
-                mapPointMatrixState.getMapWidth(), mapPointMatrixState.getMapHeight(), enemyState.getEnemy());
+        enemyState.setShouldBeRemoved(
+                ActionMethods.processEnemy(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(),
+                        mapPointMatrixState.getMapWidth(), mapPointMatrixState.getMapHeight(), enemyState.getEnemy()));
     }
 
     @When("processing the bomb$")
     public void processing_the_bomb() {
-        ActionMethods.processBomb(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(),
-                mapPointMatrixState.getMapWidth(), mapPointMatrixState.getMapHeight(), bombState.getBomb());
+        bombState.setShouldBeRemoved(
+                ActionMethods.processBomb(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(),
+                        mapPointMatrixState.getMapWidth(), mapPointMatrixState.getMapHeight(), bombState.getBomb()));
     }
 }

@@ -62,10 +62,6 @@ public abstract class Sprite {
         return uid;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
     public int getRefreshTime() {
         return refreshTime;
     }
@@ -94,6 +90,13 @@ public abstract class Sprite {
             return false;
         }
     }
+
+    /**
+     * Update the sprite action.
+     *
+     * @return true if the action changed, flase otherwise.
+     */
+    public abstract boolean updateStatus();
 
     /**
      * @return true if the sprite is finished, false otherwise.

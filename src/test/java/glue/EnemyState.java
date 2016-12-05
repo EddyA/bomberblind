@@ -1,7 +1,5 @@
 package glue;
 
-import static org.mockito.Matchers.anyInt;
-
 import java.io.IOException;
 
 import org.mockito.Mockito;
@@ -13,6 +11,7 @@ import sprite.nomad.abstracts.Enemy;
 public class EnemyState {
 
     private final CloakedSkeleton spyedCloakedSkeleton;
+    private boolean shouldBeRemoved;
 
     public EnemyState() throws IOException {
         ImagesLoader.fillImagesMatrix();
@@ -22,5 +21,13 @@ public class EnemyState {
 
     public Enemy getEnemy() {
         return spyedCloakedSkeleton;
+    }
+
+    public boolean isShouldBeRemoved() {
+        return shouldBeRemoved;
+    }
+
+    public void setShouldBeRemoved(boolean shouldBeRemoved) {
+        this.shouldBeRemoved = shouldBeRemoved;
     }
 }

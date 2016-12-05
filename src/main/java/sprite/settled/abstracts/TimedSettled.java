@@ -40,7 +40,11 @@ public abstract class TimedSettled extends Settled {
     }
 
     @Override
-    public boolean isFinished() {
-        return currentTimeSupplier.get().toEpochMilli() - startTs >= durationTime;
+    public boolean updateStatus() {
+        if (currentTimeSupplier.get().toEpochMilli() - startTs >= durationTime) {
+            setCurStatus(Status.STATUS_FINISHED);
+            return true;
+        }
+        return false;
     }
 }

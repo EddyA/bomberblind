@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import images.ImagesLoader;
+import sprite.SpriteType;
 import utils.Tools;
 
 public class FlameTest implements WithAssertions {
@@ -25,9 +26,10 @@ public class FlameTest implements WithAssertions {
         assertThat(flame.getColIdx()).isEqualTo(4);
         assertThat(flame.getXMap()).isEqualTo(Tools.getCaseCentreAbscissa(4));
         assertThat(flame.getYMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
+        assertThat(flame.getSpriteType()).isEqualTo(SpriteType.FLAME);
+        assertThat(flame.getRefreshTime()).isEqualTo(Flame.REFRESH_TIME);
         assertThat(flame.getImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameMatrixRowIdx]);
         assertThat(flame.getNbImages()).isEqualTo(ImagesLoader.NB_FLAME_FRAME);
-        assertThat(flame.getRefreshTime()).isEqualTo(Flame.REFRESH_TIME);
         assertThat(flame.getDurationTime()).isEqualTo(Flame.DURATION_TIME);
     }
 }

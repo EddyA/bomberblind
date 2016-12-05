@@ -36,4 +36,9 @@ public class EnemyStepDef implements WithAssertions {
     public void the_enemy_should_get_another_direction() {
         assertThat(enemyState.getEnemy().getCurDirection()).isNotEqualTo(enemyState.getEnemy().getLastDirection());
     }
+
+    @Then("^the enemy should be removed from the sprite list$")
+    public void the_enemy_should_be_removed_from_the_sprite_list() {
+        assertThat(enemyState.isShouldBeRemoved()).isTrue();
+    }
 }

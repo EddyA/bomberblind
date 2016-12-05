@@ -1,5 +1,8 @@
 package sprite.settled.abstracts;
 
+import static sprite.settled.abstracts.Settled.Status.STATUS_ALIVE;
+import static sprite.settled.abstracts.Settled.Status.STATUS_FINISHED;
+
 import java.awt.Image;
 
 import sprite.SpriteType;
@@ -11,8 +14,15 @@ import utils.Tools;
  */
 public abstract class Settled extends Sprite {
 
-    private final int rowIdx; // map row index of the sprite.
-    private final int colIdx; // map column index of the sprite.
+    /**
+     * enum the different available action of a bomber.
+     */
+    public enum Status {
+        STATUS_ALIVE, STATUS_FINISHED
+    }
+
+    private int rowIdx; // map row index of the sprite (not private for test purpose).
+    private int colIdx; // map column index of the sprite (not private for test purpose).
 
     private final Image[] images; // array of images of the sprite.
     private final int nbImages; // number of images of the sprite.
@@ -20,6 +30,8 @@ public abstract class Settled extends Sprite {
     private Image curImage; // current image of the sprite.
 
     private int curLoopIdx; // current number of times.
+
+    private Status curStatus = STATUS_ALIVE; // current status of the sprite.
 
     /**
      * Create a settled sprite.
@@ -39,18 +51,20 @@ public abstract class Settled extends Sprite {
         this.nbImages = nbImages;
     }
 
-    /**
-     * @return the map row index of the sprite.
-     */
     public int getRowIdx() {
         return rowIdx;
     }
 
-    /**
-     * @return the map column index of the sprite.
-     */
+    public void setRowIdx(int rowIdx) {
+        this.rowIdx = rowIdx;
+    }
+
     public int getColIdx() {
         return colIdx;
+    }
+
+    public void setColIdx(int colIdx) {
+        this.colIdx = colIdx;
     }
 
     public Image[] getImages() {
@@ -81,9 +95,18 @@ public abstract class Settled extends Sprite {
         this.curLoopIdx = curLoopIdx;
     }
 
+    public Status getCurStatus() {
+        return curStatus;
+    }
+
+    public void setCurStatus(Status curStatus) {
+        this.curStatus = curStatus;
+    }
 
     @Override
-    public abstract boolean isFinished();
+    public boolean isFinished() {
+        return curStatus.equals(STATUS_FINISHED);
+    }
 
     @Override
     public Image getCurImage() {
@@ -92,7 +115,8 @@ public abstract class Settled extends Sprite {
 
     @Override
     public void updateImage() {
-        if (isTimeToRefresh()) { // it is time to refresh.
+        if (!updateStatus() && // if the sprite still alive.
+                isTimeToRefresh()) { // it is time to refresh.
             if (++curImageIdx == nbImages) {
                 curImageIdx = 0;
                 curLoopIdx++;

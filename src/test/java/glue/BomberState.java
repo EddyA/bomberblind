@@ -1,7 +1,5 @@
 package glue;
 
-import static org.mockito.Matchers.anyInt;
-
 import java.io.IOException;
 
 import org.mockito.Mockito;

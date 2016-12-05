@@ -35,6 +35,22 @@ public class SettledTest implements WithAssertions {
     }
 
     @Test
+    public void isFinishedShouldReturnFalseWhenCurStatusIsAlive()
+            throws Exception {
+        Flame flame = new Flame(5, 4);
+        flame.setCurStatus(Settled.Status.STATUS_ALIVE);
+        assertThat(flame.isFinished()).isFalse();
+    }
+
+    @Test
+    public void isFinishedShouldReturnTrueWhenCurStatusIsFinished()
+            throws Exception {
+        Flame flame = new Flame(5, 4);
+        flame.setCurStatus(Settled.Status.STATUS_FINISHED);
+        assertThat(flame.isFinished()).isTrue();
+    }
+
+    @Test
     public void updateImageShouldDoNothing() throws Exception {
         Flame flame = new Flame(5, 4);
         Flame spyedFlame = Mockito.spy(flame);

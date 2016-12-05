@@ -44,8 +44,8 @@ public class AddingMethodsStepDef implements WithAssertions {
 
     @Given("^a bomb at rowIdx (\\d+) and coldIdx (\\d+) and a flame size of (\\d+)$")
     public void a_bomb_at_rowIdx_and_coldIdx_with_a_flame_size_of(int rowIdx, int colIdx, int flameSize) {
-        bombState.getBomb().setXMap(colIdx);
-        bombState.getBomb().setYMap(rowIdx);
+        bombState.getBomb().setRowIdx(rowIdx);
+        bombState.getBomb().setColIdx(colIdx);
         bombState.getBomb().setFlamesize(flameSize);
         AddingMethods.addBomb(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(), bombState.getBomb());
     }

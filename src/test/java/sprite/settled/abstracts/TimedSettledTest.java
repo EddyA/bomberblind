@@ -1,6 +1,8 @@
 package sprite.settled.abstracts;
 
 import static org.mockito.Mockito.mock;
+import static sprite.settled.abstracts.Settled.Status.STATUS_ALIVE;
+import static sprite.settled.abstracts.Settled.Status.STATUS_FINISHED;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -38,30 +40,32 @@ public class TimedSettledTest implements WithAssertions {
     }
 
     @Test
-    public void isFinishedShouldReturnFalse() throws Exception {
+    public void updateStatusShouldReturnFalseAndStatusShouldBeAlive() throws Exception {
         Flame flame = new Flame(5, 4);
 
         // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.
         CurrentTimeSupplier currentTimeSupplier = mock(CurrentTimeSupplier.class);
-        Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(1000L));
+        Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(3000L));
         flame.setCurrentTimeSupplier(currentTimeSupplier);
 
         // set the start time.
-        flame.setStartTs(1000L - Flame.DURATION_TIME + 1);
-        assertThat(flame.isFinished()).isFalse();
+        flame.setStartTs(3000L - Flame.DURATION_TIME + 1);
+        assertThat(flame.updateStatus()).isFalse();
+        assertThat(flame.getCurStatus()).isEqualTo(STATUS_ALIVE);
     }
 
     @Test
-    public void isFinishedShouldReturnTrue() throws Exception {
+    public void updateStatusShouldReturnTrueAndStatusShouldBeFinished() throws Exception {
         Flame flame = new Flame(5, 4);
 
         // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.
         CurrentTimeSupplier currentTimeSupplier = mock(CurrentTimeSupplier.class);
-        Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(1000L));
+        Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(3000L));
         flame.setCurrentTimeSupplier(currentTimeSupplier);
 
         // set the start time.
-        flame.setStartTs(1000L - Flame.DURATION_TIME);
-        assertThat(flame.isFinished()).isTrue();
+        flame.setStartTs(3000L - Flame.DURATION_TIME);
+        assertThat(flame.updateStatus()).isTrue();
+        assertThat(flame.getCurStatus()).isEqualTo(STATUS_FINISHED);
     }
 }

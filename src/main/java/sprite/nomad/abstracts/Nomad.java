@@ -34,14 +34,6 @@ public abstract class Nomad extends Sprite {
         this.moveTime = moveTime;
     }
 
-    public void setNbImages(int nbImages) {
-        this.nbImages = nbImages;
-    }
-
-    public void setCurImageIdx(int curImageIdx) {
-        this.curImageIdx = curImageIdx;
-    }
-
     public int getMoveTime() {
         return moveTime;
     }
@@ -65,13 +57,6 @@ public abstract class Nomad extends Sprite {
             return false;
         }
     }
-
-    /**
-     * Update the nomad action.
-     *
-     * @return true if the action changed, flase otherwise.
-     */
-    public abstract boolean updateStatus();
 
     /**
      * Update the array of image according to the current sprite's action.

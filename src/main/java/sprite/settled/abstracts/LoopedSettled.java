@@ -10,7 +10,7 @@ import sprite.SpriteType;
  */
 public abstract class LoopedSettled extends Settled {
 
-    private final int maxNbLoop; // number of times the sprite should be painted.
+    private final int nbTimes; // number of times the sprite should be painted.
 
     /**
      * Create a looped settled.
@@ -21,20 +21,24 @@ public abstract class LoopedSettled extends Settled {
      * @param refreshTime the sprite refreshTime (i.e. fps)
      * @param images the sprite's array of images
      * @param nbImages the number of images
-     * @param maxNbLoop the max number of times the sprite must loop
+     * @param nbTimes the max number of times the sprite must loop
      */
     public LoopedSettled(int rowIdx, int colIdx, SpriteType spriteType, int refreshTime, Image[] images, int nbImages,
-            int maxNbLoop) {
+            int nbTimes) {
         super(rowIdx, colIdx, spriteType, refreshTime, images, nbImages);
-        this.maxNbLoop = maxNbLoop;
+        this.nbTimes = nbTimes;
     }
 
-    public int getMaxNbLoop() {
-        return maxNbLoop;
+    public int getNbTimes() {
+        return nbTimes;
     }
 
     @Override
-    public boolean isFinished() {
-        return getCurLoopIdx() == maxNbLoop;
+    public boolean updateStatus() {
+        if (getCurLoopIdx() == nbTimes) {
+            setCurStatus(Status.STATUS_FINISHED);
+            return true;
+        }
+        return false;
     }
 }

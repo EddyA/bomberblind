@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import images.ImagesLoader;
+import sprite.SpriteType;
 import utils.Tools;
 
 public class BombTest implements WithAssertions {
@@ -25,16 +26,18 @@ public class BombTest implements WithAssertions {
         assertThat(bomb.getColIdx()).isEqualTo(4);
         assertThat(bomb.getXMap()).isEqualTo(Tools.getCaseCentreAbscissa(4));
         assertThat(bomb.getYMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
+        assertThat(bomb.getSpriteType()).isEqualTo(SpriteType.BOMB);
+        assertThat(bomb.getRefreshTime()).isEqualTo(Bomb.REFRESH_TIME);
         assertThat(bomb.getImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bombMatrixRowIdx]);
         assertThat(bomb.getNbImages()).isEqualTo(ImagesLoader.NB_BOMB_FRAME);
-        assertThat(bomb.getRefreshTime()).isEqualTo(Bomb.REFRESH_TIME);
         assertThat(bomb.getDurationTime()).isEqualTo(Bomb.DURATION_TIME);
     }
 
     @Test
     public void accessorsShouldReturnTheExpectedValues() throws Exception {
-        Bomb bomb = new Bomb(5, 4, 3);
 
+        // set by the constructor.
+        Bomb bomb = new Bomb(5, 4, 3);
         assertThat(bomb.getFlameSize()).isEqualTo(3);
     }
 }
