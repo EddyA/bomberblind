@@ -1,25 +1,15 @@
 package sprite.settled.abstracts;
 
-import static sprite.settled.abstracts.Settled.Status.STATUS_ALIVE;
-import static sprite.settled.abstracts.Settled.Status.STATUS_FINISHED;
-
-import java.awt.Image;
-
 import sprite.SpriteType;
 import sprite.abstracts.Sprite;
 import utils.Tools;
+
+import java.awt.*;
 
 /**
  * Abstract class of a settled sprite.
  */
 public abstract class Settled extends Sprite {
-
-    /**
-     * enum the different available action of a bomber.
-     */
-    public enum Status {
-        STATUS_ALIVE, STATUS_FINISHED
-    }
 
     private int rowIdx; // map row index of the sprite (not private for test purpose).
     private int colIdx; // map column index of the sprite (not private for test purpose).
@@ -31,17 +21,15 @@ public abstract class Settled extends Sprite {
 
     private int curLoopIdx; // current number of times.
 
-    private Status curStatus = STATUS_ALIVE; // current status of the sprite.
-
     /**
      * Create a settled sprite.
      *
-     * @param rowIdx the map row index of the sprite
-     * @param colIdx the map col index of the sprite
-     * @param spriteType the sprite's type
+     * @param rowIdx      the map row index of the sprite
+     * @param colIdx      the map col index of the sprite
+     * @param spriteType  the sprite's type
      * @param refreshTime the sprite refresh time (i.e. defining the fps)
-     * @param images the sprite's array of images
-     * @param nbImages the number of images
+     * @param images      the sprite's array of images
+     * @param nbImages    the number of images
      */
     public Settled(int rowIdx, int colIdx, SpriteType spriteType, int refreshTime, Image[] images, int nbImages) {
         super(Tools.getCaseCentreAbscissa(colIdx), Tools.getCaseBottomOrdinate(rowIdx), spriteType, refreshTime);
@@ -93,19 +81,6 @@ public abstract class Settled extends Sprite {
 
     public void setCurLoopIdx(int curLoopIdx) {
         this.curLoopIdx = curLoopIdx;
-    }
-
-    public Status getCurStatus() {
-        return curStatus;
-    }
-
-    public void setCurStatus(Status curStatus) {
-        this.curStatus = curStatus;
-    }
-
-    @Override
-    public boolean isFinished() {
-        return curStatus.equals(STATUS_FINISHED);
     }
 
     @Override

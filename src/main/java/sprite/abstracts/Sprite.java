@@ -1,11 +1,10 @@
 package sprite.abstracts;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-
 import sprite.SpriteType;
 import utils.CurrentTimeSupplier;
 import utils.UIDSupplier;
+
+import java.awt.*;
 
 /**
  * Abstract class of a sprite.

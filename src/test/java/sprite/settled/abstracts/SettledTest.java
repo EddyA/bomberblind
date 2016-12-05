@@ -1,17 +1,16 @@
 package sprite.settled.abstracts;
 
-import static images.ImagesLoader.NB_FLAME_FRAME;
-
-import java.io.IOException;
-
+import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import images.ImagesLoader;
 import sprite.settled.Flame;
 import utils.Tools;
+
+import java.io.IOException;
+
+import static images.ImagesLoader.NB_FLAME_FRAME;
 
 public class SettledTest implements WithAssertions {
 
@@ -32,22 +31,6 @@ public class SettledTest implements WithAssertions {
         assertThat(flame.getImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameMatrixRowIdx]);
         assertThat(flame.getNbImages()).isEqualTo(ImagesLoader.NB_FLAME_FRAME);
         assertThat(flame.getRefreshTime()).isEqualTo(Flame.REFRESH_TIME);
-    }
-
-    @Test
-    public void isFinishedShouldReturnFalseWhenCurStatusIsAlive()
-            throws Exception {
-        Flame flame = new Flame(5, 4);
-        flame.setCurStatus(Settled.Status.STATUS_ALIVE);
-        assertThat(flame.isFinished()).isFalse();
-    }
-
-    @Test
-    public void isFinishedShouldReturnTrueWhenCurStatusIsFinished()
-            throws Exception {
-        Flame flame = new Flame(5, 4);
-        flame.setCurStatus(Settled.Status.STATUS_FINISHED);
-        assertThat(flame.isFinished()).isTrue();
     }
 
     @Test

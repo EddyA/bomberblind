@@ -1,11 +1,5 @@
 package spriteList.ctrl;
 
-import static map.ctrl.NomadMethods.isNomadBurning;
-import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
-import static sprite.nomad.abstracts.Enemy.Action.ACTION_WALKING;
-
-import java.util.LinkedList;
-
 import ai.EnemyAi;
 import exceptions.CannotMoveEnemyException;
 import map.MapPoint;
@@ -15,7 +9,14 @@ import sprite.nomad.abstracts.Enemy;
 import sprite.settled.Bomb;
 import sprite.settled.ConclusionFlame;
 import sprite.settled.Flame;
+import sprite.settled.abstracts.TimedSettled;
 import utils.Direction;
+
+import java.util.LinkedList;
+
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
+import static sprite.nomad.abstracts.Enemy.Action.ACTION_WALKING;
 
 /**
  * Define a collection of methods to process sprites.
@@ -41,7 +42,6 @@ public class ActionMethods {
             bomber.init();
         } else if (bomber.getCurAction() != Bomber.Action.ACTION_DYING) { // not finished and not dead.
 
-
             // should the bomber die?
             if (!bomber.isInvincible() &&
                     (isNomadBurning(mapPointMatrix, bomber.getXMap(), bomber.getYMap()) ||
@@ -53,7 +53,7 @@ public class ActionMethods {
     }
 
     /**
-     * - Check if the enemy must be removed from the list (if the enemy is dead and the sprite finished),
+     * - Notice that the bomber must be removed from the list (if the enemy is dead and the sprite finished),
      * - OR kill the enemy (if the enemy is on a burning case),
      * - OR compute the next direction.
      *
@@ -65,7 +65,7 @@ public class ActionMethods {
      * @return true if the enemy should be removed from the list, false otherwise.
      */
     public static boolean processEnemy(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int mapWidth,
-                                        int mapHeight, Enemy enemy) {
+                                       int mapHeight, Enemy enemy) {
         boolean shouldBeRemoved = false;
         if (enemy.isFinished()) {
             shouldBeRemoved = true;
@@ -111,9 +111,10 @@ public class ActionMethods {
     }
 
     /**
-     * - Check if the bomb must be removed from the list (if the sprite is finished),
-     * - OR kill the bomb (if it is time or the bomb is on a burning case)
-     * AND add flames.
+     * - Notice that the bomb must be removed from the list (if the sprite is finished),
+     * -- AND add flames,
+     * -- AND remove the bombing status of the relative case.
+     * - OR finished the bomb (if the bomb is on a burning case),
      * - OR do nothing.
      *
      * @param tmpList        the temporary list of sprites to add new elements
@@ -126,21 +127,21 @@ public class ActionMethods {
     public static boolean processBomb(LinkedList<Sprite> tmpList, MapPoint[][] mapPointMatrix, int mapWidth,
                                       int mapHeight, Bomb bomb) {
         boolean shouldBeRemoved = false;
-        if (bomb.isFinished() || // is it finished?
-                mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBurning()) { // OR is it on a burning case?
-
-            // create flames.
+        if (bomb.isFinished()) {
             AddingMethods.addFlames(tmpList, mapPointMatrix, mapWidth, mapHeight, bomb.getRowIdx(), bomb.getColIdx(),
-                    bomb.getFlameSize());
+                    bomb.getFlameSize()); // create flames.
             mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].setBombing(false);
             shouldBeRemoved = true;
+
+        } else if (mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBurning()) {  // is it on a burning case?
+            bomb.setCurStatus(TimedSettled.Status.STATUS_FINISHED);
         }
         return shouldBeRemoved;
     }
 
     /**
-     * - Check if the flame must be removed from the list (if the sprite is finished)
-     * AND add a conclusion flame,
+     * - Notice that the flame must be removed from the list (if the sprite is finished),
+     * -- AND add a conclusion flame.
      * - OR do nothing.
      *
      * @param tmpList        the temporary list of sprites to add new elements
@@ -161,7 +162,7 @@ public class ActionMethods {
     }
 
     /**
-     * - Check if the conclusion flame must be removed from the list (if the sprite is finished),
+     * - Notice that the conclusion flame must be removed from the list (if the sprite is finished),
      * - OR do nothing.
      *
      * @param conclusionFlame the conclusion flame

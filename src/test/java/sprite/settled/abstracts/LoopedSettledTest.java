@@ -1,17 +1,16 @@
 package sprite.settled.abstracts;
 
-import static sprite.settled.abstracts.Settled.Status.STATUS_ALIVE;
-import static sprite.settled.abstracts.Settled.Status.STATUS_FINISHED;
-
-import java.io.IOException;
-
+import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
-
-import images.ImagesLoader;
 import sprite.settled.ConclusionFlame;
 import utils.Tools;
+
+import java.io.IOException;
+
+import static sprite.settled.abstracts.LoopedSettled.Status.STATUS_ALIVE;
+import static sprite.settled.abstracts.LoopedSettled.Status.STATUS_FINISHED;
 
 public class LoopedSettledTest implements WithAssertions {
 
@@ -53,5 +52,23 @@ public class LoopedSettledTest implements WithAssertions {
         conclusionFlame.setCurLoopIdx(ConclusionFlame.NB_TIMES); // sprite finished.
         assertThat(conclusionFlame.updateStatus()).isTrue();
         assertThat(conclusionFlame.getCurStatus()).isEqualTo(STATUS_FINISHED);
+    }
+
+    @Test
+    public void isFinishedShouldReturnFalseWhenCurStatusIsAlive() throws Exception {
+        ConclusionFlame conclusionFlame = new ConclusionFlame(5, 4);
+
+        // set the status and check.
+        conclusionFlame.setCurStatus(STATUS_ALIVE);
+        assertThat(conclusionFlame.isFinished()).isFalse();
+    }
+
+    @Test
+    public void isFinishedShouldReturnTrueWhenCurStatusIsFinished() throws Exception {
+        ConclusionFlame conclusionFlame = new ConclusionFlame(5, 4);
+
+        // set the status and check.
+        conclusionFlame.setCurStatus(STATUS_FINISHED);
+        assertThat(conclusionFlame.isFinished()).isTrue();
     }
 }

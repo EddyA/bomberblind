@@ -1,21 +1,20 @@
 package sprite.settled.abstracts;
 
-import static org.mockito.Mockito.mock;
-import static sprite.settled.abstracts.Settled.Status.STATUS_ALIVE;
-import static sprite.settled.abstracts.Settled.Status.STATUS_FINISHED;
-
-import java.io.IOException;
-import java.time.Instant;
-
+import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import images.ImagesLoader;
 import sprite.settled.Flame;
 import utils.CurrentTimeSupplier;
 import utils.Tools;
+
+import java.io.IOException;
+import java.time.Instant;
+
+import static org.mockito.Mockito.mock;
+import static sprite.settled.abstracts.TimedSettled.Status.STATUS_ALIVE;
+import static sprite.settled.abstracts.TimedSettled.Status.STATUS_FINISHED;
 
 public class TimedSettledTest implements WithAssertions {
 
@@ -67,5 +66,23 @@ public class TimedSettledTest implements WithAssertions {
         flame.setStartTs(3000L - Flame.DURATION_TIME);
         assertThat(flame.updateStatus()).isTrue();
         assertThat(flame.getCurStatus()).isEqualTo(STATUS_FINISHED);
+    }
+
+    @Test
+    public void isFinishedShouldReturnFalseWhenCurStatusIsAlive() throws Exception {
+        Flame flame = new Flame(5, 4);
+
+        // set the status and check.
+        flame.setCurStatus(STATUS_ALIVE);
+        assertThat(flame.isFinished()).isFalse();
+    }
+
+    @Test
+    public void isFinishedShouldReturnTrueWhenCurStatusIsFinished() throws Exception {
+        Flame flame = new Flame(5, 4);
+
+        // set the status and check.
+        flame.setCurStatus(STATUS_FINISHED);
+        assertThat(flame.isFinished()).isTrue();
     }
 }

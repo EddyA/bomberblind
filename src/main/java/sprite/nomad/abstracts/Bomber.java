@@ -1,13 +1,11 @@
 package sprite.nomad.abstracts;
 
-import static sprite.nomad.abstracts.Bomber.Action.ACTION_DYING;
-import static sprite.nomad.abstracts.Bomber.Action.ACTION_WAITING;
-import static sprite.nomad.abstracts.Bomber.Action.ACTION_WALKING;
-
-import java.awt.Image;
-
 import sprite.SpriteType;
 import utils.Direction;
+
+import java.awt.*;
+
+import static sprite.nomad.abstracts.Bomber.Action.*;
 
 /**
  * Abstract class of a bomber.
@@ -47,27 +45,27 @@ public abstract class Bomber extends Nomad {
     /**
      * Create a bomber.
      *
-     * @param xMap abscissa on the map
-     * @param yMap ordinate on the map
-     * @param spriteType the sprite's type
-     * @param deathImages the array of image for the "death" action
-     * @param nbDeathFrame the number of images of the "death" array
-     * @param waitImages the array of image for the "wait" action
-     * @param nbWaitFrame the number of images of the "wait" array
-     * @param walkBackImages the array of images for the "walk back" action
+     * @param xMap            abscissa on the map
+     * @param yMap            ordinate on the map
+     * @param spriteType      the sprite's type
+     * @param deathImages     the array of image for the "death" action
+     * @param nbDeathFrame    the number of images of the "death" array
+     * @param waitImages      the array of image for the "wait" action
+     * @param nbWaitFrame     the number of images of the "wait" array
+     * @param walkBackImages  the array of images for the "walk back" action
      * @param walkFrontImages the array of images for the "walk front" action
-     * @param walkLeftImages the array of images for the "walk left" action
+     * @param walkLeftImages  the array of images for the "walk left" action
      * @param walkRightImages the array of images for the "walk right" action
-     * @param nbWalkFrame number of images of the "walk" arrays
-     * @param winImages the array of image for the "win" action
-     * @param nbWinFrame the number of images of the "win" array
-     * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
-     * @param moveTime the move time (i.e. defining the nomad move speed)
-     * @param invincibleTime the time the bomber should be invicible after being revived
+     * @param nbWalkFrame     number of images of the "walk" arrays
+     * @param winImages       the array of image for the "win" action
+     * @param nbWinFrame      the number of images of the "win" array
+     * @param refreshTime     the sprite refresh time (i.e. defining the image/sec)
+     * @param moveTime        the move time (i.e. defining the nomad move speed)
+     * @param invincibleTime  the time the bomber should be invicible after being revived
      */
     public Bomber(int xMap,
                   int yMap,
-            SpriteType spriteType,
+                  SpriteType spriteType,
                   Image[] deathImages,
                   int nbDeathFrame,
                   Image[] waitImages,
@@ -237,48 +235,48 @@ public abstract class Bomber extends Nomad {
     @Override
     public void updateSprite() {
         switch (curAction) {
-        case ACTION_DYING: {
+            case ACTION_DYING: {
                 images = deathImages;
                 nbImages = nbDeathFrame;
                 break;
             }
-        case ACTION_WAITING: {
+            case ACTION_WAITING: {
                 images = waitImages;
                 nbImages = nbWaitFrame;
                 break;
             }
-        case ACTION_WALKING: {
-            switch (curDirection) {
-            case NORTH: {
-                images = walkBackImages;
-                nbImages = nbWalkFrame;
+            case ACTION_WALKING: {
+                switch (curDirection) {
+                    case NORTH: {
+                        images = walkBackImages;
+                        nbImages = nbWalkFrame;
+                        break;
+                    }
+                    case SOUTH: {
+                        images = walkFrontImages;
+                        nbImages = nbWalkFrame;
+                        break;
+                    }
+                    case WEST: {
+                        images = walkLeftImages;
+                        nbImages = nbWalkFrame;
+                        break;
+                    }
+                    case EAST: {
+                        images = walkRightImages;
+                        nbImages = nbWalkFrame;
+                        break;
+                    }
+                }
                 break;
             }
-            case SOUTH: {
-                images = walkFrontImages;
-                nbImages = nbWalkFrame;
-                break;
-            }
-            case WEST: {
-                images = walkLeftImages;
-                nbImages = nbWalkFrame;
-                break;
-            }
-            case EAST: {
-                images = walkRightImages;
-                nbImages = nbWalkFrame;
-                break;
-            }
-            }
-            break;
-        }
-        case ACTION_WINING: {
+            case ACTION_WINING: {
                 images = winImages;
                 nbImages = nbWinFrame;
                 break;
             }
             default: {
-            throw new RuntimeException("another action is not allowed here, please check the algorithm.");
+                throw new RuntimeException("another action is not allowed here, please check the algorithm.");
             }
         }
     }
@@ -291,6 +289,6 @@ public abstract class Bomber extends Nomad {
 
     @Override
     public boolean isFinished() {
-        return ((curAction == ACTION_DYING) && (curImageIdx == nbImages - 1));
+        return ((curAction.equals(ACTION_DYING)) && (curImageIdx == nbImages - 1));
     }
 }

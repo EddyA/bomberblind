@@ -15,6 +15,7 @@
         <assertj.version>3.5.1</assertj.version>
         <mockito.version>1.10.19</mockito.version>
         <cucumber.version>1.2.5</cucumber.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <build>

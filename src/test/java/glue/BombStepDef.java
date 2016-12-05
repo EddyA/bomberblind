@@ -1,15 +1,14 @@
 package glue;
 
-import static sprite.settled.abstracts.Settled.Status.STATUS_FINISHED;
-
-import java.util.List;
-
-import org.assertj.core.api.WithAssertions;
-import org.mockito.Mockito;
-
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import map.MapPoint;
+import org.assertj.core.api.WithAssertions;
+import org.mockito.Mockito;
+
+import java.util.List;
+
+import static sprite.settled.abstracts.TimedSettled.Status.STATUS_FINISHED;
 
 public class BombStepDef implements WithAssertions {
 
@@ -17,7 +16,7 @@ public class BombStepDef implements WithAssertions {
     private final MapPointMatrixState mapPointMatrixState;
 
     public BombStepDef(BombState bombState,
-            MapPointMatrixState mapPointMatrixState) {
+                       MapPointMatrixState mapPointMatrixState) {
         this.bombState = bombState;
         this.mapPointMatrixState = mapPointMatrixState;
     }

@@ -2,8 +2,6 @@ package sprite;
 
 import java.util.Optional;
 
-import com.sun.istack.internal.NotNull;
-
 public enum SpriteType {
     BOMBER,
     ENEMY,
@@ -11,7 +9,7 @@ public enum SpriteType {
     FLAME,
     CONCLUSION_FLAME;
 
-    public static Optional<String> getlabel(@NotNull SpriteType spriteType) {
+    public static Optional<String> getlabel(SpriteType spriteType) {
         Optional<String> label = Optional.empty();
         switch (spriteType) {
         case BOMBER: {
