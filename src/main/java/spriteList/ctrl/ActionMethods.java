@@ -45,7 +45,7 @@ public class ActionMethods {
             // should the bomber die?
             if (!bomber.isInvincible() &&
                     (isNomadBurning(mapPointMatrix, bomber.getXMap(), bomber.getYMap()) ||
-                            isNomadCrossingEnemy(list, bomber.getXMap(), bomber.getYMap(), bomber.getUid()))) {
+                            isNomadCrossingEnemy(list, bomber.getXMap(), bomber.getYMap(), bomber))) {
                 bomber.setCurAction(Bomber.Action.ACTION_DYING);
             }
         }
@@ -79,7 +79,7 @@ public class ActionMethods {
                 try {
                     // compute the next direction.
                     Direction newDirection = EnemyAi.computeNextDirection(mapPointMatrix, mapWidth, mapHeight, list,
-                            enemy.getCurDirection(), enemy.getXMap(), enemy.getYMap(), enemy.getUid());
+                            enemy);
 
                     // assign the new direction.
                     enemy.setCurAction(ACTION_WALKING);

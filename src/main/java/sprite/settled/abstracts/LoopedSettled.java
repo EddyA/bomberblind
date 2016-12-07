@@ -55,7 +55,8 @@ public abstract class LoopedSettled extends Settled {
 
     @Override
     public boolean updateStatus() {
-        if (getCurLoopIdx() == nbTimes) {
+        if ((getCurLoopIdx() == nbTimes - 1) &&
+                getCurImageIdx() == getNbImages() - 1) {
             curStatus = STATUS_ENDED;
             return true;
         }
