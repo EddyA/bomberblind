@@ -1,4 +1,4 @@
-package sprite.settled.abstracts;
+package sprite.settled;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.time.Instant;
 
 import static org.mockito.Mockito.mock;
-import static sprite.settled.abstracts.TimedSettled.Status.STATUS_ALIVE;
-import static sprite.settled.abstracts.TimedSettled.Status.STATUS_ENDED;
+import static sprite.settled.TimedSettled.Status.STATUS_ALIVE;
+import static sprite.settled.TimedSettled.Status.STATUS_ENDED;
 
 public class TimedSettledTest implements WithAssertions {
 

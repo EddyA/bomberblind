@@ -2,7 +2,7 @@ package sprite;
 
 import static sprite.SpriteType.BOMB;
 import static sprite.SpriteType.BOMBER;
-import static sprite.SpriteType.CONCLUSION_FLAME;
+import static sprite.SpriteType.FLAME_END;
 import static sprite.SpriteType.ENEMY;
 import static sprite.SpriteType.FLAME;
 import static sprite.SpriteType.getlabel;
@@ -18,6 +18,6 @@ public class SpriteTypeTest implements WithAssertions {
         assertThat(getlabel(ENEMY).orElse("no_name")).isEqualTo("enemy");
         assertThat(getlabel(BOMB).orElse("no_name")).isEqualTo("bomb");
         assertThat(getlabel(FLAME).orElse("no_name")).isEqualTo("flame");
-        assertThat(getlabel(CONCLUSION_FLAME).orElse("no_name")).isEqualTo("conclusion_flame");
+        assertThat(getlabel(FLAME_END).orElse("no_name")).isEqualTo("flame_end");
     }
 }

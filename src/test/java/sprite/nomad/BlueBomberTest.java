@@ -1,6 +1,6 @@
 package sprite.nomad;
 
-import static sprite.nomad.abstracts.Bomber.Action.ACTION_WAITING;
+import static sprite.nomad.Bomber.Action.ACTION_WAITING;
 
 import java.io.IOException;
 

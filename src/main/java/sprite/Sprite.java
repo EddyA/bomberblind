@@ -1,8 +1,7 @@
-package sprite.abstracts;
+package sprite;
 
 import sprite.SpriteType;
 import utils.CurrentTimeSupplier;
-import utils.UIDSupplier;
 
 import java.awt.*;
 
@@ -11,11 +10,9 @@ import java.awt.*;
  */
 public abstract class Sprite {
     protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
-    protected UIDSupplier uidSupplier = new UIDSupplier();
 
     protected int xMap; // abscissa on map.
     protected int yMap; // ordinate on map.
-    protected int uid; // unique id.
     protected SpriteType spriteType; // type of sprite.
 
     private int refreshTime; // refresh time (in ms).
@@ -33,7 +30,6 @@ public abstract class Sprite {
         this.xMap = xMap;
         this.yMap = yMap;
         this.spriteType = spriteType;
-        this.uid = uidSupplier.get();
         this.refreshTime = refreshTime;
     }
 
@@ -55,10 +51,6 @@ public abstract class Sprite {
 
     public SpriteType getSpriteType() {
         return spriteType;
-    }
-
-    public int getUid() {
-        return uid;
     }
 
     public int getRefreshTime() {

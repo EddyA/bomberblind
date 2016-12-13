@@ -3,20 +3,20 @@ package spriteList.ctrl;
 import ai.EnemyAi;
 import exceptions.CannotMoveEnemyException;
 import map.MapPoint;
-import sprite.abstracts.Sprite;
-import sprite.nomad.abstracts.Bomber;
-import sprite.nomad.abstracts.Enemy;
+import sprite.Sprite;
+import sprite.nomad.Bomber;
+import sprite.nomad.Enemy;
 import sprite.settled.Bomb;
-import sprite.settled.ConclusionFlame;
 import sprite.settled.Flame;
-import sprite.settled.abstracts.TimedSettled;
+import sprite.settled.FlameEnd;
+import sprite.settled.TimedSettled;
 import utils.Direction;
 
 import java.util.LinkedList;
 
 import static map.ctrl.NomadMethods.isNomadBurning;
 import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
-import static sprite.nomad.abstracts.Enemy.Action.ACTION_WALKING;
+import static sprite.nomad.Enemy.Action.ACTION_WALKING;
 
 /**
  * Define a collection of methods to process sprites.
@@ -141,7 +141,7 @@ public class ActionMethods {
 
     /**
      * - Notice that the flame must be removed from the list (if the sprite is ended),
-     * -- AND add a conclusion flame.
+     * -- AND add a flame end.
      * - OR do nothing.
      *
      * @param tmpList        the temporary list of sprites to add new elements
@@ -153,8 +153,8 @@ public class ActionMethods {
         boolean shouldBeRemoved = false;
         if (flame.isFinished()) {
 
-            // create conclusion flames.
-            AddingMethods.addConclusionFlame(tmpList, mapPointMatrix, flame.getRowIdx(), flame.getColIdx());
+            // create flame ends.
+            AddingMethods.addFlameEnd(tmpList, flame.getRowIdx(), flame.getColIdx());
             mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].removeFlame();
             shouldBeRemoved = true;
         }
@@ -162,15 +162,15 @@ public class ActionMethods {
     }
 
     /**
-     * - Notice that the conclusion flame must be removed from the list (if the sprite is ended),
+     * - Notice that the flame end must be removed from the list (if the sprite is ended),
      * - OR do nothing.
      *
-     * @param conclusionFlame the conclusion flame
-     * @return true if the conclusion flame should be removed from the list, false otherwise.
+     * @param flameEnd the flame end
+     * @return true if the flame end should be removed from the list, false otherwise.
      */
-    public static boolean processConclusionFlame(ConclusionFlame conclusionFlame) {
+    public static boolean processFlameEnd(FlameEnd flameEnd) {
         boolean shouldBeRemoved = false;
-        if (conclusionFlame.isFinished()) {
+        if (flameEnd.isFinished()) {
             shouldBeRemoved = true;
         }
         return shouldBeRemoved;

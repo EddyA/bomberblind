@@ -1,11 +1,11 @@
-package sprite.settled.abstracts;
+package sprite.settled;
 
 import sprite.SpriteType;
 
 import java.awt.*;
 
-import static sprite.settled.abstracts.LoopedSettled.Status.STATUS_ALIVE;
-import static sprite.settled.abstracts.LoopedSettled.Status.STATUS_ENDED;
+import static sprite.settled.LoopedSettled.Status.STATUS_ALIVE;
+import static sprite.settled.LoopedSettled.Status.STATUS_ENDED;
 
 /**
  * Abstract class of a looped settled sprite.
@@ -55,8 +55,7 @@ public abstract class LoopedSettled extends Settled {
 
     @Override
     public boolean updateStatus() {
-        if ((getCurLoopIdx() == nbTimes - 1) &&
-                getCurImageIdx() == getNbImages() - 1) {
+        if ((getCurLoopIdx() == nbTimes - 1) && getCurImageIdx() == getNbImages() - 1) {
             curStatus = STATUS_ENDED;
             return true;
         }

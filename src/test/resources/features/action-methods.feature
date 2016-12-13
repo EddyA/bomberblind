@@ -84,6 +84,3 @@ Feature: Features of the action methods class
       | 4      | 6      |
       | 4      | 7      |
     Then the bomb should be marked as removable from the sprite list
-
-
-

@@ -8,7 +8,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
-import static sprite.settled.abstracts.TimedSettled.Status.STATUS_ENDED;
+import static sprite.settled.TimedSettled.Status.STATUS_ENDED;
 
 public class BombStepDef implements WithAssertions {
 

@@ -1,4 +1,4 @@
-package sprite.nomad.abstracts;
+package sprite.nomad;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
@@ -72,13 +72,13 @@ public class NomadTest implements WithAssertions {
         Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(false);
 
         // set nomad.
-        spyedBlueBomber.images = ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx];
-        spyedBlueBomber.nbImages = NB_BOMBER_WAIT_FRAME;
-        spyedBlueBomber.curImageIdx = 1;
+        spyedBlueBomber.setImages(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
+        spyedBlueBomber.setNbImages(NB_BOMBER_WAIT_FRAME);
+        spyedBlueBomber.setCurImageIdx(1);
 
         // call & check.
         spyedBlueBomber.updateImage();
-        assertThat(spyedBlueBomber.curImageIdx).isEqualTo(1);
+        assertThat(spyedBlueBomber.getCurImageIdx()).isEqualTo(1);
         assertThat(spyedBlueBomber.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx][1]);
     }
@@ -91,13 +91,13 @@ public class NomadTest implements WithAssertions {
         Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(true);
 
         // set nomad.
-        spyedBlueBomber.images = ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx];
-        spyedBlueBomber.nbImages = NB_BOMBER_WAIT_FRAME;
-        spyedBlueBomber.curImageIdx = 1;
+        spyedBlueBomber.setImages(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
+        spyedBlueBomber.setNbImages(NB_BOMBER_WAIT_FRAME);
+        spyedBlueBomber.setCurImageIdx(1);
 
         // call & check.
         spyedBlueBomber.updateImage();
-        assertThat(spyedBlueBomber.curImageIdx).isEqualTo(2);
+        assertThat(spyedBlueBomber.getCurImageIdx()).isEqualTo(2);
         assertThat(spyedBlueBomber.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx][2]);
     }
@@ -110,13 +110,13 @@ public class NomadTest implements WithAssertions {
         Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(false);
 
         // set nomad.
-        spyedBlueBomber.images = ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx];
-        spyedBlueBomber.nbImages = NB_BOMBER_WAIT_FRAME;
-        spyedBlueBomber.curImageIdx = 1; // index != 0.
+        spyedBlueBomber.setImages(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
+        spyedBlueBomber.setNbImages(NB_BOMBER_WAIT_FRAME);
+        spyedBlueBomber.setCurImageIdx(1); // index != 0.
 
         // call & check.
         spyedBlueBomber.updateImage();
-        assertThat(spyedBlueBomber.curImageIdx).isEqualTo(0);
+        assertThat(spyedBlueBomber.getCurImageIdx()).isEqualTo(0);
         assertThat(spyedBlueBomber.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx][0]);
     }
@@ -129,13 +129,13 @@ public class NomadTest implements WithAssertions {
         Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(true);
 
         // set nomad.
-        spyedBlueBomber.images = ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx];
-        spyedBlueBomber.nbImages = NB_BOMBER_WAIT_FRAME;
-        spyedBlueBomber.curImageIdx = NB_BOMBER_WAIT_FRAME - 1; // last sprite's image.
+        spyedBlueBomber.setImages(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
+        spyedBlueBomber.setNbImages(NB_BOMBER_WAIT_FRAME);
+        spyedBlueBomber.setCurImageIdx(NB_BOMBER_WAIT_FRAME - 1); // last sprite's image.
 
         // call & check.
         spyedBlueBomber.updateImage();
-        assertThat(spyedBlueBomber.curImageIdx).isEqualTo(0);
+        assertThat(spyedBlueBomber.getCurImageIdx()).isEqualTo(0);
         assertThat(spyedBlueBomber.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx][0]);
     }

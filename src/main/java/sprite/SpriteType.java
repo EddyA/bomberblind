@@ -7,7 +7,7 @@ public enum SpriteType {
     ENEMY,
     BOMB,
     FLAME,
-    CONCLUSION_FLAME;
+    FLAME_END;
 
     public static Optional<String> getlabel(SpriteType spriteType) {
         Optional<String> label = Optional.empty();
@@ -28,8 +28,8 @@ public enum SpriteType {
             label = Optional.of("flame");
             break;
         }
-        case CONCLUSION_FLAME: {
-            label = Optional.of("conclusion_flame");
+        case FLAME_END: {
+            label = Optional.of("flame_end");
             break;
         }
         }

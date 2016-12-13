@@ -1,10 +1,8 @@
 package glue;
 
-import static org.mockito.Matchers.anyInt;
-
 import java.util.LinkedList;
 
-import sprite.abstracts.Sprite;
+import sprite.Sprite;
 import spriteList.SpriteList;
 
 public class SpriteListState {

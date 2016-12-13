@@ -2,8 +2,8 @@ package ai;
 
 import exceptions.CannotMoveEnemyException;
 import map.MapPoint;
-import sprite.abstracts.Sprite;
-import sprite.nomad.abstracts.Enemy;
+import sprite.Sprite;
+import sprite.nomad.Enemy;
 import utils.Direction;
 
 import java.awt.event.KeyEvent;

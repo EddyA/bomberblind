@@ -1,4 +1,4 @@
-package sprite.settled.abstracts;
+package sprite.settled;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;

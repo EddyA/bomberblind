@@ -17,12 +17,13 @@ import exceptions.CannotCreateMapElementException;
 import exceptions.CannotPlaceEnemyOnMapException;
 import exceptions.InvalidConfigurationException;
 import exceptions.InvalidPropertiesException;
+import map.Map;
 import map.ctrl.NomadMethods;
 import map.zelda.ZeldaMap;
 import map.zelda.ZeldaMapProperties;
 import map.zelda.ZeldaMapSetting;
 import sprite.nomad.BlueBomber;
-import sprite.nomad.abstracts.Bomber;
+import sprite.nomad.Bomber;
 import sprite.settled.Bomb;
 import spriteList.SpriteList;
 import spriteList.SpritesProperties;
@@ -33,7 +34,7 @@ import utils.Tuple2;
 
 class GameJpanel extends JPanel implements Runnable, KeyListener {
 
-    private map.abstracts.Map map;
+    private Map map;
     private BlueBomber mainBomber;
     private SpriteList spriteList;
     private List<Long> pressedKeyList;

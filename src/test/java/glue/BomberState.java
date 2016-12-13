@@ -6,7 +6,7 @@ import org.mockito.Mockito;
 
 import images.ImagesLoader;
 import sprite.nomad.BlueBomber;
-import sprite.nomad.abstracts.Bomber;
+import sprite.nomad.Bomber;
 
 public class BomberState {
 

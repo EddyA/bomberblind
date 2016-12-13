@@ -1,6 +1,6 @@
 package sprite.nomad;
 
-import static sprite.nomad.abstracts.Enemy.Action.ACTION_WALKING;
+import static sprite.nomad.Enemy.Action.ACTION_WALKING;
 
 import java.io.IOException;
 

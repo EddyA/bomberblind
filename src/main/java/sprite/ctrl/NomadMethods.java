@@ -6,9 +6,8 @@ import static utils.Tools.getCharRightAbscissa;
 import static utils.Tools.getCharTopOrdinate;
 
 import sprite.SpriteType;
-import sprite.abstracts.Sprite;
-import sprite.nomad.abstracts.Enemy;
-import sprite.nomad.abstracts.Nomad;
+import sprite.Sprite;
+import sprite.nomad.Nomad;
 
 public class NomadMethods {
 

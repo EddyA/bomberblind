@@ -1,8 +1,8 @@
 package map.zelda;
 
 import exceptions.InvalidPropertiesException;
-import map.abstracts.MapProperties;
-import map.abstracts.MapSettings;
+import map.MapProperties;
+import map.MapSettings;
 
 /**
  * This class extends {@link MapSettings}.

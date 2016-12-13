@@ -1,7 +1,7 @@
-package sprite.nomad.abstracts;
+package sprite.nomad;
 
-import static sprite.nomad.abstracts.Enemy.Action.ACTION_DYING;
-import static sprite.nomad.abstracts.Enemy.Action.ACTION_WALKING;
+import static sprite.nomad.Enemy.Action.ACTION_DYING;
+import static sprite.nomad.Enemy.Action.ACTION_WALKING;
 
 import java.io.IOException;
 
@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import images.ImagesLoader;
 import sprite.nomad.CloakedSkeleton;
+import sprite.nomad.Enemy;
 import utils.Direction;
 
 public class EnemyTest implements WithAssertions {
@@ -134,41 +135,41 @@ public class EnemyTest implements WithAssertions {
         // dying.
         cloakedSkeleton.setCurAction(Enemy.Action.ACTION_DYING);
         cloakedSkeleton.updateSprite();
-        assertThat(cloakedSkeleton.images)
+        assertThat(cloakedSkeleton.getImages())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonDeathMatrixRowIdx]);
-        assertThat(cloakedSkeleton.nbImages).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME);
+        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME);
 
         // walking back.
         cloakedSkeleton.setCurAction(Enemy.Action.ACTION_WALKING);
         cloakedSkeleton.setCurDirection(Direction.NORTH);
         cloakedSkeleton.updateSprite();
-        assertThat(cloakedSkeleton.images)
+        assertThat(cloakedSkeleton.getImages())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkBackMatrixRowIdx]);
-        assertThat(cloakedSkeleton.nbImages).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
+        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
 
         // walking front.
         cloakedSkeleton.setCurAction(Enemy.Action.ACTION_WALKING);
         cloakedSkeleton.setCurDirection(Direction.SOUTH);
         cloakedSkeleton.updateSprite();
-        assertThat(cloakedSkeleton.images)
+        assertThat(cloakedSkeleton.getImages())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkFrontMatrixRowIdx]);
-        assertThat(cloakedSkeleton.nbImages).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
+        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
 
         // walking left.
         cloakedSkeleton.setCurAction(Enemy.Action.ACTION_WALKING);
         cloakedSkeleton.setCurDirection(Direction.WEST);
         cloakedSkeleton.updateSprite();
-        assertThat(cloakedSkeleton.images)
+        assertThat(cloakedSkeleton.getImages())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkLeftMatrixRowIdx]);
-        assertThat(cloakedSkeleton.nbImages).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
+        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
 
         // walking right.
         cloakedSkeleton.setCurAction(Enemy.Action.ACTION_WALKING);
         cloakedSkeleton.setCurDirection(Direction.EAST);
         cloakedSkeleton.updateSprite();
-        assertThat(cloakedSkeleton.images)
+        assertThat(cloakedSkeleton.getImages())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkRightMatrixRowIdx]);
-        assertThat(cloakedSkeleton.nbImages).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
+        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
     }
 
     @Test
@@ -186,7 +187,7 @@ public class EnemyTest implements WithAssertions {
         // set test.
         cloakedSkeleton.setCurAction(ACTION_DYING);
         cloakedSkeleton.updateSprite();
-        cloakedSkeleton.curImageIdx = ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME - 1;
+        cloakedSkeleton.setCurImageIdx(ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME - 1);
 
         // call & check.
         assertThat(cloakedSkeleton.isFinished()).isTrue();
@@ -200,7 +201,7 @@ public class EnemyTest implements WithAssertions {
         cloakedSkeleton.setCurAction(ACTION_WALKING);
         cloakedSkeleton.setCurDirection(Direction.NORTH);
         cloakedSkeleton.updateSprite();
-        cloakedSkeleton.curImageIdx = ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME - 1;
+        cloakedSkeleton.setCurImageIdx(ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME - 1);
 
         // call & check.
         assertThat(cloakedSkeleton.isFinished()).isFalse();
@@ -213,7 +214,7 @@ public class EnemyTest implements WithAssertions {
         // set test.
         cloakedSkeleton.setCurAction(ACTION_DYING);
         cloakedSkeleton.updateSprite();
-        cloakedSkeleton.curImageIdx = 0;
+        cloakedSkeleton.setCurImageIdx(0);
 
         // call & check.
         assertThat(cloakedSkeleton.isFinished()).isFalse();

@@ -1,11 +1,11 @@
-package sprite.nomad.abstracts;
+package sprite.nomad;
 
 import sprite.SpriteType;
 import utils.Direction;
 
 import java.awt.*;
 
-import static sprite.nomad.abstracts.Bomber.Action.*;
+import static sprite.nomad.Bomber.Action.*;
 
 /**
  * Abstract class of a bomber.
@@ -19,6 +19,7 @@ public abstract class Bomber extends Nomad {
         ACTION_DYING, ACTION_WAITING, ACTION_WALKING, ACTION_WINING
     }
 
+    private final BomberType bomberType;
     private Image[] deathImages;
     private int nbDeathFrame;
     private Image[] waitImages;
@@ -47,7 +48,7 @@ public abstract class Bomber extends Nomad {
      *
      * @param xMap            abscissa on the map
      * @param yMap            ordinate on the map
-     * @param spriteType      the sprite's type
+     * @param bomberType      the bomber's type
      * @param deathImages     the array of image for the "death" action
      * @param nbDeathFrame    the number of images of the "death" array
      * @param waitImages      the array of image for the "wait" action
@@ -65,7 +66,7 @@ public abstract class Bomber extends Nomad {
      */
     public Bomber(int xMap,
                   int yMap,
-                  SpriteType spriteType,
+                  BomberType bomberType,
                   Image[] deathImages,
                   int nbDeathFrame,
                   Image[] waitImages,
@@ -80,7 +81,8 @@ public abstract class Bomber extends Nomad {
                   int refreshTime,
                   int moveTime,
                   int invincibleTime) {
-        super(xMap, yMap, spriteType, refreshTime, moveTime);
+        super(xMap, yMap, SpriteType.BOMBER, refreshTime, moveTime);
+        this.bomberType = bomberType;
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
         this.waitImages = waitImages;

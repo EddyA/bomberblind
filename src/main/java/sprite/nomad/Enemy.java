@@ -1,13 +1,12 @@
-package sprite.nomad.abstracts;
-
-import static sprite.nomad.abstracts.Enemy.Action.ACTION_DYING;
-import static sprite.nomad.abstracts.Enemy.Action.ACTION_WALKING;
-
-import java.awt.Image;
+package sprite.nomad;
 
 import sprite.SpriteType;
-import sprite.nomad.EnemyType;
 import utils.Direction;
+
+import java.awt.*;
+
+import static sprite.nomad.Enemy.Action.ACTION_DYING;
+import static sprite.nomad.Enemy.Action.ACTION_WALKING;
 
 /**
  * Abstract class of an enemy.
@@ -38,18 +37,18 @@ public abstract class Enemy extends Nomad {
     /**
      * Create an enemy.
      *
-     * @param xMap abscissa on the map
-     * @param yMap ordinate on the map
-     * @param enemyType the enemy's type
-     * @param deathImages the array of image for the "death" action
-     * @param nbDeathFrame the number of images of the "death" array
-     * @param walkBackImages the array of images for the "walk back" action
+     * @param xMap            abscissa on the map
+     * @param yMap            ordinate on the map
+     * @param enemyType       the enemy's type
+     * @param deathImages     the array of image for the "death" action
+     * @param nbDeathFrame    the number of images of the "death" array
+     * @param walkBackImages  the array of images for the "walk back" action
      * @param walkFrontImages the array of images for the "walk front" action
-     * @param walkLeftImages the array of images for the "walk left" action
+     * @param walkLeftImages  the array of images for the "walk left" action
      * @param walkRightImages the array of images for the "walk right" action
-     * @param nbWalkFrame number of images of the "walk" arrays
-     * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
-     * @param moveTime the move time (i.e. defining the nomad move speed)
+     * @param nbWalkFrame     number of images of the "walk" arrays
+     * @param refreshTime     the sprite refresh time (i.e. defining the image/sec)
+     * @param moveTime        the move time (i.e. defining the nomad move speed)
      */
     public Enemy(int xMap,
                  int yMap,
@@ -72,10 +71,6 @@ public abstract class Enemy extends Nomad {
         this.walkLeftImages = walkLeftImages;
         this.walkRightImages = walkRightImages;
         this.nbWalkFrame = nbWalkFrame;
-    }
-
-    public EnemyType getEnemyType() {
-        return enemyType;
     }
 
     public Image[] getDeathImages() {
@@ -160,36 +155,36 @@ public abstract class Enemy extends Nomad {
     @Override
     public void updateSprite() {
         switch (curAction) {
-        case ACTION_DYING: {
+            case ACTION_DYING: {
                 images = deathImages;
                 nbImages = nbDeathFrame;
                 break;
-        }
-        case ACTION_WALKING: {
-            switch (curDirection) {
-            case NORTH: {
-                images = walkBackImages;
-                nbImages = nbWalkFrame;
+            }
+            case ACTION_WALKING: {
+                switch (curDirection) {
+                    case NORTH: {
+                        images = walkBackImages;
+                        nbImages = nbWalkFrame;
+                        break;
+                    }
+                    case SOUTH: {
+                        images = walkFrontImages;
+                        nbImages = nbWalkFrame;
+                        break;
+                    }
+                    case WEST: {
+                        images = walkLeftImages;
+                        nbImages = nbWalkFrame;
+                        break;
+                    }
+                    case EAST: {
+                        images = walkRightImages;
+                        nbImages = nbWalkFrame;
+                        break;
+                    }
+                }
                 break;
             }
-            case SOUTH: {
-                images = walkFrontImages;
-                nbImages = nbWalkFrame;
-                break;
-            }
-            case WEST: {
-                images = walkLeftImages;
-                nbImages = nbWalkFrame;
-                break;
-            }
-            case EAST: {
-                images = walkRightImages;
-                nbImages = nbWalkFrame;
-                break;
-            }
-            }
-            break;
-        }
         }
     }
 

@@ -5,7 +5,7 @@ import org.mockito.Mockito;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
-import sprite.nomad.abstracts.Enemy;
+import sprite.nomad.Enemy;
 import utils.Direction;
 
 public class EnemyStepDef implements WithAssertions {

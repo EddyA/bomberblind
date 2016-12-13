@@ -6,7 +6,7 @@ import org.mockito.Mockito;
 
 import images.ImagesLoader;
 import sprite.nomad.CloakedSkeleton;
-import sprite.nomad.abstracts.Enemy;
+import sprite.nomad.Enemy;
 
 public class EnemyState {
 

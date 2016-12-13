@@ -9,7 +9,7 @@ import java.net.URL;
 import com.google.common.base.Preconditions;
 
 import exceptions.InvalidConfigurationException;
-import map.abstracts.MapProperties;
+import map.MapProperties;
 
 /**
  * This class extends {@link MapProperties}.

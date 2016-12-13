@@ -1,7 +1,7 @@
-package sprite.settled.abstracts;
+package sprite.settled;
 
 import sprite.SpriteType;
-import sprite.abstracts.Sprite;
+import sprite.Sprite;
 import utils.Tools;
 
 import java.awt.*;

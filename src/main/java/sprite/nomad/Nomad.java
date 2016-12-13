@@ -1,9 +1,9 @@
-package sprite.nomad.abstracts;
-
-import java.awt.Image;
+package sprite.nomad;
 
 import sprite.SpriteType;
-import sprite.abstracts.Sprite;
+import sprite.Sprite;
+
+import java.awt.*;
 
 /**
  * Abstract class of a nomad.
@@ -23,23 +23,67 @@ public abstract class Nomad extends Sprite {
     /**
      * Create a nomad.
      *
-     * @param xMap abscissa on the map.
-     * @param yMap ordinate on the map.
-     * @param spriteType the sprite's type
+     * @param xMap        abscissa on the map.
+     * @param yMap        ordinate on the map.
+     * @param spriteType  the sprite's type
      * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
-     * @param moveTime the move time (i.e. defining the nomad move speed)
+     * @param moveTime    the move time (i.e. defining the nomad move speed)
      */
     Nomad(int xMap, int yMap, SpriteType spriteType, int refreshTime, int moveTime) {
         super(xMap, yMap, spriteType, refreshTime);
         this.moveTime = moveTime;
     }
 
+    public Image[] getImages() {
+        return images;
+    }
+
+    public void setImages(Image[] images) {
+        this.images = images;
+    }
+
+    public int getNbImages() {
+        return nbImages;
+    }
+
+    public void setNbImages(int nbImages) {
+        this.nbImages = nbImages;
+    }
+
+    public int getCurImageIdx() {
+        return curImageIdx;
+    }
+
+    public void setCurImageIdx(int curImageIdx) {
+        this.curImageIdx = curImageIdx;
+    }
+
+    public void setCurImage(Image curImage) {
+        this.curImage = curImage;
+    }
+
     public int getMoveTime() {
         return moveTime;
     }
 
+    public void setMoveTime(int moveTime) {
+        this.moveTime = moveTime;
+    }
+
+    public long getLastMoveTs() {
+        return lastMoveTs;
+    }
+
     public void setLastMoveTs(long lastMoveTs) {
         this.lastMoveTs = lastMoveTs;
+    }
+
+    public int getInvincibleFrameIdx() {
+        return invincibleFrameIdx;
+    }
+
+    public void setInvincibleFrameIdx(int invincibleFrameIdx) {
+        this.invincibleFrameIdx = invincibleFrameIdx;
     }
 
     /**

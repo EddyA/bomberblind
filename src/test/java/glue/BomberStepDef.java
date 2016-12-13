@@ -5,7 +5,7 @@ import org.mockito.Mockito;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
-import sprite.nomad.abstracts.Bomber;
+import sprite.nomad.Bomber;
 import utils.Tools;
 
 public class BomberStepDef implements WithAssertions {

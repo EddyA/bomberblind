@@ -1,10 +1,10 @@
-package sprite.settled.abstracts;
+package sprite.settled;
 
 import sprite.SpriteType;
 
 import java.awt.*;
 
-import static sprite.settled.abstracts.TimedSettled.Status.STATUS_ALIVE;
+import static sprite.settled.TimedSettled.Status.STATUS_ALIVE;
 
 /**
  * Abstract class of a timed sprites.

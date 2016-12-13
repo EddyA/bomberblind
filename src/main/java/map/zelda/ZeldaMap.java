@@ -2,6 +2,7 @@ package map.zelda;
 
 import exceptions.CannotCreateMapElementException;
 import exceptions.InvalidConfigurationException;
+import map.Map;
 import map.MapPattern;
 import map.MapPoint;
 import map.ctrl.GenerationMethods;
@@ -15,7 +16,7 @@ import static map.ctrl.PatternMethods.placeNorthEdgeOnMap;
 import static map.ctrl.PatternMethods.placeSouthEdgeOnMap;
 import static map.zelda.ZeldaMapPatterns.*;
 
-public class ZeldaMap extends map.abstracts.Map {
+public class ZeldaMap extends Map {
     private ZeldaMapSetting zeldaMapSetting;
     private MapPoint castleStartPoint; // castle start point (north/west MapPoint).
 

@@ -1,7 +1,6 @@
 package sprite.nomad;
 
 import images.ImagesLoader;
-import sprite.nomad.abstracts.Enemy;
 
 public class Mummy extends Enemy {
 

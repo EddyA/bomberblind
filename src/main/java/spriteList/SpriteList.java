@@ -1,23 +1,24 @@
 package spriteList;
 
-import java.awt.Graphics2D;
+import exceptions.CannotPlaceEnemyOnMapException;
+import map.MapPoint;
+import map.Map;
+import sprite.SpriteType;
+import sprite.Sprite;
+import sprite.nomad.Bomber;
+import sprite.nomad.Enemy;
+import sprite.nomad.EnemyType;
+import sprite.settled.Bomb;
+import sprite.settled.Flame;
+import sprite.settled.FlameEnd;
+import spriteList.ctrl.ActionMethods;
+import spriteList.ctrl.GenerationMethodes;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-
-import exceptions.CannotPlaceEnemyOnMapException;
-import map.MapPoint;
-import map.abstracts.Map;
-import sprite.abstracts.Sprite;
-import sprite.nomad.EnemyType;
-import sprite.nomad.abstracts.Bomber;
-import sprite.nomad.abstracts.Enemy;
-import sprite.settled.Bomb;
-import sprite.settled.ConclusionFlame;
-import sprite.settled.Flame;
-import spriteList.ctrl.ActionMethods;
-import spriteList.ctrl.GenerationMethodes;
 
 public class SpriteList extends LinkedList<Sprite> {
     private SpritesSetting spritesSetting;
@@ -76,31 +77,33 @@ public class SpriteList extends LinkedList<Sprite> {
             boolean shouldBeRemoved;
 
             switch (sprite.getSpriteType()) {
-            case BOMBER: {
-                shouldBeRemoved = ActionMethods.processBomber(this, map.getMapPointMatrix(), (Bomber)sprite);
-                break;
-            }
-            case ENEMY: {
-                shouldBeRemoved = ActionMethods.processEnemy(this, map.getMapPointMatrix(), map.getMapWidth(),
-                        map.getMapHeight(), (Enemy)sprite);
-                break;
-            }
-            case BOMB: {
-                shouldBeRemoved = ActionMethods.processBomb(tmpList, map.getMapPointMatrix(), map.getMapWidth(),
-                        map.getMapHeight(), (Bomb)sprite);
-                break;
-            }
-            case FLAME: {
-                shouldBeRemoved = ActionMethods.processFlame(tmpList, map.getMapPointMatrix(), (Flame)sprite);
-                break;
-            }
-            case CONCLUSION_FLAME: {
-                shouldBeRemoved = ActionMethods.processConclusionFlame((ConclusionFlame)sprite);
-                break;
-            }
-            default: {
-                throw new RuntimeException("the following sprite " + sprite.getUid() + " has no type.");
-            }
+                case BOMBER: {
+                    shouldBeRemoved = ActionMethods.processBomber(this, map.getMapPointMatrix(), (Bomber) sprite);
+                    break;
+                }
+                case ENEMY: {
+                    shouldBeRemoved = ActionMethods.processEnemy(this, map.getMapPointMatrix(), map.getMapWidth(),
+                            map.getMapHeight(), (Enemy) sprite);
+                    break;
+                }
+                case BOMB: {
+                    shouldBeRemoved = ActionMethods.processBomb(tmpList, map.getMapPointMatrix(), map.getMapWidth(),
+                            map.getMapHeight(), (Bomb) sprite);
+                    break;
+                }
+                case FLAME: {
+                    shouldBeRemoved = ActionMethods.processFlame(tmpList, map.getMapPointMatrix(), (Flame) sprite);
+                    break;
+                }
+                case FLAME_END: {
+                    shouldBeRemoved = ActionMethods.processFlameEnd((FlameEnd) sprite);
+                    break;
+                }
+                default: {
+                    throw new RuntimeException("the SpriteType \"" +
+                            SpriteType.getlabel(sprite.getSpriteType()).orElse("n/a") +
+                            "\" is not handled by the switch.");
+                }
             }
             if (shouldBeRemoved) {
                 iterator.remove(); // remove it from the list.
@@ -115,7 +118,7 @@ public class SpriteList extends LinkedList<Sprite> {
     /**
      * Paint the visible sprites on screen.
      *
-     * @param g the graphics context
+     * @param g    the graphics context
      * @param xMap the map abscissa from which painting nomads
      * @param yMap the map ordinate from which painting nomads
      */
