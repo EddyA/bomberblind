@@ -25,55 +25,55 @@ public class ZeldaMapProperties extends MapProperties {
     final private static String MAP_ELEMENT_NB_TREE2 = "map.element.tree2.number";
     final private static String MAP_ELEMENT_NB_PUDDLE1 = "map.element.puddle1.number";
     final private static String MAP_ELEMENT_NB_PUDDLE2 = "map.element.puddle2.number";
-    final protected static String MAP_ELEMENT_PER_SINGLE_MUTABLE = "map.element.single.mutable.percentage";
-    final protected static String MAP_ELEMENT_PER_SINGLE_OBSTACLE = "map.element.single.obstacle.percentage";
-    final protected static String MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY = "map.element.single.dynamic.pathway.percentage";
+    final static String MAP_ELEMENT_PER_SINGLE_MUTABLE = "map.element.single.mutable.percentage";
+    final static String MAP_ELEMENT_PER_SINGLE_OBSTACLE = "map.element.single.obstacle.percentage";
+    final static String MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY = "map.element.single.dynamic.pathway.percentage";
 
     public ZeldaMapProperties(String mapPropertiesFile) {
         super(mapPropertiesFile);
     }
 
-    public int getMapMarginVertical() {
+    int getMapMarginVertical() {
         return Integer.parseInt(properties.getProperty(MAP_MARGIN_VERTICAL));
     }
 
-    public int getMapMarginHorizontal() {
+    int getMapMarginHorizontal() {
         return Integer.parseInt(properties.getProperty(MAP_MARGIN_HORIZONTAL));
     }
 
-    public int getMapElementNbWood1() {
+    int getMapElementNbWood1() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_NB_WOOD1));
     }
 
-    public int getMapElementNbWood2() {
+    int getMapElementNbWood2() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_NB_WOOD2));
     }
 
-    public int getMapElementNbTree1() {
+    int getMapElementNbTree1() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_NB_TREE1));
     }
 
-    public int getMapElementNbTree2() {
+    int getMapElementNbTree2() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_NB_TREE2));
     }
 
-    public int getMapElementNbPuddle1() {
+    int getMapElementNbPuddle1() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_NB_PUDDLE1));
     }
 
-    public int getMapElementNbPuddle2() {
+    int getMapElementNbPuddle2() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_NB_PUDDLE2));
     }
 
-    public int getMapElementPerSingleMutable() {
+    int getMapElementPerSingleMutable() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_MUTABLE));
     }
 
-    public int getMapElementPerSingleObstacle() {
+    int getMapElementPerSingleObstacle() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_OBSTACLE));
     }
 
-    public int getMapElementPerSingleDynPathway() {
+    int getMapElementPerSingleDynPathway() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY));
     }
 

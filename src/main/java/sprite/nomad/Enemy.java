@@ -1,12 +1,12 @@
 package sprite.nomad;
 
-import sprite.SpriteType;
-import utils.Direction;
-
-import java.awt.*;
-
 import static sprite.nomad.Enemy.Action.ACTION_DYING;
 import static sprite.nomad.Enemy.Action.ACTION_WALKING;
+
+import java.awt.Image;
+
+import sprite.SpriteType;
+import utils.Direction;
 
 /**
  * Abstract class of an enemy.
@@ -20,7 +20,6 @@ public abstract class Enemy extends Nomad {
         ACTION_DYING, ACTION_WALKING
     }
 
-    private final EnemyType enemyType;
     private final Image[] deathImages;
     private final int nbDeathFrame;
     private final Image[] walkBackImages;
@@ -39,7 +38,6 @@ public abstract class Enemy extends Nomad {
      *
      * @param xMap            abscissa on the map
      * @param yMap            ordinate on the map
-     * @param enemyType       the enemy's type
      * @param deathImages     the array of image for the "death" action
      * @param nbDeathFrame    the number of images of the "death" array
      * @param walkBackImages  the array of images for the "walk back" action
@@ -52,7 +50,6 @@ public abstract class Enemy extends Nomad {
      */
     public Enemy(int xMap,
                  int yMap,
-                 EnemyType enemyType,
                  Image[] deathImages,
                  int nbDeathFrame,
                  Image[] walkBackImages,
@@ -63,7 +60,6 @@ public abstract class Enemy extends Nomad {
                  int refreshTime,
                  int moveTime) {
         super(xMap, yMap, SpriteType.ENEMY, refreshTime, moveTime);
-        this.enemyType = enemyType;
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
         this.walkBackImages = walkBackImages;
@@ -73,31 +69,31 @@ public abstract class Enemy extends Nomad {
         this.nbWalkFrame = nbWalkFrame;
     }
 
-    public Image[] getDeathImages() {
+    Image[] getDeathImages() {
         return deathImages;
     }
 
-    public int getNbDeathFrame() {
+    int getNbDeathFrame() {
         return nbDeathFrame;
     }
 
-    public Image[] getWalkBackImages() {
+    Image[] getWalkBackImages() {
         return walkBackImages;
     }
 
-    public Image[] getWalkFrontImages() {
+    Image[] getWalkFrontImages() {
         return walkFrontImages;
     }
 
-    public Image[] getWalkLeftImages() {
+    Image[] getWalkLeftImages() {
         return walkLeftImages;
     }
 
-    public Image[] getWalkRightImages() {
+    Image[] getWalkRightImages() {
         return walkRightImages;
     }
 
-    public int getNbWalkFrame() {
+    int getNbWalkFrame() {
         return nbWalkFrame;
     }
 
@@ -117,11 +113,11 @@ public abstract class Enemy extends Nomad {
         this.curDirection = curDirection;
     }
 
-    public Action getLastAction() {
+    Action getLastAction() {
         return lastAction;
     }
 
-    public void setLastAction(Action lastAction) {
+    void setLastAction(Action lastAction) {
         this.lastAction = lastAction;
     }
 
@@ -133,7 +129,7 @@ public abstract class Enemy extends Nomad {
         this.lastDirection = lastDirection;
     }
 
-    public boolean statusHasChanged() {
+    boolean statusHasChanged() {
         return ((!curAction.equals(lastAction)) ||
                 (curAction.equals(ACTION_WALKING) && !curDirection.equals(lastDirection)));
     }

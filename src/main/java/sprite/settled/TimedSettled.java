@@ -35,18 +35,18 @@ public abstract class TimedSettled extends Settled {
      * @param nbImages     the number of images
      * @param durationTime the durationTime the sprite must loop
      */
-    public TimedSettled(int rowIdx, int colIdx, SpriteType spriteType, int refreshTime, Image[] images, int nbImages,
+    TimedSettled(int rowIdx, int colIdx, SpriteType spriteType, int refreshTime, Image[] images, int nbImages,
                         int durationTime) {
         super(rowIdx, colIdx, spriteType, refreshTime, images, nbImages);
         this.durationTime = durationTime;
         this.startTs = currentTimeSupplier.get().toEpochMilli(); // get the current durationTime.
     }
 
-    public int getDurationTime() {
+    int getDurationTime() {
         return durationTime;
     }
 
-    public void setStartTs(long startTs) {
+    void setStartTs(long startTs) {
         this.startTs = startTs;
     }
 

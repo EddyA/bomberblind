@@ -10,7 +10,7 @@ public class Bomb extends TimedSettled {
 
     private int flamesize;
     public final static int REFRESH_TIME = 100;
-    public final static int DURATION_TIME = 2000;
+    final static int DURATION_TIME = 2000;
 
     /**
      * Create a bomb.

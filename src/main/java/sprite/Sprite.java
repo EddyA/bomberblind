@@ -1,9 +1,9 @@
 package sprite;
 
-import sprite.SpriteType;
-import utils.CurrentTimeSupplier;
+import java.awt.Graphics2D;
+import java.awt.Image;
 
-import java.awt.*;
+import utils.CurrentTimeSupplier;
 
 /**
  * Abstract class of a sprite.
@@ -13,7 +13,7 @@ public abstract class Sprite {
 
     protected int xMap; // abscissa on map.
     protected int yMap; // ordinate on map.
-    protected SpriteType spriteType; // type of sprite.
+    private SpriteType spriteType; // type of sprite.
 
     private int refreshTime; // refresh time (in ms).
     protected long lastRefreshTs; // last refresh timestamp.
@@ -26,7 +26,7 @@ public abstract class Sprite {
      * @param spriteType  the sprite's type
      * @param refreshTime the sprite refreshTime (i.e. fps)
      */
-    public Sprite(int xMap, int yMap, SpriteType spriteType, int refreshTime) {
+    protected Sprite(int xMap, int yMap, SpriteType spriteType, int refreshTime) {
         this.xMap = xMap;
         this.yMap = yMap;
         this.spriteType = spriteType;
@@ -87,7 +87,7 @@ public abstract class Sprite {
      *
      * @return true if the action changed, flase otherwise.
      */
-    public abstract boolean updateStatus();
+    protected abstract boolean updateStatus();
 
     /**
      * @return true if the sprite is ended, false otherwise.

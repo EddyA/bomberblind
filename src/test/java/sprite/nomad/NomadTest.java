@@ -1,18 +1,18 @@
 package sprite.nomad;
 
-import images.ImagesLoader;
-import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-import sprite.nomad.BlueBomber;
-import utils.CurrentTimeSupplier;
+import static images.ImagesLoader.NB_BOMBER_WAIT_FRAME;
+import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
 import java.time.Instant;
 
-import static images.ImagesLoader.NB_BOMBER_WAIT_FRAME;
-import static org.mockito.Mockito.mock;
+import org.assertj.core.api.WithAssertions;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import images.ImagesLoader;
+import utils.CurrentTimeSupplier;
 
 public class NomadTest implements WithAssertions {
 

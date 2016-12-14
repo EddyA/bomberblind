@@ -1,20 +1,20 @@
 package sprite.settled;
 
-import images.ImagesLoader;
-import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-import sprite.settled.Flame;
-import utils.CurrentTimeSupplier;
-import utils.Tools;
+import static org.mockito.Mockito.mock;
+import static sprite.settled.TimedSettled.Status.STATUS_ALIVE;
+import static sprite.settled.TimedSettled.Status.STATUS_ENDED;
 
 import java.io.IOException;
 import java.time.Instant;
 
-import static org.mockito.Mockito.mock;
-import static sprite.settled.TimedSettled.Status.STATUS_ALIVE;
-import static sprite.settled.TimedSettled.Status.STATUS_ENDED;
+import org.assertj.core.api.WithAssertions;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import images.ImagesLoader;
+import utils.CurrentTimeSupplier;
+import utils.Tools;
 
 public class TimedSettledTest implements WithAssertions {
 

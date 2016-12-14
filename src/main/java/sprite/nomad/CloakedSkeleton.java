@@ -20,7 +20,6 @@ public class CloakedSkeleton extends Enemy {
                            int yMap) {
         super(xMap,
                 yMap,
-                EnemyType.CLOAKED_SKELETON,
                 ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonDeathMatrixRowIdx],
                 ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME,
                 ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkBackMatrixRowIdx],

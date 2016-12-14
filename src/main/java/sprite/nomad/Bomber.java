@@ -1,11 +1,13 @@
 package sprite.nomad;
 
+import static sprite.nomad.Bomber.Action.ACTION_DYING;
+import static sprite.nomad.Bomber.Action.ACTION_WAITING;
+import static sprite.nomad.Bomber.Action.ACTION_WALKING;
+
+import java.awt.Image;
+
 import sprite.SpriteType;
 import utils.Direction;
-
-import java.awt.*;
-
-import static sprite.nomad.Bomber.Action.*;
 
 /**
  * Abstract class of a bomber.
@@ -19,7 +21,6 @@ public abstract class Bomber extends Nomad {
         ACTION_DYING, ACTION_WAITING, ACTION_WALKING, ACTION_WINING
     }
 
-    private final BomberType bomberType;
     private Image[] deathImages;
     private int nbDeathFrame;
     private Image[] waitImages;
@@ -48,7 +49,6 @@ public abstract class Bomber extends Nomad {
      *
      * @param xMap            abscissa on the map
      * @param yMap            ordinate on the map
-     * @param bomberType      the bomber's type
      * @param deathImages     the array of image for the "death" action
      * @param nbDeathFrame    the number of images of the "death" array
      * @param waitImages      the array of image for the "wait" action
@@ -66,7 +66,6 @@ public abstract class Bomber extends Nomad {
      */
     public Bomber(int xMap,
                   int yMap,
-                  BomberType bomberType,
                   Image[] deathImages,
                   int nbDeathFrame,
                   Image[] waitImages,
@@ -82,7 +81,6 @@ public abstract class Bomber extends Nomad {
                   int moveTime,
                   int invincibleTime) {
         super(xMap, yMap, SpriteType.BOMBER, refreshTime, moveTime);
-        this.bomberType = bomberType;
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
         this.waitImages = waitImages;
@@ -100,51 +98,51 @@ public abstract class Bomber extends Nomad {
         this.initialYMap = yMap;
     }
 
-    public Image[] getDeathImages() {
+    Image[] getDeathImages() {
         return deathImages;
     }
 
-    public int getNbDeathFrame() {
+    int getNbDeathFrame() {
         return nbDeathFrame;
     }
 
-    public Image[] getWaitImages() {
+    Image[] getWaitImages() {
         return waitImages;
     }
 
-    public int getNbWaitFrame() {
+    int getNbWaitFrame() {
         return nbWaitFrame;
     }
 
-    public Image[] getWalkBackImages() {
+    Image[] getWalkBackImages() {
         return walkBackImages;
     }
 
-    public Image[] getWalkFrontImages() {
+    Image[] getWalkFrontImages() {
         return walkFrontImages;
     }
 
-    public Image[] getWalkLeftImages() {
+    Image[] getWalkLeftImages() {
         return walkLeftImages;
     }
 
-    public Image[] getWalkRightImages() {
+    Image[] getWalkRightImages() {
         return walkRightImages;
     }
 
-    public int getNbWalkFrame() {
+    int getNbWalkFrame() {
         return nbWalkFrame;
     }
 
-    public Image[] getWinImages() {
+    Image[] getWinImages() {
         return winImages;
     }
 
-    public int getNbWinFrame() {
+    int getNbWinFrame() {
         return nbWinFrame;
     }
 
-    public Action getLastAction() {
+    Action getLastAction() {
         return lastAction;
     }
 
@@ -164,19 +162,19 @@ public abstract class Bomber extends Nomad {
         this.initialYMap = initialYMap;
     }
 
-    public int getInvincibilityTime() {
+    int getInvincibilityTime() {
         return invincibilityTime;
     }
 
-    public long getLastInvincibilityTs() {
+    long getLastInvincibilityTs() {
         return lastInvincibilityTs;
     }
 
-    public void setLastAction(Action lastAction) {
+    void setLastAction(Action lastAction) {
         this.lastAction = lastAction;
     }
 
-    public void setInvincible(boolean isInvincible) {
+    void setInvincible(boolean isInvincible) {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         if (isInvincible) {
             this.lastInvincibilityTs = curTs;
@@ -185,7 +183,7 @@ public abstract class Bomber extends Nomad {
         }
     }
 
-    public void setLastInvincibilityTs(long lastInvincibilityTs) {
+    void setLastInvincibilityTs(long lastInvincibilityTs) {
         this.lastInvincibilityTs = lastInvincibilityTs;
     }
 
@@ -201,7 +199,7 @@ public abstract class Bomber extends Nomad {
         this.curDirection = curDirection;
     }
 
-    public void setLastDirection(Direction lastDirection) {
+    void setLastDirection(Direction lastDirection) {
         this.lastDirection = lastDirection;
     }
 
@@ -215,7 +213,7 @@ public abstract class Bomber extends Nomad {
         setInvincible(true);
     }
 
-    public boolean actionHasChanged() {
+    boolean actionHasChanged() {
         return ((curAction != lastAction) ||
                 (curAction == ACTION_WALKING && curDirection != lastDirection));
     }

@@ -1,18 +1,21 @@
 package ai;
 
-import exceptions.CannotMoveEnemyException;
-import map.MapPoint;
-import sprite.Sprite;
-import sprite.nomad.Enemy;
-import utils.Direction;
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static map.ctrl.NomadMethods.isNomadCrossingBomb;
+import static map.ctrl.NomadMethods.isNomadCrossingMapLimit;
+import static map.ctrl.NomadMethods.isNomadCrossingObstacle;
+import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
 
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static map.ctrl.NomadMethods.*;
-import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
+import exceptions.CannotMoveEnemyException;
+import map.MapPoint;
+import sprite.Sprite;
+import sprite.nomad.Enemy;
+import utils.Direction;
 
 public class EnemyAi {
 
@@ -24,7 +27,9 @@ public class EnemyAi {
      * @param mapHeight      the map height
      * @param spriteList     the list of nomads
      * @param enemy          the enemy
+     *
      * @return the updated action
+     * @throws CannotMoveEnemyException if the enemy is blocked by another one.
      */
     public static Direction computeNextDirection(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
                                                  List<Sprite> spriteList, Enemy enemy)

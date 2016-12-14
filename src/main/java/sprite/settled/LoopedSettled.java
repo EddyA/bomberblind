@@ -35,21 +35,21 @@ public abstract class LoopedSettled extends Settled {
      * @param nbImages    the number of images
      * @param nbTimes     the max number of times the sprite must loop
      */
-    public LoopedSettled(int rowIdx, int colIdx, SpriteType spriteType, int refreshTime, Image[] images, int nbImages,
+    LoopedSettled(int rowIdx, int colIdx, SpriteType spriteType, int refreshTime, Image[] images, int nbImages,
                          int nbTimes) {
         super(rowIdx, colIdx, spriteType, refreshTime, images, nbImages);
         this.nbTimes = nbTimes;
     }
 
-    public int getNbTimes() {
+    int getNbTimes() {
         return nbTimes;
     }
 
-    public Status getCurStatus() {
+    Status getCurStatus() {
         return curStatus;
     }
 
-    public void setCurStatus(Status curStatus) {
+    void setCurStatus(Status curStatus) {
         this.curStatus = curStatus;
     }
 

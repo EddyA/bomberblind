@@ -18,7 +18,7 @@ public class BomberState {
         spyedBlueBomber = Mockito.spy(blueBomber);
     }
 
-    public Bomber getBomber() {
+    Bomber getBomber() {
         return spyedBlueBomber;
     }
 }

@@ -23,11 +23,11 @@ public class EnemyState {
         return spyedCloakedSkeleton;
     }
 
-    public boolean isShouldBeRemoved() {
+    boolean isShouldBeRemoved() {
         return shouldBeRemoved;
     }
 
-    public void setShouldBeRemoved(boolean shouldBeRemoved) {
+    void setShouldBeRemoved(boolean shouldBeRemoved) {
         this.shouldBeRemoved = shouldBeRemoved;
     }
 }

@@ -20,11 +20,11 @@ public class Tools {
         return res;
     }
 
-    /**
-     * -------------------------------------------------------------------
-     * The following functions allow having the gabarit of the characters.
-     * The gabarit is defined as a square with a radius of "IMAGE" (30px).
-     * -------------------------------------------------------------------
+    /*
+      -------------------------------------------------------------------
+      The following functions allow having the gabarit of the characters.
+      The gabarit is defined as a square with a radius of "IMAGE" (30px).
+      -------------------------------------------------------------------
      */
 
     /**
@@ -67,11 +67,11 @@ public class Tools {
         return xChar + IMAGE_SIZE / 2 - 1;
     }
 
-    /**
-     * --------------------------------------------------------------------
-     * The following functions allow getting the relative top/bottom rowIdx
-     * and left/right colIdx of a character.
-     * -------------------------------------------------------------------
+    /*
+      --------------------------------------------------------------------
+      The following functions allow getting the relative top/bottom rowIdx
+      and left/right colIdx of a character.
+      -------------------------------------------------------------------
      */
 
     /**
@@ -134,11 +134,11 @@ public class Tools {
         return getCharRightAbscissa(xChar) / IMAGE_SIZE;
     }
 
-    /**
-     * -----------------------------------------------------------------------
-     * The following functions allow getting the abscissa (resp. ordinate)
-     * of the case centre (resp. case bottom) given its colIdx (resp. rowIdx).
-     * -----------------------------------------------------------------------
+    /*
+      -----------------------------------------------------------------------
+      The following functions allow getting the abscissa (resp. ordinate)
+      of the case centre (resp. case bottom) given its colIdx (resp. rowIdx).
+      -----------------------------------------------------------------------
      */
 
     /**

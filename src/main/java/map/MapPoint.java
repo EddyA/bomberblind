@@ -22,10 +22,10 @@ public class MapPoint {
     protected Image image;
 
     protected Image[] images; // array of images for animation.
-    protected int nbImages; // number of images of the animation.
-    protected int curImageIdx; // current image index of the animation.
-    protected int refreshTime; // refresh time of the animation (in ms).
-    protected long lastRefreshTs; // last refresh timestamp.
+    private int nbImages; // number of images of the animation.
+    int curImageIdx; // current image index of the animation.
+    int refreshTime; // refresh time of the animation (in ms).
+    long lastRefreshTs; // last refresh timestamp.
 
     private boolean isBombing; // is bombed (bomb on case)?
     private int nbFlames; // number of flames on that case (can be multiple because of crossing explosions).
@@ -126,7 +126,7 @@ public class MapPoint {
      *
      * @return the image to paint.
      */
-    protected Image updateImage() {
+    Image updateImage() {
         Image imageToPaint;
         if (image != null) {
             imageToPaint = image;
@@ -148,7 +148,7 @@ public class MapPoint {
      * @param xScreen the abscissa on screen
      * @param yScreen the ordinate on screen
      */
-    public void paintBuffer(Graphics g, int xScreen, int yScreen) {
+    void paintBuffer(Graphics g, int xScreen, int yScreen) {
         g.drawImage(updateImage(), xScreen, yScreen, null);
     }
 }

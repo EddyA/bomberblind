@@ -17,15 +17,15 @@ public class BombState {
         spyedBomb = Mockito.spy(bomb);
     }
 
-    public Bomb getBomb() {
+    Bomb getBomb() {
         return spyedBomb;
     }
 
-    public boolean isShouldBeRemoved() {
+    boolean isShouldBeRemoved() {
         return shouldBeRemoved;
     }
 
-    public void setShouldBeRemoved(boolean shouldBeRemoved) {
+    void setShouldBeRemoved(boolean shouldBeRemoved) {
         this.shouldBeRemoved = shouldBeRemoved;
     }
 }

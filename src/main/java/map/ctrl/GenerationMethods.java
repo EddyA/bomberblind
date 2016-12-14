@@ -1,20 +1,25 @@
 package map.ctrl;
 
-import exceptions.CannotCreateMapElementException;
-import map.MapPoint;
-import map.MapPattern;
-import utils.Tuple2;
+import static map.ctrl.PatternMethods.generateRandomColIdx;
+import static map.ctrl.PatternMethods.generateRandomRowIdx;
+import static map.ctrl.PatternMethods.placeCastleOnMap;
+import static map.ctrl.PatternMethods.placePatternOnMap;
+import static map.ctrl.SingleMethods.placeSingleMutableOnMap;
+import static map.ctrl.SingleMethods.placeSingleObstacleOnMap;
+import static map.ctrl.SingleMethods.placeSinglePathwayOnMap;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import static map.ctrl.PatternMethods.*;
-import static map.ctrl.SingleMethods.*;
+import exceptions.CannotCreateMapElementException;
+import map.MapPattern;
+import map.MapPoint;
+import utils.Tuple2;
 
 public class GenerationMethods {
-    protected static int totalNbTry = 0; // test purpose.
+    static int totalNbTry = 0; // test purpose.
 
     /**
      * Randomly place castles.

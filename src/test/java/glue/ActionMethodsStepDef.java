@@ -2,7 +2,6 @@ package glue;
 
 import org.assertj.core.api.WithAssertions;
 
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import spriteList.ctrl.ActionMethods;
 

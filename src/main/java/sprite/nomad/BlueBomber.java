@@ -9,7 +9,7 @@ public class BlueBomber extends Bomber {
 
     public final static int REFRESH_TIME = 100;
     public final static int MOVING_TIME = 0;
-    public final static int INVINCIBLE_TIME = 2500;
+    final static int INVINCIBLE_TIME = 2500;
 
     /**
      * Create a blue bomber.
@@ -21,7 +21,6 @@ public class BlueBomber extends Bomber {
                       int yMap) {
         super(xMap,
                 yMap,
-                BomberType.BLUE_BOMBER,
                 ImagesLoader.imagesMatrix[ImagesLoader.blueBomberDeathMatrixRowIdx],
                 ImagesLoader.NB_BOMBER_DEATH_FRAME,
                 ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx],

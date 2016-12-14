@@ -11,8 +11,8 @@ import java.awt.*;
 public abstract class Nomad extends Sprite {
 
     protected Image[] images; // array of image according to the current sprite's action.
-    protected int nbImages; // number of images of the array of image.
-    protected int curImageIdx; // sprite's current image index.
+    int nbImages; // number of images of the array of image.
+    int curImageIdx; // sprite's current image index.
     private Image curImage; // sprite's current image.
 
     private int moveTime; // move time (in ms, defining the nomad's move speed).
@@ -46,44 +46,24 @@ public abstract class Nomad extends Sprite {
         return nbImages;
     }
 
-    public void setNbImages(int nbImages) {
+    void setNbImages(int nbImages) {
         this.nbImages = nbImages;
     }
 
-    public int getCurImageIdx() {
+    int getCurImageIdx() {
         return curImageIdx;
     }
 
-    public void setCurImageIdx(int curImageIdx) {
+    void setCurImageIdx(int curImageIdx) {
         this.curImageIdx = curImageIdx;
     }
 
-    public void setCurImage(Image curImage) {
-        this.curImage = curImage;
-    }
-
-    public int getMoveTime() {
+    int getMoveTime() {
         return moveTime;
     }
 
-    public void setMoveTime(int moveTime) {
-        this.moveTime = moveTime;
-    }
-
-    public long getLastMoveTs() {
-        return lastMoveTs;
-    }
-
-    public void setLastMoveTs(long lastMoveTs) {
+    void setLastMoveTs(long lastMoveTs) {
         this.lastMoveTs = lastMoveTs;
-    }
-
-    public int getInvincibleFrameIdx() {
-        return invincibleFrameIdx;
-    }
-
-    public void setInvincibleFrameIdx(int invincibleFrameIdx) {
-        this.invincibleFrameIdx = invincibleFrameIdx;
     }
 
     /**

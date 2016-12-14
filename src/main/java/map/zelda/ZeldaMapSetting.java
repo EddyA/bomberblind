@@ -44,47 +44,47 @@ public class ZeldaMapSetting extends MapSettings {
         }
     }
 
-    public int getVerticalMargin() {
+    int getVerticalMargin() {
         return verticalMargin;
     }
 
-    public int getHorizontalMargin() {
+    int getHorizontalMargin() {
         return horizontalMargin;
     }
 
-    public int getNbWood1() {
+    int getNbWood1() {
         return nbWood1;
     }
 
-    public int getNbWood2() {
+    int getNbWood2() {
         return nbWood2;
     }
 
-    public int getNbTree1() {
+    int getNbTree1() {
         return nbTree1;
     }
 
-    public int getNbTree2() {
+    int getNbTree2() {
         return nbTree2;
     }
 
-    public int getNbPuddle1() {
+    int getNbPuddle1() {
         return nbPuddle1;
     }
 
-    public int getNbPuddle2() {
+    int getNbPuddle2() {
         return nbPuddle2;
     }
 
-    public int getPerSingleMutable() {
+    int getPerSingleMutable() {
         return perSingleMutable;
     }
 
-    public int getPerSingleObstacle() {
+    int getPerSingleObstacle() {
         return perSingleObstacle;
     }
 
-    public int getPerSingleDynPathway() {
+    int getPerSingleDynPathway() {
         return perSingleDynPathway;
     }
 }

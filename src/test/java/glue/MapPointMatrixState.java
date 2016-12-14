@@ -2,13 +2,14 @@ package glue;
 
 import map.MapPoint;
 
+@SuppressWarnings("WeakerAccess")
 public class MapPointMatrixState {
 
     private MapPoint[][] mapPointMatrix;
     private int mapWidth;
     private int mapHeight;
 
-    public void initMapPointMatrixState(int mapWidth, int mapHeight) {
+    void initMapPointMatrixState(int mapWidth, int mapHeight) {
 
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
@@ -21,19 +22,19 @@ public class MapPointMatrixState {
         }
     }
 
-    public MapPoint[][] getMapPointMatrix() {
+    MapPoint[][] getMapPointMatrix() {
         return mapPointMatrix;
     }
 
-    public int getMapWidth() {
+    int getMapWidth() {
         return mapWidth;
     }
 
-    public int getMapHeight() {
+    int getMapHeight() {
         return mapHeight;
     }
 
-    public MapPoint getMapPoint(int rowIdx, int colIdx) {
+    MapPoint getMapPoint(int rowIdx, int colIdx) {
         return mapPointMatrix[rowIdx][colIdx];
     }
 }

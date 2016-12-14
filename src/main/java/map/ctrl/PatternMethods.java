@@ -60,7 +60,7 @@ public class PatternMethods {
      * @param perDynamicPathwayElt the percentage of dynamic patwhay elements to place arround the castle
      * @throws CannotCreateMapElementException if the castle has not been placed
      */
-    public static void placeCastleOnMap(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
+    static void placeCastleOnMap(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
                                         MapPattern mapPattern, int startRowIdx, int startColIdx,
                                         int perDynamicPathwayElt)
             throws CannotCreateMapElementException {
@@ -84,7 +84,7 @@ public class PatternMethods {
      * @param startColIdx     the column index of the north/west pattern corner
      * @return true if the element has been placed, false otherwise
      */
-    public static boolean placePatternOnMap(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
+    static boolean placePatternOnMap(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
                                             MapPattern mapPattern, int startRowIdx, int startColIdx) {
 
         // firstly check if the pattern is not crossing a map limit or a not available case.
@@ -116,7 +116,7 @@ public class PatternMethods {
      * @param startColIdx the column index of the north/west pattern corner
      * @return true if the pattern is crossing a map limit, false otherwise
      */
-    public static boolean isPatternCrossingMapLimit(int mapWidth, int mapHeight, MapPattern mapPattern,
+    static boolean isPatternCrossingMapLimit(int mapWidth, int mapHeight, MapPattern mapPattern,
                                                     int startRowIdx, int startColIdx) {
         boolean isCrossing = false;
         if (startRowIdx < 0 || startRowIdx + mapPattern.getHeight() > mapHeight ||
@@ -136,7 +136,7 @@ public class PatternMethods {
      * @return true if the pattern is crossing a not available case, false otherwise
      * @implSpec isPatternCrossingMapLimit() must be called before this function!
      */
-    public static boolean isPatternCrossingNotAvailableCase(MapPoint[][] mapPointMatrix, MapPattern mapPattern,
+    static boolean isPatternCrossingNotAvailableCase(MapPoint[][] mapPointMatrix, MapPattern mapPattern,
                                                             int startRowIdx, int startColIdx) {
         boolean isCrossing = false;
         for (int rowIdx = startRowIdx; rowIdx < startRowIdx + mapPattern.getHeight(); rowIdx++) {
@@ -162,7 +162,7 @@ public class PatternMethods {
      * @param startColIdx          the column index of the north/west pattern corner
      * @param perDynamicPathwayElt the percentage of dynamic pathway elements to place arround the castle
      */
-    public static void securePerimeter(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
+    static void securePerimeter(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
                                        MapPattern mapPattern, int startRowIdx, int startColIdx,
                                        int perDynamicPathwayElt) {
         for (int rowIdx = Math.max(0, startRowIdx - 1); rowIdx <= Math.min(mapHeight - 1,
@@ -188,7 +188,7 @@ public class PatternMethods {
      * @return the random rowIdx
      * @throws IllegalArgumentException if a random rowIdx cannot be computed (not applicable)
      */
-    public static int generateRandomRowIdx(int mapHeight, int northEdgeHeight, int southEdgeHeight, int patternHeight,
+    static int generateRandomRowIdx(int mapHeight, int northEdgeHeight, int southEdgeHeight, int patternHeight,
                                            int marginRange) throws IllegalArgumentException {
         int bound = mapHeight - 2 * marginRange - // north/south requiered margins.
                 patternHeight - // pattern height as we place its north/west point.
@@ -212,7 +212,7 @@ public class PatternMethods {
      * @return the random colIdx
      * @throws IllegalArgumentException if a random colIdx cannot be computed (not applicable)
      */
-    public static int generateRandomColIdx(int mapWidth, int eastEdgeWidth, int westEdgeWidth, int patternWidth,
+    static int generateRandomColIdx(int mapWidth, int eastEdgeWidth, int westEdgeWidth, int patternWidth,
                                            int marginRange) throws IllegalArgumentException {
         int bound = mapWidth - 2 * marginRange - // east/west requiered margins.
                 patternWidth - // pattern width as we place its noth/west point.

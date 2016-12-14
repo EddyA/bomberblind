@@ -9,7 +9,7 @@ import sprite.SpriteType;
 public class Flame extends TimedSettled {
 
     public final static int REFRESH_TIME = 100;
-    public final static int DURATION_TIME = 1500;
+    final static int DURATION_TIME = 1500;
 
     /**
      * Create a flame.

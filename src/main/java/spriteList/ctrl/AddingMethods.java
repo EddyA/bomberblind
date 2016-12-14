@@ -67,7 +67,7 @@ public class AddingMethods {
      * @param colIdx         the map column index of the flame
      * @return true if the flame can be propagated, false it is stopped
      */
-    public static boolean addFlame(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int rowIdx, int colIdx) {
+    static boolean addFlame(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int rowIdx, int colIdx) {
         if (mapPointMatrix[rowIdx][colIdx].isPathway()) {
             mapPointMatrix[rowIdx][colIdx].addFlame();
             mapPointMatrix[rowIdx][colIdx].setImageAsBurned();
@@ -98,8 +98,8 @@ public class AddingMethods {
      * @param centralColIdx  the map column index of the central flame
      * @param flameSize      the flame size
      */
-    public static void addFlames(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
-                                 int centralRowIdx, int centralColIdx, int flameSize) {
+    static void addFlames(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
+            int centralRowIdx, int centralColIdx, int flameSize) {
 
         // place left flames.
         for (int i = 1, j = centralColIdx - 1; i <= flameSize && j >= 0; i++, j--) { // from center to left.
@@ -138,7 +138,7 @@ public class AddingMethods {
      * @param rowIdx the map row index of the flame
      * @param colIdx the map column index of the flame
      */
-    public static void addFlameEnd(LinkedList<Sprite> list, int rowIdx, int colIdx) {
+    static void addFlameEnd(LinkedList<Sprite> list, int rowIdx, int colIdx) {
         list.add(new FlameEnd(rowIdx, colIdx));
     }
 }

@@ -17,7 +17,7 @@ public abstract class MapProperties {
     final protected String propertiesFile;
     protected Properties properties = new Properties();
 
-    public MapProperties(String propertiesFile) {
+    protected MapProperties(String propertiesFile) {
         this.propertiesFile = propertiesFile;
     }
 

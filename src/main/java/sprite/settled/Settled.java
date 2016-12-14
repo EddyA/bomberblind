@@ -31,7 +31,7 @@ public abstract class Settled extends Sprite {
      * @param images      the sprite's array of images
      * @param nbImages    the number of images
      */
-    public Settled(int rowIdx, int colIdx, SpriteType spriteType, int refreshTime, Image[] images, int nbImages) {
+    Settled(int rowIdx, int colIdx, SpriteType spriteType, int refreshTime, Image[] images, int nbImages) {
         super(Tools.getCaseCentreAbscissa(colIdx), Tools.getCaseBottomOrdinate(rowIdx), spriteType, refreshTime);
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
@@ -63,23 +63,23 @@ public abstract class Settled extends Sprite {
         return nbImages;
     }
 
-    public int getCurImageIdx() {
+    int getCurImageIdx() {
         return curImageIdx;
     }
 
-    public int getCurLoopIdx() {
+    int getCurLoopIdx() {
         return curLoopIdx;
     }
 
-    public void setCurImageIdx(int curImageIdx) {
+    void setCurImageIdx(int curImageIdx) {
         this.curImageIdx = curImageIdx;
     }
 
-    public void setCurImage(Image curImage) {
+    void setCurImage(Image curImage) {
         this.curImage = curImage;
     }
 
-    public void setCurLoopIdx(int curLoopIdx) {
+    void setCurLoopIdx(int curLoopIdx) {
         this.curLoopIdx = curLoopIdx;
     }
 

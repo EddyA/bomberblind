@@ -13,7 +13,7 @@ public class SpriteListState {
         spriteList = new SpriteList(null, null, 0, 0);
     }
 
-    public LinkedList<Sprite> getSpriteList() {
+    LinkedList<Sprite> getSpriteList() {
         return spriteList;
     }
 }

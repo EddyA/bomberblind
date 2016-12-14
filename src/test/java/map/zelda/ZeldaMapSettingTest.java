@@ -5,6 +5,7 @@ import org.junit.Test;
 
 public class ZeldaMapSettingTest implements WithAssertions {
 
+    @SuppressWarnings("FieldCanBeLocal")
     final private String TEST_MAP_PROPERTIES_FILE = "/test.zelda.map.properties";
 
     @Test

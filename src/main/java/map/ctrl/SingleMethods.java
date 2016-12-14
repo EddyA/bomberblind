@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.Random;
 
 
-public class SingleMethods {
+class SingleMethods {
 
     /**
      * Try to place a single pathway on map.
@@ -18,7 +18,7 @@ public class SingleMethods {
      * @param perDynamicElt the percentage of dynamic elements to place
      * @return true if the pathway has been placed, false otherwise
      */
-    public static boolean placeSinglePathwayOnMap(MapPoint mapPoint, int perDynamicElt) {
+    static boolean placeSinglePathwayOnMap(MapPoint mapPoint, int perDynamicElt) {
         if (mapPoint.isAvailable()) {
             int randomPercent = Math.abs(new Random().nextInt(100)); // randomly choose a single element.
             if (randomPercent < perDynamicElt) { // animated elements.
@@ -44,7 +44,7 @@ public class SingleMethods {
      * @param mapPoint the MapPoint to place the mutable
      * @return true if the mutable has been placed, false otherwise
      */
-    public static boolean placeSingleMutableOnMap(MapPoint mapPoint) {
+    static boolean placeSingleMutableOnMap(MapPoint mapPoint) {
         if (mapPoint.isAvailable()) {
             mapPoint.setImage(ImagesLoader.getRandomSingleMutable());
             mapPoint.setMutable(true);
@@ -63,7 +63,7 @@ public class SingleMethods {
      * @param mapPoint the MapPoint to place the obstacle
      * @return true if the obstacle has been placed, false otherwise
      */
-    public static boolean placeSingleObstacleOnMap(MapPoint mapPoint) {
+    static boolean placeSingleObstacleOnMap(MapPoint mapPoint) {
         if (mapPoint.isAvailable()) {
             mapPoint.setImage(ImagesLoader.getRandomSingleObstacle());
             mapPoint.setMutable(false);

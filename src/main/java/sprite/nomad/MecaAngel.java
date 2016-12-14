@@ -20,7 +20,6 @@ public class MecaAngel extends Enemy {
                      int yMap) {
         super(xMap,
                 yMap,
-                EnemyType.MECA_ANGEL,
                 ImagesLoader.imagesMatrix[ImagesLoader.mecaAngelDeathMatrixRowIdx],
                 ImagesLoader.NB_MECA_ANGEL_DEATH_FRAME,
                 ImagesLoader.imagesMatrix[ImagesLoader.mecaAngelWalkBackMatrixRowIdx],

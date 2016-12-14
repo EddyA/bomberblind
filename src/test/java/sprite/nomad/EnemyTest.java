@@ -10,8 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import images.ImagesLoader;
-import sprite.nomad.CloakedSkeleton;
-import sprite.nomad.Enemy;
 import utils.Direction;
 
 public class EnemyTest implements WithAssertions {

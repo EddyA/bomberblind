@@ -17,7 +17,6 @@ public class Mummy extends Enemy {
                  int yMap) {
         super(xMap,
                 yMap,
-                EnemyType.MUMMY,
                 ImagesLoader.imagesMatrix[ImagesLoader.mummyDeathMatrixRowIdx],
                 ImagesLoader.NB_MUMMY_DEATH_FRAME,
                 ImagesLoader.imagesMatrix[ImagesLoader.mummyWalkBackMatrixRowIdx],

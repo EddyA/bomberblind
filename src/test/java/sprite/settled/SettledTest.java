@@ -1,16 +1,16 @@
 package sprite.settled;
 
-import images.ImagesLoader;
+import static images.ImagesLoader.NB_FLAME_FRAME;
+
+import java.io.IOException;
+
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import sprite.settled.Flame;
+
+import images.ImagesLoader;
 import utils.Tools;
-
-import java.io.IOException;
-
-import static images.ImagesLoader.NB_FLAME_FRAME;
 
 public class SettledTest implements WithAssertions {
 

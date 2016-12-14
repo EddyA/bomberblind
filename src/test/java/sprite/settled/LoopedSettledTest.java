@@ -1,16 +1,16 @@
 package sprite.settled;
 
-import images.ImagesLoader;
-import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
-import sprite.settled.FlameEnd;
-import utils.Tools;
+import static sprite.settled.LoopedSettled.Status.STATUS_ALIVE;
+import static sprite.settled.LoopedSettled.Status.STATUS_ENDED;
 
 import java.io.IOException;
 
-import static sprite.settled.LoopedSettled.Status.STATUS_ALIVE;
-import static sprite.settled.LoopedSettled.Status.STATUS_ENDED;
+import org.assertj.core.api.WithAssertions;
+import org.junit.Before;
+import org.junit.Test;
+
+import images.ImagesLoader;
+import utils.Tools;
 
 public class LoopedSettledTest implements WithAssertions {
 
