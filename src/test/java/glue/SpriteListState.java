@@ -3,6 +3,7 @@ package glue;
 import java.util.LinkedList;
 
 import sprite.Sprite;
+import sprite.SpriteType;
 import spriteList.SpriteList;
 
 public class SpriteListState {
@@ -15,5 +16,24 @@ public class SpriteListState {
 
     LinkedList<Sprite> getSpriteList() {
         return spriteList;
+    }
+
+    /**
+     * Check if a sprite is in the sprite list according to its coordinates and its type.
+     *
+     * @param xMap       the sprite's abscissa
+     * @param yMap       the sprite's ordinate
+     * @param spriteType the sprite's type
+     * @return true is the specified sprite is in the sprite list.
+     */
+    public boolean isSpriteInSpriteList(int xMap, int yMap, SpriteType spriteType) {
+        for (Sprite sprite : spriteList) {
+            if (sprite.getXMap() == xMap &&
+                    sprite.getYMap() == yMap &&
+                    sprite.getSpriteType().equals(spriteType)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
