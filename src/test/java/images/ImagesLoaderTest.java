@@ -28,7 +28,7 @@ public class ImagesLoaderTest implements WithAssertions {
     }
 
     @Test
-    public void fillImagesMatrixShouldFillTheAppropriateNumberOfRows() throws Exception {
+    public void fillImagesMatrixShouldFillExpectedNumberOfRows() throws Exception {
         ImagesLoader.fillImagesMatrix();
         assertThat(ImagesLoader.NB_MATRIX_ROW).isEqualTo(ImagesLoader.lastRowIdx + 1);
     }

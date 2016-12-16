@@ -1,19 +1,19 @@
-import images.ImagesLoader;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.io.IOException;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
+import images.ImagesLoader;
 
 public class App extends JFrame {
 
-    private final int SCREEN_WIDTH = 1200;
+    private final int SCREEN_WIDTH = 1080;
     private final int SCREEN_HEIGHT = 720;
     private final String PACKAGE_NAME = "Bomberblind";
     private final String PACKAGE_VERSION = "1.0-SNAPSHOT";
 
-    private GameJpanel gameJpanel;
-
-    App() {
+    private App() {
         System.out.println(PACKAGE_NAME + " v" + PACKAGE_VERSION);
 
         try {
@@ -24,7 +24,7 @@ public class App extends JFrame {
             setJframe();
 
             System.out.println("- create and set JPanel ... ");
-            gameJpanel = new GameJpanel(SCREEN_WIDTH, SCREEN_HEIGHT);
+            GameJpanel gameJpanel = new GameJpanel(SCREEN_WIDTH, SCREEN_HEIGHT);
             setContentPane(gameJpanel);
 
             System.out.println("- run game. ");
@@ -44,7 +44,7 @@ public class App extends JFrame {
         setSize(SCREEN_WIDTH + 8, SCREEN_HEIGHT + 25); // offset borders and title bars.
         setLocationRelativeTo(null); // align to center.
         setIconImage(ImageIO.read(App.class.getResource("/images/icon.gif")));
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
     }
 }

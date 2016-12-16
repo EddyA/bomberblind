@@ -7,13 +7,17 @@ import org.mockito.Mockito;
 public class ZeldaMapTest implements WithAssertions {
 
     // use small values to avoid heap overflow using Mockito.
+    @SuppressWarnings("FieldCanBeLocal")
     private final int MAP_WIDTH = 4;
+    @SuppressWarnings("FieldCanBeLocal")
     private final int MAP_HEIGHT = 3;
+    @SuppressWarnings("FieldCanBeLocal")
     private final int SCREEN_WIDTH = 2;
+    @SuppressWarnings("FieldCanBeLocal")
     private final int SCREEN_HEIGHT = 1;
 
     @Test
-    public void rMapShouldSetMembersWithTheAppropriateValues() throws Exception {
+    public void rMapShouldSetMembersWithTheExpectedValues() throws Exception {
 
         // mock the ZeldaMapSetting class.
         ZeldaMapSetting zeldaMapSetting = Mockito.mock(ZeldaMapSetting.class);
