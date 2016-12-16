@@ -4,8 +4,11 @@ A bomberman alike game.
 ## Commands
 - Use the arrow keys to move the bomberman.
 - Use key 'B' to put bombs.
+- Use key 'ESC' to quit.
 
 ## On master:
+- Enemies handling.
+  - Simple IA, changing of direction when reaching an obstacle or another enemy.
 - Bombs and flames handling.
   - Bomberman dies when hit by a flame.
   - Bomb does explose when hit by a flame.
