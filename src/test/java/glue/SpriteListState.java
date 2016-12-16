@@ -26,7 +26,7 @@ public class SpriteListState {
      * @param spriteType the sprite's type
      * @return true is the specified sprite is in the sprite list.
      */
-    public boolean isSpriteInSpriteList(int xMap, int yMap, SpriteType spriteType) {
+    boolean isSpriteInSpriteList(int xMap, int yMap, SpriteType spriteType) {
         for (Sprite sprite : spriteList) {
             if (sprite.getXMap() == xMap &&
                     sprite.getYMap() == yMap &&

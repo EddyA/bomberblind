@@ -1,5 +1,7 @@
 package spriteList.ctrl;
 
+import java.util.LinkedList;
+
 import map.MapPoint;
 import sprite.Sprite;
 import sprite.nomad.Bomber;
@@ -7,8 +9,6 @@ import sprite.nomad.Enemy;
 import sprite.settled.Bomb;
 import sprite.settled.Flame;
 import sprite.settled.FlameEnd;
-
-import java.util.LinkedList;
 
 /**
  * A collection of methods to add sprites to a list according to a map status.
@@ -63,23 +63,22 @@ public class AddingMethods {
      *
      * @param list           the list into which adding the flame
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param rowIdx         the map row index of the flame
-     * @param colIdx         the map column index of the flame
+     * @param flame          the flame to add
      * @return true if the flame can be propagated, false it is stopped
      */
-    static boolean addFlame(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int rowIdx, int colIdx) {
-        if (mapPointMatrix[rowIdx][colIdx].isPathway()) {
-            mapPointMatrix[rowIdx][colIdx].addFlame();
-            mapPointMatrix[rowIdx][colIdx].setImageAsBurned();
-            list.add(new Flame(rowIdx, colIdx));
+    public static boolean addFlame(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, Flame flame) {
+        if (mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].isPathway()) {
+            mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].addFlame();
+            mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].setImageAsBurned();
+            list.add(flame);
             return true; // the next case should be tested.
-        } else if (mapPointMatrix[rowIdx][colIdx].isMutable() ||
-                mapPointMatrix[rowIdx][colIdx].isBombing()) {
-            mapPointMatrix[rowIdx][colIdx].setPathway(true);
-            mapPointMatrix[rowIdx][colIdx].setMutable(false);
-            mapPointMatrix[rowIdx][colIdx].addFlame();
-            mapPointMatrix[rowIdx][colIdx].setImageAsBurned();
-            list.add(new Flame(rowIdx, colIdx));
+        } else if (mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].isMutable() ||
+                mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].isBombing()) {
+            mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].setPathway(true);
+            mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].setMutable(false);
+            mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].addFlame();
+            mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].setImageAsBurned();
+            list.add(flame);
             return false; // the next case should NOT be tested.
         } else {
             return false; // the next case should NOT be tested.
@@ -100,45 +99,49 @@ public class AddingMethods {
      */
     static void addFlames(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
             int centralRowIdx, int centralColIdx, int flameSize) {
+        Flame flame;
 
         // place left flames.
         for (int i = 1, j = centralColIdx - 1; i <= flameSize && j >= 0; i++, j--) { // from center to left.
-            if (!addFlame(list, mapPointMatrix, centralRowIdx, centralColIdx - i)) {
+            flame = new Flame(centralRowIdx, centralColIdx - i);
+            if (!addFlame(list, mapPointMatrix, flame)) {
                 break; // break loop.
             }
         }
 
         // place right flames.
         for (int i = 1, j = centralColIdx + 1; i <= flameSize && j < mapWidth; i++, j++) { // from center to right.
-            if (!addFlame(list, mapPointMatrix, centralRowIdx, centralColIdx + i)) {
+            flame = new Flame(centralRowIdx, centralColIdx + i);
+            if (!addFlame(list, mapPointMatrix, flame)) {
                 break; // break loop.
             }
         }
 
         // place upper flames.
         for (int i = 1, j = centralRowIdx - 1; i <= flameSize && j >= 0; i++, j--) { // from center to top.
-            if (!addFlame(list, mapPointMatrix, centralRowIdx - i, centralColIdx)) {
+            flame = new Flame(centralRowIdx - i, centralColIdx);
+            if (!addFlame(list, mapPointMatrix, flame)) {
                 break; // break loop.
             }
         }
 
         // place lower flames.
         for (int i = 1, j = centralRowIdx + 1; i <= flameSize && j < mapHeight; i++, j++) { // from center to bottom.
-            if (!addFlame(list, mapPointMatrix, centralRowIdx + i, centralColIdx)) {
+            flame = new Flame(centralRowIdx + i, centralColIdx);
+            if (!addFlame(list, mapPointMatrix, flame)) {
                 break; // break loop.
             }
         }
-        addFlame(list, mapPointMatrix, centralRowIdx, centralColIdx); // central case.
+        addFlame(list, mapPointMatrix, new Flame(centralRowIdx, centralColIdx)); // central case.
     }
 
     /**
      * Add a flame end to a list.
      *
      * @param list   the list into which adding the flame
-     * @param rowIdx the map row index of the flame
-     * @param colIdx the map column index of the flame
+     * @param  flameEnd the flame end to add
      */
-    static void addFlameEnd(LinkedList<Sprite> list, int rowIdx, int colIdx) {
-        list.add(new FlameEnd(rowIdx, colIdx));
+    public static void addFlameEnd(LinkedList<Sprite> list, FlameEnd flameEnd) {
+        list.add(flameEnd);
     }
 }

@@ -12,6 +12,7 @@ import sprite.nomad.Bomber;
 import sprite.nomad.CloakedSkeleton;
 import sprite.settled.Bomb;
 import sprite.settled.Flame;
+import sprite.settled.FlameEnd;
 import sprite.settled.Settled;
 import utils.Tuple2;
 
@@ -122,7 +123,7 @@ public class AddingMethodsTest implements WithAssertions {
         mapPointMatrix[pathwayCaseRowIdx][pathwayCaseColIdx].setPathway(true);
 
         // test.
-        assertThat(AddingMethods.addFlame(spriteList, mapPointMatrix, pathwayCaseRowIdx, pathwayCaseColIdx)).isTrue();
+        assertThat(AddingMethods.addFlame(spriteList, mapPointMatrix, new Flame(pathwayCaseRowIdx, pathwayCaseColIdx))).isTrue();
         assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.FLAME);
         assertThat(((Settled) spriteList.getFirst()).getRowIdx()).isEqualTo(pathwayCaseRowIdx);
         assertThat(((Settled) spriteList.getFirst()).getColIdx()).isEqualTo(pathwayCaseColIdx);
@@ -148,7 +149,7 @@ public class AddingMethodsTest implements WithAssertions {
         mapPointMatrix[mutableCaseRowIdx][mutableCaseColIdx].setMutable(true);
 
         // test.
-        assertThat(AddingMethods.addFlame(spriteList, mapPointMatrix, mutableCaseRowIdx, mutableCaseColIdx)).isFalse();
+        assertThat(AddingMethods.addFlame(spriteList, mapPointMatrix, new Flame(mutableCaseRowIdx, mutableCaseColIdx))).isFalse();
         assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.FLAME);
         assertThat(((Settled) spriteList.getFirst()).getRowIdx()).isEqualTo(mutableCaseRowIdx);
         assertThat(((Settled) spriteList.getFirst()).getColIdx()).isEqualTo(mutableCaseColIdx);
@@ -176,7 +177,7 @@ public class AddingMethodsTest implements WithAssertions {
         mapPointMatrix[notAvCaseRowIdx][notAvCaseColIdx].setMutable(false);
 
         // test.
-        assertThat(AddingMethods.addFlame(spriteList, mapPointMatrix, notAvCaseRowIdx, notAvCaseColIdx)).isFalse();
+        assertThat(AddingMethods.addFlame(spriteList, mapPointMatrix, new Flame(notAvCaseRowIdx, notAvCaseColIdx))).isFalse();
         assertThat(spriteList.isEmpty()).isTrue();
     }
 
@@ -429,7 +430,7 @@ public class AddingMethodsTest implements WithAssertions {
         }
 
         // test.
-        AddingMethods.addFlameEnd(spriteList, 1, 2);
+        AddingMethods.addFlameEnd(spriteList, new FlameEnd(1, 2));
         assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.FLAME_END);
         assertThat(((Settled) spriteList.getFirst()).getRowIdx()).isEqualTo(1);
         assertThat(((Settled) spriteList.getFirst()).getColIdx()).isEqualTo(2);

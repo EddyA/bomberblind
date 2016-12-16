@@ -3,6 +3,7 @@ package glue;
 import org.assertj.core.api.WithAssertions;
 
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 
 public class MapPointMatrixStepDef implements WithAssertions {
 
@@ -26,5 +27,15 @@ public class MapPointMatrixStepDef implements WithAssertions {
     public void an_obstacle_case_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
         mapPointMatrixState.getMapPoint(rowIdx, colIdx).setPathway(false);
         mapPointMatrixState.getMapPoint(rowIdx, colIdx).setMutable(false);
+    }
+
+    @Then("^the case at rowIdx (\\d+) and coldIdx (\\d+) is no more bombing$")
+    public void the_case_at_rowIdx_and_coldIdx_is_no_more_bombing(int rowIdx, int colIdx) {
+        assertThat(mapPointMatrixState.getMapPoint(rowIdx, colIdx).isBombing()).isFalse();
+    }
+
+    @Then("^the case at rowIdx (\\d+) and coldIdx (\\d+) is no more burning$")
+    public void the_case_at_rowIdx_and_coldIdx_is_no_more_burning(int rowIdx, int colIdx) {
+        assertThat(mapPointMatrixState.getMapPoint(rowIdx, colIdx).isBurning()).isFalse();
     }
 }

@@ -13,17 +13,23 @@ public class AddingMethodsStepDef implements WithAssertions {
     private final BomberState bomberState;
     private final EnemyState enemyState;
     private final BombState bombState;
+    private final FlameState flameState;
+    private final FlameEndState flameEndState;
 
     public AddingMethodsStepDef(SpriteListState listOfSprites,
             MapPointMatrixState mapPointMatrixState,
             BomberState bomberState,
             EnemyState enemyState,
-            BombState bombState) {
+            BombState bombState,
+            FlameState flameState,
+            FlameEndState flameEndState) {
         this.listOfSprites = listOfSprites;
         this.mapPointMatrixState = mapPointMatrixState;
         this.bomberState = bomberState;
         this.enemyState = enemyState;
         this.bombState = bombState;
+        this.flameState = flameState;
+        this.flameEndState = flameEndState;
     }
 
     @Given("^a bomber at rowIdx (\\d+) and coldIdx (\\d+)$")
@@ -48,5 +54,19 @@ public class AddingMethodsStepDef implements WithAssertions {
         bombState.getBomb().setColIdx(colIdx);
         bombState.getBomb().setFlamesize(flameSize);
         AddingMethods.addBomb(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(), bombState.getBomb());
+    }
+
+    @Given("^a flame at rowIdx (\\d+) and coldIdx (\\d+)$")
+    public void a_flame_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
+        flameState.getFlame().setRowIdx(rowIdx);
+        flameState.getFlame().setColIdx(colIdx);
+        AddingMethods.addFlame(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(), flameState.getFlame());
+    }
+
+    @Given("^a flame end at rowIdx (\\d+) and coldIdx (\\d+)$")
+    public void a_flame_end_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
+        flameEndState.getFlameEnd().setRowIdx(rowIdx);
+        flameEndState.getFlameEnd().setColIdx(colIdx);
+        AddingMethods.addFlameEnd(listOfSprites.getSpriteList(), flameEndState.getFlameEnd());
     }
 }
