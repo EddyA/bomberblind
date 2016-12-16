@@ -147,7 +147,7 @@ public class NomadMethodslTest implements WithAssertions {
         }
     }
 
-    @Test
+    @SuppressWarnings("ConstantConditions") @Test
     public void isCharacterCrossingBombShouldReturnExpectedValue() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
