@@ -7,7 +7,6 @@ import static sprite.nomad.Enemy.Action.ACTION_WALKING;
 import java.util.LinkedList;
 
 import ai.EnemyAi;
-import exceptions.CannotMoveEnemyException;
 import map.MapPoint;
 import sprite.Sprite;
 import sprite.nomad.Bomber;
@@ -75,34 +74,37 @@ public class ActionMethods {
                 enemy.setCurAction(Enemy.Action.ACTION_DYING);
 
             } else if (enemy.isTimeToMove()) { // not dead -> should the enemy move?
-                try {
+
                     // compute the next direction.
-                    Direction newDirection = EnemyAi.computeNextDirection(mapPointMatrix, mapWidth, mapHeight, list,
+                Direction newDirection = EnemyAi.computeNextDirection(
+                        mapPointMatrix,
+                        mapWidth,
+                        mapHeight,
+                        list,
                             enemy);
 
-                    // assign the new direction.
+                // assign the new coordinates and action if found.
+                if (newDirection != null) {
                     enemy.setCurAction(ACTION_WALKING);
                     enemy.setCurDirection(newDirection);
                     switch (newDirection) {
-                        case NORTH: {
-                            enemy.setYMap(enemy.getYMap() - 1);
-                            break;
-                        }
-                        case SOUTH: {
-                            enemy.setYMap(enemy.getYMap() + 1);
-                            break;
-                        }
-                        case WEST: {
-                            enemy.setXMap(enemy.getXMap() - 1);
-                            break;
-                        }
-                        case EAST: {
-                            enemy.setXMap(enemy.getXMap() + 1);
-                            break;
-                        }
+                    case NORTH: {
+                        enemy.setYMap(enemy.getYMap() - 1);
+                        break;
                     }
-                } catch (CannotMoveEnemyException e) {
-                    // nothing to do, just wait for the next iteration.
+                    case SOUTH: {
+                        enemy.setYMap(enemy.getYMap() + 1);
+                        break;
+                    }
+                    case WEST: {
+                        enemy.setXMap(enemy.getXMap() - 1);
+                        break;
+                    }
+                    case EAST: {
+                        enemy.setXMap(enemy.getXMap() + 1);
+                        break;
+                    }
+                    }
                 }
             }
         }

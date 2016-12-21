@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import exceptions.CannotMoveEnemyException;
 import map.MapPoint;
 import sprite.Sprite;
 import sprite.nomad.Enemy;
@@ -28,22 +27,25 @@ public class EnemyAi {
      * @param spriteList     the list of nomads
      * @param enemy          the enemy
      *
-     * @return the updated action
-     * @throws CannotMoveEnemyException if the enemy is blocked by another one.
+     * @return the computed direction if possible, null otherwise (when the enemy is blocked off)
      */
-    public static Direction computeNextDirection(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
-                                                 List<Sprite> spriteList, Enemy enemy)
-            throws CannotMoveEnemyException {
+    public static Direction computeNextDirection(
+            MapPoint[][] mapPointMatrix,
+            int mapWidth,
+            int mapHeight,
+            List<Sprite> spriteList,
+            Enemy enemy) {
 
-        // create a set of checked action.
+        // create a set of checked directions.
         Set<Direction> checkedDirections = new HashSet<>();
 
         // if a (current) direction is set, firstly try to continue on that way, randomly get one otherwise.
         Direction curCheckedDirection = enemy.getCurDirection() != null ?
-                enemy.getCurDirection() : Direction.getRandomDirection();
+                enemy.getCurDirection() : Direction.getRandomDirectionWithExclusion(checkedDirections);
 
+        // loop while a direction is not found and random directions are still provided.
         boolean resultFound = false;
-        do {
+        while (!resultFound && curCheckedDirection != null) {
             checkedDirections.add(curCheckedDirection); // add the current direction to the set of checked direction.
             switch (curCheckedDirection) {
                 case NORTH: {
@@ -92,18 +94,10 @@ public class EnemyAi {
                 }
             }
             if (!resultFound) {
-                if (checkedDirections.size() == Direction.getNbDirections()) {
-
-                    /*
-                      all the 'curCheckedDirection' has been checked but no result found.
-                      this case happens when the abstracts is blocked by another one
-                      and it cannot move during this iteration ... just wait for the next one.
-                     */
-                    throw new CannotMoveEnemyException("abstracts is not able to move during this iteration.");
-                }
-                curCheckedDirection = Direction.getRandomDirection();
+                // result not found, try another direction.
+                curCheckedDirection = Direction.getRandomDirectionWithExclusion(checkedDirections);
             }
-        } while (!resultFound); // until a move is possible.
+        }
         return curCheckedDirection;
     }
 }
