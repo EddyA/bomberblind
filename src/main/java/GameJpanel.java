@@ -108,7 +108,7 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
             map.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             spriteList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
         } catch (Exception e) {
-            System.err.println("GameJPanel.paintComponent(): " + e.getMessage());
+            System.err.println("GameJPanel.paintComponent(): " + e);
         }
     }
 
