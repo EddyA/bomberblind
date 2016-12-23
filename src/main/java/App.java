@@ -32,7 +32,7 @@ public class App extends JFrame {
         int screenHeight = DEFAULT_SCREEN_HEIGHT;
         if (fullscreenResolution.isPresent()) {
             screenWidth = fullscreenResolution.get().getFirst();
-            screenHeight = fullscreenResolution.get().getFirst();
+            screenHeight = fullscreenResolution.get().getSecond();
         }
 
         try {
@@ -48,7 +48,7 @@ public class App extends JFrame {
                     graphicsDevice.setFullScreenWindow(this);
                     try {
                         graphicsDevice.setDisplayMode(
-                                new DisplayMode(screenWidth, screenHeight, BIT_DEPTH_MULTI, REFRESH_RATE_UNKNOWN));
+                                new DisplayMode(screenWidth, screenHeight, 16, REFRESH_RATE_UNKNOWN));
                     } catch (IllegalArgumentException e) {
                         fullscreenNotAvailable = true; // if the screen resolution is not supported by hardware.
                     }

@@ -16,7 +16,7 @@ Feature: Features of the action methods class
     When processing the bomber
     Then the bomber should die
 
-  Scenario: validate bomber does not die when crossing an enemy and invicible
+  Scenario: validate bomber does not die when crossing an enemy and invincible
     Given a MapPoint matrix of 5 rows and 10 cols built with pathway cases
     And the bomber is invincible
     Given an enemy at rowIdx 3 and coldIdx 5
