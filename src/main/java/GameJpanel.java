@@ -73,8 +73,6 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
         pressedKeyList.add(0L); // add the "wait" action.
 
         setFocusable(true);
-        requestFocusInWindow();
-
         addKeyListener(this);
 
         Thread T = new Thread(this);
@@ -204,7 +202,7 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                 if (mainBomber.getCurAction() != Bomber.Action.ACTION_DYING && !mainBomber.isFinished()) {
                     switch (pressedKeyList.get(pressedKeyList.size() - 1).intValue()) {
                         case KeyEvent.VK_ESCAPE: {
-                            System.exit(1);
+                            System.exit(0);
                             break;
                         }
                         case 0: {
