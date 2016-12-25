@@ -1,17 +1,16 @@
 package map.ctrl;
 
-import static images.ImagesLoader.IMAGE_SIZE;
+import map.MapPoint;
+import org.assertj.core.api.WithAssertions;
+import org.junit.Test;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import static images.ImagesLoader.IMAGE_SIZE;
 
-import map.MapPoint;
-
-public class NomadMethodslTest implements WithAssertions {
+public class NomadMethodsTest implements WithAssertions {
 
     private final int MAP_WIDTH = 20;
     private final int MAP_HEIGHT = 10;
@@ -41,7 +40,7 @@ public class NomadMethodslTest implements WithAssertions {
                     assertThat(NomadMethods.isNomadCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue(); // crossing.
                 } else {
                     assertThat(NomadMethods.isNomadCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isFalse(); // not
-                                                                                                                     // crossing.
+                    // crossing.
                 }
             }
         }
@@ -147,7 +146,8 @@ public class NomadMethodslTest implements WithAssertions {
         }
     }
 
-    @SuppressWarnings("ConstantConditions") @Test
+    @SuppressWarnings("ConstantConditions")
+    @Test
     public void isCharacterCrossingBombShouldReturnExpectedValue() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {

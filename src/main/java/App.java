@@ -1,50 +1,57 @@
-import java.io.IOException;
+import images.ImagesLoader;
+import utils.ScreenMode;
+import utils.Tuple2;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-
-import images.ImagesLoader;
+import javax.swing.*;
+import java.awt.*;
+import java.util.Optional;
 
 public class App extends JFrame {
 
-    private final int SCREEN_WIDTH = 1080;
-    private final int SCREEN_HEIGHT = 720;
-    private final String PACKAGE_NAME = "Bomberblind";
-    private final String PACKAGE_VERSION = "1.0-SNAPSHOT";
+    private final static int DEFAULT_SCREEN_WIDTH = 1024;
+    private final static int DEFAULT_SCREEN_HEIGHT = 768;
 
-    private App() {
-        System.out.println(PACKAGE_NAME + " v" + PACKAGE_VERSION);
+    private App(GraphicsDevice graphicsDevice) {
+        super(graphicsDevice.getDefaultConfiguration());
+
+        // compute the fullscreen resolution according to the screen format (4/3, 16/9, 16/10, etc.).
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Optional<Tuple2<Integer, Integer>> fullscreenResolution = ScreenMode
+                .computeFullscreenResolution(screenSize.getWidth() / screenSize.getHeight());
 
         try {
             System.out.println("- load images ... ");
             ImagesLoader.fillImagesMatrix();
 
-            System.out.println("- create and set JFrame ... ");
-            setJframe();
+            System.out.println("- set screen mode ...");
+            this.setTitle("Bomberblind © Eddy ALBERT");
+            this.setIconImage(ImageIO.read(App.class.getResource("/images/icon.gif")));
+            if (!fullscreenResolution.isPresent() ||  // is the screen format supported by the software?
+                    !ScreenMode.setFullscreenMode(graphicsDevice, // is the screen format supported by the hardware?
+                            this,
+                            fullscreenResolution.get().getFirst(),
+                            fullscreenResolution.get().getSecond())) {
+                ScreenMode.setWindowMode(this, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
+            }
 
-            System.out.println("- create and set JPanel ... ");
-            GameJpanel gameJpanel = new GameJpanel(SCREEN_WIDTH, SCREEN_HEIGHT);
-            setContentPane(gameJpanel);
+            System.out.println("- create and set JPanel ...");
+            GameJpanel gameJpanel = new GameJpanel(
+                    fullscreenResolution.isPresent() ? fullscreenResolution.get().getFirst() : DEFAULT_SCREEN_WIDTH,
+                    fullscreenResolution.isPresent() ? fullscreenResolution.get().getSecond() : DEFAULT_SCREEN_HEIGHT);
+            this.setContentPane(gameJpanel);
 
-            System.out.println("- run game. ");
-            setVisible(true);
-
+            System.out.println("- run.");
+            this.setVisible(true);
+            gameJpanel.requestFocusInWindow();
         } catch (Exception e) {
-            System.err.println("App: " + e.getMessage());
+            System.err.println("App: " + e);
+            System.exit(1);
         }
     }
 
     public static void main(String[] args) {
-        new App();
-    }
-
-    private void setJframe() throws IOException {
-        setTitle(PACKAGE_NAME + " v" + PACKAGE_VERSION);
-        setSize(SCREEN_WIDTH + 8, SCREEN_HEIGHT + 25); // offset borders and title bars.
-        setLocationRelativeTo(null); // align to center.
-        setIconImage(ImageIO.read(App.class.getResource("/images/icon.gif")));
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
+        GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        new App(graphicsEnvironment.getDefaultScreenDevice());
     }
 }

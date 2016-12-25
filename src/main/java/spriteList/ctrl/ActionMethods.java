@@ -1,11 +1,5 @@
 package spriteList.ctrl;
 
-import static map.ctrl.NomadMethods.isNomadBurning;
-import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
-import static sprite.nomad.Enemy.Action.ACTION_WALKING;
-
-import java.util.LinkedList;
-
 import ai.EnemyAi;
 import map.MapPoint;
 import sprite.Sprite;
@@ -16,6 +10,12 @@ import sprite.settled.Flame;
 import sprite.settled.FlameEnd;
 import sprite.settled.TimedSettled;
 import utils.Direction;
+
+import java.util.LinkedList;
+
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
+import static sprite.nomad.Enemy.Action.ACTION_WALKING;
 
 /**
  * Define a collection of methods to process sprites.
@@ -75,35 +75,35 @@ public class ActionMethods {
 
             } else if (enemy.isTimeToMove()) { // not dead -> should the enemy move?
 
-                    // compute the next direction.
+                // compute the next direction.
                 Direction newDirection = EnemyAi.computeNextDirection(
                         mapPointMatrix,
                         mapWidth,
                         mapHeight,
                         list,
-                            enemy);
+                        enemy);
 
                 // assign the new coordinates and action if found.
                 if (newDirection != null) {
                     enemy.setCurAction(ACTION_WALKING);
                     enemy.setCurDirection(newDirection);
                     switch (newDirection) {
-                    case NORTH: {
-                        enemy.setYMap(enemy.getYMap() - 1);
-                        break;
-                    }
-                    case SOUTH: {
-                        enemy.setYMap(enemy.getYMap() + 1);
-                        break;
-                    }
-                    case WEST: {
-                        enemy.setXMap(enemy.getXMap() - 1);
-                        break;
-                    }
-                    case EAST: {
-                        enemy.setXMap(enemy.getXMap() + 1);
-                        break;
-                    }
+                        case NORTH: {
+                            enemy.setYMap(enemy.getYMap() - 1);
+                            break;
+                        }
+                        case SOUTH: {
+                            enemy.setYMap(enemy.getYMap() + 1);
+                            break;
+                        }
+                        case WEST: {
+                            enemy.setXMap(enemy.getXMap() - 1);
+                            break;
+                        }
+                        case EAST: {
+                            enemy.setXMap(enemy.getXMap() + 1);
+                            break;
+                        }
                     }
                 }
             }
