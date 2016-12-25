@@ -55,7 +55,7 @@ public class ActionMethods {
     /**
      * - Notice that the bomber must be removed from the list (if the enemy is dead and the sprite ended),
      * - OR kill the enemy (if the enemy is on a burning case),
-     * - OR compute the next direction.
+     * - OR computeFullscreenResolution the next direction.
      *
      * @param list           the list of sprites
      * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
@@ -75,7 +75,7 @@ public class ActionMethods {
 
             } else if (enemy.isTimeToMove()) { // not dead -> should the enemy move?
 
-                    // compute the next direction.
+                    // computeFullscreenResolution the next direction.
                 Direction newDirection = EnemyAi.computeNextDirection(
                         mapPointMatrix,
                         mapWidth,

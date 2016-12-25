@@ -67,7 +67,7 @@ public class ZeldaMap extends Map {
     @Override
     public Tuple2<Integer, Integer> computeInitialBbManPosition() {
 
-        // compute the initial Bomber position in order to be in front of the 1st castle door.
+        // computeFullscreenResolution the initial Bomber position in order to be in front of the 1st castle door.
         int xBbManOnMap = castleStartPoint.getColIdx() * IMAGE_SIZE +
                 (castle1.getWidth() * IMAGE_SIZE / 2);
         int yBbManOnMap = castleStartPoint.getRowIdx() * IMAGE_SIZE +
