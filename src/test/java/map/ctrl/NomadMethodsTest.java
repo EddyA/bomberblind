@@ -1,17 +1,16 @@
 package map.ctrl;
 
-import static images.ImagesLoader.IMAGE_SIZE;
+import map.MapPoint;
+import org.assertj.core.api.WithAssertions;
+import org.junit.Test;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import static images.ImagesLoader.IMAGE_SIZE;
 
-import map.MapPoint;
-
-public class NomadMethodslTest implements WithAssertions {
+public class NomadMethodsTest implements WithAssertions {
 
     private final int MAP_WIDTH = 20;
     private final int MAP_HEIGHT = 10;
@@ -20,7 +19,7 @@ public class NomadMethodslTest implements WithAssertions {
     public void isCharacterCrossingMapLimitShouldReturnExpectedValue() throws Exception {
         
         /*
-        computeFullscreenResolution the character limits according to the map dimensions.
+        compute the character limits according to the map dimensions.
         ex: ZeldaMap(20, 10) = W=600px * H=300px.
         - yChar < 15px ||
         - yChar > 299px ||
@@ -41,7 +40,7 @@ public class NomadMethodslTest implements WithAssertions {
                     assertThat(NomadMethods.isNomadCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue(); // crossing.
                 } else {
                     assertThat(NomadMethods.isNomadCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isFalse(); // not
-                                                                                                                     // crossing.
+                    // crossing.
                 }
             }
         }
@@ -61,7 +60,7 @@ public class NomadMethodslTest implements WithAssertions {
         mapPointMatrix[obsRowIdx][obsColIdx].setPathway(false);
 
         /*
-        computeFullscreenResolution the character limits according to the obstacle position.
+        compute the character limits according to the obstacle position.
         ex: Obs(1, 2) -> x=60px, y=30px.
         - yChar > 29px &&
         - yChar < 75px &&
@@ -111,7 +110,7 @@ public class NomadMethodslTest implements WithAssertions {
         mapPointMatrix[flameRowIdx][flameColIdx].addFlame();
 
         /*
-        computeFullscreenResolution the character limits according to the flame position.
+        compute the character limits according to the flame position.
         ex: Flame(1, 2) -> x=60px, y=30px.
         - yChar > 29px &&
         - yChar < 75px &&
@@ -147,7 +146,8 @@ public class NomadMethodslTest implements WithAssertions {
         }
     }
 
-    @SuppressWarnings("ConstantConditions") @Test
+    @SuppressWarnings("ConstantConditions")
+    @Test
     public void isCharacterCrossingBombShouldReturnExpectedValue() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
@@ -161,7 +161,7 @@ public class NomadMethodslTest implements WithAssertions {
         mapPointMatrix[bombRowIdx][bombColIdx].setBombing(true);
 
         /*
-        computeFullscreenResolution the character limits according to the bomb position.
+        compute the character limits according to the bomb position.
         ex: Bomb(1, 2) -> x=60px, y=30px.
         - yChar == 30px && key is DOWN should fail
         - yChar == 74px && key is UP should fail

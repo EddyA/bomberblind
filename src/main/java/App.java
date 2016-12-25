@@ -39,7 +39,7 @@ public class App extends JFrame {
             GameJpanel gameJpanel = new GameJpanel(
                     fullscreenResolution.isPresent() ? fullscreenResolution.get().getFirst() : DEFAULT_SCREEN_WIDTH,
                     fullscreenResolution.isPresent() ? fullscreenResolution.get().getSecond() : DEFAULT_SCREEN_HEIGHT);
-            setContentPane(gameJpanel);
+            this.setContentPane(gameJpanel);
 
             System.out.println("- run.");
             this.setVisible(true);
@@ -48,7 +48,6 @@ public class App extends JFrame {
             System.err.println("App: " + e);
             System.exit(1);
         }
-
     }
 
     public static void main(String[] args) {
