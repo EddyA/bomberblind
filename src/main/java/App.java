@@ -9,7 +9,9 @@ import java.util.Optional;
 
 public class App extends JFrame {
 
+    private int screenWidth;
     private final static int DEFAULT_SCREEN_WIDTH = 1024;
+    private int screenHeight;
     private final static int DEFAULT_SCREEN_HEIGHT = 768;
 
     private App(GraphicsDevice graphicsDevice) {
@@ -19,6 +21,10 @@ public class App extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Optional<Tuple2<Integer, Integer>> fullscreenResolution = ScreenMode
                 .computeFullscreenResolution(screenSize.getWidth() / screenSize.getHeight());
+        if (fullscreenResolution.isPresent()) {
+            screenWidth = fullscreenResolution.get().getFirst();
+            screenHeight = fullscreenResolution.get().getSecond();
+        }
 
         try {
             System.out.println("- load images ... ");
@@ -30,15 +36,14 @@ public class App extends JFrame {
             if (!fullscreenResolution.isPresent() ||  // is the screen format supported by the software?
                     !ScreenMode.setFullscreenMode(graphicsDevice, // is the screen format supported by the hardware?
                             this,
-                            fullscreenResolution.get().getFirst(),
-                            fullscreenResolution.get().getSecond())) {
-                ScreenMode.setWindowMode(this, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
+                            screenWidth,
+                            screenHeight)) {
+                screenWidth = DEFAULT_SCREEN_WIDTH;
+                screenHeight = DEFAULT_SCREEN_HEIGHT;
+                ScreenMode.setWindowMode(this, screenWidth, screenHeight);
             }
-
             System.out.println("- create and set JPanel ...");
-            GameJpanel gameJpanel = new GameJpanel(
-                    fullscreenResolution.isPresent() ? fullscreenResolution.get().getFirst() : DEFAULT_SCREEN_WIDTH,
-                    fullscreenResolution.isPresent() ? fullscreenResolution.get().getSecond() : DEFAULT_SCREEN_HEIGHT);
+            GameJpanel gameJpanel = new GameJpanel(screenWidth, screenHeight);
             this.setContentPane(gameJpanel);
 
             System.out.println("- run.");
