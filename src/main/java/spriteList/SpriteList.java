@@ -71,14 +71,15 @@ public class SpriteList extends LinkedList<Sprite> {
     /**
      * Process and clean sprites.
      */
-    public synchronized void update() {
+    public synchronized void update(int pressedKey) {
         for (ListIterator<Sprite> iterator = this.listIterator(); iterator.hasNext(); ) {
             Sprite sprite = iterator.next();
             boolean shouldBeRemoved;
 
             switch (sprite.getSpriteType()) {
                 case BOMBER: {
-                    shouldBeRemoved = ActionMethods.processBomber(this, map.getMapPointMatrix(), (Bomber) sprite);
+                    shouldBeRemoved = ActionMethods.processBomber(this, tmpList, map.getMapPointMatrix(),
+                            map.getMapWidth(), map.getMapHeight(), (Bomber) sprite, pressedKey);
                     break;
                 }
                 case ENEMY: {
