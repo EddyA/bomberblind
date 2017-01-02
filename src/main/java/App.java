@@ -38,6 +38,7 @@ public class App extends JFrame {
                             this,
                             screenWidth,
                             screenHeight)) {
+                // if fullscreen is not supported, set the window mode.
                 screenWidth = DEFAULT_SCREEN_WIDTH;
                 screenHeight = DEFAULT_SCREEN_HEIGHT;
                 ScreenMode.setWindowMode(this, screenWidth, screenHeight);

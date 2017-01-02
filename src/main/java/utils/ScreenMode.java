@@ -67,7 +67,7 @@ public class ScreenMode {
             graphicsDevice.setFullScreenWindow(jFrame);
             try {
                 graphicsDevice.setDisplayMode(
-                        new DisplayMode(screenWidth, screenHeight, 16, REFRESH_RATE_UNKNOWN));
+                        new DisplayMode(screenWidth, screenHeight, 16, 60));
             } catch (IllegalArgumentException e) {
                 return false; // if the screen resolution is not supported by hardware.
             }
