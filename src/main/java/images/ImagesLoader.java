@@ -43,7 +43,7 @@ public class ImagesLoader {
 
     // enemies:
     // - cloaked skeleton.
-    public final static int NB_CLOAKED_SKELETON_DEATH_FRAME = 4;
+    public final static int NB_CLOAKED_SKELETON_DEATH_FRAME = 10;
     public final static int NB_CLOAKED_SKELETON_WALK_FRAME = 4;
     public static int cloakedSkeletonDeathMatrixRowIdx;
     public static int cloakedSkeletonWalkBackMatrixRowIdx;
