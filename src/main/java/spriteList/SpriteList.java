@@ -72,12 +72,11 @@ public class SpriteList extends LinkedList<Sprite> {
     /**
      * Process and clean sprites.
      */
-    public synchronized void update() {
+    public synchronized void updateSprites() {
         for (ListIterator<Sprite> iterator = this.listIterator(); iterator.hasNext(); ) {
             Sprite sprite = iterator.next();
             boolean shouldBeRemoved;
-
-            switch (sprite.getSpriteType()) {
+            switch (sprite.getSpriteType()) { // process the sprite's action.
                 case BOMBER: {
                     shouldBeRemoved = ActionMethods.processBomber(this, map.getMapPointMatrix(), (Bomber) sprite);
                     break;
@@ -106,9 +105,11 @@ public class SpriteList extends LinkedList<Sprite> {
                             "\" is not handled by the switch.");
                 }
             }
-            if (shouldBeRemoved) {
-                iterator.remove(); // remove it from the list.
+            if (shouldBeRemoved) { // should the sprite be removed from the list?
+                iterator.remove();
+                continue;
             }
+            sprite.updateImage(); // update the sprite's images.
         }
         if (!tmpList.isEmpty()) {
             this.addAll(tmpList); // add sprites from the temporary list to the main one.
@@ -127,9 +128,7 @@ public class SpriteList extends LinkedList<Sprite> {
 
         // paint sprites.
         for (Sprite sprite : this) {
-            sprite.updateImage();
-            if ((sprite.getCurImage() != null) && // happens when the bomber is invincible.
-                    !sprite.isFinished()) {
+            if ((sprite.getCurImage() != null)) { // happens when the bomber is invincible.
                 if ((sprite.getYMap() >= yMap)
                         && (sprite.getYMap() <= yMap + sprite.getCurImage().getWidth(null) + screenHeight + ImagesLoader.IMAGE_SIZE)
                         && (sprite.getXMap() >= xMap - sprite.getCurImage().getWidth(null) / 2)

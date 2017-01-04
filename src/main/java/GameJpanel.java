@@ -283,7 +283,7 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                     }
                     updateMapStartPosOnScreen();
                 }
-                spriteList.update();
+                spriteList.updateSprites();
 
                 // update the list order to handle sprites superposition.
                 spriteList.sort((o1, o2) -> {

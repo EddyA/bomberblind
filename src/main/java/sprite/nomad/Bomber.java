@@ -279,17 +279,7 @@ public abstract class Bomber extends Nomad {
     }
 
     @Override
-    /**
-     * Note: the check of 'lastAction' has been added because it seems that repaint() does not systematically
-     * call paintComponent() leading that updateSprite() is not systematicaly called at each iteration ... :(
-     * In that case, the array of images (and its relative number of elements) is not updated and, in the very
-     * rare case where the previous sprite is currently ended, we got the perfect combination (ACTION_DYING &&
-     * end of the animation) to finish the sprite and avoid doing the conclusion sprite.
-     * If 'lastAction' has been updated, updateSprite() has been calling -> CQFD.
-     */
     public boolean isFinished() {
-        return curAction.equals(ACTION_DYING) &&
-                lastAction.equals(ACTION_DYING) &&
-                (curImageIdx == nbImages - 1);
+        return curAction.equals(ACTION_DYING) && (curImageIdx == nbImages - 1);
     }
 }
