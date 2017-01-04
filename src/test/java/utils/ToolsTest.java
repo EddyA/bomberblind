@@ -41,6 +41,20 @@ public class ToolsTest implements WithAssertions {
     }
 
     @Test
+    public void getCharRowIdxShouldReturnExpectedValue() throws Exception {
+        assertThat(Tools.getCharRowIdx(10)).isEqualTo(0); // standard case.
+        assertThat(Tools.getCharRowIdx(29)).isEqualTo(0); // limit before moving to another case.
+        assertThat(Tools.getCharRowIdx(30)).isEqualTo(1); // moving to another case.
+    }
+
+    @Test
+    public void getCharColIdxShouldReturnExpectedValue() throws Exception {
+        assertThat(Tools.getCharColIdx(10)).isEqualTo(0); // standard case.
+        assertThat(Tools.getCharColIdx(29)).isEqualTo(0); // limit before moving to another case.
+        assertThat(Tools.getCharColIdx(30)).isEqualTo(1); // moving to another case.
+    }
+
+    @Test
     public void getCharTopRowIdxShouldReturnExpectedValue() throws Exception {
         assertThat(Tools.getCharTopRowIdx(10)).isEqualTo(-1); // negative case.
         assertThat(Tools.getCharTopRowIdx(14)).isEqualTo(-1); // limit before negative case.
