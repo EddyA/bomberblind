@@ -18,11 +18,11 @@ import exceptions.InvalidConfigurationException;
 public class SpritesProperties {
 
     final static String SPRITES_ENEMY_CLOAKED_SKELETON = "sprite.enemy.cloaked.skeleton";
-    final private static String SPRITES_ENEMY_MECA_ANGEL = "sprite.enemy.meca.angel";
-    final private static String SPRITES_ENEMY_MUMMY = "sprite.enemy.mummy";
+    private final static String SPRITES_ENEMY_MECA_ANGEL = "sprite.enemy.meca.angel";
+    private final static String SPRITES_ENEMY_MUMMY = "sprite.enemy.mummy";
 
     private final String propertiesFile;
-    protected Properties properties = new Properties();
+    private final Properties properties = new Properties();
 
     public SpritesProperties(String propertiesFile) {
         this.propertiesFile = propertiesFile;

@@ -11,11 +11,11 @@ import java.util.Properties;
  */
 public abstract class MapProperties {
 
-    final protected static String MAP_SIZE_WIDTH = "map.size.width";
-    final protected static String MAP_SIZE_HEIGHT = "map.size.height";
+    protected final static String MAP_SIZE_WIDTH = "map.size.width";
+    protected final static String MAP_SIZE_HEIGHT = "map.size.height";
 
-    final protected String propertiesFile;
-    protected Properties properties = new Properties();
+    protected final String propertiesFile;
+    protected final Properties properties = new Properties();
 
     protected MapProperties(String propertiesFile) {
         this.propertiesFile = propertiesFile;

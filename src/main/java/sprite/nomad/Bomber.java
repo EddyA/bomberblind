@@ -1,13 +1,11 @@
 package sprite.nomad;
 
-import static sprite.nomad.Bomber.Action.ACTION_DYING;
-import static sprite.nomad.Bomber.Action.ACTION_WAITING;
-import static sprite.nomad.Bomber.Action.ACTION_WALKING;
-
-import java.awt.Image;
-
 import sprite.SpriteType;
 import utils.Direction;
+
+import java.awt.*;
+
+import static sprite.nomad.Bomber.Action.*;
 
 /**
  * Abstract class of a bomber.
@@ -21,17 +19,17 @@ public abstract class Bomber extends Nomad {
         ACTION_DYING, ACTION_WAITING, ACTION_WALKING, ACTION_WINING
     }
 
-    private Image[] deathImages;
-    private int nbDeathFrame;
-    private Image[] waitImages;
-    private int nbWaitFrame;
-    private Image[] walkBackImages;
-    private Image[] walkFrontImages;
-    private Image[] walkLeftImages;
-    private Image[] walkRightImages;
-    private int nbWalkFrame;
-    private Image[] winImages;
-    private int nbWinFrame;
+    private final Image[] deathImages;
+    private final int nbDeathFrame;
+    private final Image[] waitImages;
+    private final int nbWaitFrame;
+    private final Image[] walkBackImages;
+    private final Image[] walkFrontImages;
+    private final Image[] walkLeftImages;
+    private final Image[] walkRightImages;
+    private final int nbWalkFrame;
+    private final Image[] winImages;
+    private final int nbWinFrame;
 
     private Action curAction = ACTION_WAITING; // current action.
     private Action lastAction = curAction; // last action.
@@ -41,7 +39,7 @@ public abstract class Bomber extends Nomad {
     private int initialXMap; // initial abscissa on map.
     private int initialYMap; // initial ordinate on map.
 
-    private int invincibilityTime; // invincibility time (in ms).
+    private final int invincibilityTime; // invincibility time (in ms).
     private long lastInvincibilityTs; // last invincibility timestamp.
 
     /**
@@ -64,22 +62,22 @@ public abstract class Bomber extends Nomad {
      * @param moveTime        the move time (i.e. defining the nomad move speed)
      * @param invincibleTime  the time the bomber should be invicible after being revived
      */
-    public Bomber(int xMap,
-                  int yMap,
-                  Image[] deathImages,
-                  int nbDeathFrame,
-                  Image[] waitImages,
-                  int nbWaitFrame,
-                  Image[] walkBackImages,
-                  Image[] walkFrontImages,
-                  Image[] walkLeftImages,
-                  Image[] walkRightImages,
-                  int nbWalkFrame,
-                  Image[] winImages,
-                  int nbWinFrame,
-                  int refreshTime,
-                  int moveTime,
-                  int invincibleTime) {
+    Bomber(int xMap,
+           int yMap,
+           Image[] deathImages,
+           int nbDeathFrame,
+           Image[] waitImages,
+           int nbWaitFrame,
+           Image[] walkBackImages,
+           Image[] walkFrontImages,
+           Image[] walkLeftImages,
+           Image[] walkRightImages,
+           int nbWalkFrame,
+           Image[] winImages,
+           int nbWinFrame,
+           int refreshTime,
+           int moveTime,
+           int invincibleTime) {
         super(xMap, yMap, SpriteType.BOMBER, refreshTime, moveTime);
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
@@ -213,23 +211,16 @@ public abstract class Bomber extends Nomad {
         setInvincible(true);
     }
 
-    boolean actionHasChanged() {
-        return ((curAction != lastAction) ||
-                (curAction == ACTION_WALKING && curDirection != lastDirection));
-    }
-
     @Override
-    public boolean updateStatus() {
-        long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
-        if ((actionHasChanged()) || // either the action has changed
-                (lastRefreshTs == 0)) { // or it is the 1st call to that function.
-            lastRefreshTs = curTs;
+    public boolean hasActionChanged() {
+        if (!curAction.equals(lastAction) || // either the action has changed
+                (curAction.equals(ACTION_WALKING) && !curDirection.equals(lastDirection))) { // or the direction has changed.
             lastAction = curAction;
             lastDirection = curDirection;
+            lastRefreshTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     @Override
@@ -288,7 +279,17 @@ public abstract class Bomber extends Nomad {
     }
 
     @Override
+    /**
+     * Note: the check of 'lastAction' has been added because it seems that repaint() does not systematically
+     * call paintComponent() leading that updateSprite() is not systematicaly called at each iteration ... :(
+     * In that case, the array of images (and its relative number of elements) is not updated and, in the very
+     * rare case where the previous sprite is currently ended, we got the perfect combination (ACTION_DYING &&
+     * end of the animation) to finish the sprite and avoid doing the conclusion sprite.
+     * If 'lastAction' has been updated, updateSprite() has been calling -> CQFD.
+     */
     public boolean isFinished() {
-        return ((curAction.equals(ACTION_DYING)) && (curImageIdx == nbImages - 1));
+        return curAction.equals(ACTION_DYING) &&
+                lastAction.equals(ACTION_DYING) &&
+                (curImageIdx == nbImages - 1);
     }
 }

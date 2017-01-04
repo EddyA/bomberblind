@@ -27,7 +27,7 @@ import static sprite.nomad.Enemy.Action.ACTION_WALKING;
 public class ActionMethods {
 
     /**
-     * - Re-init the bomber (if the bomber is dead and the sprite ended),
+     * - Re-init the bomber (if the bomber is finished - i.e. dead and the sprite ended),
      * - OR kill the bomber (if the bomber is on a burning case or is crossing an enemy),
      * - OR do nothing.
      *
@@ -37,7 +37,9 @@ public class ActionMethods {
      * @return true if the bomber should be removed from the list, false otherwise.
      */
     public static boolean processBomber(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, Bomber bomber) {
-        if (bomber.getCurAction() != Bomber.Action.ACTION_DYING) { // not ended and not dead.
+        if (bomber.isFinished()) {
+            bomber.init();
+        } else if (bomber.getCurAction() != Bomber.Action.ACTION_DYING) { // not ended and not dead.
 
             // should the bomber die?
             if (!bomber.isInvincible() &&
@@ -46,14 +48,11 @@ public class ActionMethods {
                 bomber.setCurAction(Bomber.Action.ACTION_DYING);
             }
         }
-        if (bomber.isFinished()) {
-            bomber.init();
-        }
         return false;
     }
 
     /**
-     * - Notice that the bomber must be removed from the list (if the enemy is dead and the sprite ended),
+     * - Notice that the bomber must be removed from the list (if the enemy is finished - i.e. dead and the sprite ended),
      * - OR kill the enemy (if the enemy is on a burning case),
      * - OR compute the next direction.
      *
@@ -67,7 +66,9 @@ public class ActionMethods {
     public static boolean processEnemy(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int mapWidth,
                                        int mapHeight, Enemy enemy) {
         boolean shouldBeRemoved = false;
-        if (enemy.getCurAction() != Enemy.Action.ACTION_DYING) { // not ended and not dying.
+        if (enemy.isFinished()) {
+            shouldBeRemoved = true;
+        } else if (enemy.getCurAction() != Enemy.Action.ACTION_DYING) { // not finished and not dying.
 
             // should the enemy die?
             if (isNomadBurning(mapPointMatrix, enemy.getXMap(), enemy.getYMap())) {
@@ -108,9 +109,6 @@ public class ActionMethods {
                 }
             }
         }
-        if (enemy.isFinished()) {
-            shouldBeRemoved = true;
-        }
         return shouldBeRemoved;
     }
 
@@ -131,15 +129,14 @@ public class ActionMethods {
     public static boolean processBomb(LinkedList<Sprite> tmpList, MapPoint[][] mapPointMatrix, int mapWidth,
                                       int mapHeight, Bomb bomb) {
         boolean shouldBeRemoved = false;
-        if (mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBurning()) {  // is it on a burning case?
-            bomb.setCurStatus(TimedSettled.Status.STATUS_ENDED);
-        }
         if (bomb.isFinished()) {
             AddingMethods.addFlames(tmpList, mapPointMatrix, mapWidth, mapHeight, bomb.getRowIdx(), bomb.getColIdx(),
                     bomb.getFlameSize()); // create flames.
             mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].setBombing(false);
             shouldBeRemoved = true;
 
+        } else if (mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBurning()) {  // is it on a burning case?
+            bomb.setCurStatus(TimedSettled.Status.STATUS_ENDED);
         }
         return shouldBeRemoved;
     }

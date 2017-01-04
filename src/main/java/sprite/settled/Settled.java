@@ -1,7 +1,7 @@
 package sprite.settled;
 
-import sprite.SpriteType;
 import sprite.Sprite;
+import sprite.SpriteType;
 import utils.Tools;
 
 import java.awt.*;
@@ -82,6 +82,13 @@ public abstract class Settled extends Sprite {
     void setCurLoopIdx(int curLoopIdx) {
         this.curLoopIdx = curLoopIdx;
     }
+
+    /**
+     * Update the sprite status.
+     *
+     * @return true if the status has changed, false otherwise.
+     */
+    protected abstract boolean updateStatus();
 
     @Override
     public Image getCurImage() {

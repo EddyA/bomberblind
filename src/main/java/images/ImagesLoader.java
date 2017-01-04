@@ -43,7 +43,7 @@ public class ImagesLoader {
 
     // enemies:
     // - cloaked skeleton.
-    public final static int NB_CLOAKED_SKELETON_DEATH_FRAME = 10;
+    public final static int NB_CLOAKED_SKELETON_DEATH_FRAME = 4;
     public final static int NB_CLOAKED_SKELETON_WALK_FRAME = 4;
     public static int cloakedSkeletonDeathMatrixRowIdx;
     public static int cloakedSkeletonWalkBackMatrixRowIdx;
@@ -52,7 +52,7 @@ public class ImagesLoader {
     public static int cloakedSkeletonWalkRightMatrixRowIdx;
 
     // - mummy.
-    public final static int NB_MUMMY_DEATH_FRAME = 2;
+    public final static int NB_MUMMY_DEATH_FRAME = 4;
     public final static int NB_MUMMY_WALK_FRAME = 2;
     public static int mummyDeathMatrixRowIdx;
     public static int mummyWalkBackMatrixRowIdx;
@@ -61,7 +61,7 @@ public class ImagesLoader {
     public static int mummyWalkRightMatrixRowIdx;
 
     // - mecanic angel.
-    public final static int NB_MECA_ANGEL_DEATH_FRAME = 2;
+    public final static int NB_MECA_ANGEL_DEATH_FRAME = 4;
     public final static int NB_MECA_ANGEL_WALK_FRAME = 2;
     public static int mecaAngelDeathMatrixRowIdx;
     public static int mecaAngelWalkBackMatrixRowIdx;
@@ -180,7 +180,7 @@ public class ImagesLoader {
         // - cloaked skeleton.
         for (int i = 0; i < NB_CLOAKED_SKELETON_DEATH_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/cloaked_skeleton/dead_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/cloaked_skeleton/death_" + imageIdx + ".png");
         }
         cloakedSkeletonDeathMatrixRowIdx = rowIdx++;
         for (int i = 0; i < NB_CLOAKED_SKELETON_WALK_FRAME; i++) {
@@ -207,7 +207,7 @@ public class ImagesLoader {
         // - mummy.
         for (int i = 0; i < NB_MECA_ANGEL_DEATH_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/mummy/dead_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/mummy/death_" + imageIdx + ".png");
         }
         mummyDeathMatrixRowIdx = rowIdx++;
         for (int i = 0; i < NB_MECA_ANGEL_WALK_FRAME; i++) {
@@ -234,7 +234,7 @@ public class ImagesLoader {
         // - mecanical angel.
         for (int i = 0; i < NB_MECA_ANGEL_DEATH_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/meca_angel/dead_" + imageIdx + ".png");
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/meca_angel/death_" + imageIdx + ".png");
         }
         mecaAngelDeathMatrixRowIdx = rowIdx++;
         for (int i = 0; i < NB_MECA_ANGEL_WALK_FRAME; i++) {

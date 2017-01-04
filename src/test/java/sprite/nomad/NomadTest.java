@@ -68,7 +68,7 @@ public class NomadTest implements WithAssertions {
     public void updateImageShouldDoNothing() throws Exception {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
-        Mockito.when(spyedBlueBomber.updateStatus()).thenReturn(false);
+        Mockito.when(spyedBlueBomber.hasActionChanged()).thenReturn(false);
         Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(false);
 
         // set nomad.
@@ -87,7 +87,7 @@ public class NomadTest implements WithAssertions {
     public void updateImageShouldIncreaseCurImageIdx() throws Exception {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
-        Mockito.when(spyedBlueBomber.updateStatus()).thenReturn(false);
+        Mockito.when(spyedBlueBomber.hasActionChanged()).thenReturn(false);
         Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(true);
 
         // set nomad.
@@ -106,7 +106,7 @@ public class NomadTest implements WithAssertions {
     public void updateImageWithANewStatusShouldSetCurImageIdxTo0() throws Exception {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
-        Mockito.when(spyedBlueBomber.updateStatus()).thenReturn(true);
+        Mockito.when(spyedBlueBomber.hasActionChanged()).thenReturn(true);
         Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(false);
 
         // set nomad.
@@ -125,7 +125,7 @@ public class NomadTest implements WithAssertions {
     public void updateImageWithTheLastImageShouldSetCurImageIdxTo0() throws Exception {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
-        Mockito.when(spyedBlueBomber.updateStatus()).thenReturn(false);
+        Mockito.when(spyedBlueBomber.hasActionChanged()).thenReturn(false);
         Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(true);
 
         // set nomad.

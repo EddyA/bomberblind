@@ -12,8 +12,8 @@ import java.util.Random;
 public class MapPoint {
     protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
-    private int rowIdx;
-    private int colIdx;
+    private final int rowIdx;
+    private final int colIdx;
 
     private boolean isAvailable; // is available (empty case)?
     private boolean isPathway; // is a pathway?

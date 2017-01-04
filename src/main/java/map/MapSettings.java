@@ -6,8 +6,8 @@ package map;
  */
 public abstract class MapSettings {
 
-    private int mapWidth; // width of the map (expressed in MapPoint).
-    private int mapHeight; // height of the map (expressed in MapPoint).
+    private final int mapWidth; // width of the map (expressed in MapPoint).
+    private final int mapHeight; // height of the map (expressed in MapPoint).
 
     protected MapSettings(MapProperties mapConfiguration) {
         this.mapWidth = mapConfiguration.getMapSizeWidth();

@@ -11,12 +11,12 @@ import static sprite.settled.LoopedSettled.Status.STATUS_ENDED;
  * Abstract class of a looped settled sprite.
  * The sprite loops a certain number of times.
  */
-public abstract class LoopedSettled extends Settled {
+abstract class LoopedSettled extends Settled {
 
     /**
      * enum the different available action of a looped settled.
      */
-    public enum Status {
+    enum Status {
         STATUS_ALIVE, STATUS_ENDED
     }
 
@@ -36,7 +36,7 @@ public abstract class LoopedSettled extends Settled {
      * @param nbTimes     the max number of times the sprite must loop
      */
     LoopedSettled(int rowIdx, int colIdx, SpriteType spriteType, int refreshTime, Image[] images, int nbImages,
-                         int nbTimes) {
+                  int nbTimes) {
         super(rowIdx, colIdx, spriteType, refreshTime, images, nbImages);
         this.nbTimes = nbTimes;
     }

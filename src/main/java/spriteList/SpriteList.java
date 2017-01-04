@@ -1,10 +1,11 @@
 package spriteList;
 
 import exceptions.CannotPlaceEnemyOnMapException;
-import map.MapPoint;
+import images.ImagesLoader;
 import map.Map;
-import sprite.SpriteType;
+import map.MapPoint;
 import sprite.Sprite;
+import sprite.SpriteType;
 import sprite.nomad.Bomber;
 import sprite.nomad.Enemy;
 import sprite.nomad.EnemyType;
@@ -21,13 +22,13 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class SpriteList extends LinkedList<Sprite> {
-    private SpritesSetting spritesSetting;
-    private Map map;
-    private int screenWidth; // width of the screen (expressed in pixel).
-    private int screenHeight; // height of the screen (expressed in pixel).
+    private final SpritesSetting spritesSetting;
+    private final Map map;
+    private final int screenWidth; // width of the screen (expressed in pixel).
+    private final int screenHeight; // height of the screen (expressed in pixel).
 
     // create a temporary list to manage addings and avoid concurent accesses.
-    private LinkedList<Sprite> tmpList = new LinkedList<>();
+    private final LinkedList<Sprite> tmpList = new LinkedList<>();
 
     public SpriteList(SpritesSetting spritesSetting, Map map, int screenWidth, int screenHeight) {
         this.spritesSetting = spritesSetting;
@@ -130,9 +131,9 @@ public class SpriteList extends LinkedList<Sprite> {
             if ((sprite.getCurImage() != null) && // happens when the bomber is invincible.
                     !sprite.isFinished()) {
                 if ((sprite.getYMap() >= yMap)
-                        && (sprite.getYMap() <= yMap + sprite.getCurImage().getWidth(null) + screenHeight)
+                        && (sprite.getYMap() <= yMap + sprite.getCurImage().getWidth(null) + screenHeight + ImagesLoader.IMAGE_SIZE)
                         && (sprite.getXMap() >= xMap - sprite.getCurImage().getWidth(null) / 2)
-                        && (sprite.getXMap() <= xMap + sprite.getCurImage().getHeight(null) / 2 + screenWidth)) {
+                        && (sprite.getXMap() <= xMap + sprite.getCurImage().getHeight(null) / 2 + screenWidth + ImagesLoader.IMAGE_SIZE)) {
                     sprite.paintBuffer(g, sprite.getXMap() - xMap, sprite.getYMap() - yMap);
                 }
             }

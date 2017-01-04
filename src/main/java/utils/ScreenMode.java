@@ -6,8 +6,6 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Optional;
 
-import static java.awt.DisplayMode.REFRESH_RATE_UNKNOWN;
-
 /**
  * This class computeFullscreenResolution the screen resolution according to the screen format.
  */

@@ -1,18 +1,3 @@
-import static images.ImagesLoader.IMAGE_SIZE;
-import static spriteList.ctrl.AddingMethods.addBomb;
-import static spriteList.ctrl.AddingMethods.addBomber;
-
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.swing.JPanel;
-
 import exceptions.CannotCreateMapElementException;
 import exceptions.CannotPlaceEnemyOnMapException;
 import exceptions.InvalidConfigurationException;
@@ -31,6 +16,19 @@ import spriteList.SpritesSetting;
 import utils.Direction;
 import utils.Tools;
 import utils.Tuple2;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static images.ImagesLoader.IMAGE_SIZE;
+import static spriteList.ctrl.AddingMethods.addBomb;
+import static spriteList.ctrl.AddingMethods.addBomber;
 
 class GameJpanel extends JPanel implements Runnable, KeyListener {
 
@@ -206,12 +204,12 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case 0: {
-                        mainBomber.setCurAction(Bomber.Action.ACTION_WAITING);
+                            mainBomber.setCurAction(Bomber.Action.ACTION_WAITING);
                             break;
                         }
                         case KeyEvent.VK_UP: {
-                        mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
-                        mainBomber.setCurDirection(Direction.NORTH);
+                            mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
+                            mainBomber.setCurDirection(Direction.NORTH);
                             if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     mainBomber.getXMap(), mainBomber.getYMap() - 1)) {
                                 if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap(),
@@ -226,8 +224,8 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case KeyEvent.VK_DOWN: {
-                        mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
-                        mainBomber.setCurDirection(Direction.SOUTH);
+                            mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
+                            mainBomber.setCurDirection(Direction.SOUTH);
                             if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     mainBomber.getXMap(), mainBomber.getYMap() + 1)) {
                                 if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap(),
@@ -242,8 +240,8 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case KeyEvent.VK_LEFT: {
-                        mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
-                        mainBomber.setCurDirection(Direction.WEST);
+                            mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
+                            mainBomber.setCurDirection(Direction.WEST);
                             if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     mainBomber.getXMap() - 1, mainBomber.getYMap())) {
                                 if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap() - 1,
@@ -258,8 +256,8 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case KeyEvent.VK_RIGHT: {
-                        mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
-                        mainBomber.setCurDirection(Direction.EAST);
+                            mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
+                            mainBomber.setCurDirection(Direction.EAST);
                             if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
                                     mainBomber.getXMap() + 1, mainBomber.getYMap())) {
                                 if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap() + 1,
@@ -274,12 +272,12 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                             break;
                         }
                         case KeyEvent.VK_B: {
-                        addBomb(spriteList, map.getMapPointMatrix(), new Bomb(Tools.getCharRowIdx(mainBomber.getYMap()),
-                                Tools.getCharColIdx(mainBomber.getXMap()), 3));
+                            addBomb(spriteList, map.getMapPointMatrix(), new Bomb(Tools.getCharRowIdx(mainBomber.getYMap()),
+                                    Tools.getCharColIdx(mainBomber.getXMap()), 3));
                             break;
                         }
                         case KeyEvent.VK_W: {
-                        mainBomber.setCurAction(Bomber.Action.ACTION_WINING);
+                            mainBomber.setCurAction(Bomber.Action.ACTION_WINING);
                             break;
                         }
                     }
@@ -287,7 +285,7 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                 }
                 spriteList.update();
 
-                // update the list order to handle the sprites superposition.
+                // update the list order to handle sprites superposition.
                 spriteList.sort((o1, o2) -> {
                     if (o1.getYMap() < o2.getYMap()) {
                         return -1;

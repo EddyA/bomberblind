@@ -13,9 +13,9 @@ public abstract class Sprite {
 
     protected int xMap; // abscissa on map.
     protected int yMap; // ordinate on map.
-    private SpriteType spriteType; // type of sprite.
+    private final SpriteType spriteType; // type of sprite.
 
-    private int refreshTime; // refresh time (in ms).
+    private final int refreshTime; // refresh time (in ms).
     protected long lastRefreshTs; // last refresh timestamp.
 
     /**
@@ -73,21 +73,12 @@ public abstract class Sprite {
      * @return true if the sprite should be updated, false oterhwise.
      */
     public boolean isTimeToRefresh() {
-        long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
-        if (curTs - lastRefreshTs >= refreshTime) { // it is time to refresh.
-            lastRefreshTs = curTs;
+        if (currentTimeSupplier.get().toEpochMilli() - lastRefreshTs >= refreshTime) {
+            lastRefreshTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
-
-    /**
-     * Update the sprite action.
-     *
-     * @return true if the action changed, flase otherwise.
-     */
-    protected abstract boolean updateStatus();
 
     /**
      * @return true if the sprite is ended, false otherwise.

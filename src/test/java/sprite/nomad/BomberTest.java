@@ -60,7 +60,7 @@ public class BomberTest implements WithAssertions {
     }
 
     @Test
-    public void statusHasChangedShouldReturnFalse() {
+    public void hasActionChangedShouldReturnFalse() {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
@@ -70,11 +70,11 @@ public class BomberTest implements WithAssertions {
         blueBomber.setLastDirection(Direction.NORTH);
 
         // call & check.
-        assertThat(blueBomber.actionHasChanged()).isFalse();
+        assertThat(blueBomber.hasActionChanged()).isFalse();
     }
 
     @Test
-    public void statusHasChangedShouldReturnTrue() {
+    public void hasActionChangedShouldReturnTrue() {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
@@ -84,46 +84,33 @@ public class BomberTest implements WithAssertions {
         blueBomber.setLastDirection(Direction.SOUTH);
 
         // call & check.
-        assertThat(blueBomber.actionHasChanged()).isTrue();
+        assertThat(blueBomber.hasActionChanged()).isTrue();
     }
 
     @Test
-    public void updateStatusShouldReturnFalse() throws Exception {
+    public void hasActionChangedWithADifferentStatusShouldReturnTrue() throws Exception {
+        BlueBomber blueBomber = new BlueBomber(15, 30);
+
+        // set test.
+        blueBomber.setCurAction(ACTION_WAITING);
+        blueBomber.setLastAction(ACTION_WALKING); // last action != current action.
+
+        // call & check.
+        assertThat(blueBomber.hasActionChanged()).isTrue();
+    }
+
+    @Test
+    public void hasActionChangedWithADifferentDirectionShouldReturnTrue() throws Exception {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
         blueBomber.setCurAction(ACTION_WALKING);
         blueBomber.setCurDirection(Direction.NORTH);
         blueBomber.setLastAction(ACTION_WALKING);
-        blueBomber.setLastDirection(Direction.NORTH);
-        blueBomber.setLastRefreshTs(1); // NOT the first call.
+        blueBomber.setLastDirection(Direction.SOUTH);
 
         // call & check.
-        assertThat(blueBomber.updateStatus()).isFalse();
-    }
-
-    @Test
-    public void updateStatusTheFirstTimeShouldReturnTrue() throws Exception {
-        BlueBomber blueBomber = new BlueBomber(15, 30);
-
-        // set test.
-        blueBomber.setLastRefreshTs(0); // first call.
-
-        // call & check.
-        assertThat(blueBomber.updateStatus()).isTrue();
-    }
-
-    @Test
-    public void updateStatusWithADifferentStatusShouldReturnTrue() throws Exception {
-        BlueBomber blueBomber = new BlueBomber(15, 30);
-
-        // set test.
-        blueBomber.setCurAction(ACTION_WAITING);
-        blueBomber.setLastAction(ACTION_WALKING); // last action != current action.
-        blueBomber.setLastRefreshTs(1); // NOT the first call.
-
-        // call & check.
-        assertThat(blueBomber.updateStatus()).isTrue();
+        assertThat(blueBomber.hasActionChanged()).isTrue();
     }
 
     @Test
@@ -190,6 +177,7 @@ public class BomberTest implements WithAssertions {
 
         // set test.
         blueBomber.setCurAction(ACTION_DYING);
+        blueBomber.setLastAction(ACTION_DYING);
         blueBomber.updateSprite();
         blueBomber.setCurImageIdx(ImagesLoader.NB_BOMBER_DEATH_FRAME - 1);
 
@@ -198,12 +186,27 @@ public class BomberTest implements WithAssertions {
     }
 
     @Test
-    public void isFinishedWithAStatusDifferentOfDyingShouldReturnFalse() throws Exception {
+    public void isFinishedWithALastActionDifferentOfDyingShouldReturnFalse() throws Exception {
+        BlueBomber blueBomber = new BlueBomber(15, 30);
+
+        // set test.
+        blueBomber.setCurAction(ACTION_DYING);
+        blueBomber.setLastAction(ACTION_WALKING);
+        blueBomber.updateSprite();
+        blueBomber.setCurImageIdx(ImagesLoader.NB_BOMBER_DEATH_FRAME - 1);
+
+        // call & check.
+        assertThat(blueBomber.isFinished()).isFalse();
+    }
+
+    @Test
+    public void isFinishedWithACurActionDifferentOfDyingShouldReturnFalse() throws Exception {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
         blueBomber.setCurAction(ACTION_WALKING);
         blueBomber.setCurDirection(Direction.NORTH);
+        blueBomber.setLastAction(ACTION_DYING);
         blueBomber.updateSprite();
         blueBomber.setCurImageIdx(ImagesLoader.NB_BOMBER_DEATH_FRAME - 1);
 
@@ -217,6 +220,7 @@ public class BomberTest implements WithAssertions {
 
         // set test.
         blueBomber.setCurAction(ACTION_DYING);
+        blueBomber.setLastAction(ACTION_DYING);
         blueBomber.updateSprite();
         blueBomber.setCurImageIdx(0);
 
