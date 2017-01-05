@@ -58,8 +58,8 @@ public abstract class Bomber extends Nomad {
      * @param nbWalkFrame     number of images of the "walk" arrays
      * @param winImages       the array of image for the "win" action
      * @param nbWinFrame      the number of images of the "win" array
-     * @param refreshTime     the sprite refresh time (i.e. defining the image/sec)
-     * @param moveTime        the move time (i.e. defining the nomad move speed)
+     * @param refreshTime     the sprite refresh time (i.e. defining the sprite speed in term of image/sec)
+     * @param actingTime      the sprite acting time (i.e. defining the sprite speed in term of action/sec)
      * @param invincibleTime  the time the bomber should be invicible after being revived
      */
     Bomber(int xMap,
@@ -76,9 +76,9 @@ public abstract class Bomber extends Nomad {
            Image[] winImages,
            int nbWinFrame,
            int refreshTime,
-           int moveTime,
+           int actingTime,
            int invincibleTime) {
-        super(xMap, yMap, SpriteType.BOMBER, refreshTime, moveTime);
+        super(xMap, yMap, SpriteType.BOMBER, refreshTime, actingTime);
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
         this.waitImages = waitImages;

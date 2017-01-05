@@ -39,6 +39,6 @@ public class MecaAngelTest implements WithAssertions {
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.mecaAngelWalkRightMatrixRowIdx]);
         assertThat(mecaAngel.getNbWalkFrame()).isEqualTo(ImagesLoader.NB_MECA_ANGEL_WALK_FRAME);
         assertThat(mecaAngel.getRefreshTime()).isEqualTo(MecaAngel.REFRESH_TIME);
-        assertThat(mecaAngel.getMoveTime()).isEqualTo(MecaAngel.MOVING_TIME);
+        assertThat(mecaAngel.getActingTime()).isEqualTo(MecaAngel.ACTING_TIME);
     }
 }

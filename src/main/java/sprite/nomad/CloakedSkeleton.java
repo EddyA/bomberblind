@@ -8,7 +8,7 @@ import images.ImagesLoader;
 public class CloakedSkeleton extends Enemy {
 
     public final static int REFRESH_TIME = 100;
-    public final static int MOVING_TIME = 25;
+    final static int ACTING_TIME = 25;
 
     /**
      * Create a cloaked skeleton.
@@ -28,6 +28,6 @@ public class CloakedSkeleton extends Enemy {
                 ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkRightMatrixRowIdx],
                 ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME,
                 REFRESH_TIME,
-                MOVING_TIME);
+                ACTING_TIME);
     }
 }

@@ -55,7 +55,7 @@ public class BomberTest implements WithAssertions {
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWinMatrixRowIdx]);
         assertThat(blueBomber.getNbWinFrame()).isEqualTo(ImagesLoader.NB_BOMBER_WIN_FRAME);
         assertThat(blueBomber.getRefreshTime()).isEqualTo(BlueBomber.REFRESH_TIME);
-        assertThat(blueBomber.getMoveTime()).isEqualTo(BlueBomber.MOVING_TIME);
+        assertThat(blueBomber.getActingTime()).isEqualTo(BlueBomber.ACTING_TIME);
         assertThat(blueBomber.getInvincibilityTime()).isEqualTo(BlueBomber.INVINCIBLE_TIME);
     }
 

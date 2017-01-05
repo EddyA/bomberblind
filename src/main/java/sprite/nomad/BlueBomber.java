@@ -8,7 +8,7 @@ import images.ImagesLoader;
 public class BlueBomber extends Bomber {
 
     public final static int REFRESH_TIME = 100;
-    public final static int MOVING_TIME = 5;
+    final static int ACTING_TIME = 5;
     final static int INVINCIBLE_TIME = 2500;
 
     /**
@@ -33,7 +33,7 @@ public class BlueBomber extends Bomber {
                 ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWinMatrixRowIdx],
                 ImagesLoader.NB_BOMBER_WIN_FRAME,
                 REFRESH_TIME,
-                MOVING_TIME,
+                ACTING_TIME,
                 INVINCIBLE_TIME);
     }
 }

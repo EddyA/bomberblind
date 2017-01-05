@@ -41,7 +41,7 @@ public class EnemyTest implements WithAssertions {
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkRightMatrixRowIdx]);
         assertThat(cloakedSkeleton.getNbWalkFrame()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
         assertThat(cloakedSkeleton.getRefreshTime()).isEqualTo(CloakedSkeleton.REFRESH_TIME);
-        assertThat(cloakedSkeleton.getMoveTime()).isEqualTo(CloakedSkeleton.MOVING_TIME);
+        assertThat(cloakedSkeleton.getActingTime()).isEqualTo(CloakedSkeleton.ACTING_TIME);
     }
 
     @Test

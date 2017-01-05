@@ -1,14 +1,5 @@
 package spriteList.ctrl;
 
-import static images.ImagesLoader.IMAGE_SIZE;
-import static map.ctrl.NomadMethods.isNomadBurning;
-import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
-import static sprite.nomad.Enemy.Action.ACTION_WALKING;
-import static spriteList.ctrl.AddingMethods.addBomb;
-
-import java.awt.event.KeyEvent;
-import java.util.LinkedList;
-
 import ai.EnemyAi;
 import map.MapPoint;
 import map.ctrl.NomadMethods;
@@ -22,6 +13,15 @@ import sprite.settled.TimedSettled;
 import utils.Direction;
 import utils.Tools;
 
+import java.awt.event.KeyEvent;
+import java.util.LinkedList;
+
+import static images.ImagesLoader.IMAGE_SIZE;
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
+import static sprite.nomad.Enemy.Action.ACTION_WALKING;
+import static spriteList.ctrl.AddingMethods.addBomb;
+
 /**
  * Define a collection of methods to process sprites.
  * These methods can:
@@ -34,23 +34,24 @@ public class ActionMethods {
     /**
      * - Re-init the bomber (if the bomber is finished - i.e. dead and the sprite ended),
      * - OR kill the bomber (if the bomber is on a burning case or is crossing an enemy),
+     * - OR the bomber acts (if it is time to act),
      * - OR do nothing.
-     * 
-     * @param list the list of sprites
-     * @param tmpList the temporary list to add new sprites
+     *
+     * @param list           the list of sprites
+     * @param tmpList        the temporary list to add new sprites
      * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param mapWidth the map width
-     * @param mapHeight the map height
-     * @param bomber the bomber
-     * @param pressedKey the pressed key
+     * @param mapWidth       the map width
+     * @param mapHeight      the map height
+     * @param bomber         the bomber
+     * @param pressedKey     the pressed key
      * @return false (today, the bomber is never removed from the list of sprites).
      */
     public static boolean processBomber(LinkedList<Sprite> list, LinkedList<Sprite> tmpList,
-            MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight, Bomber bomber, int pressedKey) {
+                                        MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight, Bomber bomber, int pressedKey) {
         if (bomber.isFinished()) {
-            bomber.init();
+            bomber.init(); // re-init the bomber if finished.
 
-        } else if (bomber.getCurAction() != Bomber.Action.ACTION_DYING) { // not finished and not dead.
+        } else if (bomber.getCurAction() != Bomber.Action.ACTION_DYING) { // the bomber is not finished and not dead.
 
             // should the bomber die?
             if (!bomber.isInvincible() &&
@@ -58,86 +59,85 @@ public class ActionMethods {
                             isNomadCrossingEnemy(list, bomber.getXMap(), bomber.getYMap(), bomber))) {
                 bomber.setCurAction(Bomber.Action.ACTION_DYING);
 
-                // should the bomber move?
-            } else if (bomber.isTimeToMove()) {
+            } else if (bomber.isTimeToAct()) { // it is time to act.
                 switch (pressedKey) {
-                case 0: {
-                    bomber.setCurAction(Bomber.Action.ACTION_WAITING);
-                    break;
-                }
-                case KeyEvent.VK_UP: {
-                    bomber.setCurAction(Bomber.Action.ACTION_WALKING);
-                    bomber.setCurDirection(Direction.NORTH);
-                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
-                            bomber.getXMap(), bomber.getYMap() - 1)) {
-                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getXMap(),
-                                bomber.getYMap() - 1) &&
-                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getXMap(),
-                                        bomber.getYMap() - 1, KeyEvent.VK_UP)) {
-                            bomber.setYMap(bomber.getYMap() - 1);
-                        } else {
-                            shiftBomberIfPossible(mapPointMatrix, bomber, KeyEvent.VK_UP);
-                        }
+                    case 0: {
+                        bomber.setCurAction(Bomber.Action.ACTION_WAITING);
+                        break;
                     }
-                    break;
-                }
-                case KeyEvent.VK_DOWN: {
-                    bomber.setCurAction(Bomber.Action.ACTION_WALKING);
-                    bomber.setCurDirection(Direction.SOUTH);
-                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
-                            bomber.getXMap(), bomber.getYMap() + 1)) {
-                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getXMap(),
-                                bomber.getYMap() + 1) &&
-                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getXMap(),
-                                        bomber.getYMap() + 1, KeyEvent.VK_DOWN)) {
-                            bomber.setYMap(bomber.getYMap() + 1);
-                        } else {
-                            shiftBomberIfPossible(mapPointMatrix, bomber, KeyEvent.VK_DOWN);
+                    case KeyEvent.VK_UP: {
+                        bomber.setCurAction(Bomber.Action.ACTION_WALKING);
+                        bomber.setCurDirection(Direction.NORTH);
+                        if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
+                                bomber.getXMap(), bomber.getYMap() - 1)) {
+                            if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getXMap(),
+                                    bomber.getYMap() - 1) &&
+                                    !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getXMap(),
+                                            bomber.getYMap() - 1, KeyEvent.VK_UP)) {
+                                bomber.setYMap(bomber.getYMap() - 1);
+                            } else {
+                                shiftBomberIfPossible(mapPointMatrix, bomber, KeyEvent.VK_UP);
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
-                case KeyEvent.VK_LEFT: {
-                    bomber.setCurAction(Bomber.Action.ACTION_WALKING);
-                    bomber.setCurDirection(Direction.WEST);
-                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
-                            bomber.getXMap() - 1, bomber.getYMap())) {
-                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getXMap() - 1,
-                                bomber.getYMap()) &&
-                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getXMap() - 1,
-                                        bomber.getYMap(), KeyEvent.VK_LEFT)) {
-                            bomber.setXMap(bomber.getXMap() - 1);
-                        } else {
-                            shiftBomberIfPossible(mapPointMatrix, bomber, KeyEvent.VK_LEFT);
+                    case KeyEvent.VK_DOWN: {
+                        bomber.setCurAction(Bomber.Action.ACTION_WALKING);
+                        bomber.setCurDirection(Direction.SOUTH);
+                        if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
+                                bomber.getXMap(), bomber.getYMap() + 1)) {
+                            if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getXMap(),
+                                    bomber.getYMap() + 1) &&
+                                    !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getXMap(),
+                                            bomber.getYMap() + 1, KeyEvent.VK_DOWN)) {
+                                bomber.setYMap(bomber.getYMap() + 1);
+                            } else {
+                                shiftBomberIfPossible(mapPointMatrix, bomber, KeyEvent.VK_DOWN);
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
-                case KeyEvent.VK_RIGHT: {
-                    bomber.setCurAction(Bomber.Action.ACTION_WALKING);
-                    bomber.setCurDirection(Direction.EAST);
-                    if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
-                            bomber.getXMap() + 1, bomber.getYMap())) {
-                        if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getXMap() + 1,
-                                bomber.getYMap()) &&
-                                !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getXMap() + 1,
-                                        bomber.getYMap(), KeyEvent.VK_RIGHT)) {
-                            bomber.setXMap(bomber.getXMap() + 1);
-                        } else {
-                            shiftBomberIfPossible(mapPointMatrix, bomber, KeyEvent.VK_RIGHT);
+                    case KeyEvent.VK_LEFT: {
+                        bomber.setCurAction(Bomber.Action.ACTION_WALKING);
+                        bomber.setCurDirection(Direction.WEST);
+                        if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
+                                bomber.getXMap() - 1, bomber.getYMap())) {
+                            if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getXMap() - 1,
+                                    bomber.getYMap()) &&
+                                    !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getXMap() - 1,
+                                            bomber.getYMap(), KeyEvent.VK_LEFT)) {
+                                bomber.setXMap(bomber.getXMap() - 1);
+                            } else {
+                                shiftBomberIfPossible(mapPointMatrix, bomber, KeyEvent.VK_LEFT);
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
-                case KeyEvent.VK_B: {
-                    addBomb(tmpList, mapPointMatrix, new Bomb(Tools.getCharRowIdx(bomber.getYMap()),
-                            Tools.getCharColIdx(bomber.getXMap()), 3));
-                    break;
-                }
-                case KeyEvent.VK_W: {
-                    bomber.setCurAction(Bomber.Action.ACTION_WINING);
-                    break;
-                }
+                    case KeyEvent.VK_RIGHT: {
+                        bomber.setCurAction(Bomber.Action.ACTION_WALKING);
+                        bomber.setCurDirection(Direction.EAST);
+                        if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
+                                bomber.getXMap() + 1, bomber.getYMap())) {
+                            if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getXMap() + 1,
+                                    bomber.getYMap()) &&
+                                    !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getXMap() + 1,
+                                            bomber.getYMap(), KeyEvent.VK_RIGHT)) {
+                                bomber.setXMap(bomber.getXMap() + 1);
+                            } else {
+                                shiftBomberIfPossible(mapPointMatrix, bomber, KeyEvent.VK_RIGHT);
+                            }
+                        }
+                        break;
+                    }
+                    case KeyEvent.VK_B: {
+                        addBomb(tmpList, mapPointMatrix, new Bomb(Tools.getCharRowIdx(bomber.getYMap()),
+                                Tools.getCharColIdx(bomber.getXMap()), 3));
+                        break;
+                    }
+                    case KeyEvent.VK_W: {
+                        bomber.setCurAction(Bomber.Action.ACTION_WINING);
+                        break;
+                    }
                 }
             }
         }
@@ -148,8 +148,8 @@ public class ActionMethods {
      * Shift the bomber of a pixel to help him finding the way (if possible).
      *
      * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param bomber the bomber
-     * @param pressedKey the pressed key
+     * @param bomber         the bomber
+     * @param pressedKey     the pressed key
      */
     private static void shiftBomberIfPossible(MapPoint[][] mapPointMatrix, Bomber bomber, int pressedKey) {
         int bbManRowIdx = bomber.getYMap() / IMAGE_SIZE;
@@ -158,60 +158,60 @@ public class ActionMethods {
         int bbManColShift = bomber.getXMap() % IMAGE_SIZE;
 
         switch (pressedKey) {
-        case KeyEvent.VK_UP: {
-            if (mapPointMatrix[bbManRowIdx - 1][bbManColIdx].isPathway() && // the upper case is a pathway
-                    !mapPointMatrix[bbManRowIdx - 1][bbManColIdx].isBombing()) { // && !bombing.
-                if (bbManColShift < IMAGE_SIZE / 2) { // bomber on left side of its case.
-                    bomber.setXMap(bomber.getXMap() + 1);
-                } else if (bbManColShift > IMAGE_SIZE / 2) { // bomber on right side of its case.
-                    bomber.setXMap(bomber.getXMap() - 1);
+            case KeyEvent.VK_UP: {
+                if (mapPointMatrix[bbManRowIdx - 1][bbManColIdx].isPathway() && // the upper case is a pathway
+                        !mapPointMatrix[bbManRowIdx - 1][bbManColIdx].isBombing()) { // && !bombing.
+                    if (bbManColShift < IMAGE_SIZE / 2) { // bomber on left side of its case.
+                        bomber.setXMap(bomber.getXMap() + 1);
+                    } else if (bbManColShift > IMAGE_SIZE / 2) { // bomber on right side of its case.
+                        bomber.setXMap(bomber.getXMap() - 1);
+                    }
                 }
+                break;
             }
-            break;
-        }
-        case KeyEvent.VK_DOWN: {
-            if (mapPointMatrix[bbManRowIdx + 1][bbManColIdx].isPathway() && // the lower case is a pathway
-                    !mapPointMatrix[bbManRowIdx + 1][bbManColIdx].isBombing()) { // && !bombing.
-                if (bbManColShift < IMAGE_SIZE / 2) { // bomber on left side of its case.
-                    bomber.setXMap(bomber.getXMap() + 1);
-                } else if (bbManColShift > IMAGE_SIZE / 2) { // bomber on right side of its case.
-                    bomber.setXMap(bomber.getXMap() - 1);
+            case KeyEvent.VK_DOWN: {
+                if (mapPointMatrix[bbManRowIdx + 1][bbManColIdx].isPathway() && // the lower case is a pathway
+                        !mapPointMatrix[bbManRowIdx + 1][bbManColIdx].isBombing()) { // && !bombing.
+                    if (bbManColShift < IMAGE_SIZE / 2) { // bomber on left side of its case.
+                        bomber.setXMap(bomber.getXMap() + 1);
+                    } else if (bbManColShift > IMAGE_SIZE / 2) { // bomber on right side of its case.
+                        bomber.setXMap(bomber.getXMap() - 1);
+                    }
                 }
+                break;
             }
-            break;
-        }
-        case KeyEvent.VK_LEFT: {
-            if (mapPointMatrix[bbManRowIdx][bbManColIdx - 1].isPathway() && // the left case is a pathway
-                    !mapPointMatrix[bbManRowIdx][bbManColIdx - 1].isBombing()) { // && !bombing.
-                if (bbManRowShift < IMAGE_SIZE / 2) { // bomber on upper side of its case.
-                    bomber.setYMap(bomber.getYMap() + 1);
+            case KeyEvent.VK_LEFT: {
+                if (mapPointMatrix[bbManRowIdx][bbManColIdx - 1].isPathway() && // the left case is a pathway
+                        !mapPointMatrix[bbManRowIdx][bbManColIdx - 1].isBombing()) { // && !bombing.
+                    if (bbManRowShift < IMAGE_SIZE / 2) { // bomber on upper side of its case.
+                        bomber.setYMap(bomber.getYMap() + 1);
+                    }
                 }
-            }
-            if (mapPointMatrix[bbManRowIdx - 1][bbManColIdx - 1].isPathway() && // the upper/left case is a
-            // pathway
-                    !mapPointMatrix[bbManRowIdx - 1][bbManColIdx - 1].isBombing()) { // && !bombing.
-                if (bbManRowShift < IMAGE_SIZE / 2) { // bomber on upper side of its case.
-                    bomber.setYMap(bomber.getYMap() - 1);
+                if (mapPointMatrix[bbManRowIdx - 1][bbManColIdx - 1].isPathway() && // the upper/left case is a
+                        // pathway
+                        !mapPointMatrix[bbManRowIdx - 1][bbManColIdx - 1].isBombing()) { // && !bombing.
+                    if (bbManRowShift < IMAGE_SIZE / 2) { // bomber on upper side of its case.
+                        bomber.setYMap(bomber.getYMap() - 1);
+                    }
                 }
+                break;
             }
-            break;
-        }
-        case KeyEvent.VK_RIGHT: {
-            if (mapPointMatrix[bbManRowIdx][bbManColIdx + 1].isPathway() && // the right case is a pathway
-                    !mapPointMatrix[bbManRowIdx][bbManColIdx + 1].isBombing()) { // && !bombing.
-                if (bbManRowShift < IMAGE_SIZE / 2) { // bomber on upper side of its case.
-                    bomber.setYMap(bomber.getYMap() + 1);
+            case KeyEvent.VK_RIGHT: {
+                if (mapPointMatrix[bbManRowIdx][bbManColIdx + 1].isPathway() && // the right case is a pathway
+                        !mapPointMatrix[bbManRowIdx][bbManColIdx + 1].isBombing()) { // && !bombing.
+                    if (bbManRowShift < IMAGE_SIZE / 2) { // bomber on upper side of its case.
+                        bomber.setYMap(bomber.getYMap() + 1);
+                    }
                 }
-            }
-            if (mapPointMatrix[bbManRowIdx - 1][bbManColIdx + 1].isPathway() && // the upper/right case is a
-            // pathway
-                    !mapPointMatrix[bbManRowIdx - 1][bbManColIdx + 1].isBombing()) { // && !bombing.
-                if (bbManRowShift < IMAGE_SIZE / 2) { // bomber on upper side of its case.
-                    bomber.setYMap(bomber.getYMap() - 1);
+                if (mapPointMatrix[bbManRowIdx - 1][bbManColIdx + 1].isPathway() && // the upper/right case is a
+                        // pathway
+                        !mapPointMatrix[bbManRowIdx - 1][bbManColIdx + 1].isBombing()) { // && !bombing.
+                    if (bbManRowShift < IMAGE_SIZE / 2) { // bomber on upper side of its case.
+                        bomber.setYMap(bomber.getYMap() - 1);
+                    }
                 }
+                break;
             }
-            break;
-        }
         }
     }
 
@@ -219,13 +219,14 @@ public class ActionMethods {
      * - Notice that the enemy must be removed from the list (if the enemy is finished - i.e. dead and the sprite
      * ended),
      * - OR kill the enemy (if the enemy is on a burning case),
-     * - OR compute the next direction.
+     * - OR compute the next direction (if it is tim to act),
+     * - OR do nothing.
      *
-     * @param list the list of sprites
+     * @param list           the list of sprites
      * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param mapWidth the map width
-     * @param mapHeight the map height
-     * @param enemy the enemy
+     * @param mapWidth       the map width
+     * @param mapHeight      the map height
+     * @param enemy          the enemy
      * @return true if the enemy should be removed from the list, false otherwise.
      */
     public static boolean processEnemy(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int mapWidth,
@@ -233,13 +234,13 @@ public class ActionMethods {
         boolean shouldBeRemoved = false;
         if (enemy.isFinished()) {
             shouldBeRemoved = true;
-        } else if (enemy.getCurAction() != Enemy.Action.ACTION_DYING) { // not finished and not dying.
+        } else if (enemy.getCurAction() != Enemy.Action.ACTION_DYING) { // the bomber is not finished and not dead.
 
             // should the enemy die?
             if (isNomadBurning(mapPointMatrix, enemy.getXMap(), enemy.getYMap())) {
                 enemy.setCurAction(Enemy.Action.ACTION_DYING);
 
-            } else if (enemy.isTimeToMove()) { // not dead -> should the enemy move?
+            } else if (enemy.isTimeToAct()) { // it is time to act.
 
                 // compute the next direction.
                 Direction newDirection = EnemyAi.computeNextDirection(
@@ -278,7 +279,7 @@ public class ActionMethods {
     }
 
     /**
-     * - Notice that the bomb must be removed from the list (if the sprite is ended),
+     * - Notice that the bomb must be removed from the list (if the sprite is finished),
      * -- AND add flames,
      * -- AND remove the bombing status of the relative case.
      * - OR ended the bomb (if the bomb is on a burning case),
@@ -307,7 +308,7 @@ public class ActionMethods {
     }
 
     /**
-     * - Notice that the flame must be removed from the list (if the sprite is ended),
+     * - Notice that the flame must be removed from the list (if the sprite is finished),
      * -- AND add a flame end.
      * - OR do nothing.
      *
@@ -329,7 +330,7 @@ public class ActionMethods {
     }
 
     /**
-     * - Notice that the flame end must be removed from the list (if the sprite is ended),
+     * - Notice that the flame end must be removed from the list (if the sprite is finished),
      * - OR do nothing.
      *
      * @param flameEnd the flame end

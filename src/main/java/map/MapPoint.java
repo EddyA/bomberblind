@@ -10,7 +10,7 @@ import java.util.Random;
  * A point of the map.
  */
 public class MapPoint {
-    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
+    CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
     private final int rowIdx;
     private final int colIdx;

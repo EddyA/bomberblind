@@ -15,8 +15,8 @@ public abstract class Nomad extends Sprite {
     int curImageIdx; // sprite's current image index.
     private Image curImage; // sprite's current image.
 
-    private final int moveTime; // move time (in ms, defining the nomad's move speed).
-    private long lastMoveTs; // last move timestamp.
+    private final int actingTime; // acting time (in ms, defining the sprite's speed in term of action/sec).
+    private long lastActionTs; // last action timestamp.
 
     private int invincibleFrameIdx; // current invincible frame index.
 
@@ -26,12 +26,12 @@ public abstract class Nomad extends Sprite {
      * @param xMap        abscissa on the map.
      * @param yMap        ordinate on the map.
      * @param spriteType  the sprite's type
-     * @param refreshTime the sprite refresh time (i.e. defining the image/sec)
-     * @param moveTime    the move time (i.e. defining the sprite's speed)
+     * @param refreshTime the sprite refresh time (i.e. defining the sprite's speed in term of image/sec)
+     * @param actingTime  the sprite acting time (i.e. defining the sprite's speed in term of action/sec)
      */
-    Nomad(int xMap, int yMap, SpriteType spriteType, int refreshTime, int moveTime) {
+    Nomad(int xMap, int yMap, SpriteType spriteType, int refreshTime, int actingTime) {
         super(xMap, yMap, spriteType, refreshTime);
-        this.moveTime = moveTime;
+        this.actingTime = actingTime;
     }
 
     public Image[] getImages() {
@@ -58,24 +58,25 @@ public abstract class Nomad extends Sprite {
         this.curImageIdx = curImageIdx;
     }
 
-    int getMoveTime() {
-        return moveTime;
+    int getActingTime() {
+        return actingTime;
     }
 
-    void setLastMoveTs(long lastMoveTs) {
-        this.lastMoveTs = lastMoveTs;
+    void setLastActionTs(long lastActionTs) {
+        this.lastActionTs = lastActionTs;
     }
 
     /**
-     * This function is used to handle the sprite's speed - in term of move on map.
-     * It computes the elapsed time since the sprite has moved and return true if it should move, false oterhwise.
+     * This function is used to handle sprite's speed - in term of action/sec.
+     * It computes the elapsed time since the last sprite's action
+     * and return true if it should act again, false oterhwise.
      *
-     * @return true if the sprite should move, false oterhwise.
+     * @return true if the sprite should act, false oterhwise.
      */
-    public boolean isTimeToMove() {
+    public boolean isTimeToAct() {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
-        if (curTs - lastMoveTs >= moveTime) { // it is time to move.
-            lastMoveTs = curTs;
+        if (curTs - lastActionTs >= actingTime) { // it is time to act.
+            lastActionTs = curTs;
             return true;
         } else {
             return false;

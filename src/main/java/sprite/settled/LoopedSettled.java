@@ -11,7 +11,8 @@ import static sprite.settled.LoopedSettled.Status.STATUS_ENDED;
  * Abstract class of a looped settled sprite.
  * The sprite loops a certain number of times.
  */
-abstract class LoopedSettled extends Settled {
+@SuppressWarnings("WeakerAccess") // needed for mokito.spy.
+public abstract class LoopedSettled extends Settled {
 
     /**
      * enum the different available action of a looped settled.

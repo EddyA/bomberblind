@@ -29,7 +29,7 @@ public class NomadTest implements WithAssertions {
         assertThat(blueBomber.getXMap()).isEqualTo(5);
         assertThat(blueBomber.getYMap()).isEqualTo(4);
         assertThat(blueBomber.getRefreshTime()).isEqualTo(BlueBomber.REFRESH_TIME);
-        assertThat(blueBomber.getMoveTime()).isEqualTo(BlueBomber.MOVING_TIME);
+        assertThat(blueBomber.getActingTime()).isEqualTo(BlueBomber.ACTING_TIME);
     }
 
     @Test
@@ -42,10 +42,10 @@ public class NomadTest implements WithAssertions {
         blueBomber.setCurrentTimeSupplier(currentTimeSupplier);
 
         // current time - last refresh time - 1 < 1000ms -> should return false.
-        blueBomber.setLastMoveTs(1000L - BlueBomber.MOVING_TIME + 1);
+        blueBomber.setLastActionTs(1000L - BlueBomber.ACTING_TIME + 1);
 
         // call & check.
-        assertThat(blueBomber.isTimeToMove()).isFalse();
+        assertThat(blueBomber.isTimeToAct()).isFalse();
     }
 
     @Test
@@ -58,10 +58,10 @@ public class NomadTest implements WithAssertions {
         blueBomber.setCurrentTimeSupplier(currentTimeSupplier);
 
         // current time - last refresh time >= 1000ms -> should return false.
-        blueBomber.setLastRefreshTs(1000L - BlueBomber.MOVING_TIME);
+        blueBomber.setLastRefreshTs(1000L - BlueBomber.ACTING_TIME);
 
         // call & check.
-        assertThat(blueBomber.isTimeToMove()).isTrue();
+        assertThat(blueBomber.isTimeToAct()).isTrue();
     }
 
     @Test
