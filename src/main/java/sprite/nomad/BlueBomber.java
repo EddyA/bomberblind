@@ -8,7 +8,7 @@ import images.ImagesLoader;
 public class BlueBomber extends Bomber {
 
     public final static int REFRESH_TIME = 100;
-    public final static int MOVING_TIME = 0;
+    public final static int MOVING_TIME = 5;
     final static int INVINCIBLE_TIME = 2500;
 
     /**

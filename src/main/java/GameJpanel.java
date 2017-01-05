@@ -1,24 +1,8 @@
-import exceptions.CannotCreateMapElementException;
-import exceptions.CannotPlaceEnemyOnMapException;
-import exceptions.InvalidConfigurationException;
-import exceptions.InvalidPropertiesException;
-import map.Map;
-import map.ctrl.NomadMethods;
-import map.zelda.ZeldaMap;
-import map.zelda.ZeldaMapProperties;
-import map.zelda.ZeldaMapSetting;
-import sprite.nomad.BlueBomber;
-import sprite.nomad.Bomber;
-import sprite.settled.Bomb;
-import spriteList.SpriteList;
-import spriteList.SpritesProperties;
-import spriteList.SpritesSetting;
-import utils.Direction;
-import utils.Tools;
-import utils.Tuple2;
+import static images.ImagesLoader.IMAGE_SIZE;
+import static spriteList.ctrl.AddingMethods.addBomber;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
@@ -26,14 +10,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static images.ImagesLoader.IMAGE_SIZE;
-import static spriteList.ctrl.AddingMethods.addBomb;
-import static spriteList.ctrl.AddingMethods.addBomber;
+import javax.swing.JPanel;
+
+import exceptions.CannotCreateMapElementException;
+import exceptions.CannotPlaceEnemyOnMapException;
+import exceptions.InvalidConfigurationException;
+import exceptions.InvalidPropertiesException;
+import map.Map;
+import map.zelda.ZeldaMap;
+import map.zelda.ZeldaMapProperties;
+import map.zelda.ZeldaMapSetting;
+import sprite.nomad.BlueBomber;
+import sprite.nomad.Bomber;
+import spriteList.SpriteList;
+import spriteList.SpritesProperties;
+import spriteList.SpritesSetting;
+import utils.Tuple2;
 
 class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     private Map map;
-    private BlueBomber mainBomber;
+    private Bomber bomber;
     private SpriteList spriteList;
     private List<Long> pressedKeyList;
 
@@ -63,8 +60,8 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
 
         // create the main bomber and add it to the list of sprites.
         Tuple2<Integer, Integer> bbManInitialPosition = map.computeInitialBbManPosition();
-        mainBomber = new BlueBomber(bbManInitialPosition.getFirst(), bbManInitialPosition.getSecond());
-        addBomber(spriteList, mainBomber);
+        bomber = new BlueBomber(bbManInitialPosition.getFirst(), bbManInitialPosition.getSecond());
+        addBomber(spriteList, bomber);
 
         // create a list to handle pressed keys.
         pressedKeyList = new ArrayList<>();
@@ -81,19 +78,19 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
      * Update the ZeldaMap start position on screen function of the Bomber map position.
      */
     private void updateMapStartPosOnScreen() {
-        if (mainBomber.getXMap() < getWidth() / 2) {
+        if (bomber.getXMap() < getWidth() / 2) {
             xMapStartPosOnScreen = 0;
-        } else if (mainBomber.getXMap() > (map.getMapWidth() * IMAGE_SIZE) - (getWidth() / 2)) {
+        } else if (bomber.getXMap() > (map.getMapWidth() * IMAGE_SIZE) - (getWidth() / 2)) {
             xMapStartPosOnScreen = (map.getMapWidth() * IMAGE_SIZE) - getWidth();
         } else {
-            xMapStartPosOnScreen = mainBomber.getXMap() - (getWidth() / 2);
+            xMapStartPosOnScreen = bomber.getXMap() - (getWidth() / 2);
         }
-        if (mainBomber.getYMap() < getHeight() / 2) {
+        if (bomber.getYMap() < getHeight() / 2) {
             yMapStartPosOnScreen = 0;
-        } else if (mainBomber.getYMap() > (map.getMapHeight() * IMAGE_SIZE) - (getHeight() / 2)) {
+        } else if (bomber.getYMap() > (map.getMapHeight() * IMAGE_SIZE) - (getHeight() / 2)) {
             yMapStartPosOnScreen = (map.getMapHeight() * IMAGE_SIZE) - getHeight();
         } else {
-            yMapStartPosOnScreen = mainBomber.getYMap() - (getHeight() / 2);
+            yMapStartPosOnScreen = bomber.getYMap() - (getHeight() / 2);
         }
     }
 
@@ -126,164 +123,16 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
     public void keyTyped(KeyEvent e) {
     }
 
-    /**
-     * Shift Bomber of a pixel to help him finding the way (if possible).
-     *
-     * @param pressedKey the pressed key
-     */
-    private void shiftBbManIfPossible(int pressedKey) {
-        int bbManRowIdx = mainBomber.getYMap() / IMAGE_SIZE;
-        int bbManColIdx = mainBomber.getXMap() / IMAGE_SIZE;
-        int bbManRowShift = mainBomber.getYMap() % IMAGE_SIZE;
-        int bbManColShift = mainBomber.getXMap() % IMAGE_SIZE;
-
-        switch (pressedKey) {
-            case KeyEvent.VK_UP: {
-                if (map.getMapPointMatrix()[bbManRowIdx - 1][bbManColIdx].isPathway() && // the upper case is a pathway
-                        !map.getMapPointMatrix()[bbManRowIdx - 1][bbManColIdx].isBombing()) {  // && !bombing.
-                    if (bbManColShift < IMAGE_SIZE / 2) { // mainBomber on left side of its case.
-                        mainBomber.setXMap(mainBomber.getXMap() + 1);
-                    } else if (bbManColShift > IMAGE_SIZE / 2) { // mainBomber on right side of its case.
-                        mainBomber.setXMap(mainBomber.getXMap() - 1);
-                    }
-                }
-                break;
-            }
-            case KeyEvent.VK_DOWN: {
-                if (map.getMapPointMatrix()[bbManRowIdx + 1][bbManColIdx].isPathway() && // the lower case is a pathway
-                        !map.getMapPointMatrix()[bbManRowIdx + 1][bbManColIdx].isBombing()) { // && !bombing.
-                    if (bbManColShift < IMAGE_SIZE / 2) { // mainBomber on left side of its case.
-                        mainBomber.setXMap(mainBomber.getXMap() + 1);
-                    } else if (bbManColShift > IMAGE_SIZE / 2) { // mainBomber on right side of its case.
-                        mainBomber.setXMap(mainBomber.getXMap() - 1);
-                    }
-                }
-                break;
-            }
-            case KeyEvent.VK_LEFT: {
-                if (map.getMapPointMatrix()[bbManRowIdx][bbManColIdx - 1].isPathway() && // the left case is a pathway
-                        !map.getMapPointMatrix()[bbManRowIdx][bbManColIdx - 1].isBombing()) { // && !bombing.
-                    if (bbManRowShift < IMAGE_SIZE / 2) { // mainBomber on upper side of its case.
-                        mainBomber.setYMap(mainBomber.getYMap() + 1);
-                    }
-                }
-                if (map.getMapPointMatrix()[bbManRowIdx - 1][bbManColIdx - 1].isPathway() && // the upper/left case is a pathway
-                        !map.getMapPointMatrix()[bbManRowIdx - 1][bbManColIdx - 1].isBombing()) { // && !bombing.
-                    if (bbManRowShift < IMAGE_SIZE / 2) { // mainBomber on upper side of its case.
-                        mainBomber.setYMap(mainBomber.getYMap() - 1);
-                    }
-                }
-                break;
-            }
-            case KeyEvent.VK_RIGHT: {
-                if (map.getMapPointMatrix()[bbManRowIdx][bbManColIdx + 1].isPathway() && // the right case is a pathway
-                        !map.getMapPointMatrix()[bbManRowIdx][bbManColIdx + 1].isBombing()) { // && !bombing.
-                    if (bbManRowShift < IMAGE_SIZE / 2) { // mainBomber on upper side of its case.
-                        mainBomber.setYMap(mainBomber.getYMap() + 1);
-                    }
-                }
-                if (map.getMapPointMatrix()[bbManRowIdx - 1][bbManColIdx + 1].isPathway() && // the upper/right case is a pathway
-                        !map.getMapPointMatrix()[bbManRowIdx - 1][bbManColIdx + 1].isBombing()) { // && !bombing.
-                    if (bbManRowShift < IMAGE_SIZE / 2) { // mainBomber on upper side of its case.
-                        mainBomber.setYMap(mainBomber.getYMap() - 1);
-                    }
-                }
-                break;
-            }
-        }
-    }
-
     @Override
     public void run() {
         while (true) {
             try {
-                if (mainBomber.getCurAction() != Bomber.Action.ACTION_DYING && !mainBomber.isFinished()) {
-                    switch (pressedKeyList.get(pressedKeyList.size() - 1).intValue()) {
-                        case KeyEvent.VK_ESCAPE: {
-                            System.exit(0);
-                            break;
-                        }
-                        case 0: {
-                            mainBomber.setCurAction(Bomber.Action.ACTION_WAITING);
-                            break;
-                        }
-                        case KeyEvent.VK_UP: {
-                            mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
-                            mainBomber.setCurDirection(Direction.NORTH);
-                            if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
-                                    mainBomber.getXMap(), mainBomber.getYMap() - 1)) {
-                                if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap(),
-                                        mainBomber.getYMap() - 1) &&
-                                        !NomadMethods.isNomadCrossingBomb(map.getMapPointMatrix(), mainBomber.getXMap(),
-                                                mainBomber.getYMap() - 1, KeyEvent.VK_UP)) {
-                                    mainBomber.setYMap(mainBomber.getYMap() - 1);
-                                } else {
-                                    shiftBbManIfPossible(KeyEvent.VK_UP);
-                                }
-                            }
-                            break;
-                        }
-                        case KeyEvent.VK_DOWN: {
-                            mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
-                            mainBomber.setCurDirection(Direction.SOUTH);
-                            if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
-                                    mainBomber.getXMap(), mainBomber.getYMap() + 1)) {
-                                if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap(),
-                                        mainBomber.getYMap() + 1) &&
-                                        !NomadMethods.isNomadCrossingBomb(map.getMapPointMatrix(), mainBomber.getXMap(),
-                                                mainBomber.getYMap() + 1, KeyEvent.VK_DOWN)) {
-                                    mainBomber.setYMap(mainBomber.getYMap() + 1);
-                                } else {
-                                    shiftBbManIfPossible(KeyEvent.VK_DOWN);
-                                }
-                            }
-                            break;
-                        }
-                        case KeyEvent.VK_LEFT: {
-                            mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
-                            mainBomber.setCurDirection(Direction.WEST);
-                            if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
-                                    mainBomber.getXMap() - 1, mainBomber.getYMap())) {
-                                if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap() - 1,
-                                        mainBomber.getYMap()) &&
-                                        !NomadMethods.isNomadCrossingBomb(map.getMapPointMatrix(), mainBomber.getXMap() - 1,
-                                                mainBomber.getYMap(), KeyEvent.VK_LEFT)) {
-                                    mainBomber.setXMap(mainBomber.getXMap() - 1);
-                                } else {
-                                    shiftBbManIfPossible(KeyEvent.VK_LEFT);
-                                }
-                            }
-                            break;
-                        }
-                        case KeyEvent.VK_RIGHT: {
-                            mainBomber.setCurAction(Bomber.Action.ACTION_WALKING);
-                            mainBomber.setCurDirection(Direction.EAST);
-                            if (!NomadMethods.isNomadCrossingMapLimit(map.getMapWidth(), map.getMapHeight(),
-                                    mainBomber.getXMap() + 1, mainBomber.getYMap())) {
-                                if (!NomadMethods.isNomadCrossingObstacle(map.getMapPointMatrix(), mainBomber.getXMap() + 1,
-                                        mainBomber.getYMap()) &&
-                                        !NomadMethods.isNomadCrossingBomb(map.getMapPointMatrix(), mainBomber.getXMap() + 1,
-                                                mainBomber.getYMap(), KeyEvent.VK_RIGHT)) {
-                                    mainBomber.setXMap(mainBomber.getXMap() + 1);
-                                } else {
-                                    shiftBbManIfPossible(KeyEvent.VK_RIGHT);
-                                }
-                            }
-                            break;
-                        }
-                        case KeyEvent.VK_B: {
-                            addBomb(spriteList, map.getMapPointMatrix(), new Bomb(Tools.getCharRowIdx(mainBomber.getYMap()),
-                                    Tools.getCharColIdx(mainBomber.getXMap()), 3));
-                            break;
-                        }
-                        case KeyEvent.VK_W: {
-                            mainBomber.setCurAction(Bomber.Action.ACTION_WINING);
-                            break;
-                        }
-                    }
-                    updateMapStartPosOnScreen();
+                int pressedKey = pressedKeyList.get(pressedKeyList.size() - 1).intValue();
+                if (pressedKey == KeyEvent.VK_ESCAPE) {
+                    System.exit(0);
                 }
-                spriteList.updateSprites();
+                updateMapStartPosOnScreen();
+                spriteList.update(pressedKey);
 
                 // update the list order to handle sprites superposition.
                 spriteList.sort((o1, o2) -> {
@@ -296,7 +145,7 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
                     }
                 });
                 repaint();
-                Thread.sleep(4);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 System.err.println("Unexpected exception: " + Arrays.toString(e.getStackTrace()));
             }

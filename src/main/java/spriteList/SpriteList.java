@@ -1,5 +1,11 @@
 package spriteList;
 
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+
 import exceptions.CannotPlaceEnemyOnMapException;
 import images.ImagesLoader;
 import map.Map;
@@ -14,12 +20,6 @@ import sprite.settled.Flame;
 import sprite.settled.FlameEnd;
 import spriteList.ctrl.ActionMethods;
 import spriteList.ctrl.GenerationMethodes;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
 
 public class SpriteList extends LinkedList<Sprite> {
     private final SpritesSetting spritesSetting;
@@ -70,40 +70,41 @@ public class SpriteList extends LinkedList<Sprite> {
     }
 
     /**
-     * Process and clean sprites.
+     * Process sprite's action and clean the latter if needed.
      */
-    public synchronized void updateSprites() {
+    public synchronized void update(int pressedKey) {
         for (ListIterator<Sprite> iterator = this.listIterator(); iterator.hasNext(); ) {
             Sprite sprite = iterator.next();
             boolean shouldBeRemoved;
             switch (sprite.getSpriteType()) { // process the sprite's action.
-                case BOMBER: {
-                    shouldBeRemoved = ActionMethods.processBomber(this, map.getMapPointMatrix(), (Bomber) sprite);
-                    break;
-                }
-                case ENEMY: {
-                    shouldBeRemoved = ActionMethods.processEnemy(this, map.getMapPointMatrix(), map.getMapWidth(),
-                            map.getMapHeight(), (Enemy) sprite);
-                    break;
-                }
-                case BOMB: {
-                    shouldBeRemoved = ActionMethods.processBomb(tmpList, map.getMapPointMatrix(), map.getMapWidth(),
-                            map.getMapHeight(), (Bomb) sprite);
-                    break;
-                }
-                case FLAME: {
-                    shouldBeRemoved = ActionMethods.processFlame(tmpList, map.getMapPointMatrix(), (Flame) sprite);
-                    break;
-                }
-                case FLAME_END: {
-                    shouldBeRemoved = ActionMethods.processFlameEnd((FlameEnd) sprite);
-                    break;
-                }
-                default: {
-                    throw new RuntimeException("the SpriteType \"" +
-                            SpriteType.getlabel(sprite.getSpriteType()).orElse("n/a") +
-                            "\" is not handled by the switch.");
-                }
+            case BOMBER: {
+                shouldBeRemoved = ActionMethods.processBomber(this, tmpList, map.getMapPointMatrix(), map.getMapWidth(),
+                        map.getMapHeight(), (Bomber) sprite, pressedKey);
+                break;
+            }
+            case ENEMY: {
+                shouldBeRemoved = ActionMethods.processEnemy(this, map.getMapPointMatrix(), map.getMapWidth(),
+                        map.getMapHeight(), (Enemy) sprite);
+                break;
+            }
+            case BOMB: {
+                shouldBeRemoved = ActionMethods.processBomb(tmpList, map.getMapPointMatrix(), map.getMapWidth(),
+                        map.getMapHeight(), (Bomb) sprite);
+                break;
+            }
+            case FLAME: {
+                shouldBeRemoved = ActionMethods.processFlame(tmpList, map.getMapPointMatrix(), (Flame) sprite);
+                break;
+            }
+            case FLAME_END: {
+                shouldBeRemoved = ActionMethods.processFlameEnd((FlameEnd) sprite);
+                break;
+            }
+            default: {
+                throw new RuntimeException("the SpriteType \"" +
+                        SpriteType.getlabel(sprite.getSpriteType()).orElse("n/a") +
+                        "\" is not handled by the switch.");
+            }
             }
             if (shouldBeRemoved) { // should the sprite be removed from the list?
                 iterator.remove();

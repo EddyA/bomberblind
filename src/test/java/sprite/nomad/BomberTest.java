@@ -218,7 +218,7 @@ public class BomberTest implements WithAssertions {
         Mockito.when(currentTimeSupplier.get()).thenReturn(Instant.ofEpochMilli(1000L));
         blueBomber.setCurrentTimeSupplier(currentTimeSupplier);
 
-        // set test (updateSprites members with value != than the expected ones).
+        // set test (update members with value != than the expected ones).
         blueBomber.setCurAction(ACTION_DYING);
         blueBomber.setXMap(30);
         blueBomber.setYMap(40);
