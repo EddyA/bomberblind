@@ -19,9 +19,9 @@ public class MapPoint {
     private boolean isPathway; // is a pathway?
     private boolean isMutable; // is a mutable?
 
-    protected Image image;
+    private Image image;
 
-    protected Image[] images; // array of images for animation.
+    private Image[] images; // array of images for animation.
     private int nbImages; // number of images of the animation.
     int curImageIdx; // current image index of the animation.
     int refreshTime; // refresh time of the animation (in ms).

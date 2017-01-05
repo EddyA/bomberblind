@@ -83,7 +83,7 @@ public abstract class Sprite {
     /**
      * @return true if the sprite is ended, false otherwise.
      */
-    public abstract boolean isFinished();
+    protected abstract boolean isFinished();
 
     /**
      * @return the current sprite image.

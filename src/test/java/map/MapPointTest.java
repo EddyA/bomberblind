@@ -10,6 +10,7 @@ import java.awt.*;
 import java.time.Instant;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
 public class MapPointTest implements WithAssertions {
 
@@ -69,7 +70,7 @@ public class MapPointTest implements WithAssertions {
         MapPoint MapPoint = new MapPoint(5, 10);
         Image img = ImagesLoader.createImage("/images/icon.gif");
         MapPoint.setImage(img);
-        assertThat(MapPoint.image).isEqualTo(img);
+        assertThat(MapPoint.getImage()).isEqualTo(img);
     }
 
     @Test
@@ -77,7 +78,7 @@ public class MapPointTest implements WithAssertions {
         MapPoint MapPoint = new MapPoint(5, 10);
         Image[] imgArray = new Image[1];
         MapPoint.setImages(imgArray, 1);
-        assertThat(MapPoint.images).isEqualTo(imgArray);
+        assertThat(MapPoint.getImages()).isEqualTo(imgArray);
     }
 
     @Test
@@ -90,15 +91,15 @@ public class MapPointTest implements WithAssertions {
     @Test
     public void setImageAsBurnedShouldSetTheMemberWithAnImage() throws Exception {
         Image img = ImagesLoader.createImage("/images/icon.gif");
-
-        MapPoint MapPoint = mock(MapPoint.class);
+        MapPoint mapPoint = new MapPoint(0, 0);
+        MapPoint spyedMapPoint = spy(mapPoint);
         Mockito.doAnswer((t) -> {
-            MapPoint.image = img;
+            spyedMapPoint.setImage(img);
             return null;
-        }).when(MapPoint).setImageAsBurned();
+        }).when(spyedMapPoint).setImageAsBurned();
 
-        MapPoint.setImageAsBurned();
-        assertThat(MapPoint.image).isEqualTo(img);
+        spyedMapPoint.setImageAsBurned();
+        assertThat(spyedMapPoint.getImage()).isEqualTo(img);
     }
 
     @Test

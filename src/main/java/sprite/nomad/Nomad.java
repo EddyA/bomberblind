@@ -85,17 +85,17 @@ public abstract class Nomad extends Sprite {
     /**
      * Update the sprite's image according to the current sprite's action.
      */
-    public abstract void updateSprite();
+    protected abstract void updateSprite();
 
     /**
      * @return true if the current action has changed, false otherwise.
      */
-    public abstract boolean hasActionChanged();
+    protected abstract boolean hasActionChanged();
 
     /**
      * @return true if the sprite is invincible, false otherwise.
      */
-    public abstract boolean isInvincible();
+    protected abstract boolean isInvincible();
 
     @Override
     public abstract boolean isFinished();
