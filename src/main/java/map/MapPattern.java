@@ -5,14 +5,14 @@ import java.awt.*;
 public class MapPattern {
 
     // images information.
-    private Image[] imageArray;
-    private int width;
-    private int height;
+    private final Image[] imageArray;
+    private final int width;
+    private final int height;
 
-    private boolean isPathway;  // is a pathway object?
-    private boolean isMutable; // is a mutable object?
+    private final boolean isPathway;  // is a pathway object?
+    private final boolean isMutable; // is a mutable object?
 
-    private String name;
+    private final String name;
 
     public MapPattern(Image[] imageArray, int width, int height, boolean isPathway, boolean isMutable, String name) {
         this.imageArray = imageArray;

@@ -33,8 +33,9 @@ public class ActionMethodsStepDef implements WithAssertions {
 
     @When("processing the bomber$")
     public void processing_the_bomber() {
-        ActionMethods.processBomber(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(),
-                bomberState.getBomber());
+        ActionMethods.processBomber(listOfSprites.getSpriteList(), listOfSprites.getSpriteList(),
+                mapPointMatrixState.getMapPointMatrix(), mapPointMatrixState.getMapWidth(),
+                mapPointMatrixState.getMapHeight(), bomberState.getBomber(), 0);
     }
 
     @When("^processing the enemy$")

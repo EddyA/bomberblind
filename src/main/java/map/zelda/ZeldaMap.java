@@ -1,14 +1,12 @@
 package map.zelda;
 
 import exceptions.CannotCreateMapElementException;
-import exceptions.InvalidConfigurationException;
 import map.Map;
 import map.MapPattern;
 import map.MapPoint;
 import map.ctrl.GenerationMethods;
 import utils.Tuple2;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 import static images.ImagesLoader.IMAGE_SIZE;
@@ -17,11 +15,10 @@ import static map.ctrl.PatternMethods.placeSouthEdgeOnMap;
 import static map.zelda.ZeldaMapPatterns.*;
 
 public class ZeldaMap extends Map {
-    private ZeldaMapSetting zeldaMapSetting;
+    private final ZeldaMapSetting zeldaMapSetting;
     private MapPoint castleStartPoint; // castle start point (north/west MapPoint).
 
-    public ZeldaMap(ZeldaMapSetting zeldaMapSetting, int screenWidth, int screenHeight)
-            throws IOException, InvalidConfigurationException, CannotCreateMapElementException {
+    public ZeldaMap(ZeldaMapSetting zeldaMapSetting, int screenWidth, int screenHeight) {
         super(zeldaMapSetting, screenWidth, screenHeight);
         this.zeldaMapSetting = zeldaMapSetting;
         this.mapPointMatrix = new MapPoint[zeldaMapSetting.getMapHeight()][zeldaMapSetting.getMapWidth()];

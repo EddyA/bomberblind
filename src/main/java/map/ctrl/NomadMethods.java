@@ -1,10 +1,13 @@
 package map.ctrl;
 
-import map.MapPoint;
+import static utils.Tools.getCharBottomRowIdx;
+import static utils.Tools.getCharLeftColIdx;
+import static utils.Tools.getCharRightColIdx;
+import static utils.Tools.getCharTopRowIdx;
 
 import java.awt.event.KeyEvent;
 
-import static utils.Tools.*;
+import map.MapPoint;
 
 public class NomadMethods {
 

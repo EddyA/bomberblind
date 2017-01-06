@@ -55,12 +55,24 @@ public class BomberTest implements WithAssertions {
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWinMatrixRowIdx]);
         assertThat(blueBomber.getNbWinFrame()).isEqualTo(ImagesLoader.NB_BOMBER_WIN_FRAME);
         assertThat(blueBomber.getRefreshTime()).isEqualTo(BlueBomber.REFRESH_TIME);
-        assertThat(blueBomber.getMoveTime()).isEqualTo(BlueBomber.MOVING_TIME);
+        assertThat(blueBomber.getActingTime()).isEqualTo(BlueBomber.ACTING_TIME);
         assertThat(blueBomber.getInvincibilityTime()).isEqualTo(BlueBomber.INVINCIBLE_TIME);
     }
 
     @Test
-    public void statusHasChangedShouldReturnFalse() {
+    public void hasActionChangedWithTheSameActionShouldReturnFalse() {
+        BlueBomber blueBomber = new BlueBomber(15, 30);
+
+        // set test.
+        blueBomber.setCurAction(ACTION_WAITING);
+        blueBomber.setLastAction(ACTION_WAITING);
+
+        // call & check.
+        assertThat(blueBomber.hasActionChanged()).isFalse();
+    }
+
+    @Test
+    public void hasActionChangedWithTheSameDirectionShouldReturnFalse() {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
@@ -70,11 +82,23 @@ public class BomberTest implements WithAssertions {
         blueBomber.setLastDirection(Direction.NORTH);
 
         // call & check.
-        assertThat(blueBomber.actionHasChanged()).isFalse();
+        assertThat(blueBomber.hasActionChanged()).isFalse();
     }
 
     @Test
-    public void statusHasChangedShouldReturnTrue() {
+    public void hasActionChangedWithADifferentActionShouldReturnTrue() throws Exception {
+        BlueBomber blueBomber = new BlueBomber(15, 30);
+
+        // set test.
+        blueBomber.setCurAction(ACTION_WAITING);
+        blueBomber.setLastAction(ACTION_WALKING); // last action != current action.
+
+        // call & check.
+        assertThat(blueBomber.hasActionChanged()).isTrue();
+    }
+
+    @Test
+    public void hasActionChangedWithADifferentDirectionShouldReturnTrue() throws Exception {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
@@ -84,46 +108,7 @@ public class BomberTest implements WithAssertions {
         blueBomber.setLastDirection(Direction.SOUTH);
 
         // call & check.
-        assertThat(blueBomber.actionHasChanged()).isTrue();
-    }
-
-    @Test
-    public void updateStatusShouldReturnFalse() throws Exception {
-        BlueBomber blueBomber = new BlueBomber(15, 30);
-
-        // set test.
-        blueBomber.setCurAction(ACTION_WALKING);
-        blueBomber.setCurDirection(Direction.NORTH);
-        blueBomber.setLastAction(ACTION_WALKING);
-        blueBomber.setLastDirection(Direction.NORTH);
-        blueBomber.setLastRefreshTs(1); // NOT the first call.
-
-        // call & check.
-        assertThat(blueBomber.updateStatus()).isFalse();
-    }
-
-    @Test
-    public void updateStatusTheFirstTimeShouldReturnTrue() throws Exception {
-        BlueBomber blueBomber = new BlueBomber(15, 30);
-
-        // set test.
-        blueBomber.setLastRefreshTs(0); // first call.
-
-        // call & check.
-        assertThat(blueBomber.updateStatus()).isTrue();
-    }
-
-    @Test
-    public void updateStatusWithADifferentStatusShouldReturnTrue() throws Exception {
-        BlueBomber blueBomber = new BlueBomber(15, 30);
-
-        // set test.
-        blueBomber.setCurAction(ACTION_WAITING);
-        blueBomber.setLastAction(ACTION_WALKING); // last action != current action.
-        blueBomber.setLastRefreshTs(1); // NOT the first call.
-
-        // call & check.
-        assertThat(blueBomber.updateStatus()).isTrue();
+        assertThat(blueBomber.hasActionChanged()).isTrue();
     }
 
     @Test
@@ -198,7 +183,7 @@ public class BomberTest implements WithAssertions {
     }
 
     @Test
-    public void isFinishedWithAStatusDifferentOfDyingShouldReturnFalse() throws Exception {
+    public void isFinishedWithACurActionDifferentOfDyingShouldReturnFalse() throws Exception {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.

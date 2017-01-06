@@ -5,7 +5,7 @@ import images.ImagesLoader;
 public class Mummy extends Enemy {
 
     public final static int REFRESH_TIME = 300;
-    public final static int MOVING_TIME = 40;
+    public final static int ACTING_TIME = 40;
 
     /**
      * Create a cloaked skeleton.
@@ -25,6 +25,6 @@ public class Mummy extends Enemy {
                 ImagesLoader.imagesMatrix[ImagesLoader.mummyWalkRightMatrixRowIdx],
                 ImagesLoader.NB_MUMMY_WALK_FRAME,
                 REFRESH_TIME,
-                MOVING_TIME);
+                ACTING_TIME);
     }
 }

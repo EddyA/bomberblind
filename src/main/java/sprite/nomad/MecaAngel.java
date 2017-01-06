@@ -8,7 +8,7 @@ import images.ImagesLoader;
 public class MecaAngel extends Enemy {
 
     public final static int REFRESH_TIME = 100;
-    public final static int MOVING_TIME = 10;
+    public final static int ACTING_TIME = 10;
 
     /**
      * Create a mecanical angel
@@ -28,6 +28,6 @@ public class MecaAngel extends Enemy {
                 ImagesLoader.imagesMatrix[ImagesLoader.mecaAngelWalkRightMatrixRowIdx],
                 ImagesLoader.NB_MECA_ANGEL_WALK_FRAME,
                 REFRESH_TIME,
-                MOVING_TIME);
+                ACTING_TIME);
     }
 }

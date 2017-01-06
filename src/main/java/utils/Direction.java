@@ -9,12 +9,12 @@ import java.util.Set;
 public enum Direction {
 
     NORTH, SOUTH, WEST, EAST; // available directions.
-    final private static Random random = new Random(); // init once the random object.
+    private final static Random random = new Random(); // init once the random object.
 
     /**
      * Create a list of direction.
      */
-    private static List<Direction> directionList = new ArrayList<>(Arrays.asList(NORTH, SOUTH, WEST, EAST));
+    private final static List<Direction> directionList = new ArrayList<>(Arrays.asList(NORTH, SOUTH, WEST, EAST));
 
     /**
      * @return a random direction.

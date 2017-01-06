@@ -1,12 +1,12 @@
 package sprite.nomad;
 
-import static sprite.nomad.Enemy.Action.ACTION_DYING;
-import static sprite.nomad.Enemy.Action.ACTION_WALKING;
-
-import java.awt.Image;
-
 import sprite.SpriteType;
 import utils.Direction;
+
+import java.awt.*;
+
+import static sprite.nomad.Enemy.Action.ACTION_DYING;
+import static sprite.nomad.Enemy.Action.ACTION_WALKING;
 
 /**
  * Abstract class of an enemy.
@@ -14,7 +14,7 @@ import utils.Direction;
 public abstract class Enemy extends Nomad {
 
     /**
-     * enum the different available action of an enemy.
+     * enum the different available actions of an enemy.
      */
     public enum Action {
         ACTION_DYING, ACTION_WALKING
@@ -45,21 +45,21 @@ public abstract class Enemy extends Nomad {
      * @param walkLeftImages  the array of images for the "walk left" action
      * @param walkRightImages the array of images for the "walk right" action
      * @param nbWalkFrame     number of images of the "walk" arrays
-     * @param refreshTime     the sprite refresh time (i.e. defining the image/sec)
-     * @param moveTime        the move time (i.e. defining the nomad move speed)
+     * @param refreshTime     the sprite refresh time (i.e. defining the sprite speed in term of image/sec)
+     * @param actingTime      the sprite acting time (i.e. defining the sprite speed in term of action/sec)
      */
     public Enemy(int xMap,
-                 int yMap,
-                 Image[] deathImages,
-                 int nbDeathFrame,
-                 Image[] walkBackImages,
-                 Image[] walkFrontImages,
-                 Image[] walkLeftImages,
-                 Image[] walkRightImages,
-                 int nbWalkFrame,
-                 int refreshTime,
-                 int moveTime) {
-        super(xMap, yMap, SpriteType.ENEMY, refreshTime, moveTime);
+          int yMap,
+          Image[] deathImages,
+          int nbDeathFrame,
+          Image[] walkBackImages,
+          Image[] walkFrontImages,
+          Image[] walkLeftImages,
+          Image[] walkRightImages,
+          int nbWalkFrame,
+          int refreshTime,
+          int actingTime) {
+        super(xMap, yMap, SpriteType.ENEMY, refreshTime, actingTime);
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
         this.walkBackImages = walkBackImages;
@@ -69,31 +69,31 @@ public abstract class Enemy extends Nomad {
         this.nbWalkFrame = nbWalkFrame;
     }
 
-    Image[] getDeathImages() {
+    public Image[] getDeathImages() {
         return deathImages;
     }
 
-    int getNbDeathFrame() {
+    public int getNbDeathFrame() {
         return nbDeathFrame;
     }
 
-    Image[] getWalkBackImages() {
+    public Image[] getWalkBackImages() {
         return walkBackImages;
     }
 
-    Image[] getWalkFrontImages() {
+    public Image[] getWalkFrontImages() {
         return walkFrontImages;
     }
 
-    Image[] getWalkLeftImages() {
+    public Image[] getWalkLeftImages() {
         return walkLeftImages;
     }
 
-    Image[] getWalkRightImages() {
+    public Image[] getWalkRightImages() {
         return walkRightImages;
     }
 
-    int getNbWalkFrame() {
+    public int getNbWalkFrame() {
         return nbWalkFrame;
     }
 
@@ -113,11 +113,11 @@ public abstract class Enemy extends Nomad {
         this.curDirection = curDirection;
     }
 
-    Action getLastAction() {
+    public Action getLastAction() {
         return lastAction;
     }
 
-    void setLastAction(Action lastAction) {
+    public void setLastAction(Action lastAction) {
         this.lastAction = lastAction;
     }
 
@@ -129,23 +129,16 @@ public abstract class Enemy extends Nomad {
         this.lastDirection = lastDirection;
     }
 
-    boolean statusHasChanged() {
-        return ((!curAction.equals(lastAction)) ||
-                (curAction.equals(ACTION_WALKING) && !curDirection.equals(lastDirection)));
-    }
-
     @Override
-    public boolean updateStatus() {
-        long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
-        if ((statusHasChanged()) || // either the action has changed
-                (lastRefreshTs == 0)) { // or it is the 1st call to that function.
-            lastRefreshTs = curTs;
+    public boolean hasActionChanged() {
+        if (!curAction.equals(lastAction) || // either the action has changed
+                (curAction.equals(ACTION_WALKING) && !curDirection.equals(lastDirection))) { // or the direction has changed.
             lastAction = curAction;
             lastDirection = curDirection;
+            lastRefreshTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     @Override
@@ -191,6 +184,6 @@ public abstract class Enemy extends Nomad {
 
     @Override
     public boolean isFinished() {
-        return ((curAction.equals(ACTION_DYING)) && (curImageIdx == nbImages - 1));
+        return curAction.equals(ACTION_DYING) && (curImageIdx == nbImages - 1);
     }
 }

@@ -10,6 +10,7 @@ import java.awt.*;
 import java.time.Instant;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
 public class MapPointTest implements WithAssertions {
 
@@ -69,7 +70,7 @@ public class MapPointTest implements WithAssertions {
         MapPoint MapPoint = new MapPoint(5, 10);
         Image img = ImagesLoader.createImage("/images/icon.gif");
         MapPoint.setImage(img);
-        assertThat(MapPoint.image).isEqualTo(img);
+        assertThat(MapPoint.getImage()).isEqualTo(img);
     }
 
     @Test
@@ -77,28 +78,28 @@ public class MapPointTest implements WithAssertions {
         MapPoint MapPoint = new MapPoint(5, 10);
         Image[] imgArray = new Image[1];
         MapPoint.setImages(imgArray, 1);
-        assertThat(MapPoint.images).isEqualTo(imgArray);
+        assertThat(MapPoint.getImages()).isEqualTo(imgArray);
     }
 
     @Test
     public void setRefreshTimeShouldSetTheMemberWithExpectedValue() throws Exception {
         MapPoint MapPoint = new MapPoint(5, 10);
         MapPoint.setRefreshTime(100);
-        assertThat(MapPoint.refreshTime).isEqualTo(100);
+        assertThat(MapPoint.getRefreshTime()).isEqualTo(100);
     }
 
     @Test
     public void setImageAsBurnedShouldSetTheMemberWithAnImage() throws Exception {
         Image img = ImagesLoader.createImage("/images/icon.gif");
-
-        MapPoint MapPoint = mock(MapPoint.class);
+        MapPoint mapPoint = new MapPoint(0, 0);
+        MapPoint spyedMapPoint = spy(mapPoint);
         Mockito.doAnswer((t) -> {
-            MapPoint.image = img;
+            spyedMapPoint.setImage(img);
             return null;
-        }).when(MapPoint).setImageAsBurned();
+        }).when(spyedMapPoint).setImageAsBurned();
 
-        MapPoint.setImageAsBurned();
-        assertThat(MapPoint.image).isEqualTo(img);
+        spyedMapPoint.setImageAsBurned();
+        assertThat(spyedMapPoint.getImage()).isEqualTo(img);
     }
 
     @Test
@@ -118,15 +119,15 @@ public class MapPointTest implements WithAssertions {
         imgArray[2] = ImagesLoader.createImage("/images/icon.gif");
         imgArray[3] = ImagesLoader.createImage("/images/icon.gif");
         MapPoint.setImages(imgArray, 4);
-        MapPoint.curImageIdx = 1; // fix it as it is randomly init.
+        MapPoint.setCurImageIdx(1); // fix it as it is randomly init.
 
-        MapPoint.lastRefreshTs = 1000L; // current time - last refresh time < 100ms -> image no change.
+        MapPoint.setLastRefreshTs(1000L); // current time - last refresh time < 100ms -> image no change.
         assertThat(MapPoint.updateImage()).isEqualTo(imgArray[1]);
-        MapPoint.lastRefreshTs = 800L; // current time - last refresh time > 100ms -> image change.
+        MapPoint.setLastRefreshTs(800L); // current time - last refresh time > 100ms -> image change.
         assertThat(MapPoint.updateImage()).isEqualTo(imgArray[2]);
-        MapPoint.lastRefreshTs = 800L; // current time - last refresh time > 100ms -> image change.
+        MapPoint.setLastRefreshTs(800L); // current time - last refresh time > 100ms -> image change.
         assertThat(MapPoint.updateImage()).isEqualTo(imgArray[3]);
-        MapPoint.lastRefreshTs = 800L; // current time - last refresh time > 100ms -> image change.
+        MapPoint.setLastRefreshTs(800L); // current time - last refresh time > 100ms -> image change.
         assertThat(MapPoint.updateImage()).isEqualTo(imgArray[0]);
     }
 }

@@ -1,7 +1,7 @@
 package sprite.settled;
 
-import sprite.SpriteType;
 import sprite.Sprite;
+import sprite.SpriteType;
 import utils.Tools;
 
 import java.awt.*;
@@ -31,7 +31,7 @@ public abstract class Settled extends Sprite {
      * @param images      the sprite's array of images
      * @param nbImages    the number of images
      */
-    Settled(int rowIdx, int colIdx, SpriteType spriteType, int refreshTime, Image[] images, int nbImages) {
+    public Settled(int rowIdx, int colIdx, SpriteType spriteType, int refreshTime, Image[] images, int nbImages) {
         super(Tools.getCaseCentreAbscissa(colIdx), Tools.getCaseBottomOrdinate(rowIdx), spriteType, refreshTime);
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
@@ -63,25 +63,32 @@ public abstract class Settled extends Sprite {
         return nbImages;
     }
 
-    int getCurImageIdx() {
+    public int getCurImageIdx() {
         return curImageIdx;
     }
 
-    int getCurLoopIdx() {
-        return curLoopIdx;
-    }
-
-    void setCurImageIdx(int curImageIdx) {
+    public void setCurImageIdx(int curImageIdx) {
         this.curImageIdx = curImageIdx;
     }
 
-    void setCurImage(Image curImage) {
+    public void setCurImage(Image curImage) {
         this.curImage = curImage;
     }
 
-    void setCurLoopIdx(int curLoopIdx) {
+    public int getCurLoopIdx() {
+        return curLoopIdx;
+    }
+
+    public void setCurLoopIdx(int curLoopIdx) {
         this.curLoopIdx = curLoopIdx;
     }
+
+    /**
+     * Update the sprite status.
+     *
+     * @return true if the status has changed, false otherwise.
+     */
+    public abstract boolean updateStatus();
 
     @Override
     public Image getCurImage() {

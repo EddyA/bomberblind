@@ -1,10 +1,17 @@
 package spriteList;
 
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+
 import exceptions.CannotPlaceEnemyOnMapException;
-import map.MapPoint;
+import images.ImagesLoader;
 import map.Map;
-import sprite.SpriteType;
+import map.MapPoint;
 import sprite.Sprite;
+import sprite.SpriteType;
 import sprite.nomad.Bomber;
 import sprite.nomad.Enemy;
 import sprite.nomad.EnemyType;
@@ -14,20 +21,14 @@ import sprite.settled.FlameEnd;
 import spriteList.ctrl.ActionMethods;
 import spriteList.ctrl.GenerationMethodes;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-
 public class SpriteList extends LinkedList<Sprite> {
-    private SpritesSetting spritesSetting;
-    private Map map;
-    private int screenWidth; // width of the screen (expressed in pixel).
-    private int screenHeight; // height of the screen (expressed in pixel).
+    private final SpritesSetting spritesSetting;
+    private final Map map;
+    private final int screenWidth; // width of the screen (expressed in pixel).
+    private final int screenHeight; // height of the screen (expressed in pixel).
 
     // create a temporary list to manage addings and avoid concurent accesses.
-    private LinkedList<Sprite> tmpList = new LinkedList<>();
+    private final LinkedList<Sprite> tmpList = new LinkedList<>();
 
     public SpriteList(SpritesSetting spritesSetting, Map map, int screenWidth, int screenHeight) {
         this.spritesSetting = spritesSetting;
@@ -69,45 +70,47 @@ public class SpriteList extends LinkedList<Sprite> {
     }
 
     /**
-     * Process and clean sprites.
+     * Process sprite's action and clean the latter if needed.
      */
-    public synchronized void update() {
+    public synchronized void update(int pressedKey) {
         for (ListIterator<Sprite> iterator = this.listIterator(); iterator.hasNext(); ) {
             Sprite sprite = iterator.next();
             boolean shouldBeRemoved;
-
-            switch (sprite.getSpriteType()) {
-                case BOMBER: {
-                    shouldBeRemoved = ActionMethods.processBomber(this, map.getMapPointMatrix(), (Bomber) sprite);
-                    break;
-                }
-                case ENEMY: {
-                    shouldBeRemoved = ActionMethods.processEnemy(this, map.getMapPointMatrix(), map.getMapWidth(),
-                            map.getMapHeight(), (Enemy) sprite);
-                    break;
-                }
-                case BOMB: {
-                    shouldBeRemoved = ActionMethods.processBomb(tmpList, map.getMapPointMatrix(), map.getMapWidth(),
-                            map.getMapHeight(), (Bomb) sprite);
-                    break;
-                }
-                case FLAME: {
-                    shouldBeRemoved = ActionMethods.processFlame(tmpList, map.getMapPointMatrix(), (Flame) sprite);
-                    break;
-                }
-                case FLAME_END: {
-                    shouldBeRemoved = ActionMethods.processFlameEnd((FlameEnd) sprite);
-                    break;
-                }
-                default: {
-                    throw new RuntimeException("the SpriteType \"" +
-                            SpriteType.getlabel(sprite.getSpriteType()).orElse("n/a") +
-                            "\" is not handled by the switch.");
-                }
+            switch (sprite.getSpriteType()) { // process the sprite's action.
+            case BOMBER: {
+                shouldBeRemoved = ActionMethods.processBomber(this, tmpList, map.getMapPointMatrix(), map.getMapWidth(),
+                        map.getMapHeight(), (Bomber) sprite, pressedKey);
+                break;
             }
-            if (shouldBeRemoved) {
-                iterator.remove(); // remove it from the list.
+            case ENEMY: {
+                shouldBeRemoved = ActionMethods.processEnemy(this, map.getMapPointMatrix(), map.getMapWidth(),
+                        map.getMapHeight(), (Enemy) sprite);
+                break;
             }
+            case BOMB: {
+                shouldBeRemoved = ActionMethods.processBomb(tmpList, map.getMapPointMatrix(), map.getMapWidth(),
+                        map.getMapHeight(), (Bomb) sprite);
+                break;
+            }
+            case FLAME: {
+                shouldBeRemoved = ActionMethods.processFlame(tmpList, map.getMapPointMatrix(), (Flame) sprite);
+                break;
+            }
+            case FLAME_END: {
+                shouldBeRemoved = ActionMethods.processFlameEnd((FlameEnd) sprite);
+                break;
+            }
+            default: {
+                throw new RuntimeException("the SpriteType \"" +
+                        SpriteType.getlabel(sprite.getSpriteType()).orElse("n/a") +
+                        "\" is not handled by the switch.");
+            }
+            }
+            if (shouldBeRemoved) { // should the sprite be removed from the list?
+                iterator.remove();
+                continue;
+            }
+            sprite.updateImage(); // update the sprite's images.
         }
         if (!tmpList.isEmpty()) {
             this.addAll(tmpList); // add sprites from the temporary list to the main one.
@@ -126,13 +129,11 @@ public class SpriteList extends LinkedList<Sprite> {
 
         // paint sprites.
         for (Sprite sprite : this) {
-            sprite.updateImage();
-            if ((sprite.getCurImage() != null) && // happens when the bomber is invincible.
-                    !sprite.isFinished()) {
+            if ((sprite.getCurImage() != null)) { // happens when the bomber is invincible.
                 if ((sprite.getYMap() >= yMap)
-                        && (sprite.getYMap() <= yMap + sprite.getCurImage().getWidth(null) + screenHeight)
+                        && (sprite.getYMap() <= yMap + sprite.getCurImage().getWidth(null) + screenHeight + ImagesLoader.IMAGE_SIZE)
                         && (sprite.getXMap() >= xMap - sprite.getCurImage().getWidth(null) / 2)
-                        && (sprite.getXMap() <= xMap + sprite.getCurImage().getHeight(null) / 2 + screenWidth)) {
+                        && (sprite.getXMap() <= xMap + sprite.getCurImage().getHeight(null) / 2 + screenWidth + ImagesLoader.IMAGE_SIZE)) {
                     sprite.paintBuffer(g, sprite.getXMap() - xMap, sprite.getYMap() - yMap);
                 }
             }

@@ -39,6 +39,6 @@ public class MummyTest implements WithAssertions {
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.mummyWalkRightMatrixRowIdx]);
         assertThat(mummy.getNbWalkFrame()).isEqualTo(ImagesLoader.NB_MUMMY_WALK_FRAME);
         assertThat(mummy.getRefreshTime()).isEqualTo(Mummy.REFRESH_TIME);
-        assertThat(mummy.getMoveTime()).isEqualTo(Mummy.MOVING_TIME);
+        assertThat(mummy.getActingTime()).isEqualTo(Mummy.ACTING_TIME);
     }
 }

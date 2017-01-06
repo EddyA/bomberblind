@@ -41,11 +41,23 @@ public class EnemyTest implements WithAssertions {
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkRightMatrixRowIdx]);
         assertThat(cloakedSkeleton.getNbWalkFrame()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
         assertThat(cloakedSkeleton.getRefreshTime()).isEqualTo(CloakedSkeleton.REFRESH_TIME);
-        assertThat(cloakedSkeleton.getMoveTime()).isEqualTo(CloakedSkeleton.MOVING_TIME);
+        assertThat(cloakedSkeleton.getActingTime()).isEqualTo(CloakedSkeleton.ACTING_TIME);
     }
 
     @Test
-    public void statusHasChangedShouldReturnFalse() {
+    public void hasActionChangedWithTheSameActionShouldReturnFalse() {
+        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
+
+        // set test.
+        cloakedSkeleton.setCurAction(ACTION_DYING);
+        cloakedSkeleton.setLastAction(ACTION_DYING);
+
+        // call & check.
+        assertThat(cloakedSkeleton.hasActionChanged()).isFalse();
+    }
+
+    @Test
+    public void hasActionChangedWithTheSameDirectionShouldReturnFalse() {
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
 
         // set test.
@@ -55,64 +67,23 @@ public class EnemyTest implements WithAssertions {
         cloakedSkeleton.setLastDirection(Direction.NORTH);
 
         // call & check.
-        assertThat(cloakedSkeleton.statusHasChanged()).isFalse();
+        assertThat(cloakedSkeleton.hasActionChanged()).isFalse();
     }
 
     @Test
-    public void statusHasChangedShouldReturnTrue() {
-        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
-
-        // set test.
-        cloakedSkeleton.setCurAction(ACTION_WALKING);
-        cloakedSkeleton.setCurDirection(Direction.NORTH);
-        cloakedSkeleton.setLastAction(ACTION_WALKING);
-        cloakedSkeleton.setLastDirection(Direction.SOUTH);
-
-        // call & check.
-        assertThat(cloakedSkeleton.statusHasChanged()).isTrue();
-    }
-
-    @Test
-    public void updateStatusShouldReturnFalse() throws Exception {
-        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
-
-        // set test.
-        cloakedSkeleton.setCurAction(ACTION_WALKING);
-        cloakedSkeleton.setCurDirection(Direction.NORTH);
-        cloakedSkeleton.setLastAction(ACTION_WALKING);
-        cloakedSkeleton.setLastDirection(Direction.NORTH);
-        cloakedSkeleton.setLastRefreshTs(1); // NOT the first call.
-
-        // call & check.
-        assertThat(cloakedSkeleton.updateStatus()).isFalse();
-    }
-
-    @Test
-    public void updateStatusTheFirstTimeShouldReturnTrue() throws Exception {
-        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
-
-        // set test.
-        cloakedSkeleton.setLastRefreshTs(0); // first call.
-
-        // call & check.
-        assertThat(cloakedSkeleton.updateStatus()).isTrue();
-    }
-
-    @Test
-    public void updateStatusWithADifferentStatusShouldReturnTrue() throws Exception {
+    public void hasActionChangedWithADifferentActionShouldReturnTrue() throws Exception {
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
 
         // set test.
         cloakedSkeleton.setCurAction(ACTION_WALKING);
         cloakedSkeleton.setLastAction(ACTION_DYING);
-        cloakedSkeleton.setLastRefreshTs(1); // NOT the first call.
 
         // call & check.
-        assertThat(cloakedSkeleton.updateStatus()).isTrue();
+        assertThat(cloakedSkeleton.hasActionChanged()).isTrue();
     }
 
     @Test
-    public void updateStatusWithADifferentDirectionShouldReturnTrue() throws Exception {
+    public void hasActionChangedWithADifferentDirectionShouldReturnTrue() throws Exception {
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
 
         // set test.
@@ -120,10 +91,9 @@ public class EnemyTest implements WithAssertions {
         cloakedSkeleton.setCurDirection(Direction.NORTH);
         cloakedSkeleton.setLastAction(ACTION_WALKING);
         cloakedSkeleton.setLastDirection(Direction.SOUTH);
-        cloakedSkeleton.setLastRefreshTs(1); // NOT the first call.
 
         // call & check.
-        assertThat(cloakedSkeleton.updateStatus()).isTrue();
+        assertThat(cloakedSkeleton.hasActionChanged()).isTrue();
     }
 
     @Test
@@ -192,12 +162,12 @@ public class EnemyTest implements WithAssertions {
     }
 
     @Test
-    public void isFinishedWithAStatusDifferentOfDyingShouldReturnFalse() throws Exception {
+    public void isFinishedWithACurActionDifferentOfDyingShouldReturnFalse() throws Exception {
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
 
         // set test.
         cloakedSkeleton.setCurAction(ACTION_WALKING);
-        cloakedSkeleton.setCurDirection(Direction.NORTH);
+        cloakedSkeleton.setCurDirection(Direction.SOUTH);
         cloakedSkeleton.updateSprite();
         cloakedSkeleton.setCurImageIdx(ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME - 1);
 

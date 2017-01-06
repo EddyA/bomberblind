@@ -29,7 +29,7 @@ public class NomadTest implements WithAssertions {
         assertThat(blueBomber.getXMap()).isEqualTo(5);
         assertThat(blueBomber.getYMap()).isEqualTo(4);
         assertThat(blueBomber.getRefreshTime()).isEqualTo(BlueBomber.REFRESH_TIME);
-        assertThat(blueBomber.getMoveTime()).isEqualTo(BlueBomber.MOVING_TIME);
+        assertThat(blueBomber.getActingTime()).isEqualTo(BlueBomber.ACTING_TIME);
     }
 
     @Test
@@ -42,10 +42,10 @@ public class NomadTest implements WithAssertions {
         blueBomber.setCurrentTimeSupplier(currentTimeSupplier);
 
         // current time - last refresh time - 1 < 1000ms -> should return false.
-        blueBomber.setLastMoveTs(1000L - BlueBomber.MOVING_TIME + 1);
+        blueBomber.setLastActionTs(1000L - BlueBomber.ACTING_TIME + 1);
 
         // call & check.
-        assertThat(blueBomber.isTimeToMove()).isFalse();
+        assertThat(blueBomber.isTimeToAct()).isFalse();
     }
 
     @Test
@@ -58,17 +58,17 @@ public class NomadTest implements WithAssertions {
         blueBomber.setCurrentTimeSupplier(currentTimeSupplier);
 
         // current time - last refresh time >= 1000ms -> should return false.
-        blueBomber.setLastRefreshTs(1000L - BlueBomber.MOVING_TIME);
+        blueBomber.setLastRefreshTs(1000L - BlueBomber.ACTING_TIME);
 
         // call & check.
-        assertThat(blueBomber.isTimeToMove()).isTrue();
+        assertThat(blueBomber.isTimeToAct()).isTrue();
     }
 
     @Test
     public void updateImageShouldDoNothing() throws Exception {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
-        Mockito.when(spyedBlueBomber.updateStatus()).thenReturn(false);
+        Mockito.when(spyedBlueBomber.hasActionChanged()).thenReturn(false);
         Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(false);
 
         // set nomad.
@@ -87,7 +87,7 @@ public class NomadTest implements WithAssertions {
     public void updateImageShouldIncreaseCurImageIdx() throws Exception {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
-        Mockito.when(spyedBlueBomber.updateStatus()).thenReturn(false);
+        Mockito.when(spyedBlueBomber.hasActionChanged()).thenReturn(false);
         Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(true);
 
         // set nomad.
@@ -106,7 +106,7 @@ public class NomadTest implements WithAssertions {
     public void updateImageWithANewStatusShouldSetCurImageIdxTo0() throws Exception {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
-        Mockito.when(spyedBlueBomber.updateStatus()).thenReturn(true);
+        Mockito.when(spyedBlueBomber.hasActionChanged()).thenReturn(true);
         Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(false);
 
         // set nomad.
@@ -125,7 +125,7 @@ public class NomadTest implements WithAssertions {
     public void updateImageWithTheLastImageShouldSetCurImageIdxTo0() throws Exception {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
-        Mockito.when(spyedBlueBomber.updateStatus()).thenReturn(false);
+        Mockito.when(spyedBlueBomber.hasActionChanged()).thenReturn(false);
         Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(true);
 
         // set nomad.

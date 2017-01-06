@@ -17,63 +17,63 @@ import map.MapProperties;
  */
 public class ZeldaMapProperties extends MapProperties {
 
-    final private static String MAP_MARGIN_VERTICAL = "map.margin.vertical";
-    final private static String MAP_MARGIN_HORIZONTAL = "map.margin.horizontal";
-    final private static String MAP_ELEMENT_NB_WOOD1 = "map.element.woods1.number";
-    final private static String MAP_ELEMENT_NB_WOOD2 = "map.element.woods2.number";
-    final private static String MAP_ELEMENT_NB_TREE1 = "map.element.tree1.number";
-    final private static String MAP_ELEMENT_NB_TREE2 = "map.element.tree2.number";
-    final private static String MAP_ELEMENT_NB_PUDDLE1 = "map.element.puddle1.number";
-    final private static String MAP_ELEMENT_NB_PUDDLE2 = "map.element.puddle2.number";
-    final static String MAP_ELEMENT_PER_SINGLE_MUTABLE = "map.element.single.mutable.percentage";
-    final static String MAP_ELEMENT_PER_SINGLE_OBSTACLE = "map.element.single.obstacle.percentage";
-    final static String MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY = "map.element.single.dynamic.pathway.percentage";
+    public final static String MAP_MARGIN_VERTICAL = "map.margin.vertical";
+    public final static String MAP_MARGIN_HORIZONTAL = "map.margin.horizontal";
+    public final static String MAP_ELEMENT_NB_WOOD1 = "map.element.woods1.number";
+    public final static String MAP_ELEMENT_NB_WOOD2 = "map.element.woods2.number";
+    public final static String MAP_ELEMENT_NB_TREE1 = "map.element.tree1.number";
+    public final static String MAP_ELEMENT_NB_TREE2 = "map.element.tree2.number";
+    public final static String MAP_ELEMENT_NB_PUDDLE1 = "map.element.puddle1.number";
+    public final static String MAP_ELEMENT_NB_PUDDLE2 = "map.element.puddle2.number";
+    public final static String MAP_ELEMENT_PER_SINGLE_MUTABLE = "map.element.single.mutable.percentage";
+    public final static String MAP_ELEMENT_PER_SINGLE_OBSTACLE = "map.element.single.obstacle.percentage";
+    public final static String MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY = "map.element.single.dynamic.pathway.percentage";
 
     public ZeldaMapProperties(String mapPropertiesFile) {
         super(mapPropertiesFile);
     }
 
-    int getMapMarginVertical() {
+    public int getMapMarginVertical() {
         return Integer.parseInt(properties.getProperty(MAP_MARGIN_VERTICAL));
     }
 
-    int getMapMarginHorizontal() {
+    public int getMapMarginHorizontal() {
         return Integer.parseInt(properties.getProperty(MAP_MARGIN_HORIZONTAL));
     }
 
-    int getMapElementNbWood1() {
+    public int getMapElementNbWood1() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_NB_WOOD1));
     }
 
-    int getMapElementNbWood2() {
+    public int getMapElementNbWood2() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_NB_WOOD2));
     }
 
-    int getMapElementNbTree1() {
+    public int getMapElementNbTree1() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_NB_TREE1));
     }
 
-    int getMapElementNbTree2() {
+    public int getMapElementNbTree2() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_NB_TREE2));
     }
 
-    int getMapElementNbPuddle1() {
+    public int getMapElementNbPuddle1() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_NB_PUDDLE1));
     }
 
-    int getMapElementNbPuddle2() {
+    public int getMapElementNbPuddle2() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_NB_PUDDLE2));
     }
 
-    int getMapElementPerSingleMutable() {
+    public int getMapElementPerSingleMutable() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_MUTABLE));
     }
 
-    int getMapElementPerSingleObstacle() {
+    public int getMapElementPerSingleObstacle() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_OBSTACLE));
     }
 
-    int getMapElementPerSingleDynPathway() {
+    public int getMapElementPerSingleDynPathway() {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY));
     }
 

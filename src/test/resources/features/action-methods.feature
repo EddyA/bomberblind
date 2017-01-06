@@ -54,7 +54,7 @@ Feature: Features of the action methods class
     When processing the enemy
     Then the enemy should be marked as removable from the sprite list
 
-    # bomb:
+  # bomb:
 
   Scenario: validate bomb ends when reaching a burning case
     Given a MapPoint matrix of 10 rows and 10 cols built with pathway cases
@@ -86,7 +86,7 @@ Feature: Features of the action methods class
     Then the case at rowIdx 4 and coldIdx 4 is no more bombing
     Then the bomb should be marked as removable from the sprite list
 
-    # flame
+  # flame:
 
   Scenario: validate flame adds flame end and is marked as removable when finished
     Given a MapPoint matrix of 5 rows and 10 cols built with pathway cases
@@ -97,7 +97,7 @@ Feature: Features of the action methods class
     Then the case at rowIdx 3 and coldIdx 5 is no more burning
     Then the flame should be marked as removable from the sprite list
 
-    # flame end
+  # flame end:
 
   Scenario: validate flame end is marked as removable when finished
     Given a MapPoint matrix of 5 rows and 10 cols built with pathway cases
