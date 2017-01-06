@@ -5,7 +5,7 @@ import images.ImagesLoader;
 public class Mummy extends Enemy {
 
     public final static int REFRESH_TIME = 300;
-    final static int ACTING_TIME = 40;
+    public final static int ACTING_TIME = 40;
 
     /**
      * Create a cloaked skeleton.

@@ -48,7 +48,7 @@ public abstract class Enemy extends Nomad {
      * @param refreshTime     the sprite refresh time (i.e. defining the sprite speed in term of image/sec)
      * @param actingTime      the sprite acting time (i.e. defining the sprite speed in term of action/sec)
      */
-    Enemy(int xMap,
+    public Enemy(int xMap,
           int yMap,
           Image[] deathImages,
           int nbDeathFrame,
@@ -69,31 +69,31 @@ public abstract class Enemy extends Nomad {
         this.nbWalkFrame = nbWalkFrame;
     }
 
-    Image[] getDeathImages() {
+    public Image[] getDeathImages() {
         return deathImages;
     }
 
-    int getNbDeathFrame() {
+    public int getNbDeathFrame() {
         return nbDeathFrame;
     }
 
-    Image[] getWalkBackImages() {
+    public Image[] getWalkBackImages() {
         return walkBackImages;
     }
 
-    Image[] getWalkFrontImages() {
+    public Image[] getWalkFrontImages() {
         return walkFrontImages;
     }
 
-    Image[] getWalkLeftImages() {
+    public Image[] getWalkLeftImages() {
         return walkLeftImages;
     }
 
-    Image[] getWalkRightImages() {
+    public Image[] getWalkRightImages() {
         return walkRightImages;
     }
 
-    int getNbWalkFrame() {
+    public int getNbWalkFrame() {
         return nbWalkFrame;
     }
 
@@ -113,11 +113,11 @@ public abstract class Enemy extends Nomad {
         this.curDirection = curDirection;
     }
 
-    Action getLastAction() {
+    public Action getLastAction() {
         return lastAction;
     }
 
-    void setLastAction(Action lastAction) {
+    public void setLastAction(Action lastAction) {
         this.lastAction = lastAction;
     }
 

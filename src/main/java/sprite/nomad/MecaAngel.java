@@ -8,7 +8,7 @@ import images.ImagesLoader;
 public class MecaAngel extends Enemy {
 
     public final static int REFRESH_TIME = 100;
-    final static int ACTING_TIME = 10;
+    public final static int ACTING_TIME = 10;
 
     /**
      * Create a mecanical angel

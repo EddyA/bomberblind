@@ -10,9 +10,9 @@ import java.awt.*;
  */
 public abstract class Nomad extends Sprite {
 
-    Image[] images; // array of image according to the current sprite's action.
-    int nbImages; // number of images of the array of image.
-    int curImageIdx; // sprite's current image index.
+    protected Image[] images; // array of image according to the current sprite's action.
+    protected int nbImages; // number of images of the array of image.
+    protected int curImageIdx; // sprite's current image index.
     private Image curImage; // sprite's current image.
 
     private final int actingTime; // acting time (in ms, defining the sprite's speed in term of action/sec).
@@ -29,7 +29,7 @@ public abstract class Nomad extends Sprite {
      * @param refreshTime the sprite refresh time (i.e. defining the sprite's speed in term of image/sec)
      * @param actingTime  the sprite acting time (i.e. defining the sprite's speed in term of action/sec)
      */
-    Nomad(int xMap, int yMap, SpriteType spriteType, int refreshTime, int actingTime) {
+    public Nomad(int xMap, int yMap, SpriteType spriteType, int refreshTime, int actingTime) {
         super(xMap, yMap, spriteType, refreshTime);
         this.actingTime = actingTime;
     }
@@ -46,23 +46,23 @@ public abstract class Nomad extends Sprite {
         return nbImages;
     }
 
-    void setNbImages(int nbImages) {
+    public void setNbImages(int nbImages) {
         this.nbImages = nbImages;
     }
 
-    int getCurImageIdx() {
+    public int getCurImageIdx() {
         return curImageIdx;
     }
 
-    void setCurImageIdx(int curImageIdx) {
+    public void setCurImageIdx(int curImageIdx) {
         this.curImageIdx = curImageIdx;
     }
 
-    int getActingTime() {
+    public int getActingTime() {
         return actingTime;
     }
 
-    void setLastActionTs(long lastActionTs) {
+    public void setLastActionTs(long lastActionTs) {
         this.lastActionTs = lastActionTs;
     }
 
@@ -86,17 +86,17 @@ public abstract class Nomad extends Sprite {
     /**
      * Update the sprite's image according to the current sprite's action.
      */
-    protected abstract void updateSprite();
+    public abstract void updateSprite();
 
     /**
      * @return true if the current action has changed, false otherwise.
      */
-    protected abstract boolean hasActionChanged();
+    public abstract boolean hasActionChanged();
 
     /**
      * @return true if the sprite is invincible, false otherwise.
      */
-    protected abstract boolean isInvincible();
+    public abstract boolean isInvincible();
 
     @Override
     public abstract boolean isFinished();
@@ -115,7 +115,7 @@ public abstract class Nomad extends Sprite {
             curImageIdx = 0;
         }
         if (isInvincible() &&
-                invincibleFrameIdx++ % 60 > 30) {
+                invincibleFrameIdx++ % 320 > 160) {
             curImage = null;
         } else {
             curImage = images[curImageIdx];

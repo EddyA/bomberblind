@@ -8,9 +8,10 @@ import sprite.SpriteType;
  */
 public class Bomb extends TimedSettled {
 
-    private int flamesize;
     public final static int REFRESH_TIME = 100;
-    final static int DURATION_TIME = 2000;
+    public final static int DURATION_TIME = 2000;
+
+    private int flamesize;
 
     /**
      * Create a bomb.

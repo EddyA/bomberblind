@@ -15,15 +15,15 @@ public class SpritesSetting {
         this.nbMummy = spritesProperties.getSpritesEnemyMummy();
     }
 
-    int getNbCloakedSkeleton() {
+    public int getNbCloakedSkeleton() {
         return nbCloakedSkeleton;
     }
 
-    int getNbMecaAngel() {
+    public int getNbMecaAngel() {
         return nbMecaAngel;
     }
 
-    int getNbMummy() {
+    public int getNbMummy() {
         return nbMummy;
     }
 }

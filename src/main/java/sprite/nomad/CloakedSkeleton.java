@@ -8,7 +8,7 @@ import images.ImagesLoader;
 public class CloakedSkeleton extends Enemy {
 
     public final static int REFRESH_TIME = 100;
-    final static int ACTING_TIME = 25;
+    public final static int ACTING_TIME = 25;
 
     /**
      * Create a cloaked skeleton.

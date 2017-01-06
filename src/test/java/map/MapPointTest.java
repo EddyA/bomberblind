@@ -85,7 +85,7 @@ public class MapPointTest implements WithAssertions {
     public void setRefreshTimeShouldSetTheMemberWithExpectedValue() throws Exception {
         MapPoint MapPoint = new MapPoint(5, 10);
         MapPoint.setRefreshTime(100);
-        assertThat(MapPoint.refreshTime).isEqualTo(100);
+        assertThat(MapPoint.getRefreshTime()).isEqualTo(100);
     }
 
     @Test
@@ -119,15 +119,15 @@ public class MapPointTest implements WithAssertions {
         imgArray[2] = ImagesLoader.createImage("/images/icon.gif");
         imgArray[3] = ImagesLoader.createImage("/images/icon.gif");
         MapPoint.setImages(imgArray, 4);
-        MapPoint.curImageIdx = 1; // fix it as it is randomly init.
+        MapPoint.setCurImageIdx(1); // fix it as it is randomly init.
 
-        MapPoint.lastRefreshTs = 1000L; // current time - last refresh time < 100ms -> image no change.
+        MapPoint.setLastRefreshTs(1000L); // current time - last refresh time < 100ms -> image no change.
         assertThat(MapPoint.updateImage()).isEqualTo(imgArray[1]);
-        MapPoint.lastRefreshTs = 800L; // current time - last refresh time > 100ms -> image change.
+        MapPoint.setLastRefreshTs(800L); // current time - last refresh time > 100ms -> image change.
         assertThat(MapPoint.updateImage()).isEqualTo(imgArray[2]);
-        MapPoint.lastRefreshTs = 800L; // current time - last refresh time > 100ms -> image change.
+        MapPoint.setLastRefreshTs(800L); // current time - last refresh time > 100ms -> image change.
         assertThat(MapPoint.updateImage()).isEqualTo(imgArray[3]);
-        MapPoint.lastRefreshTs = 800L; // current time - last refresh time > 100ms -> image change.
+        MapPoint.setLastRefreshTs(800L); // current time - last refresh time > 100ms -> image change.
         assertThat(MapPoint.updateImage()).isEqualTo(imgArray[0]);
     }
 }

@@ -16,15 +16,15 @@ public class ImagesLoader {
     public final static int IMAGE_SIZE = 30; // size of an 'Image' in pixels (30*30).
 
     public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
-    final static int NB_MATRIX_ROW = 39;
-    private final static int NB_MATRIX_COL = 80;
+    public final static int NB_MATRIX_ROW = 39;
+    public final static int NB_MATRIX_COL = 80;
 
     // images location.
-    private final static String BOMBER_SKIN_DIR = "/images/characters/bomber";
-    private final static String ENEMY_SKIN_DIR = "/images/characters/enemy";
-    private final static String BOMB_SKIN_DIR = "/images/bomb";
-    private final static String FLAME_SKIN_DIR = "/images/flame";
-    private final static String SCENE_SKIN_DIR = "/images/scene";
+    public final static String BOMBER_SKIN_DIR = "/images/characters/bomber";
+    public final static String ENEMY_SKIN_DIR = "/images/characters/enemy";
+    public final static String BOMB_SKIN_DIR = "/images/bomb";
+    public final static String FLAME_SKIN_DIR = "/images/flame";
+    public final static String SCENE_SKIN_DIR = "/images/scene";
 
     // bomber:
     public final static int NB_BOMBER_DEATH_FRAME = 9;
@@ -93,23 +93,23 @@ public class ImagesLoader {
     public final static int WOOD_HEIGHT = 10;
     public static int wood1MatrixRowIdx;
     public static int wood2MatrixRowIdx;
-    private final static int NB_SINGLE_OBSTABLE = 2;
-    private static int singleObstacleMatrixRowIdx;
-    private final static int NB_FLOWER_FRAME = 3;
-    private static int flowerMatrixRowIdx;
-    private final static int NB_SINGLE_BOOM = 1;
+    public final static int NB_SINGLE_OBSTABLE = 2;
+    public static int singleObstacleMatrixRowIdx;
+    public final static int NB_FLOWER_FRAME = 3;
+    public static int flowerMatrixRowIdx;
+    public final static int NB_SINGLE_BOOM = 1;
     public static int singleBoomMatrixRowIdx;
     public final static int PUDDLE_WIDTH = 7;
     public final static int PUDDLE_HEIGHT = 6;
     public static int puddle1MatrixRowIdx;
     public static int puddle2MatrixRowIdx;
-    private final static int NB_SINGLE_PATHWAY = 20;
-    private static int singlePathwayMatrixRowIdx;
-    private final static int NB_SINGLE_MUTABLE = 3;
-    private static int singleMutableMatrixRowIdx;
+    public final static int NB_SINGLE_PATHWAY = 20;
+    public static int singlePathwayMatrixRowIdx;
+    public final static int NB_SINGLE_MUTABLE = 3;
+    public static int singleMutableMatrixRowIdx;
 
-    static int lastRowIdx; // for test purpose.
-    private static boolean imageLoaded = false; // for test purpose.
+    public static int lastRowIdx; // for test purpose.
+    public static boolean imageLoaded = false; // for test purpose.
 
     /**
      * Create an 'Image' based to a relative path (from 'resources' folder).

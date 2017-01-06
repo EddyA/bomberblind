@@ -151,7 +151,7 @@ public class ActionMethods {
      * @param bomber         the bomber
      * @param pressedKey     the pressed key
      */
-    private static void shiftBomberIfPossible(MapPoint[][] mapPointMatrix, Bomber bomber, int pressedKey) {
+    public static void shiftBomberIfPossible(MapPoint[][] mapPointMatrix, Bomber bomber, int pressedKey) {
         int bbManRowIdx = bomber.getYMap() / IMAGE_SIZE;
         int bbManColIdx = bomber.getXMap() / IMAGE_SIZE;
         int bbManRowShift = bomber.getYMap() % IMAGE_SIZE;

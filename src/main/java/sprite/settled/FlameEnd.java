@@ -9,7 +9,7 @@ import sprite.SpriteType;
 public class FlameEnd extends LoopedSettled {
 
     public final static int REFRESH_TIME = 50;
-    final static int NB_TIMES = 1;
+    public final static int NB_TIMES = 1;
 
     /**
      * Create a flame end.

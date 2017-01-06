@@ -17,7 +17,7 @@ public abstract class Map {
     private final int screenWidth; // widht of the screen (expressed in pixel).
     private final int screenHeight; // height of the screen (expressed in pixel).
 
-    protected Map(MapSettings mapSettings, int screenWidth, int screenHeight) {
+    public Map(MapSettings mapSettings, int screenWidth, int screenHeight) {
         this.mapWidth = mapSettings.getMapWidth();
         this.mapHeight = mapSettings.getMapHeight();
         this.screenWidth = screenWidth;

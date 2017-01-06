@@ -97,7 +97,7 @@ public class AddingMethods {
      * @param centralColIdx  the map column index of the central flame
      * @param flameSize      the flame size
      */
-    static void addFlames(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
+    public static void addFlames(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
             int centralRowIdx, int centralColIdx, int flameSize) {
         Flame flame;
 

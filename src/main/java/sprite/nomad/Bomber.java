@@ -1,11 +1,13 @@
 package sprite.nomad;
 
+import static sprite.nomad.Bomber.Action.ACTION_DYING;
+import static sprite.nomad.Bomber.Action.ACTION_WAITING;
+import static sprite.nomad.Bomber.Action.ACTION_WALKING;
+
+import java.awt.Image;
+
 import sprite.SpriteType;
 import utils.Direction;
-
-import java.awt.*;
-
-import static sprite.nomad.Bomber.Action.*;
 
 /**
  * Abstract class of a bomber.
@@ -45,24 +47,24 @@ public abstract class Bomber extends Nomad {
     /**
      * Create a bomber.
      *
-     * @param xMap            abscissa on the map
-     * @param yMap            ordinate on the map
-     * @param deathImages     the array of image for the "death" action
-     * @param nbDeathFrame    the number of images of the "death" array
-     * @param waitImages      the array of image for the "wait" action
-     * @param nbWaitFrame     the number of images of the "wait" array
-     * @param walkBackImages  the array of images for the "walk back" action
+     * @param xMap abscissa on the map
+     * @param yMap ordinate on the map
+     * @param deathImages the array of image for the "death" action
+     * @param nbDeathFrame the number of images of the "death" array
+     * @param waitImages the array of image for the "wait" action
+     * @param nbWaitFrame the number of images of the "wait" array
+     * @param walkBackImages the array of images for the "walk back" action
      * @param walkFrontImages the array of images for the "walk front" action
-     * @param walkLeftImages  the array of images for the "walk left" action
+     * @param walkLeftImages the array of images for the "walk left" action
      * @param walkRightImages the array of images for the "walk right" action
-     * @param nbWalkFrame     number of images of the "walk" arrays
-     * @param winImages       the array of image for the "win" action
-     * @param nbWinFrame      the number of images of the "win" array
-     * @param refreshTime     the sprite refresh time (i.e. defining the sprite speed in term of image/sec)
-     * @param actingTime      the sprite acting time (i.e. defining the sprite speed in term of action/sec)
-     * @param invincibleTime  the time the bomber should be invicible after being revived
+     * @param nbWalkFrame number of images of the "walk" arrays
+     * @param winImages the array of image for the "win" action
+     * @param nbWinFrame the number of images of the "win" array
+     * @param refreshTime the sprite refresh time (i.e. defining the sprite speed in term of image/sec)
+     * @param actingTime the sprite acting time (i.e. defining the sprite speed in term of action/sec)
+     * @param invincibleTime the time the bomber should be invincible after being revived
      */
-    Bomber(int xMap,
+    public Bomber(int xMap,
            int yMap,
            Image[] deathImages,
            int nbDeathFrame,
@@ -91,56 +93,56 @@ public abstract class Bomber extends Nomad {
         this.winImages = winImages;
         this.nbWinFrame = nbWinFrame;
         this.invincibilityTime = invincibleTime;
-        this.setInvincible(false);
+        this.setInvincible(true);
         this.initialXMap = xMap;
         this.initialYMap = yMap;
     }
 
-    Image[] getDeathImages() {
+    public Image[] getDeathImages() {
         return deathImages;
     }
 
-    int getNbDeathFrame() {
+    public int getNbDeathFrame() {
         return nbDeathFrame;
     }
 
-    Image[] getWaitImages() {
+    public Image[] getWaitImages() {
         return waitImages;
     }
 
-    int getNbWaitFrame() {
+    public int getNbWaitFrame() {
         return nbWaitFrame;
     }
 
-    Image[] getWalkBackImages() {
+    public Image[] getWalkBackImages() {
         return walkBackImages;
     }
 
-    Image[] getWalkFrontImages() {
+    public Image[] getWalkFrontImages() {
         return walkFrontImages;
     }
 
-    Image[] getWalkLeftImages() {
+    public Image[] getWalkLeftImages() {
         return walkLeftImages;
     }
 
-    Image[] getWalkRightImages() {
+    public Image[] getWalkRightImages() {
         return walkRightImages;
     }
 
-    int getNbWalkFrame() {
+    public int getNbWalkFrame() {
         return nbWalkFrame;
     }
 
-    Image[] getWinImages() {
+    public Image[] getWinImages() {
         return winImages;
     }
 
-    int getNbWinFrame() {
+    public int getNbWinFrame() {
         return nbWinFrame;
     }
 
-    Action getLastAction() {
+    public Action getLastAction() {
         return lastAction;
     }
 
@@ -160,19 +162,19 @@ public abstract class Bomber extends Nomad {
         this.initialYMap = initialYMap;
     }
 
-    int getInvincibilityTime() {
+    public int getInvincibilityTime() {
         return invincibilityTime;
     }
 
-    long getLastInvincibilityTs() {
+    public long getLastInvincibilityTs() {
         return lastInvincibilityTs;
     }
 
-    void setLastAction(Action lastAction) {
+    public void setLastAction(Action lastAction) {
         this.lastAction = lastAction;
     }
 
-    void setInvincible(boolean isInvincible) {
+    public void setInvincible(boolean isInvincible) {
         long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
         if (isInvincible) {
             this.lastInvincibilityTs = curTs;
@@ -181,7 +183,7 @@ public abstract class Bomber extends Nomad {
         }
     }
 
-    void setLastInvincibilityTs(long lastInvincibilityTs) {
+    public void setLastInvincibilityTs(long lastInvincibilityTs) {
         this.lastInvincibilityTs = lastInvincibilityTs;
     }
 
@@ -197,7 +199,7 @@ public abstract class Bomber extends Nomad {
         this.curDirection = curDirection;
     }
 
-    void setLastDirection(Direction lastDirection) {
+    public void setLastDirection(Direction lastDirection) {
         this.lastDirection = lastDirection;
     }
 

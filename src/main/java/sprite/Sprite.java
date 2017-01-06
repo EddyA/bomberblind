@@ -26,7 +26,7 @@ public abstract class Sprite {
      * @param spriteType  the sprite's type
      * @param refreshTime the sprite refreshTime (i.e. fps)
      */
-    protected Sprite(int xMap, int yMap, SpriteType spriteType, int refreshTime) {
+    public Sprite(int xMap, int yMap, SpriteType spriteType, int refreshTime) {
         this.xMap = xMap;
         this.yMap = yMap;
         this.spriteType = spriteType;
@@ -83,7 +83,7 @@ public abstract class Sprite {
     /**
      * @return true if the sprite is ended, false otherwise.
      */
-    protected abstract boolean isFinished();
+    public abstract boolean isFinished();
 
     /**
      * @return the current sprite image.

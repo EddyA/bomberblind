@@ -17,9 +17,9 @@ import exceptions.InvalidConfigurationException;
 
 public class SpritesProperties {
 
-    final static String SPRITES_ENEMY_CLOAKED_SKELETON = "sprite.enemy.cloaked.skeleton";
-    private final static String SPRITES_ENEMY_MECA_ANGEL = "sprite.enemy.meca.angel";
-    private final static String SPRITES_ENEMY_MUMMY = "sprite.enemy.mummy";
+    public final static String SPRITES_ENEMY_CLOAKED_SKELETON = "sprite.enemy.cloaked.skeleton";
+    public final static String SPRITES_ENEMY_MECA_ANGEL = "sprite.enemy.meca.angel";
+    public final static String SPRITES_ENEMY_MUMMY = "sprite.enemy.mummy";
 
     private final String propertiesFile;
     private final Properties properties = new Properties();
@@ -28,15 +28,15 @@ public class SpritesProperties {
         this.propertiesFile = propertiesFile;
     }
 
-    int getSpritesEnemyCloakedSkeleton() {
+    public int getSpritesEnemyCloakedSkeleton() {
         return Integer.parseInt(properties.getProperty(SPRITES_ENEMY_CLOAKED_SKELETON));
     }
 
-    int getSpritesEnemyMecaAngel() {
+    public int getSpritesEnemyMecaAngel() {
         return Integer.parseInt(properties.getProperty(SPRITES_ENEMY_MECA_ANGEL));
     }
 
-    int getSpritesEnemyMummy() {
+    public int getSpritesEnemyMummy() {
         return Integer.parseInt(properties.getProperty(SPRITES_ENEMY_MUMMY));
     }
 

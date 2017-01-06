@@ -19,7 +19,7 @@ import map.MapPoint;
 import utils.Tuple2;
 
 public class GenerationMethods {
-    static int totalNbTry = 0; // test purpose.
+    public static int totalNbTry = 0; // test purpose.
 
     /**
      * Randomly place castles.

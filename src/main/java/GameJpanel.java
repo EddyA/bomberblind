@@ -27,7 +27,7 @@ import spriteList.SpritesProperties;
 import spriteList.SpritesSetting;
 import utils.Tuple2;
 
-class GameJpanel extends JPanel implements Runnable, KeyListener {
+public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     private Map map;
     private Bomber bomber;
@@ -38,7 +38,7 @@ class GameJpanel extends JPanel implements Runnable, KeyListener {
     private int xMapStartPosOnScreen;
     private int yMapStartPosOnScreen;
 
-    GameJpanel(int widthScreen, int heightScreen) throws IOException, InvalidPropertiesException,
+    public GameJpanel(int widthScreen, int heightScreen) throws IOException, InvalidPropertiesException,
             InvalidConfigurationException, CannotCreateMapElementException, CannotPlaceEnemyOnMapException {
 
         // create the map.
