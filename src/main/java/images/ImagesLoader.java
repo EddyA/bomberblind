@@ -16,7 +16,7 @@ public class ImagesLoader {
     public final static int IMAGE_SIZE = 30; // size of an 'Image' in pixels (30*30).
 
     public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
-    public final static int NB_MATRIX_ROW = 39;
+    public final static int NB_MATRIX_ROW = 48;
     public final static int NB_MATRIX_COL = 80;
 
     // images location.
@@ -61,6 +61,20 @@ public class ImagesLoader {
     public static int mummyWalkRightMatrixRowIdx;
 
     // - mecanic angel.
+    public final static int NB_MINOTOR_DEATH_FRAME = 4;
+    public final static int NB_MINOTOR_WALK_FRAME = 4;
+    public final static int NB_MINOTOR_BREAK_FRAME = 2;
+    public static int minotorDeathMatrixRowIdx;
+    public static int minotorWalkBackMatrixRowIdx;
+    public static int minotorWalkFrontMatrixRowIdx;
+    public static int minotorWalkLeftMatrixRowIdx;
+    public static int minotorWalkRightMatrixRowIdx;
+    public static int minotorBreakBackMatrixRowIdx;
+    public static int minotorBreakFrontMatrixRowIdx;
+    public static int minotorBreakLeftMatrixRowIdx;
+    public static int minotorBreakRightMatrixRowIdx;
+
+    // - minotor.
     public final static int NB_MECA_ANGEL_DEATH_FRAME = 4;
     public final static int NB_MECA_ANGEL_WALK_FRAME = 2;
     public static int mecaAngelDeathMatrixRowIdx;
@@ -257,6 +271,53 @@ public class ImagesLoader {
             imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/meca_angel/walk_right_" + imageIdx + ".png");
         }
         mecaAngelWalkRightMatrixRowIdx = rowIdx++;
+
+        // - minotor.
+        for (int i = 0; i < NB_MINOTOR_DEATH_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/minotor/death_" + imageIdx + ".png");
+        }
+        minotorDeathMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MINOTOR_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/minotor/walk_back_" + imageIdx + ".png");
+        }
+        minotorWalkBackMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MINOTOR_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/minotor/walk_front_" + imageIdx + ".png");
+        }
+        minotorWalkFrontMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MINOTOR_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/minotor/walk_left_" + imageIdx + ".png");
+        }
+        minotorWalkLeftMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MINOTOR_WALK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/minotor/walk_right_" + imageIdx + ".png");
+        }
+        minotorWalkRightMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MINOTOR_BREAK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/minotor/break_back_" + imageIdx + ".png");
+        }
+        minotorBreakBackMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MINOTOR_BREAK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/minotor/break_front_" + imageIdx + ".png");
+        }
+        minotorBreakFrontMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MINOTOR_BREAK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/minotor/break_left_" + imageIdx + ".png");
+        }
+        minotorBreakLeftMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_MINOTOR_BREAK_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(ENEMY_SKIN_DIR + "/minotor/break_right_" + imageIdx + ".png");
+        }
+        minotorBreakRightMatrixRowIdx = rowIdx++;
 
         // settled:
         for (int i = 0; i < NB_BOMB_FRAME; i++) {

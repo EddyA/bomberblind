@@ -7,7 +7,7 @@ import exceptions.InvalidConfigurationException;
 
 public class SpritesPropertiesTest implements WithAssertions {
 
-    final private String TEST_MAP_PROPERTIES_FILE = "/test.zelda.sprites.properties";
+    private final String TEST_MAP_PROPERTIES_FILE = "/test.zelda.sprites.properties";
 
     @Test
     public void loadAndCheckPropertiesShouldLoadExpectedValues() throws Exception {

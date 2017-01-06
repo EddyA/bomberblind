@@ -11,8 +11,8 @@ import java.awt.*;
  */
 public abstract class Settled extends Sprite {
 
-    private int rowIdx; // map row index of the sprite (not private for test purpose).
-    private int colIdx; // map column index of the sprite (not private for test purpose).
+    private int rowIdx; // map row index of the sprite.
+    private int colIdx; // map column index of the sprite.
 
     private final Image[] images; // array of images of the sprite.
     private final int nbImages; // number of images of the sprite.
