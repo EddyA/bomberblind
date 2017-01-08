@@ -21,6 +21,8 @@ public class SpritesProperties {
     public final static String SPRITES_ENEMY_MECA_ANGEL = "sprite.enemy.meca.angel";
     public final static String SPRITES_ENEMY_MUMMY = "sprite.enemy.mummy";
 
+    public final static String SPRITES_ENEMY_MINOTOR = "sprite.enemy.minotor";
+
     private final String propertiesFile;
     private final Properties properties = new Properties();
 
@@ -38,6 +40,10 @@ public class SpritesProperties {
 
     public int getSpritesEnemyMummy() {
         return Integer.parseInt(properties.getProperty(SPRITES_ENEMY_MUMMY));
+    }
+
+    public int getSpritesEnemyMinotor() {
+        return Integer.parseInt(properties.getProperty(SPRITES_ENEMY_MINOTOR));
     }
 
     public Properties getProperties() {
@@ -74,7 +80,8 @@ public class SpritesProperties {
     public SpritesProperties checkProperties() throws InvalidConfigurationException {
         if (!isValidInteger(properties.getProperty(SPRITES_ENEMY_CLOAKED_SKELETON)) ||
                 !isValidInteger(properties.getProperty(SPRITES_ENEMY_MECA_ANGEL)) ||
-                !isValidInteger(properties.getProperty(SPRITES_ENEMY_MUMMY))) {
+                !isValidInteger(properties.getProperty(SPRITES_ENEMY_MUMMY)) ||
+                !isValidInteger(properties.getProperty(SPRITES_ENEMY_MINOTOR))) {
             throw new InvalidConfigurationException("'" + propertiesFile + "' is not a valid properties file: "
                     + "some field are missing or not integer convertible.");
         }

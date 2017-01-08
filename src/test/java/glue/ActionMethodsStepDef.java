@@ -41,7 +41,7 @@ public class ActionMethodsStepDef implements WithAssertions {
     @When("^processing the enemy$")
     public void processing_the_enemy() {
         enemyState.setShouldBeRemoved(
-                ActionMethods.processEnemy(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(),
+                ActionMethods.processWalkingEnemy(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(),
                         mapPointMatrixState.getMapWidth(), mapPointMatrixState.getMapHeight(), enemyState.getEnemy()));
     }
 

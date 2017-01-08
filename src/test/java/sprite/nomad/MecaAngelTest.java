@@ -24,7 +24,7 @@ public class MecaAngelTest implements WithAssertions {
         // check members value.
         assertThat(mecaAngel.getxMap()).isEqualTo(10);
         assertThat(mecaAngel.getyMap()).isEqualTo(20);
-        assertThat(mecaAngel.getSpriteType()).isEqualTo(SpriteType.ENEMY_A);
+        assertThat(mecaAngel.getSpriteType()).isEqualTo(SpriteType.WALKING_ENEMY);
         assertThat(mecaAngel.getRefreshTime()).isEqualTo(MecaAngel.REFRESH_TIME);
         assertThat(mecaAngel.getActingTime()).isEqualTo(MecaAngel.ACTING_TIME);
         assertThat(mecaAngel.getDeathImages()).

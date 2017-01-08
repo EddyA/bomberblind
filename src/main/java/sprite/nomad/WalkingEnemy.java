@@ -8,7 +8,7 @@ import java.awt.*;
 import static utils.Action.ACTION_WALKING;
 
 /**
- * Abstract class of an enemy typed A.
+ * Abstract class of an walking enemy.
  */
 public abstract class WalkingEnemy extends Nomad {
 
@@ -46,7 +46,7 @@ public abstract class WalkingEnemy extends Nomad {
                         int nbWalkFrame,
                         int refreshTime,
                         int actingTime) {
-        super(xMap, yMap, SpriteType.ENEMY_A, refreshTime, actingTime, 0);
+        super(xMap, yMap, SpriteType.WALKING_ENEMY, refreshTime, actingTime, 0);
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
         this.walkBackImages = walkBackImages;

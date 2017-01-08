@@ -9,10 +9,13 @@ public class SpritesSetting {
     private final int nbMecaAngel; // the number of meca angel to place.
     private final int nbMummy; // the number of mummy to place.
 
+    private final int nbMinotor; // the number of minotor to place.
+
     public SpritesSetting(SpritesProperties spritesProperties) {
         this.nbCloakedSkeleton = spritesProperties.getSpritesEnemyCloakedSkeleton();
         this.nbMecaAngel = spritesProperties.getSpritesEnemyMecaAngel();
         this.nbMummy = spritesProperties.getSpritesEnemyMummy();
+        this.nbMinotor = spritesProperties.getSpritesEnemyMinotor();
     }
 
     public int getNbCloakedSkeleton() {
@@ -25,5 +28,9 @@ public class SpritesSetting {
 
     public int getNbMummy() {
         return nbMummy;
+    }
+
+    public int getNbMinotor() {
+        return nbMinotor;
     }
 }

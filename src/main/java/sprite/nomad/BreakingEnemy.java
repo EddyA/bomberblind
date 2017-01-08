@@ -7,6 +7,9 @@ import java.awt.*;
 import static utils.Action.ACTION_BREAKING;
 import static utils.Action.ACTION_WALKING;
 
+/**
+ * Abstract class of an breaking enemy.
+ */
 public class BreakingEnemy extends WalkingEnemy {
 
     private final Image[] breakBackImages;
@@ -62,7 +65,7 @@ public class BreakingEnemy extends WalkingEnemy {
                 nbWalkFrame,
                 refreshTime,
                 actingTime);
-        this.setSpriteType(SpriteType.ENEMY_B); // override the type of sprite.
+        this.setSpriteType(SpriteType.BREAKING_ENEMY); // override the type of sprite.
         this.breakBackImages = breakBackImages;
         this.breakFrontImages = breakFrontImages;
         this.breakLeftImages = breakLeftImages;

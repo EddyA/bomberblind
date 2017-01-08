@@ -24,7 +24,7 @@ public class MummyTest implements WithAssertions {
         // check members value.
         assertThat(mummy.getxMap()).isEqualTo(15);
         assertThat(mummy.getyMap()).isEqualTo(30);
-        assertThat(mummy.getSpriteType()).isEqualTo(SpriteType.ENEMY_A);
+        assertThat(mummy.getSpriteType()).isEqualTo(SpriteType.WALKING_ENEMY);
         assertThat(mummy.getRefreshTime()).isEqualTo(Mummy.REFRESH_TIME);
         assertThat(mummy.getActingTime()).isEqualTo(Mummy.ACTING_TIME);
         assertThat(mummy.getDeathImages())

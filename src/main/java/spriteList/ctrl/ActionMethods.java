@@ -5,6 +5,7 @@ import map.MapPoint;
 import map.ctrl.NomadMethods;
 import sprite.Sprite;
 import sprite.nomad.Bomber;
+import sprite.nomad.BreakingEnemy;
 import sprite.nomad.WalkingEnemy;
 import sprite.settled.Bomb;
 import sprite.settled.Flame;
@@ -46,8 +47,13 @@ public class ActionMethods {
      * @param pressedKey     the pressed key
      * @return false (today, the bomber is never removed from the list of sprites).
      */
-    public static boolean processBomber(LinkedList<Sprite> list, LinkedList<Sprite> tmpList,
-                                        MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight, Bomber bomber, int pressedKey) {
+    public static boolean processBomber(LinkedList<Sprite> list,
+                                        LinkedList<Sprite> tmpList,
+                                        MapPoint[][] mapPointMatrix,
+                                        int mapWidth,
+                                        int mapHeight,
+                                        Bomber bomber,
+                                        int pressedKey) {
         if (bomber.isFinished()) {
             bomber.init(); // re-init the bomber if finished.
 
@@ -226,56 +232,111 @@ public class ActionMethods {
      * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth       the map width
      * @param mapHeight      the map height
-     * @param enemy          the enemy
+     * @param walkingEnemy   the enemy
      * @return true if the enemy should be removed from the list, false otherwise.
      */
-    public static boolean processEnemy(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int mapWidth,
-                                       int mapHeight, WalkingEnemy enemy) {
+    public static boolean processWalkingEnemy(LinkedList<Sprite> list,
+                                              MapPoint[][] mapPointMatrix,
+                                              int mapWidth,
+                                              int mapHeight,
+                                              WalkingEnemy walkingEnemy) {
         boolean shouldBeRemoved = false;
-        if (enemy.isFinished()) {
+        if (walkingEnemy.isFinished()) {
             shouldBeRemoved = true;
-        } else if (enemy.getCurAction() != ACTION_DYING) { // the bomber is not finished and not dead.
+        } else if (walkingEnemy.getCurAction() != ACTION_DYING) { // the bomber is not finished and not dead.
 
             // should the enemy die?
-            if (isNomadBurning(mapPointMatrix, enemy.getxMap(), enemy.getyMap())) {
-                enemy.setCurAction(ACTION_DYING);
+            if (isNomadBurning(mapPointMatrix, walkingEnemy.getxMap(), walkingEnemy.getyMap())) {
+                walkingEnemy.setCurAction(ACTION_DYING);
 
-            } else if (enemy.isTimeToAct()) { // it is time to act.
-
-                // compute the next direction.
-                Direction newDirection = EnemyAi.computeNextDirection(
-                        mapPointMatrix,
-                        mapWidth,
-                        mapHeight,
-                        list,
-                        enemy);
-
-                // assign the new coordinates and move if possible.
-                if (newDirection != null) {
-                    enemy.setCurAction(ACTION_WALKING);
-                    enemy.setCurDirection(newDirection);
-                    switch (newDirection) {
-                        case NORTH: {
-                            enemy.setyMap(enemy.getyMap() - 1);
-                            break;
-                        }
-                        case SOUTH: {
-                            enemy.setyMap(enemy.getyMap() + 1);
-                            break;
-                        }
-                        case WEST: {
-                            enemy.setxMap(enemy.getxMap() - 1);
-                            break;
-                        }
-                        case EAST: {
-                            enemy.setxMap(enemy.getxMap() + 1);
-                            break;
-                        }
-                    }
-                }
+            } else if (walkingEnemy.isTimeToAct()) { // it is time to act.
+                moveEnemyIfPossible(list, mapPointMatrix, mapWidth, mapHeight, walkingEnemy);
             }
         }
         return shouldBeRemoved;
+    }
+
+    /**
+     * - Notice that the enemy must be removed from the list (if the enemy is finished - i.e. dead and the sprite
+     * ended),
+     * - OR kill the enemy (if the enemy is on a burning case),
+     * - OR compute the next direction (if it is tim to act),
+     * - OR do nothing.
+     *
+     * @param list           the list of sprites
+     * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
+     * @param mapWidth       the map width
+     * @param mapHeight      the map height
+     * @param breakingEnemy   the enemy
+     * @return true if the enemy should be removed from the list, false otherwise.
+     */
+    public static boolean processBreakingEnemy(LinkedList<Sprite> list,
+                                              MapPoint[][] mapPointMatrix,
+                                              int mapWidth,
+                                              int mapHeight,
+                                              BreakingEnemy breakingEnemy) {
+        boolean shouldBeRemoved = false;
+        if (breakingEnemy.isFinished()) {
+            shouldBeRemoved = true;
+        } else if (breakingEnemy.getCurAction() != ACTION_DYING) { // the bomber is not finished and not dead.
+
+            // should the enemy die?
+            if (isNomadBurning(mapPointMatrix, breakingEnemy.getxMap(), breakingEnemy.getyMap())) {
+                breakingEnemy.setCurAction(ACTION_DYING);
+
+            } else if (breakingEnemy.isTimeToAct()) { // it is time to act.
+                moveEnemyIfPossible(list, mapPointMatrix, mapWidth, mapHeight, breakingEnemy);
+            }
+        }
+        return shouldBeRemoved;
+    }
+
+    /**
+     * Move the enemy of a pixel if possible, favoring the current direction and changing of it if needed.
+     * If the enemy cannot move (i.e. blocked off), do nothing.
+     *
+     * @param list           the list of sprites
+     * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
+     * @param mapWidth       the map width
+     * @param mapHeight      the map height
+     * @param walkingEnemy   the enemy
+     */
+    public static void moveEnemyIfPossible(LinkedList<Sprite> list,
+                                           MapPoint[][] mapPointMatrix,
+                                           int mapWidth,
+                                           int mapHeight,
+                                           WalkingEnemy walkingEnemy) {
+        // compute the next direction.
+        Direction newDirection = EnemyAi.computeNextDirection(
+                mapPointMatrix,
+                mapWidth,
+                mapHeight,
+                list,
+                walkingEnemy);
+
+        // assign the new coordinates and move if possible.
+        if (newDirection != null) {
+            walkingEnemy.setCurAction(ACTION_WALKING);
+            walkingEnemy.setCurDirection(newDirection);
+            switch (newDirection) {
+                case NORTH: {
+                    walkingEnemy.setyMap(walkingEnemy.getyMap() - 1);
+                    break;
+                }
+                case SOUTH: {
+                    walkingEnemy.setyMap(walkingEnemy.getyMap() + 1);
+                    break;
+                }
+                case WEST: {
+                    walkingEnemy.setxMap(walkingEnemy.getxMap() - 1);
+                    break;
+                }
+                case EAST: {
+                    walkingEnemy.setxMap(walkingEnemy.getxMap() + 1);
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -292,8 +353,11 @@ public class ActionMethods {
      * @param bomb           the bomb
      * @return true if the bomb should be removed from the list, false otherwise.
      */
-    public static boolean processBomb(LinkedList<Sprite> tmpList, MapPoint[][] mapPointMatrix, int mapWidth,
-                                      int mapHeight, Bomb bomb) {
+    public static boolean processBomb(LinkedList<Sprite> tmpList,
+                                      MapPoint[][] mapPointMatrix,
+                                      int mapWidth,
+                                      int mapHeight,
+                                      Bomb bomb) {
         boolean shouldBeRemoved = false;
         if (bomb.isFinished()) {
             AddingMethods.addFlames(tmpList, mapPointMatrix, mapWidth, mapHeight, bomb.getRowIdx(), bomb.getColIdx(),

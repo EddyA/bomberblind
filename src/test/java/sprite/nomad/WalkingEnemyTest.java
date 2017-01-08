@@ -26,7 +26,7 @@ public class WalkingEnemyTest implements WithAssertions {
         // check members value.
         assertThat(cloakedSkeleton.getxMap()).isEqualTo(15);
         assertThat(cloakedSkeleton.getyMap()).isEqualTo(30);
-        assertThat(cloakedSkeleton.getSpriteType()).isEqualTo(SpriteType.ENEMY_A);
+        assertThat(cloakedSkeleton.getSpriteType()).isEqualTo(SpriteType.WALKING_ENEMY);
         assertThat(cloakedSkeleton.getRefreshTime()).isEqualTo(CloakedSkeleton.REFRESH_TIME);
         assertThat(cloakedSkeleton.getActingTime()).isEqualTo(CloakedSkeleton.ACTING_TIME);
         assertThat(cloakedSkeleton.getDeathImages())
