@@ -25,8 +25,9 @@ public class SpriteTest implements WithAssertions {
         BlueBomber blueBomber = new BlueBomber(5, 4);
 
         // check members value.
-        assertThat(blueBomber.getXMap()).isEqualTo(5);
-        assertThat(blueBomber.getYMap()).isEqualTo(4);
+        assertThat(blueBomber.getxMap()).isEqualTo(5);
+        assertThat(blueBomber.getyMap()).isEqualTo(4);
+        assertThat(blueBomber.getSpriteType()).isEqualTo(SpriteType.BOMBER);
         assertThat(blueBomber.getRefreshTime()).isEqualTo(BlueBomber.REFRESH_TIME);
     }
 

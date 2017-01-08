@@ -13,7 +13,7 @@ import map.MapPoint;
 import sprite.Sprite;
 import sprite.SpriteType;
 import sprite.nomad.Bomber;
-import sprite.nomad.Enemy;
+import sprite.nomad.WalkingEnemy;
 import sprite.nomad.EnemyType;
 import sprite.settled.Bomb;
 import sprite.settled.Flame;
@@ -82,9 +82,9 @@ public class SpriteList extends LinkedList<Sprite> {
                         map.getMapHeight(), (Bomber) sprite, pressedKey);
                 break;
             }
-            case ENEMY: {
+            case ENEMY_A: {
                 shouldBeRemoved = ActionMethods.processEnemy(this, map.getMapPointMatrix(), map.getMapWidth(),
-                        map.getMapHeight(), (Enemy) sprite);
+                        map.getMapHeight(), (WalkingEnemy) sprite);
                 break;
             }
             case BOMB: {
@@ -130,11 +130,11 @@ public class SpriteList extends LinkedList<Sprite> {
         // paint sprites.
         for (Sprite sprite : this) {
             if ((sprite.getCurImage() != null)) { // happens when the bomber is invincible.
-                if ((sprite.getYMap() >= yMap)
-                        && (sprite.getYMap() <= yMap + sprite.getCurImage().getWidth(null) + screenHeight + ImagesLoader.IMAGE_SIZE)
-                        && (sprite.getXMap() >= xMap - sprite.getCurImage().getWidth(null) / 2)
-                        && (sprite.getXMap() <= xMap + sprite.getCurImage().getHeight(null) / 2 + screenWidth + ImagesLoader.IMAGE_SIZE)) {
-                    sprite.paintBuffer(g, sprite.getXMap() - xMap, sprite.getYMap() - yMap);
+                if ((sprite.getyMap() >= yMap)
+                        && (sprite.getyMap() <= yMap + sprite.getCurImage().getWidth(null) + screenHeight + ImagesLoader.IMAGE_SIZE)
+                        && (sprite.getxMap() >= xMap - sprite.getCurImage().getWidth(null) / 2)
+                        && (sprite.getxMap() <= xMap + sprite.getCurImage().getHeight(null) / 2 + screenWidth + ImagesLoader.IMAGE_SIZE)) {
+                    sprite.paintBuffer(g, sprite.getxMap() - xMap, sprite.getyMap() - yMap);
                 }
             }
         }

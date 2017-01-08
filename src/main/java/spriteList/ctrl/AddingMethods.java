@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import map.MapPoint;
 import sprite.Sprite;
 import sprite.nomad.Bomber;
-import sprite.nomad.Enemy;
+import sprite.nomad.WalkingEnemy;
 import sprite.settled.Bomb;
 import sprite.settled.Flame;
 import sprite.settled.FlameEnd;
@@ -31,7 +31,7 @@ public class AddingMethods {
      * @param list  the list into which adding the sprite
      * @param enemy the enemy to add
      */
-    public static void addEnemy(LinkedList<Sprite> list, Enemy enemy) {
+    public static void addEnemy(LinkedList<Sprite> list, WalkingEnemy enemy) {
         list.add(enemy);
     }
 

@@ -4,7 +4,8 @@ import java.util.Optional;
 
 public enum SpriteType {
     BOMBER,
-    ENEMY,
+    ENEMY_A,
+    ENEMY_B,
     BOMB,
     FLAME,
     FLAME_END;
@@ -16,7 +17,7 @@ public enum SpriteType {
             label = Optional.of("bomber");
             break;
         }
-        case ENEMY: {
+        case ENEMY_A: {
             label = Optional.of("enemy");
             break;
         }

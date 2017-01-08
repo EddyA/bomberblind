@@ -24,8 +24,8 @@ public class FlameTest implements WithAssertions {
         // check members value.
         assertThat(flame.getRowIdx()).isEqualTo(5);
         assertThat(flame.getColIdx()).isEqualTo(4);
-        assertThat(flame.getXMap()).isEqualTo(Tools.getCaseCentreAbscissa(4));
-        assertThat(flame.getYMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
+        assertThat(flame.getxMap()).isEqualTo(Tools.getCaseCentreAbscissa(4));
+        assertThat(flame.getyMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
         assertThat(flame.getSpriteType()).isEqualTo(SpriteType.FLAME);
         assertThat(flame.getRefreshTime()).isEqualTo(Flame.REFRESH_TIME);
         assertThat(flame.getImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameMatrixRowIdx]);

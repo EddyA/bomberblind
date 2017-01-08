@@ -13,7 +13,13 @@ public abstract class Sprite {
 
     protected int xMap; // abscissa on map.
     protected int yMap; // ordinate on map.
-    private final SpriteType spriteType; // type of sprite.
+    private SpriteType spriteType; // type of sprite.
+
+    protected Image[] images; // array of images of the sprite.
+    protected int nbImages; // number of images of the sprite.
+
+    protected int curImageIdx; // current image index of the sprite.
+    protected Image curImage; // current image of the sprite.
 
     private final int refreshTime; // refresh time (in ms).
     protected long lastRefreshTs; // last refresh timestamp.
@@ -26,31 +32,74 @@ public abstract class Sprite {
      * @param spriteType  the sprite's type
      * @param refreshTime the sprite refreshTime (i.e. fps)
      */
-    public Sprite(int xMap, int yMap, SpriteType spriteType, int refreshTime) {
+    public Sprite(int xMap,
+                  int yMap,
+                  SpriteType spriteType,
+                  int refreshTime) {
         this.xMap = xMap;
         this.yMap = yMap;
         this.spriteType = spriteType;
         this.refreshTime = refreshTime;
     }
 
-    public int getXMap() {
+    public void setCurrentTimeSupplier(CurrentTimeSupplier currentTimeSupplier) {
+        this.currentTimeSupplier = currentTimeSupplier;
+    }
+
+    public int getxMap() {
         return xMap;
     }
 
-    public void setXMap(int xMap) {
+    public void setxMap(int xMap) {
         this.xMap = xMap;
     }
 
-    public int getYMap() {
+    public int getyMap() {
         return yMap;
     }
 
-    public void setYMap(int yMap) {
+    public void setyMap(int yMap) {
         this.yMap = yMap;
     }
 
     public SpriteType getSpriteType() {
         return spriteType;
+    }
+
+    public void setSpriteType(SpriteType spriteType) {
+        this.spriteType = spriteType;
+    }
+
+    public Image[] getImages() {
+        return images;
+    }
+
+    public void setImages(Image[] images) {
+        this.images = images;
+    }
+
+    public int getNbImages() {
+        return nbImages;
+    }
+
+    public void setNbImages(int nbImages) {
+        this.nbImages = nbImages;
+    }
+
+    public int getCurImageIdx() {
+        return curImageIdx;
+    }
+
+    public void setCurImageIdx(int curImageIdx) {
+        this.curImageIdx = curImageIdx;
+    }
+
+    public Image getCurImage() {
+        return curImage;
+    }
+
+    public void setCurImage(Image curImage) {
+        this.curImage = curImage;
     }
 
     public int getRefreshTime() {
@@ -59,10 +108,6 @@ public abstract class Sprite {
 
     public void setLastRefreshTs(long lastRefreshTs) {
         this.lastRefreshTs = lastRefreshTs;
-    }
-
-    public void setCurrentTimeSupplier(CurrentTimeSupplier currentTimeSupplier) {
-        this.currentTimeSupplier = currentTimeSupplier;
     }
 
     /**
@@ -81,19 +126,14 @@ public abstract class Sprite {
     }
 
     /**
-     * @return true if the sprite is ended, false otherwise.
-     */
-    public abstract boolean isFinished();
-
-    /**
-     * @return the current sprite image.
-     */
-    public abstract Image getCurImage();
-
-    /**
      * Update the sprite image.
      */
     public abstract void updateImage();
+
+    /**
+     * @return true if the sprite is finished, false otherwise.
+     */
+    public abstract boolean isFinished();
 
     /**
      * Paint the sprite.
@@ -103,11 +143,10 @@ public abstract class Sprite {
      * @param yScreen the map's ordinate from which painting
      */
     public void paintBuffer(Graphics2D g, int xScreen, int yScreen) {
-        if ((getCurImage() != null) // happens when the bomber is invincible.
-                && !isFinished()) {
-            int xImage = xScreen - getCurImage().getWidth(null) / 2;
-            int yImage = yScreen - getCurImage().getHeight(null);
-            g.drawImage(getCurImage(), xImage, yImage, null);
+        if (curImage != null) { // happens when the bomber is invincible.
+            int xImage = xScreen - curImage.getWidth(null) / 2;
+            int yImage = yScreen - curImage.getHeight(null);
+            g.drawImage(curImage, xImage, yImage, null);
         }
     }
 }

@@ -6,7 +6,7 @@ import org.mockito.Mockito;
 
 import images.ImagesLoader;
 import sprite.nomad.CloakedSkeleton;
-import sprite.nomad.Enemy;
+import sprite.nomad.WalkingEnemy;
 
 public class EnemyState {
 
@@ -19,7 +19,7 @@ public class EnemyState {
         spyedCloakedSkeleton = Mockito.spy(cloakedSkeleton);
     }
 
-    public Enemy getEnemy() {
+    public WalkingEnemy getEnemy() {
         return spyedCloakedSkeleton;
     }
 

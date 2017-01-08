@@ -80,14 +80,6 @@ public class MapPoint {
         return images;
     }
 
-    public void setImages(Image[] images) {
-        this.images = images;
-    }
-
-    public int getNbImages() {
-        return nbImages;
-    }
-
     public void setCurImageIdx(int curImageIdx) {
         this.curImageIdx = curImageIdx;
     }

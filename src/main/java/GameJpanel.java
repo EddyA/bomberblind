@@ -78,19 +78,19 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
      * Update the ZeldaMap start position on screen function of the Bomber map position.
      */
     private void updateMapStartPosOnScreen() {
-        if (bomber.getXMap() < getWidth() / 2) {
+        if (bomber.getxMap() < getWidth() / 2) {
             xMapStartPosOnScreen = 0;
-        } else if (bomber.getXMap() > (map.getMapWidth() * IMAGE_SIZE) - (getWidth() / 2)) {
+        } else if (bomber.getxMap() > (map.getMapWidth() * IMAGE_SIZE) - (getWidth() / 2)) {
             xMapStartPosOnScreen = (map.getMapWidth() * IMAGE_SIZE) - getWidth();
         } else {
-            xMapStartPosOnScreen = bomber.getXMap() - (getWidth() / 2);
+            xMapStartPosOnScreen = bomber.getxMap() - (getWidth() / 2);
         }
-        if (bomber.getYMap() < getHeight() / 2) {
+        if (bomber.getyMap() < getHeight() / 2) {
             yMapStartPosOnScreen = 0;
-        } else if (bomber.getYMap() > (map.getMapHeight() * IMAGE_SIZE) - (getHeight() / 2)) {
+        } else if (bomber.getyMap() > (map.getMapHeight() * IMAGE_SIZE) - (getHeight() / 2)) {
             yMapStartPosOnScreen = (map.getMapHeight() * IMAGE_SIZE) - getHeight();
         } else {
-            yMapStartPosOnScreen = bomber.getYMap() - (getHeight() / 2);
+            yMapStartPosOnScreen = bomber.getyMap() - (getHeight() / 2);
         }
     }
 
@@ -136,9 +136,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
                 // update the list order to handle sprites superposition.
                 spriteList.sort((o1, o2) -> {
-                    if (o1.getYMap() < o2.getYMap()) {
+                    if (o1.getyMap() < o2.getyMap()) {
                         return -1;
-                    } else if (o1.getYMap() > o2.getYMap()) {
+                    } else if (o1.getyMap() > o2.getyMap()) {
                         return 1;
                     } else {
                         return 0;

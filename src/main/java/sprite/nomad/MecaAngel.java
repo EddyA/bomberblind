@@ -5,7 +5,7 @@ import images.ImagesLoader;
 /**
  * A mecanical angel.
  */
-public class MecaAngel extends Enemy {
+public class MecaAngel extends WalkingEnemy {
 
     public final static int REFRESH_TIME = 100;
     public final static int ACTING_TIME = 10;

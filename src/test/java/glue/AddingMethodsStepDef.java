@@ -34,8 +34,8 @@ public class AddingMethodsStepDef implements WithAssertions {
 
     @Given("^a bomber at rowIdx (\\d+) and coldIdx (\\d+)$")
     public void a_bomber_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
-        bomberState.getBomber().setXMap(Tools.getCaseCentreAbscissa(colIdx));
-        bomberState.getBomber().setYMap(Tools.getCaseBottomOrdinate(rowIdx));
+        bomberState.getBomber().setxMap(Tools.getCaseCentreAbscissa(colIdx));
+        bomberState.getBomber().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
         bomberState.getBomber().setInitialXMap(Tools.getCaseCentreAbscissa(colIdx));
         bomberState.getBomber().setInitialYMap(Tools.getCaseBottomOrdinate(rowIdx));
         AddingMethods.addBomber(listOfSprites.getSpriteList(), bomberState.getBomber());
@@ -43,8 +43,8 @@ public class AddingMethodsStepDef implements WithAssertions {
 
     @Given("^an enemy at rowIdx (\\d+) and coldIdx (\\d+)$")
     public void an_enemy_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
-        enemyState.getEnemy().setXMap(Tools.getCaseCentreAbscissa(colIdx));
-        enemyState.getEnemy().setYMap(Tools.getCaseBottomOrdinate(rowIdx));
+        enemyState.getEnemy().setxMap(Tools.getCaseCentreAbscissa(colIdx));
+        enemyState.getEnemy().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
         AddingMethods.addEnemy(listOfSprites.getSpriteList(), enemyState.getEnemy());
     }
 

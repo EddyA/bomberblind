@@ -1,12 +1,12 @@
 package glue;
 
-import org.assertj.core.api.WithAssertions;
-import org.mockito.Mockito;
-
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
-import sprite.nomad.Enemy;
+import org.assertj.core.api.WithAssertions;
+import org.mockito.Mockito;
 import utils.Direction;
+
+import static utils.Action.ACTION_DYING;
 
 public class EnemyStepDef implements WithAssertions {
 
@@ -29,7 +29,7 @@ public class EnemyStepDef implements WithAssertions {
 
     @Then("^the enemy should die$")
     public void the_enemy_should_die() {
-        assertThat(enemyState.getEnemy().getCurAction()).isEqualTo(Enemy.Action.ACTION_DYING);
+        assertThat(enemyState.getEnemy().getCurAction()).isEqualTo(ACTION_DYING);
     }
 
     @Then("^the enemy should get another direction$")

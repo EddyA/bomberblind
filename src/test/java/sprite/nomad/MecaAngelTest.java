@@ -1,14 +1,14 @@
 package sprite.nomad;
 
-import static sprite.nomad.Enemy.Action.ACTION_WALKING;
-
-import java.io.IOException;
-
+import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
+import sprite.SpriteType;
 
-import images.ImagesLoader;
+import java.io.IOException;
+
+import static utils.Action.ACTION_WALKING;
 
 public class MecaAngelTest implements WithAssertions {
 
@@ -22,10 +22,11 @@ public class MecaAngelTest implements WithAssertions {
         MecaAngel mecaAngel = new MecaAngel(10, 20);
 
         // check members value.
-        assertThat(mecaAngel.getXMap()).isEqualTo(10);
-        assertThat(mecaAngel.getYMap()).isEqualTo(20);
-        assertThat(mecaAngel.getCurAction()).isEqualTo(ACTION_WALKING);
-        assertThat(mecaAngel.getLastAction()).isEqualTo(ACTION_WALKING);
+        assertThat(mecaAngel.getxMap()).isEqualTo(10);
+        assertThat(mecaAngel.getyMap()).isEqualTo(20);
+        assertThat(mecaAngel.getSpriteType()).isEqualTo(SpriteType.ENEMY_A);
+        assertThat(mecaAngel.getRefreshTime()).isEqualTo(MecaAngel.REFRESH_TIME);
+        assertThat(mecaAngel.getActingTime()).isEqualTo(MecaAngel.ACTING_TIME);
         assertThat(mecaAngel.getDeathImages()).
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.mecaAngelDeathMatrixRowIdx]);
         assertThat(mecaAngel.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_MECA_ANGEL_DEATH_FRAME);
@@ -38,7 +39,6 @@ public class MecaAngelTest implements WithAssertions {
         assertThat(mecaAngel.getWalkRightImages()).
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.mecaAngelWalkRightMatrixRowIdx]);
         assertThat(mecaAngel.getNbWalkFrame()).isEqualTo(ImagesLoader.NB_MECA_ANGEL_WALK_FRAME);
-        assertThat(mecaAngel.getRefreshTime()).isEqualTo(MecaAngel.REFRESH_TIME);
-        assertThat(mecaAngel.getActingTime()).isEqualTo(MecaAngel.ACTING_TIME);
+        assertThat(mecaAngel.getCurAction()).isEqualTo(ACTION_WALKING);
     }
 }

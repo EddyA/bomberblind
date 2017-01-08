@@ -5,7 +5,7 @@ import images.ImagesLoader;
 /**
  * A cloaked skeleton.
  */
-public class CloakedSkeleton extends Enemy {
+public class CloakedSkeleton extends WalkingEnemy {
 
     public final static int REFRESH_TIME = 100;
     public final static int ACTING_TIME = 25;

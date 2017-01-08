@@ -28,8 +28,8 @@ public class SpriteListState {
      */
     boolean isSpriteInSpriteList(int xMap, int yMap, SpriteType spriteType) {
         for (Sprite sprite : spriteList) {
-            if (sprite.getXMap() == xMap &&
-                    sprite.getYMap() == yMap &&
+            if (sprite.getxMap() == xMap &&
+                    sprite.getyMap() == yMap &&
                     sprite.getSpriteType().equals(spriteType)) {
                 return true;
             }
