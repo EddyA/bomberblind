@@ -94,8 +94,8 @@ public class SpriteList extends LinkedList<Sprite> {
                     break;
                 }
                 case BREAKING_ENEMY: {
-                    shouldBeRemoved = ActionMethods.processBreakingEnemy(this, map.getMapPointMatrix(), map.getMapWidth(),
-                            map.getMapHeight(), (BreakingEnemy) sprite);
+                    shouldBeRemoved = ActionMethods.processBreakingEnemy(this, tmpList, map.getMapPointMatrix(),
+                            map.getMapWidth(), map.getMapHeight(), (BreakingEnemy) sprite);
                     break;
                 }
                 case BOMB: {

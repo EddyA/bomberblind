@@ -18,10 +18,12 @@ import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
 import static images.ImagesLoader.IMAGE_SIZE;
-import static map.ctrl.NomadMethods.isNomadBurning;
+import static map.ctrl.NomadMethods.*;
 import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
 import static spriteList.ctrl.AddingMethods.addBomb;
 import static utils.Action.*;
+import static utils.Tools.*;
+import static utils.Tools.getCharRightColIdx;
 
 /**
  * Define a collection of methods to process sprites.
@@ -137,7 +139,7 @@ public class ActionMethods {
                     }
                     case KeyEvent.VK_B: {
                         addBomb(tmpList, mapPointMatrix, new Bomb(Tools.getCharRowIdx(bomber.getyMap()),
-                                Tools.getCharColIdx(bomber.getxMap()), 3));
+                                getCharColIdx(bomber.getxMap()), 3));
                         break;
                     }
                     case KeyEvent.VK_W: {
@@ -264,17 +266,19 @@ public class ActionMethods {
      * - OR do nothing.
      *
      * @param list           the list of sprites
+     * @param tmpList        the temporary list of sprites to add new elements
      * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth       the map width
      * @param mapHeight      the map height
-     * @param breakingEnemy   the enemy
+     * @param breakingEnemy  the enemy
      * @return true if the enemy should be removed from the list, false otherwise.
      */
     public static boolean processBreakingEnemy(LinkedList<Sprite> list,
-                                              MapPoint[][] mapPointMatrix,
-                                              int mapWidth,
-                                              int mapHeight,
-                                              BreakingEnemy breakingEnemy) {
+                                               LinkedList<Sprite> tmpList,
+                                               MapPoint[][] mapPointMatrix,
+                                               int mapWidth,
+                                               int mapHeight,
+                                               BreakingEnemy breakingEnemy) {
         boolean shouldBeRemoved = false;
         if (breakingEnemy.isFinished()) {
             shouldBeRemoved = true;
@@ -285,7 +289,9 @@ public class ActionMethods {
                 breakingEnemy.setCurAction(ACTION_DYING);
 
             } else if (breakingEnemy.isTimeToAct()) { // it is time to act.
-                moveEnemyIfPossible(list, mapPointMatrix, mapWidth, mapHeight, breakingEnemy);
+                if (!breakingMutableIfPossible(list, tmpList, mapPointMatrix, mapWidth, mapHeight, breakingEnemy)) {
+                    moveEnemyIfPossible(list, mapPointMatrix, mapWidth, mapHeight, breakingEnemy);
+                }
             }
         }
         return shouldBeRemoved;
@@ -340,6 +346,70 @@ public class ActionMethods {
     }
 
     /**
+     * Move the enemy of a pixel if possible, favoring the current direction and changing of it if needed.
+     * If the enemy cannot move (i.e. blocked off), do nothing.
+     *
+     * @param list           the list of sprites
+     * @param tmpList        the temporary list of sprites to add new elements
+     * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
+     * @param mapWidth       the map width
+     * @param mapHeight      the map height
+     * @param breakingEnemy  the enemy
+     */
+    public static boolean breakingMutableIfPossible(LinkedList<Sprite> list,
+                                                    LinkedList<Sprite> tmpList,
+                                                    MapPoint[][] mapPointMatrix,
+                                                    int mapWidth,
+                                                    int mapHeight,
+                                                    BreakingEnemy breakingEnemy) {
+        int flameRowIdx = 0;
+        int flameColIdx = 0;
+        boolean isNomadCrossingMutable = false;
+        switch (breakingEnemy.getCurDirection()) {
+            case NORTH: {
+                if (!isNomadCrossingMapLimit(mapWidth, mapHeight, breakingEnemy.getxMap(), breakingEnemy.getyMap() - 1) &&
+                        isNomadCrossingMutable(mapPointMatrix, breakingEnemy.getxMap(), breakingEnemy.getyMap() - 1)) {
+                    flameRowIdx = getCharTopRowIdx(breakingEnemy.getyMap() - 1);
+                    flameColIdx = Tools.getCharColIdx(breakingEnemy.getxMap());
+                    isNomadCrossingMutable = true;
+                }
+                break;
+            }
+            case SOUTH: {
+                if (!isNomadCrossingMapLimit(mapWidth, mapHeight, breakingEnemy.getxMap(), breakingEnemy.getyMap() + 1) &&
+                        isNomadCrossingMutable(mapPointMatrix, breakingEnemy.getxMap(), breakingEnemy.getyMap() + 1)) {
+                    flameRowIdx = getCharBottomRowIdx(breakingEnemy.getyMap() + 1);
+                    flameColIdx = Tools.getCharColIdx(breakingEnemy.getxMap());
+                    isNomadCrossingMutable = true;
+                }
+                break;
+            }
+            case WEST: {
+                if (!isNomadCrossingMapLimit(mapWidth, mapHeight, breakingEnemy.getxMap() - 1, breakingEnemy.getyMap()) &&
+                        isNomadCrossingMutable(mapPointMatrix, breakingEnemy.getxMap() - 1, breakingEnemy.getyMap())) {
+                    flameRowIdx = Tools.getCharRowIdx(breakingEnemy.getyMap());
+                    flameColIdx = getCharLeftColIdx(breakingEnemy.getxMap() - 1);
+                    isNomadCrossingMutable = true;
+                }
+                break;
+            }
+            case EAST: {
+                if (!isNomadCrossingMapLimit(mapWidth, mapHeight, breakingEnemy.getxMap() + 1, breakingEnemy.getyMap()) &&
+                        isNomadCrossingMutable(mapPointMatrix, breakingEnemy.getxMap() + 1, breakingEnemy.getyMap())) {
+                    flameRowIdx = Tools.getCharRowIdx(breakingEnemy.getyMap());
+                    flameColIdx = getCharRightColIdx(breakingEnemy.getxMap() + 1);
+                    isNomadCrossingMutable = true;
+                }
+                break;
+            }
+        }
+        if (isNomadCrossingMutable) {
+            breakingEnemy.setCurAction(ACTION_BREAKING);
+        }
+        return isNomadCrossingMutable;
+    }
+
+    /**
      * - Notice that the bomb must be removed from the list (if the sprite is finished),
      * -- AND add flames,
      * -- AND remove the bombing status of the relative case.
@@ -381,7 +451,9 @@ public class ActionMethods {
      * @param flame          the flame
      * @return true if the flame should be removed from the list, false otherwise.
      */
-    public static boolean processFlame(LinkedList<Sprite> tmpList, MapPoint[][] mapPointMatrix, Flame flame) {
+    public static boolean processFlame(LinkedList<Sprite> tmpList,
+                                       MapPoint[][] mapPointMatrix,
+                                       Flame flame) {
         boolean shouldBeRemoved = false;
         if (flame.isFinished()) {
 

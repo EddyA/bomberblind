@@ -8,7 +8,7 @@ import java.awt.*;
 import static utils.Action.ACTION_WALKING;
 
 /**
- * Abstract class of an walking enemy.
+ * Abstract class of a walking enemy.
  */
 public abstract class WalkingEnemy extends Nomad {
 

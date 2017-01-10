@@ -83,7 +83,6 @@ public class AddingMethods {
         } else {
             return false; // the next case should NOT be tested.
         }
-
     }
 
     /**
