@@ -5,8 +5,8 @@ import static utils.Tools.getCharLeftAbscissa;
 import static utils.Tools.getCharRightAbscissa;
 import static utils.Tools.getCharTopOrdinate;
 
-import sprite.SpriteType;
 import sprite.Sprite;
+import sprite.SpriteType;
 import sprite.nomad.Nomad;
 
 public class NomadMethods {
@@ -23,8 +23,9 @@ public class NomadMethods {
     public static boolean isNomadCrossingEnemy(java.util.List<Sprite> spriteList, int xChar, int yChar, Nomad nomad) {
         boolean isCrossing = false;
         for (Sprite curSprite : spriteList) {
-            if (curSprite.getSpriteType().equals(SpriteType.WALKING_ENEMY) && // it is an enemy
-                    curSprite != nomad) { // AND the checked abstracts is not the one provided.
+            if (curSprite != nomad && // the checked nomad is not the provided one
+                    (curSprite.getSpriteType().equals(SpriteType.WALKING_ENEMY) || // AND is a walking enemy
+                            curSprite.getSpriteType().equals(SpriteType.BREAKING_ENEMY))) { // OR is a breaking enemy.
 
                 // the right bound of the provided abstracts is between the left & the right side of the checked one.
                 if (((getCharRightAbscissa(xChar) >= getCharLeftAbscissa(curSprite.getxMap()) &&

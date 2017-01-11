@@ -1,17 +1,28 @@
 package ai;
 
-import map.MapPoint;
-import sprite.Sprite;
-import sprite.nomad.Nomad;
-import utils.Direction;
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static map.ctrl.NomadMethods.isNomadCrossingBomb;
+import static map.ctrl.NomadMethods.isNomadCrossingMapLimit;
+import static map.ctrl.NomadMethods.isNomadCrossingMutable;
+import static map.ctrl.NomadMethods.isNomadCrossingObstacle;
+import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
+import static utils.Action.ACTION_BREAKING;
+import static utils.Tools.getCharBottomRowIdx;
+import static utils.Tools.getCharLeftColIdx;
+import static utils.Tools.getCharRightColIdx;
+import static utils.Tools.getCharTopRowIdx;
 
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static map.ctrl.NomadMethods.*;
-import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
+import map.MapPoint;
+import sprite.Sprite;
+import sprite.nomad.BreakingEnemy;
+import sprite.nomad.Nomad;
+import utils.Direction;
+import utils.Tools;
 
 public class EnemyAi {
 
@@ -91,5 +102,62 @@ public class EnemyAi {
             }
         }
         return curCheckedDirection;
+    }
+
+    /**
+     * Is there a mutable blocking an enemy.
+     * 
+     * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
+     * @param mapWidth the map width
+     * @param mapHeight the map height
+     * @param breakingEnemy the enemy
+     * @return the MapPoint to break if there is any, false otherwise.
+     */
+    public static MapPoint isThereMutableBlockingEnemy(MapPoint[][] mapPointMatrix,
+            int mapWidth,
+            int mapHeight,
+            BreakingEnemy breakingEnemy) {
+
+        MapPoint curCheckedMapPoint = null;
+        switch (breakingEnemy.getCurDirection()) {
+        case NORTH: {
+            if (!isNomadCrossingMapLimit(mapWidth, mapHeight, breakingEnemy.getxMap(), breakingEnemy.getyMap() - 1) &&
+                    isNomadCrossingMutable(mapPointMatrix, breakingEnemy.getxMap(), breakingEnemy.getyMap() - 1)) {
+                curCheckedMapPoint = mapPointMatrix[getCharTopRowIdx(breakingEnemy.getyMap() - 1)][Tools
+                        .getCharColIdx(breakingEnemy.getxMap())];
+            }
+            break;
+        }
+        case SOUTH: {
+            if (!isNomadCrossingMapLimit(mapWidth, mapHeight, breakingEnemy.getxMap(), breakingEnemy.getyMap() + 1) &&
+                    isNomadCrossingMutable(mapPointMatrix, breakingEnemy.getxMap(), breakingEnemy.getyMap() + 1)) {
+                curCheckedMapPoint = mapPointMatrix[getCharBottomRowIdx(breakingEnemy.getyMap() + 1)][Tools
+                        .getCharColIdx(breakingEnemy.getxMap())];
+
+            }
+            break;
+        }
+        case WEST: {
+            if (!isNomadCrossingMapLimit(mapWidth, mapHeight, breakingEnemy.getxMap() - 1, breakingEnemy.getyMap()) &&
+                    isNomadCrossingMutable(mapPointMatrix, breakingEnemy.getxMap() - 1, breakingEnemy.getyMap())) {
+                curCheckedMapPoint = mapPointMatrix[Tools.getCharRowIdx(breakingEnemy.getyMap())][getCharLeftColIdx(
+                        breakingEnemy.getxMap() - 1)];
+            }
+            break;
+        }
+        case EAST: {
+            if (!isNomadCrossingMapLimit(mapWidth, mapHeight, breakingEnemy.getxMap() + 1, breakingEnemy.getyMap()) &&
+                    isNomadCrossingMutable(mapPointMatrix, breakingEnemy.getxMap() + 1, breakingEnemy.getyMap())) {
+                curCheckedMapPoint = mapPointMatrix[Tools.getCharRowIdx(breakingEnemy.getyMap())][getCharRightColIdx(
+                        breakingEnemy.getxMap() + 1)];
+            }
+            break;
+        }
+        }
+        if (curCheckedMapPoint != null) {
+            // if a mutable must be broken.
+            breakingEnemy.setCurAction(ACTION_BREAKING);
+        }
+        return curCheckedMapPoint;
     }
 }

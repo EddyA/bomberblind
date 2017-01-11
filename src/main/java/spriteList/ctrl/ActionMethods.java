@@ -1,5 +1,20 @@
 package spriteList.ctrl;
 
+import static ai.EnemyAi.isThereMutableBlockingEnemy;
+import static images.ImagesLoader.IMAGE_SIZE;
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
+import static spriteList.ctrl.AddingMethods.addBomb;
+import static utils.Action.ACTION_BREAKING;
+import static utils.Action.ACTION_DYING;
+import static utils.Action.ACTION_WAITING;
+import static utils.Action.ACTION_WALKING;
+import static utils.Action.ACTION_WINING;
+import static utils.Tools.getCharColIdx;
+
+import java.awt.event.KeyEvent;
+import java.util.LinkedList;
+
 import ai.EnemyAi;
 import map.MapPoint;
 import map.ctrl.NomadMethods;
@@ -13,17 +28,6 @@ import sprite.settled.FlameEnd;
 import sprite.settled.TimedSettled;
 import utils.Direction;
 import utils.Tools;
-
-import java.awt.event.KeyEvent;
-import java.util.LinkedList;
-
-import static images.ImagesLoader.IMAGE_SIZE;
-import static map.ctrl.NomadMethods.*;
-import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
-import static spriteList.ctrl.AddingMethods.addBomb;
-import static utils.Action.*;
-import static utils.Tools.*;
-import static utils.Tools.getCharRightColIdx;
 
 /**
  * Define a collection of methods to process sprites.
@@ -245,7 +249,7 @@ public class ActionMethods {
         boolean shouldBeRemoved = false;
         if (walkingEnemy.isFinished()) {
             shouldBeRemoved = true;
-        } else if (walkingEnemy.getCurAction() != ACTION_DYING) { // the bomber is not finished and not dead.
+        } else if (walkingEnemy.getCurAction() != ACTION_DYING) { // the enemy is not finished and not dead.
 
             // should the enemy die?
             if (isNomadBurning(mapPointMatrix, walkingEnemy.getxMap(), walkingEnemy.getyMap())) {
@@ -282,15 +286,34 @@ public class ActionMethods {
         boolean shouldBeRemoved = false;
         if (breakingEnemy.isFinished()) {
             shouldBeRemoved = true;
-        } else if (breakingEnemy.getCurAction() != ACTION_DYING) { // the bomber is not finished and not dead.
+        } else if (breakingEnemy.getCurAction() != ACTION_DYING) { // -> the enemy is not dying.
 
             // should the enemy die?
             if (isNomadBurning(mapPointMatrix, breakingEnemy.getxMap(), breakingEnemy.getyMap())) {
                 breakingEnemy.setCurAction(ACTION_DYING);
 
             } else if (breakingEnemy.isTimeToAct()) { // it is time to act.
-                if (!breakingMutableIfPossible(list, tmpList, mapPointMatrix, mapWidth, mapHeight, breakingEnemy)) {
-                    moveEnemyIfPossible(list, mapPointMatrix, mapWidth, mapHeight, breakingEnemy);
+                if (breakingEnemy.getCurAction() != ACTION_BREAKING) { // -> the enemy is not breaking.
+
+                    // is there a mutable blocking the enemy?
+                    MapPoint mapPointToBreak = isThereMutableBlockingEnemy(mapPointMatrix, mapWidth, mapHeight,
+                            breakingEnemy);
+                    if (mapPointToBreak != null) { // yes, there is a mutable blocking the enemy.
+                        breakingEnemy.setBreakingMapPoint(mapPointToBreak);
+                        breakingEnemy.setCurAction(ACTION_BREAKING);
+
+                    } else { // there is no mutable blocking the enemy.
+                        moveEnemyIfPossible(list, mapPointMatrix, mapWidth, mapHeight, breakingEnemy);
+                    }
+                } else { // -> the enemy is breaking.
+
+                    // is the breaking sprite finished?
+                    if (breakingEnemy.isBreakingFinished()) {
+                        AddingMethods.addFlame(tmpList, mapPointMatrix,
+                                new Flame(breakingEnemy.getBreakingMapPoint().getRowIdx(),
+                                        breakingEnemy.getBreakingMapPoint().getColIdx()));
+                        moveEnemyIfPossible(list, mapPointMatrix, mapWidth, mapHeight, breakingEnemy);
+                    }
                 }
             }
         }
@@ -320,8 +343,7 @@ public class ActionMethods {
                 list,
                 walkingEnemy);
 
-        // assign the new coordinates and move if possible.
-        if (newDirection != null) {
+        if (newDirection != null) { // a new direction has been found (i.e. the enemy must change or direction).
             walkingEnemy.setCurAction(ACTION_WALKING);
             walkingEnemy.setCurDirection(newDirection);
             switch (newDirection) {
@@ -343,70 +365,6 @@ public class ActionMethods {
                 }
             }
         }
-    }
-
-    /**
-     * Move the enemy of a pixel if possible, favoring the current direction and changing of it if needed.
-     * If the enemy cannot move (i.e. blocked off), do nothing.
-     *
-     * @param list           the list of sprites
-     * @param tmpList        the temporary list of sprites to add new elements
-     * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param mapWidth       the map width
-     * @param mapHeight      the map height
-     * @param breakingEnemy  the enemy
-     */
-    public static boolean breakingMutableIfPossible(LinkedList<Sprite> list,
-                                                    LinkedList<Sprite> tmpList,
-                                                    MapPoint[][] mapPointMatrix,
-                                                    int mapWidth,
-                                                    int mapHeight,
-                                                    BreakingEnemy breakingEnemy) {
-        int flameRowIdx = 0;
-        int flameColIdx = 0;
-        boolean isNomadCrossingMutable = false;
-        switch (breakingEnemy.getCurDirection()) {
-            case NORTH: {
-                if (!isNomadCrossingMapLimit(mapWidth, mapHeight, breakingEnemy.getxMap(), breakingEnemy.getyMap() - 1) &&
-                        isNomadCrossingMutable(mapPointMatrix, breakingEnemy.getxMap(), breakingEnemy.getyMap() - 1)) {
-                    flameRowIdx = getCharTopRowIdx(breakingEnemy.getyMap() - 1);
-                    flameColIdx = Tools.getCharColIdx(breakingEnemy.getxMap());
-                    isNomadCrossingMutable = true;
-                }
-                break;
-            }
-            case SOUTH: {
-                if (!isNomadCrossingMapLimit(mapWidth, mapHeight, breakingEnemy.getxMap(), breakingEnemy.getyMap() + 1) &&
-                        isNomadCrossingMutable(mapPointMatrix, breakingEnemy.getxMap(), breakingEnemy.getyMap() + 1)) {
-                    flameRowIdx = getCharBottomRowIdx(breakingEnemy.getyMap() + 1);
-                    flameColIdx = Tools.getCharColIdx(breakingEnemy.getxMap());
-                    isNomadCrossingMutable = true;
-                }
-                break;
-            }
-            case WEST: {
-                if (!isNomadCrossingMapLimit(mapWidth, mapHeight, breakingEnemy.getxMap() - 1, breakingEnemy.getyMap()) &&
-                        isNomadCrossingMutable(mapPointMatrix, breakingEnemy.getxMap() - 1, breakingEnemy.getyMap())) {
-                    flameRowIdx = Tools.getCharRowIdx(breakingEnemy.getyMap());
-                    flameColIdx = getCharLeftColIdx(breakingEnemy.getxMap() - 1);
-                    isNomadCrossingMutable = true;
-                }
-                break;
-            }
-            case EAST: {
-                if (!isNomadCrossingMapLimit(mapWidth, mapHeight, breakingEnemy.getxMap() + 1, breakingEnemy.getyMap()) &&
-                        isNomadCrossingMutable(mapPointMatrix, breakingEnemy.getxMap() + 1, breakingEnemy.getyMap())) {
-                    flameRowIdx = Tools.getCharRowIdx(breakingEnemy.getyMap());
-                    flameColIdx = getCharRightColIdx(breakingEnemy.getxMap() + 1);
-                    isNomadCrossingMutable = true;
-                }
-                break;
-            }
-        }
-        if (isNomadCrossingMutable) {
-            breakingEnemy.setCurAction(ACTION_BREAKING);
-        }
-        return isNomadCrossingMutable;
     }
 
     /**

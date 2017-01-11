@@ -1,10 +1,12 @@
 package sprite.nomad;
 
+import static utils.Action.ACTION_BREAKING;
+import static utils.Action.ACTION_WAITING;
+
+import java.awt.Image;
+
+import map.MapPoint;
 import sprite.SpriteType;
-
-import java.awt.*;
-
-import static utils.Action.*;
 
 /**
  * Abstract class of a breaking enemy.
@@ -16,11 +18,8 @@ public class BreakingEnemy extends WalkingEnemy {
     private final Image[] breakLeftImages;
     private final Image[] breakRightImages;
     private final int nbBreakFrame;
-    private final Image[] waitBackImages;
-    private final Image[] waitFrontImages;
-    private final Image[] waitLeftImages;
-    private final Image[] waitRightImages;
-    private final int nbWaitFrame;
+
+    private MapPoint breakingMapPoint = null; // the current MapPoint the enemy is breaking.
 
     /**
      * Create an enemy.
@@ -34,11 +33,6 @@ public class BreakingEnemy extends WalkingEnemy {
      * @param nbBreakFrame     number of images of the "break" arrays
      * @param deathImages      the array of image for the "death" action
      * @param nbDeathFrame     the number of images of the "death" array
-     * @param waitBackImages   the array of images for the "wait back" action
-     * @param waitFrontImages  the array of images for the "wait front" action
-     * @param waitLeftImages   the array of images for the "wait left" action
-     * @param waitRightImages  the array of images for the "wait right" action
-     * @param nbwaitFrame      number of images of the "wait" arrays
      * @param walkBackImages   the array of images for the "walk back" action
      * @param walkFrontImages  the array of images for the "walk front" action
      * @param walkLeftImages   the array of images for the "walk left" action
@@ -56,11 +50,6 @@ public class BreakingEnemy extends WalkingEnemy {
                          int nbBreakFrame,
                          Image[] deathImages,
                          int nbDeathFrame,
-                         Image[] waitBackImages,
-                         Image[] waitFrontImages,
-                         Image[] waitLeftImages,
-                         Image[] waitRightImages,
-                         int nbwaitFrame,
                          Image[] walkBackImages,
                          Image[] walkFrontImages,
                          Image[] walkLeftImages,
@@ -85,19 +74,26 @@ public class BreakingEnemy extends WalkingEnemy {
         this.breakLeftImages = breakLeftImages;
         this.breakRightImages = breakRightImages;
         this.nbBreakFrame = nbBreakFrame;
-        this.waitBackImages = waitBackImages;
-        this.waitFrontImages = waitFrontImages;
-        this.waitLeftImages = waitLeftImages;
-        this.waitRightImages = waitRightImages;
-        this.nbWaitFrame = nbwaitFrame;
+    }
+
+    public MapPoint getBreakingMapPoint() {
+        return breakingMapPoint;
+    }
+
+    public void setBreakingMapPoint(MapPoint breakingMapPoint) {
+        this.breakingMapPoint = breakingMapPoint;
+    }
+
+    public boolean isBreakingFinished() {
+        return curAction.equals(ACTION_BREAKING) && paintedAtLeastOneTime;
     }
 
     @Override
     public boolean hasActionChanged() {
         if (!curAction.equals(lastAction) || // either the action has changed
                 (curAction.equals(ACTION_BREAKING) && !curDirection.equals(lastDirection)) || // or walking to another direction.
-                (curAction.equals(ACTION_WAITING) && !curDirection.equals(lastDirection)) || // or breaking  with another direction.
-                (curAction.equals(ACTION_WALKING) && !curDirection.equals(lastDirection))) { // or breaking with another direction.
+                (curAction.equals(ACTION_WAITING) && !curDirection.equals(lastDirection))) { // or breaking with another
+                                                                                             // direction.
             lastAction = curAction;
             lastDirection = curDirection;
             lastRefreshTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
@@ -137,31 +133,6 @@ public class BreakingEnemy extends WalkingEnemy {
             case ACTION_DYING: {
                 images = deathImages;
                 nbImages = nbDeathFrame;
-                break;
-            }
-            case ACTION_WAITING: {
-                switch (curDirection) {
-                    case NORTH: {
-                        images = waitBackImages;
-                        nbImages = nbWaitFrame;
-                        break;
-                    }
-                    case SOUTH: {
-                        images = waitFrontImages;
-                        nbImages = nbWaitFrame;
-                        break;
-                    }
-                    case WEST: {
-                        images = waitLeftImages;
-                        nbImages = nbWaitFrame;
-                        break;
-                    }
-                    case EAST: {
-                        images = waitRightImages;
-                        nbImages = nbWaitFrame;
-                        break;
-                    }
-                }
                 break;
             }
             case ACTION_WALKING: {

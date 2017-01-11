@@ -28,11 +28,6 @@ public class Minotor extends BreakingEnemy {
                 ImagesLoader.imagesMatrix[ImagesLoader.minotorWalkFrontMatrixRowIdx],
                 ImagesLoader.imagesMatrix[ImagesLoader.minotorWalkLeftMatrixRowIdx],
                 ImagesLoader.imagesMatrix[ImagesLoader.minotorWalkRightMatrixRowIdx],
-                ImagesLoader.NB_MINOTOR_WAIT_FRAME,
-                ImagesLoader.imagesMatrix[ImagesLoader.minotorWalkBackMatrixRowIdx],
-                ImagesLoader.imagesMatrix[ImagesLoader.minotorWalkFrontMatrixRowIdx],
-                ImagesLoader.imagesMatrix[ImagesLoader.minotorWalkLeftMatrixRowIdx],
-                ImagesLoader.imagesMatrix[ImagesLoader.minotorWalkRightMatrixRowIdx],
                 ImagesLoader.NB_MINOTOR_WALK_FRAME,
                 REFRESH_TIME,
                 ACTING_TIME);

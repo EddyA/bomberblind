@@ -75,10 +75,10 @@ public class NomadMethods {
         int mostRightColIdx = getCharRightColIdx(xChar);
 
         boolean isCrossing = false;
-        if (!mapPointMatrix[topRowIdx][mostLeftColIdx].isMutable() ||
-                !mapPointMatrix[topRowIdx][mostRightColIdx].isMutable() ||
-                !mapPointMatrix[bottomRowIdx][mostLeftColIdx].isMutable() ||
-                !mapPointMatrix[bottomRowIdx][mostRightColIdx].isMutable()) {
+        if (mapPointMatrix[topRowIdx][mostLeftColIdx].isMutable() ||
+                mapPointMatrix[topRowIdx][mostRightColIdx].isMutable() ||
+                mapPointMatrix[bottomRowIdx][mostLeftColIdx].isMutable() ||
+                mapPointMatrix[bottomRowIdx][mostRightColIdx].isMutable()) {
             isCrossing = true;
         }
         return isCrossing;

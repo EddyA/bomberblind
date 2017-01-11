@@ -72,7 +72,6 @@ public class ImagesLoader {
     // - minotor.
     public final static int NB_MINOTOR_BREAK_FRAME = 2;
     public final static int NB_MINOTOR_DEATH_FRAME = 4;
-    public final static int NB_MINOTOR_WAIT_FRAME = 1; // 1st sprite of "walk" sprites.
     public final static int NB_MINOTOR_WALK_FRAME = 4;
     public static int minotorDeathMatrixRowIdx;
     public static int minotorWalkBackMatrixRowIdx;

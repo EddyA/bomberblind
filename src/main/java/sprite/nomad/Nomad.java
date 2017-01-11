@@ -1,11 +1,11 @@
 package sprite.nomad;
 
+import static utils.Action.ACTION_DYING;
+
 import sprite.Sprite;
 import sprite.SpriteType;
 import utils.Action;
 import utils.Direction;
-
-import static utils.Action.ACTION_DYING;
 
 /**
  * Abstract class of a nomad.
@@ -19,6 +19,8 @@ public abstract class Nomad extends Sprite {
 
     private final int actingTime; // acting time (in ms, defining the sprite's speed in term of action/sec).
     protected long lastActionTs; // last action timestamp.
+
+    protected boolean paintedAtLeastOneTime; // to notice the current action has been painted at least 1 time.
 
     private final int invincibilityTime; // invincibility time (in ms).
     protected long lastInvincibilityTs; // last invincibility timestamp.
@@ -132,9 +134,11 @@ public abstract class Nomad extends Sprite {
     @Override
     public void updateImage() {
         updateSprite();
-        if (hasActionChanged() || // the action has changed
+        if ((hasActionChanged() && // the action has changed
+                !(paintedAtLeastOneTime = false)) || // just to re-init this variable when the action has changed.
                 (isTimeToRefresh() && // OR (it is time to refresh
-                        (++curImageIdx == nbImages))) { // AND it is the end of the sprite).
+                        (++curImageIdx == nbImages && // AND it is the end of the sprite - the image index is ++ here).
+                                (paintedAtLeastOneTime = true)))) { // just to notice the sprite has been painted once.
             curImageIdx = 0;
         }
         if (isInvincible() &&
@@ -147,6 +151,6 @@ public abstract class Nomad extends Sprite {
 
     @Override
     public boolean isFinished() {
-        return curAction.equals(ACTION_DYING) && (curImageIdx == nbImages - 1);
+        return curAction.equals(ACTION_DYING) && paintedAtLeastOneTime;
     }
 }
