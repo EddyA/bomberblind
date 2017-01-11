@@ -171,15 +171,18 @@ public class NomadTest implements WithAssertions {
 
     @Test
     public void isFinishedShouldReturnTrue() throws Exception {
-        BlueBomber blueBomber = new BlueBomber(15, 30);
+        BlueBomber blueBomber = new BlueBomber(5, 4);
+        BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
+        Mockito.when(spyedBlueBomber.hasActionChanged()).thenReturn(false);
+        Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(true);
 
         // set test.
-        blueBomber.setCurAction(ACTION_DYING);
-        blueBomber.updateSprite();
-        blueBomber.setCurImageIdx(ImagesLoader.NB_BOMBER_DEATH_FRAME - 1);
+        spyedBlueBomber.setCurAction(ACTION_DYING);
+        spyedBlueBomber.setCurImageIdx(ImagesLoader.NB_BOMBER_DEATH_FRAME - 1);
+        spyedBlueBomber.updateImage();
 
         // call & check.
-        assertThat(blueBomber.isFinished()).isTrue();
+        assertThat(spyedBlueBomber.isFinished()).isTrue();
     }
 
     @Test

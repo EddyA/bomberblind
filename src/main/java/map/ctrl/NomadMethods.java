@@ -35,7 +35,7 @@ public class NomadMethods {
     }
 
     /**
-     * Is the nomad crossing an obstacle?
+     * Is the nomad crossing an obstacle (i.e. not a pathway)?
      *
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param xChar          the nomad abscissa

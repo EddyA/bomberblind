@@ -19,6 +19,7 @@ public class SpritesPropertiesTest implements WithAssertions {
         assertThat(spritesProperties.getSpritesEnemyCloakedSkeleton()).isEqualTo(1);
         assertThat(spritesProperties.getSpritesEnemyMecaAngel()).isEqualTo(2);
         assertThat(spritesProperties.getSpritesEnemyMummy()).isEqualTo(3);
+        assertThat(spritesProperties.getSpritesEnemyMinotor()).isEqualTo(4);
     }
 
     @Test

@@ -18,5 +18,6 @@ public class SpritesSettingTest implements WithAssertions {
         assertThat(spritesSetting.getNbCloakedSkeleton()).isEqualTo(1);
         assertThat(spritesSetting.getNbMecaAngel()).isEqualTo(2);
         assertThat(spritesSetting.getNbMummy()).isEqualTo(3);
+        assertThat(spritesSetting.getNbMinotor()).isEqualTo(4);
     }
 }
