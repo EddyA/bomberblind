@@ -1,20 +1,5 @@
 package spriteList.ctrl;
 
-import static ai.EnemyAi.isThereMutableBlockingEnemy;
-import static images.ImagesLoader.IMAGE_SIZE;
-import static map.ctrl.NomadMethods.isNomadBurning;
-import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
-import static spriteList.ctrl.AddingMethods.addBomb;
-import static utils.Action.ACTION_BREAKING;
-import static utils.Action.ACTION_DYING;
-import static utils.Action.ACTION_WAITING;
-import static utils.Action.ACTION_WALKING;
-import static utils.Action.ACTION_WINING;
-import static utils.Tools.getCharColIdx;
-
-import java.awt.event.KeyEvent;
-import java.util.LinkedList;
-
 import ai.EnemyAi;
 import map.MapPoint;
 import map.ctrl.NomadMethods;
@@ -28,6 +13,18 @@ import sprite.settled.FlameEnd;
 import sprite.settled.TimedSettled;
 import utils.Direction;
 import utils.Tools;
+
+import java.awt.event.KeyEvent;
+import java.util.LinkedList;
+
+import static images.ImagesLoader.IMAGE_SIZE;
+import static map.ctrl.NomadMethods.isNomadBlockedOffByMutable;
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
+import static spriteList.ctrl.AddingMethods.addBomb;
+import static utils.Action.*;
+import static utils.Direction.*;
+import static utils.Tools.getCharColIdx;
 
 /**
  * Define a collection of methods to process sprites.
@@ -79,13 +76,13 @@ public class ActionMethods {
                     }
                     case KeyEvent.VK_UP: {
                         bomber.setCurAction(ACTION_WALKING);
-                        bomber.setCurDirection(Direction.NORTH);
+                        bomber.setCurDirection(NORTH);
                         if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
                                 bomber.getxMap(), bomber.getyMap() - 1)) {
                             if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getxMap(),
                                     bomber.getyMap() - 1) &&
                                     !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getxMap(),
-                                            bomber.getyMap() - 1, KeyEvent.VK_UP)) {
+                                            bomber.getyMap() - 1, NORTH)) {
                                 bomber.setyMap(bomber.getyMap() - 1);
                             } else {
                                 shiftBomberIfPossible(mapPointMatrix, bomber, KeyEvent.VK_UP);
@@ -101,7 +98,7 @@ public class ActionMethods {
                             if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getxMap(),
                                     bomber.getyMap() + 1) &&
                                     !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getxMap(),
-                                            bomber.getyMap() + 1, KeyEvent.VK_DOWN)) {
+                                            bomber.getyMap() + 1, SOUTH)) {
                                 bomber.setyMap(bomber.getyMap() + 1);
                             } else {
                                 shiftBomberIfPossible(mapPointMatrix, bomber, KeyEvent.VK_DOWN);
@@ -111,13 +108,13 @@ public class ActionMethods {
                     }
                     case KeyEvent.VK_LEFT: {
                         bomber.setCurAction(ACTION_WALKING);
-                        bomber.setCurDirection(Direction.WEST);
+                        bomber.setCurDirection(WEST);
                         if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
                                 bomber.getxMap() - 1, bomber.getyMap())) {
                             if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getxMap() - 1,
                                     bomber.getyMap()) &&
                                     !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getxMap() - 1,
-                                            bomber.getyMap(), KeyEvent.VK_LEFT)) {
+                                            bomber.getyMap(), WEST)) {
                                 bomber.setxMap(bomber.getxMap() - 1);
                             } else {
                                 shiftBomberIfPossible(mapPointMatrix, bomber, KeyEvent.VK_LEFT);
@@ -133,7 +130,7 @@ public class ActionMethods {
                             if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getxMap() + 1,
                                     bomber.getyMap()) &&
                                     !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getxMap() + 1,
-                                            bomber.getyMap(), KeyEvent.VK_RIGHT)) {
+                                            bomber.getyMap(), EAST)) {
                                 bomber.setxMap(bomber.getxMap() + 1);
                             } else {
                                 shiftBomberIfPossible(mapPointMatrix, bomber, KeyEvent.VK_RIGHT);
@@ -295,23 +292,31 @@ public class ActionMethods {
             } else if (breakingEnemy.isTimeToAct()) { // it is time to act.
                 if (breakingEnemy.getCurAction() != ACTION_BREAKING) { // -> the enemy is not breaking.
 
-                    // is there a mutable blocking the enemy?
-                    MapPoint mapPointToBreak = isThereMutableBlockingEnemy(mapPointMatrix, mapWidth, mapHeight,
-                            breakingEnemy);
-                    if (mapPointToBreak != null) { // yes, there is a mutable blocking the enemy.
+                    // is the nomad blocked off by a mutable?
+                    MapPoint mapPointToBreak = isNomadBlockedOffByMutable(mapPointMatrix,
+                            mapWidth,
+                            mapHeight,
+                            breakingEnemy.getxMap(),
+                            breakingEnemy.getyMap(),
+                            breakingEnemy.getCurDirection());
+                    if (mapPointToBreak != null) { // if so, break the mutable.
                         breakingEnemy.setBreakingMapPoint(mapPointToBreak);
                         breakingEnemy.setCurAction(ACTION_BREAKING);
 
-                    } else { // there is no mutable blocking the enemy.
+                    } else { // else, move.
                         moveEnemyIfPossible(list, mapPointMatrix, mapWidth, mapHeight, breakingEnemy);
                     }
                 } else { // -> the enemy is breaking.
 
                     // is the breaking sprite finished?
-                    if (breakingEnemy.isBreakingFinished()) {
+                    if (breakingEnemy.isBreakingSpriteFinished()) {
+
+                        // add a flame.
                         AddingMethods.addFlame(tmpList, mapPointMatrix,
                                 new Flame(breakingEnemy.getBreakingMapPoint().getRowIdx(),
                                         breakingEnemy.getBreakingMapPoint().getColIdx()));
+
+                        // move.
                         moveEnemyIfPossible(list, mapPointMatrix, mapWidth, mapHeight, breakingEnemy);
                     }
                 }

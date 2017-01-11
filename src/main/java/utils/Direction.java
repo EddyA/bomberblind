@@ -1,5 +1,6 @@
 package utils;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,5 +36,25 @@ public enum Direction {
             rDirection = directionList.get(random.nextInt(directionList.size()));
         } while (excludedDirections.contains(rDirection));
         return rDirection;
+    }
+
+    /**
+     * Convert a KeyEvent to a Direction.
+     *
+     * @param keyEvent the keyEvent
+     * @return the relative direction if possible, null otherwise.
+     */
+    public static Direction convertKeyEventToDirection(Integer keyEvent) {
+        switch (keyEvent) {
+            case KeyEvent.VK_UP:
+                return NORTH;
+            case KeyEvent.VK_DOWN:
+                return SOUTH;
+            case KeyEvent.VK_LEFT:
+                return WEST;
+            case KeyEvent.VK_RIGHT:
+                return EAST;
+        }
+        throw new RuntimeException("Cannot convert KeyEvent '" + keyEvent + "' to Direction.");
     }
 }

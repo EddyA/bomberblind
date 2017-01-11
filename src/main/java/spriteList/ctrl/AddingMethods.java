@@ -1,7 +1,5 @@
 package spriteList.ctrl;
 
-import java.util.LinkedList;
-
 import map.MapPoint;
 import sprite.Sprite;
 import sprite.nomad.Bomber;
@@ -9,6 +7,8 @@ import sprite.nomad.WalkingEnemy;
 import sprite.settled.Bomb;
 import sprite.settled.Flame;
 import sprite.settled.FlameEnd;
+
+import java.util.LinkedList;
 
 /**
  * A collection of methods to add sprites to a list according to a map status.
@@ -97,7 +97,7 @@ public class AddingMethods {
      * @param flameSize      the flame size
      */
     public static void addFlames(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
-            int centralRowIdx, int centralColIdx, int flameSize) {
+                                 int centralRowIdx, int centralColIdx, int flameSize) {
         Flame flame;
 
         // place left flames.
@@ -137,8 +137,8 @@ public class AddingMethods {
     /**
      * Add a flame end to a list.
      *
-     * @param list   the list into which adding the flame
-     * @param  flameEnd the flame end to add
+     * @param list     the list into which adding the flame
+     * @param flameEnd the flame end to add
      */
     public static void addFlameEnd(LinkedList<Sprite> list, FlameEnd flameEnd) {
         list.add(flameEnd);

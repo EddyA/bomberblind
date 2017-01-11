@@ -1,13 +1,12 @@
 package map.ctrl;
 
-import static utils.Tools.getCharBottomRowIdx;
-import static utils.Tools.getCharLeftColIdx;
-import static utils.Tools.getCharRightColIdx;
-import static utils.Tools.getCharTopRowIdx;
+import map.MapPoint;
+import utils.Direction;
+import utils.Tools;
 
 import java.awt.event.KeyEvent;
 
-import map.MapPoint;
+import static utils.Tools.*;
 
 public class NomadMethods {
 
@@ -85,6 +84,58 @@ public class NomadMethods {
     }
 
     /**
+     * Is the nomad is blocked off by a mutable (according to its direction).
+     *
+     * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
+     * @param mapWidth       the map width
+     * @param mapHeight      the map height
+     * @param xChar          the nomad abscissa
+     * @param yChar          the nomad ordinate
+     * @param direction      the nomad direction
+     * @return the blocking MapPoint if the nomad is blocked off, null otherwise.
+     */
+    public static MapPoint isNomadBlockedOffByMutable(MapPoint[][] mapPointMatrix,
+                                                      int mapWidth,
+                                                      int mapHeight,
+                                                      int xChar,
+                                                      int yChar,
+                                                      Direction direction) {
+        MapPoint blockingMutable = null;
+        switch (direction) {
+            case NORTH: {
+                if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar, yChar - 1) &&
+                        isNomadCrossingMutable(mapPointMatrix, xChar, yChar - 1)) {
+                    blockingMutable = mapPointMatrix[getCharTopRowIdx(yChar - 1)][Tools.getCharColIdx(xChar)];
+                }
+                break;
+            }
+            case SOUTH: {
+                if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar, yChar + 1) &&
+                        isNomadCrossingMutable(mapPointMatrix, xChar, yChar + 1)) {
+                    blockingMutable = mapPointMatrix[getCharBottomRowIdx(yChar + 1)][Tools.getCharColIdx(xChar)];
+
+                }
+                break;
+            }
+            case WEST: {
+                if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar - 1, yChar) &&
+                        isNomadCrossingMutable(mapPointMatrix, xChar - 1, yChar)) {
+                    blockingMutable = mapPointMatrix[Tools.getCharRowIdx(yChar)][getCharLeftColIdx(xChar - 1)];
+                }
+                break;
+            }
+            case EAST: {
+                if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar + 1, yChar) &&
+                        isNomadCrossingMutable(mapPointMatrix, xChar + 1, yChar)) {
+                    blockingMutable = mapPointMatrix[Tools.getCharRowIdx(yChar)][getCharRightColIdx(xChar + 1)];
+                }
+                break;
+            }
+        }
+        return blockingMutable;
+    }
+
+    /**
      * Is the nomad burning?
      * i.e. is there a burning case adjoining the nomad?
      *
@@ -118,19 +169,19 @@ public class NomadMethods {
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param xChar          the nomad abscissa
      * @param yChar          the nomad ordinate
-     * @param keyEvent       the current pressed key
+     * @param direction      the nomad direction
      * @return true if the nomad is crossing a bomb, false otherwise
      * @implSpec isNomadCrossingMapLimit() must be called before this function!
      */
-    public static boolean isNomadCrossingBomb(MapPoint[][] mapPointMatrix, int xChar, int yChar, int keyEvent) {
+    public static boolean isNomadCrossingBomb(MapPoint[][] mapPointMatrix, int xChar, int yChar, Direction direction) {
         int topRowIdx = getCharTopRowIdx(yChar);
         int bottomRowIdx = getCharBottomRowIdx(yChar);
         int mostLeftColIdx = getCharLeftColIdx(xChar);
         int mostRightColIdx = getCharRightColIdx(xChar);
 
         boolean isCrossing = false;
-        switch (keyEvent) {
-            case KeyEvent.VK_UP: {
+        switch (direction) {
+            case NORTH: {
                 if ((mapPointMatrix[topRowIdx][mostLeftColIdx].isBombing() ||
                         mapPointMatrix[topRowIdx][mostRightColIdx].isBombing()) &&
                         topRowIdx != getCharTopRowIdx(yChar + 1)) {
@@ -138,7 +189,7 @@ public class NomadMethods {
                 }
                 break;
             }
-            case KeyEvent.VK_DOWN: {
+            case SOUTH: {
                 if ((mapPointMatrix[bottomRowIdx][mostLeftColIdx].isBombing() ||
                         mapPointMatrix[bottomRowIdx][mostRightColIdx].isBombing()) &&
                         bottomRowIdx != getCharBottomRowIdx(yChar - 1)) {
@@ -146,7 +197,7 @@ public class NomadMethods {
                 }
                 break;
             }
-            case KeyEvent.VK_LEFT: {
+            case WEST: {
                 if ((mapPointMatrix[topRowIdx][mostLeftColIdx].isBombing() ||
                         mapPointMatrix[bottomRowIdx][mostLeftColIdx].isBombing()) &&
                         mostLeftColIdx != getCharLeftColIdx(xChar + 1)) {
@@ -154,7 +205,7 @@ public class NomadMethods {
                 }
                 break;
             }
-            case KeyEvent.VK_RIGHT: {
+            case EAST: {
                 if ((mapPointMatrix[topRowIdx][mostRightColIdx].isBombing() ||
                         mapPointMatrix[bottomRowIdx][mostRightColIdx].isBombing()) &&
                         mostRightColIdx != getCharRightColIdx(xChar - 1)) {

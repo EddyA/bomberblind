@@ -84,7 +84,7 @@ public class BreakingEnemy extends WalkingEnemy {
         this.breakingMapPoint = breakingMapPoint;
     }
 
-    public boolean isBreakingFinished() {
+    public boolean isBreakingSpriteFinished() {
         return curAction.equals(ACTION_BREAKING) && paintedAtLeastOneTime;
     }
 
