@@ -1,12 +1,12 @@
 package sprite.nomad;
 
-import static utils.Action.ACTION_BREAKING;
-import static utils.Action.ACTION_WAITING;
-
-import java.awt.Image;
-
 import map.MapPoint;
 import sprite.SpriteType;
+
+import java.awt.*;
+
+import static utils.Action.ACTION_BREAKING;
+import static utils.Action.ACTION_WALKING;
 
 /**
  * Abstract class of a breaking enemy.
@@ -76,6 +76,26 @@ public class BreakingEnemy extends WalkingEnemy {
         this.nbBreakFrame = nbBreakFrame;
     }
 
+    public Image[] getBreakBackImages() {
+        return breakBackImages;
+    }
+
+    public Image[] getBreakFrontImages() {
+        return breakFrontImages;
+    }
+
+    public Image[] getBreakLeftImages() {
+        return breakLeftImages;
+    }
+
+    public Image[] getBreakRightImages() {
+        return breakRightImages;
+    }
+
+    public int getNbBreakFrame() {
+        return nbBreakFrame;
+    }
+
     public MapPoint getBreakingMapPoint() {
         return breakingMapPoint;
     }
@@ -92,8 +112,8 @@ public class BreakingEnemy extends WalkingEnemy {
     public boolean hasActionChanged() {
         if (!curAction.equals(lastAction) || // either the action has changed
                 (curAction.equals(ACTION_BREAKING) && !curDirection.equals(lastDirection)) || // or walking to another direction.
-                (curAction.equals(ACTION_WAITING) && !curDirection.equals(lastDirection))) { // or breaking with another
-                                                                                             // direction.
+                (curAction.equals(ACTION_WALKING) && !curDirection.equals(lastDirection))) { // or breaking with another
+            // direction.
             lastAction = curAction;
             lastDirection = curDirection;
             lastRefreshTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.

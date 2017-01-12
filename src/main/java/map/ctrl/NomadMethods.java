@@ -4,8 +4,6 @@ import map.MapPoint;
 import utils.Direction;
 import utils.Tools;
 
-import java.awt.event.KeyEvent;
-
 import static utils.Tools.*;
 
 public class NomadMethods {
