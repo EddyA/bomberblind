@@ -251,6 +251,7 @@ public class ActionMethods {
             // should the enemy die?
             if (isNomadBurning(mapPointMatrix, walkingEnemy.getxMap(), walkingEnemy.getyMap())) {
                 walkingEnemy.setCurAction(ACTION_DYING);
+                walkingEnemy.setRefreshTime(Sprite.REFRESH_TIME_WHEN_DYING); // normalize the frame rate for the dead sprite.
 
             } else if (walkingEnemy.isTimeToAct()) { // it is time to act.
                 moveEnemyIfPossible(list, mapPointMatrix, mapWidth, mapHeight, walkingEnemy);
@@ -288,6 +289,7 @@ public class ActionMethods {
             // should the enemy die?
             if (isNomadBurning(mapPointMatrix, breakingEnemy.getxMap(), breakingEnemy.getyMap())) {
                 breakingEnemy.setCurAction(ACTION_DYING);
+                breakingEnemy.setRefreshTime(Sprite.REFRESH_TIME_WHEN_DYING); // normalize the frame rate for the dead sprite.
 
             } else if (breakingEnemy.isTimeToAct()) { // it is time to act.
                 if (breakingEnemy.getCurAction() != ACTION_BREAKING) { // -> the enemy is not breaking.

@@ -21,8 +21,9 @@ public abstract class Sprite {
     protected int curImageIdx; // current image index of the sprite.
     protected Image curImage; // current image of the sprite.
 
-    private final int refreshTime; // refresh time (in ms).
+    private int refreshTime; // refresh time (in ms).
     protected long lastRefreshTs; // last refresh timestamp.
+    public static int REFRESH_TIME_WHEN_DYING = 140;
 
     /**
      * Create a settled sprite.
@@ -104,6 +105,10 @@ public abstract class Sprite {
 
     public int getRefreshTime() {
         return refreshTime;
+    }
+
+    public void setRefreshTime(int refreshTime) {
+        this.refreshTime = refreshTime;
     }
 
     public void setLastRefreshTs(long lastRefreshTs) {

@@ -61,7 +61,7 @@ public class ImagesLoader {
     public static int mummyWalkRightMatrixRowIdx;
 
     // - mecanic angel.
-    public final static int NB_MECA_ANGEL_DEATH_FRAME = 4;
+    public final static int NB_MECA_ANGEL_DEATH_FRAME = 5;
     public final static int NB_MECA_ANGEL_WALK_FRAME = 2;
     public static int mecaAngelDeathMatrixRowIdx;
     public static int mecaAngelWalkBackMatrixRowIdx;
@@ -71,7 +71,7 @@ public class ImagesLoader {
 
     // - minotor.
     public final static int NB_MINOTOR_BREAK_FRAME = 2;
-    public final static int NB_MINOTOR_DEATH_FRAME = 4;
+    public final static int NB_MINOTOR_DEATH_FRAME = 5;
     public final static int NB_MINOTOR_WALK_FRAME = 4;
     public static int minotorDeathMatrixRowIdx;
     public static int minotorWalkBackMatrixRowIdx;
