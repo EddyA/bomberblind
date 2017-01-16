@@ -17,9 +17,11 @@ A bomberman alike game.
   * Bomb does explose when hiting by a flame.
 * Randomly create enemies.
   * The number/proportion of enemies is fully settable (.properties).
-* Enemies handling.
-  * An enemy dies when hitting by a flame.
-  * An enemy changes of direction when reaching an obstacle or another enemy.
+* Walking enemies handling.
+  * A walking enemy dies when hitting by a flame.
+  * A walking enemy changes of direction when reaching an obstacle or another enemy.
+* Breaking enemies handling.
+  * Same as walking enemy, but breaks obstacles (and then, changes of direction) when reaching mutables.
 * Fullscreen handling.
   * Fullscreen mode is available for the following screen format:
     * 4/3 (1024*768, 16bits, 60hz)
