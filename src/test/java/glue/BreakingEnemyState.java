@@ -17,6 +17,9 @@ public class BreakingEnemyState {
         ImagesLoader.fillImagesMatrix();
         Minotor minotor = new Minotor(0, 0);
         spyedMinotor = Mockito.spy(minotor);
+
+        // avoid the time constraint to make action.
+        Mockito.when(spyedMinotor.isTimeToAct()).thenReturn(true);
     }
 
     public BreakingEnemy getEnemy() {

@@ -17,6 +17,9 @@ public class WalkingEnemyState {
         ImagesLoader.fillImagesMatrix();
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(0, 0);
         spyedCloakedSkeleton = Mockito.spy(cloakedSkeleton);
+
+        // avoid the time constraint to make action.
+        Mockito.when(spyedCloakedSkeleton.isTimeToAct()).thenReturn(true);
     }
 
     public WalkingEnemy getEnemy() {

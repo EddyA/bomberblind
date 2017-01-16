@@ -11,6 +11,7 @@ public class ActionMethodsStepDef implements WithAssertions {
     private final MapPointMatrixState mapPointMatrixState;
     private final BomberState bomberState;
     private final WalkingEnemyState walkingEnemyState;
+    private final BreakingEnemyState breakingEnemyState;
     private final BombState bombState;
     private final FlameState flameState;
     private final FlameEndState flameEndState;
@@ -19,6 +20,7 @@ public class ActionMethodsStepDef implements WithAssertions {
             MapPointMatrixState mapPointMatrixState,
             BomberState bomberState,
             WalkingEnemyState walkingEnemyState,
+            BreakingEnemyState breakingEnemyState,
             BombState bombState,
             FlameState flameState,
             FlameEndState flameEndState) {
@@ -26,6 +28,7 @@ public class ActionMethodsStepDef implements WithAssertions {
         this.mapPointMatrixState = mapPointMatrixState;
         this.bomberState = bomberState;
         this.walkingEnemyState = walkingEnemyState;
+        this.breakingEnemyState = breakingEnemyState;
         this.bombState = bombState;
         this.flameState = flameState;
         this.flameEndState = flameEndState;
@@ -38,12 +41,21 @@ public class ActionMethodsStepDef implements WithAssertions {
                 mapPointMatrixState.getMapHeight(), bomberState.getBomber(), 0);
     }
 
-    @When("^processing the enemy$")
-    public void processing_the_enemy() {
+    @When("^processing the walking enemy$")
+    public void processing_the_walking_enemy() {
         walkingEnemyState.setShouldBeRemoved(
                 ActionMethods.processWalkingEnemy(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(),
                         mapPointMatrixState.getMapWidth(), mapPointMatrixState.getMapHeight(),
                         walkingEnemyState.getEnemy()));
+    }
+
+    @When("^processing the breaking enemy$")
+    public void processing_the_breaking_enemy() {
+        breakingEnemyState.setShouldBeRemoved(
+                ActionMethods
+                        .processBreakingEnemy(listOfSprites.getSpriteList(), listOfSprites.getSpriteList(),
+                                mapPointMatrixState.getMapPointMatrix(), mapPointMatrixState.getMapWidth(),
+                                mapPointMatrixState.getMapHeight(), breakingEnemyState.getEnemy()));
     }
 
     @When("processing the bomb$")

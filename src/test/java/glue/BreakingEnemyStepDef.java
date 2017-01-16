@@ -1,5 +1,6 @@
 package glue;
 
+import static utils.Action.ACTION_BREAKING;
 import static utils.Action.ACTION_DYING;
 
 import org.assertj.core.api.WithAssertions;
@@ -17,7 +18,7 @@ public class BreakingEnemyStepDef  implements WithAssertions {
         this.breakingEnemyState = breakingEnemyState;
     }
 
-    @And("^the breaking enemy is breaking to the south$")
+    @And("^the breaking enemy is walking to the south$")
     public void the_breaking_enemy_is_breaking_toward() {
         breakingEnemyState.getEnemy().setCurDirection(Direction.SOUTH);
         breakingEnemyState.getEnemy().setLastDirection(Direction.SOUTH);
@@ -37,6 +38,16 @@ public class BreakingEnemyStepDef  implements WithAssertions {
     public void the_breaking_enemy_should_get_another_direction() {
         assertThat(breakingEnemyState.getEnemy().getCurDirection())
                 .isNotEqualTo(breakingEnemyState.getEnemy().getLastDirection());
+    }
+
+    @Then("^the breaking enemy should break$")
+    public void the_breaking_enemy_should_break_the() {
+        assertThat(breakingEnemyState.getEnemy().getCurAction()).isEqualTo(ACTION_BREAKING);
+    }
+
+    @And("^the breaking sprite is done$")
+    public void the_breaking_sprite_is_down() {
+        Mockito.when(breakingEnemyState.getEnemy().isBreakingSpriteFinished()).thenReturn(true);
     }
 
     @Then("^the breaking enemy should be marked as removable from the sprite list$")

@@ -1,13 +1,14 @@
 package glue;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Then;
-import org.assertj.core.api.WithAssertions;
-import org.mockito.Mockito;
-import utils.Tools;
-
 import static utils.Action.ACTION_DYING;
 import static utils.Action.ACTION_WAITING;
+
+import org.assertj.core.api.WithAssertions;
+import org.mockito.Mockito;
+
+import cucumber.api.java.en.And;
+import cucumber.api.java.en.Then;
+import utils.Tools;
 
 public class BomberStepDef implements WithAssertions {
 

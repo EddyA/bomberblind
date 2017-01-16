@@ -1,8 +1,13 @@
 package glue;
 
+import java.util.List;
+
 import org.assertj.core.api.WithAssertions;
 
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import map.MapPoint;
+import sprite.SpriteType;
 import spriteList.ctrl.AddingMethods;
 import utils.Tools;
 
@@ -79,5 +84,17 @@ public class AddingMethodsStepDef implements WithAssertions {
         flameEndState.getFlameEnd().setRowIdx(rowIdx);
         flameEndState.getFlameEnd().setColIdx(colIdx);
         AddingMethods.addFlameEnd(listOfSprites.getSpriteList(), flameEndState.getFlameEnd());
+    }
+
+    @Then("^the following flames should be added:$")
+    public void the_following_flames_should_be_added(List<MapPoint> entries) {
+        // only the presence of the sprites in the list is checked,
+        // the status cases are already checked in the adding methods tests.
+        for (MapPoint entry : entries) {
+            assertThat(listOfSprites.isSpriteInSpriteList(
+                    Tools.getCaseCentreAbscissa(entry.getColIdx()),
+                    Tools.getCaseBottomOrdinate(entry.getRowIdx()),
+                    SpriteType.FLAME)).isTrue();
+        }
     }
 }
