@@ -8,12 +8,12 @@ import images.ImagesLoader;
 import sprite.nomad.CloakedSkeleton;
 import sprite.nomad.WalkingEnemy;
 
-public class EnemyState {
+public class WalkingEnemyState {
 
     private final CloakedSkeleton spyedCloakedSkeleton;
     private boolean shouldBeRemoved;
 
-    public EnemyState() throws IOException {
+    public WalkingEnemyState() throws IOException {
         ImagesLoader.fillImagesMatrix();
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(0, 0);
         spyedCloakedSkeleton = Mockito.spy(cloakedSkeleton);

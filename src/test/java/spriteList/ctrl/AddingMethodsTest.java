@@ -10,6 +10,7 @@ import sprite.Sprite;
 import sprite.nomad.BlueBomber;
 import sprite.nomad.Bomber;
 import sprite.nomad.CloakedSkeleton;
+import sprite.nomad.Minotor;
 import sprite.settled.Bomb;
 import sprite.settled.Flame;
 import sprite.settled.FlameEnd;
@@ -38,13 +39,23 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addEnemyShouldAddTheEnemyToTheListOfSprite() throws Exception {
+    public void addWalkingEnemyShouldAddTheEnemyToTheListOfSprite() throws Exception {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(1, 2);
-        AddingMethods.addEnemy(spriteList, cloakedSkeleton);
+        AddingMethods.addWalkingEnemy(spriteList, cloakedSkeleton);
 
         // test.
         assertThat(spriteList.contains(cloakedSkeleton)).isTrue();
+    }
+
+    @Test
+    public void addBreakingEnemyShouldAddTheEnemyToTheListOfSprite() throws Exception {
+        LinkedList<Sprite> spriteList = new LinkedList<>();
+        Minotor minotor = new Minotor(1, 2);
+        AddingMethods.addBreakingEnemy(spriteList, minotor);
+
+        // test.
+        assertThat(spriteList.contains(minotor)).isTrue();
     }
 
     @Test

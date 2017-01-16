@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Random;
 
 import static images.ImagesLoader.IMAGE_SIZE;
-import static spriteList.ctrl.AddingMethods.addEnemy;
+import static spriteList.ctrl.AddingMethods.addBreakingEnemy;
+import static spriteList.ctrl.AddingMethods.addWalkingEnemy;
 
 public class GenerationMethodes {
 
@@ -38,19 +39,19 @@ public class GenerationMethodes {
             // create the enemy.
             switch (EnemyType) {
                 case CLOAKED_SKELETON: {
-                    addEnemy(spriteList, new CloakedSkeleton(xMap, yMap));
+                    addWalkingEnemy(spriteList, new CloakedSkeleton(xMap, yMap));
                     break;
                 }
                 case MECA_ANGEL: {
-                    addEnemy(spriteList, new MecaAngel(xMap, yMap));
+                    addWalkingEnemy(spriteList, new MecaAngel(xMap, yMap));
                     break;
                 }
                 case MUMMY: {
-                    addEnemy(spriteList, new Mummy(xMap, yMap));
+                    addWalkingEnemy(spriteList, new Mummy(xMap, yMap));
                     break;
                 }
                 case MINOTOR: {
-                    addEnemy(spriteList, new Minotor(xMap, yMap));
+                    addBreakingEnemy(spriteList, new Minotor(xMap, yMap));
                     break;
                 }
             }

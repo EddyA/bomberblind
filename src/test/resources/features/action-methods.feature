@@ -9,17 +9,24 @@ Feature: Features of the action methods class
     When processing the bomber
     Then the bomber should die
 
-  Scenario: validate bomber dies when crossing an enemy
+  Scenario: validate bomber dies when crossing a walking enemy
     Given a MapPoint matrix of 5 rows and 10 cols built with pathway cases
     Given a bomber at rowIdx 3 and coldIdx 5
-    Given an enemy at rowIdx 3 and coldIdx 5
+    Given a walking enemy at rowIdx 3 and coldIdx 5
+    When processing the bomber
+    Then the bomber should die
+
+  Scenario: validate bomber dies when crossing a breaking enemy
+    Given a MapPoint matrix of 5 rows and 10 cols built with pathway cases
+    Given a bomber at rowIdx 3 and coldIdx 5
+    Given a breaking enemy at rowIdx 3 and coldIdx 5
     When processing the bomber
     Then the bomber should die
 
   Scenario: validate bomber does not die when crossing an enemy and invincible
     Given a MapPoint matrix of 5 rows and 10 cols built with pathway cases
     And the bomber is invincible
-    Given an enemy at rowIdx 3 and coldIdx 5
+    Given a walking enemy at rowIdx 3 and coldIdx 5
     When processing the bomber
     Then the bomber should not die
 
@@ -30,29 +37,53 @@ Feature: Features of the action methods class
     When processing the bomber
     Then the bomber is re-init
 
-  # enemy:
+  # walking enemy:
+
+  Scenario: validate walking enemy dies when reaching a burning case
+    Given a MapPoint matrix of 5 rows and 10 cols built with pathway cases
+    Given a walking enemy at rowIdx 3 and coldIdx 5
+    Given a burning case at rowIdx 3 and coldIdx 5
+    When processing the enemy
+    Then the walking enemy should die
+
+  Scenario: validate walking enemy gets another direction when reaching an obstacle
+    Given a MapPoint matrix of 5 rows and 10 cols built with pathway cases
+    Given a walking enemy at rowIdx 3 and coldIdx 5
+    And the walking enemy is walking to the south
+    Given an obstacle case at rowIdx 4 and coldIdx 5
+    When processing the enemy
+    Then the walking enemy should get another direction
+
+  Scenario: validate walking enemy is marked as removable when dead
+    Given a MapPoint matrix of 5 rows and 10 cols built with pathway cases
+    Given a walking enemy at rowIdx 3 and coldIdx 5
+    And the walking enemy is dead
+    When processing the enemy
+    Then the walking enemy should be marked as removable from the sprite list
+
+  # breaking enemy:
 
   Scenario: validate enemy dies when reaching a burning case
     Given a MapPoint matrix of 5 rows and 10 cols built with pathway cases
-    Given an enemy at rowIdx 3 and coldIdx 5
+    Given a walking enemy at rowIdx 3 and coldIdx 5
     Given a burning case at rowIdx 3 and coldIdx 5
     When processing the enemy
-    Then the enemy should die
+    Then the walking enemy should die
 
   Scenario: validate enemy gets another direction when reaching an obstacle
     Given a MapPoint matrix of 5 rows and 10 cols built with pathway cases
-    Given an enemy at rowIdx 3 and coldIdx 5
-    And the enemy is walking to the south
+    Given a walking enemy at rowIdx 3 and coldIdx 5
+    And the walking enemy is walking to the south
     Given an obstacle case at rowIdx 4 and coldIdx 5
     When processing the enemy
-    Then the enemy should get another direction
+    Then the walking enemy should get another direction
 
   Scenario: validate enemy is marked as removable when dead
     Given a MapPoint matrix of 5 rows and 10 cols built with pathway cases
-    Given an enemy at rowIdx 3 and coldIdx 5
-    And the enemy is dead
+    Given a walking enemy at rowIdx 3 and coldIdx 5
+    And the walking enemy is dead
     When processing the enemy
-    Then the enemy should be marked as removable from the sprite list
+    Then the walking enemy should be marked as removable from the sprite list
 
   # bomb:
 

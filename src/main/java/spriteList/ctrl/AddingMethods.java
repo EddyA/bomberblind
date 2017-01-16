@@ -3,6 +3,7 @@ package spriteList.ctrl;
 import map.MapPoint;
 import sprite.Sprite;
 import sprite.nomad.Bomber;
+import sprite.nomad.BreakingEnemy;
 import sprite.nomad.WalkingEnemy;
 import sprite.settled.Bomb;
 import sprite.settled.Flame;
@@ -26,14 +27,26 @@ public class AddingMethods {
     }
 
     /**
-     * Add an enemy to the list.
+     * Add a walking enemy to the list.
      *
      * @param list  the list into which adding the sprite
-     * @param enemy the enemy to add
+     * @param walkingEnemy the walking enemy to add
      */
-    public static void addEnemy(LinkedList<Sprite> list, WalkingEnemy enemy) {
-        list.add(enemy);
+    public static void addWalkingEnemy(LinkedList<Sprite> list, WalkingEnemy walkingEnemy) {
+        list.add(walkingEnemy);
     }
+
+
+    /**
+     * Add a breaking enemy to the list.
+     *
+     * @param list  the list into which adding the sprite
+     * @param breakingEnemy the walking enemy to add
+     */
+    public static void addBreakingEnemy(LinkedList<Sprite> list, BreakingEnemy breakingEnemy) {
+        list.add(breakingEnemy);
+    }
+
 
     /**
      * Add a bomb to a list.

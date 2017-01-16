@@ -1,5 +1,24 @@
 package spriteList.ctrl;
 
+import static images.ImagesLoader.IMAGE_SIZE;
+import static map.ctrl.NomadMethods.isNomadBlockedOffByMutable;
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
+import static spriteList.ctrl.AddingMethods.addBomb;
+import static utils.Action.ACTION_BREAKING;
+import static utils.Action.ACTION_DYING;
+import static utils.Action.ACTION_WAITING;
+import static utils.Action.ACTION_WALKING;
+import static utils.Action.ACTION_WINING;
+import static utils.Direction.EAST;
+import static utils.Direction.NORTH;
+import static utils.Direction.SOUTH;
+import static utils.Direction.WEST;
+import static utils.Tools.getCharColIdx;
+
+import java.awt.event.KeyEvent;
+import java.util.LinkedList;
+
 import ai.EnemyAi;
 import map.MapPoint;
 import map.ctrl.NomadMethods;
@@ -13,18 +32,6 @@ import sprite.settled.FlameEnd;
 import sprite.settled.TimedSettled;
 import utils.Direction;
 import utils.Tools;
-
-import java.awt.event.KeyEvent;
-import java.util.LinkedList;
-
-import static images.ImagesLoader.IMAGE_SIZE;
-import static map.ctrl.NomadMethods.isNomadBlockedOffByMutable;
-import static map.ctrl.NomadMethods.isNomadBurning;
-import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
-import static spriteList.ctrl.AddingMethods.addBomb;
-import static utils.Action.*;
-import static utils.Direction.*;
-import static utils.Tools.getCharColIdx;
 
 /**
  * Define a collection of methods to process sprites.

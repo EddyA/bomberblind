@@ -11,7 +11,8 @@ public class AddingMethodsStepDef implements WithAssertions {
     private final SpriteListState listOfSprites;
     private final MapPointMatrixState mapPointMatrixState;
     private final BomberState bomberState;
-    private final EnemyState enemyState;
+    private final WalkingEnemyState walkingEnemyState;
+    private final BreakingEnemyState breakingEnemyState;
     private final BombState bombState;
     private final FlameState flameState;
     private final FlameEndState flameEndState;
@@ -19,14 +20,16 @@ public class AddingMethodsStepDef implements WithAssertions {
     public AddingMethodsStepDef(SpriteListState listOfSprites,
             MapPointMatrixState mapPointMatrixState,
             BomberState bomberState,
-            EnemyState enemyState,
+            WalkingEnemyState walkingEnemyState,
+            BreakingEnemyState breakingEnemyState,
             BombState bombState,
             FlameState flameState,
             FlameEndState flameEndState) {
         this.listOfSprites = listOfSprites;
         this.mapPointMatrixState = mapPointMatrixState;
         this.bomberState = bomberState;
-        this.enemyState = enemyState;
+        this.walkingEnemyState = walkingEnemyState;
+        this.breakingEnemyState = breakingEnemyState;
         this.bombState = bombState;
         this.flameState = flameState;
         this.flameEndState = flameEndState;
@@ -42,11 +45,18 @@ public class AddingMethodsStepDef implements WithAssertions {
         AddingMethods.addBomber(listOfSprites.getSpriteList(), bomberState.getBomber());
     }
 
-    @Given("^an enemy at rowIdx (\\d+) and coldIdx (\\d+)$")
-    public void an_enemy_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
-        enemyState.getEnemy().setxMap(Tools.getCaseCentreAbscissa(colIdx));
-        enemyState.getEnemy().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
-        AddingMethods.addEnemy(listOfSprites.getSpriteList(), enemyState.getEnemy());
+    @Given("^a walking enemy at rowIdx (\\d+) and coldIdx (\\d+)$")
+    public void a_walking_enemy_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
+        walkingEnemyState.getEnemy().setxMap(Tools.getCaseCentreAbscissa(colIdx));
+        walkingEnemyState.getEnemy().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
+        AddingMethods.addWalkingEnemy(listOfSprites.getSpriteList(), walkingEnemyState.getEnemy());
+    }
+
+    @Given("^a breaking enemy at rowIdx (\\d+) and coldIdx (\\d+)$")
+    public void a_breaking_enemy_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
+        breakingEnemyState.getEnemy().setxMap(Tools.getCaseCentreAbscissa(colIdx));
+        breakingEnemyState.getEnemy().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
+        AddingMethods.addBreakingEnemy(listOfSprites.getSpriteList(), breakingEnemyState.getEnemy());
     }
 
     @Given("^a bomb at rowIdx (\\d+) and coldIdx (\\d+) and a flame size of (\\d+)$")

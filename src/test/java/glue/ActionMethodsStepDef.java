@@ -10,7 +10,7 @@ public class ActionMethodsStepDef implements WithAssertions {
     private final SpriteListState listOfSprites;
     private final MapPointMatrixState mapPointMatrixState;
     private final BomberState bomberState;
-    private final EnemyState enemyState;
+    private final WalkingEnemyState walkingEnemyState;
     private final BombState bombState;
     private final FlameState flameState;
     private final FlameEndState flameEndState;
@@ -18,14 +18,14 @@ public class ActionMethodsStepDef implements WithAssertions {
     public ActionMethodsStepDef(SpriteListState listOfSprites,
             MapPointMatrixState mapPointMatrixState,
             BomberState bomberState,
-            EnemyState enemyState,
+            WalkingEnemyState walkingEnemyState,
             BombState bombState,
             FlameState flameState,
             FlameEndState flameEndState) {
         this.listOfSprites = listOfSprites;
         this.mapPointMatrixState = mapPointMatrixState;
         this.bomberState = bomberState;
-        this.enemyState = enemyState;
+        this.walkingEnemyState = walkingEnemyState;
         this.bombState = bombState;
         this.flameState = flameState;
         this.flameEndState = flameEndState;
@@ -40,9 +40,10 @@ public class ActionMethodsStepDef implements WithAssertions {
 
     @When("^processing the enemy$")
     public void processing_the_enemy() {
-        enemyState.setShouldBeRemoved(
+        walkingEnemyState.setShouldBeRemoved(
                 ActionMethods.processWalkingEnemy(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(),
-                        mapPointMatrixState.getMapWidth(), mapPointMatrixState.getMapHeight(), enemyState.getEnemy()));
+                        mapPointMatrixState.getMapWidth(), mapPointMatrixState.getMapHeight(),
+                        walkingEnemyState.getEnemy()));
     }
 
     @When("processing the bomb$")
