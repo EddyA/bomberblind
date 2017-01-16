@@ -9,12 +9,10 @@ import cucumber.api.java.en.Then;
 public class BombStepDef implements WithAssertions {
 
     private final BombState bombState;
-    private final SpriteListState listOfSprites;
 
     public BombStepDef(BombState bombState,
             SpriteListState listOfSprites) {
         this.bombState = bombState;
-        this.listOfSprites = listOfSprites;
     }
 
     @And("^the bomb is finished$")

@@ -23,7 +23,7 @@ public abstract class Sprite {
 
     private int refreshTime; // refresh time (in ms).
     protected long lastRefreshTs; // last refresh timestamp.
-    public static int REFRESH_TIME_WHEN_DYING = 140;
+    public final static int REFRESH_TIME_WHEN_DYING = 140;
 
     /**
      * Create a settled sprite.
