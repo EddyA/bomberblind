@@ -1,23 +1,29 @@
 package sprite.nomad;
 
+import static utils.Action.ACTION_DYING;
+
 import sprite.Sprite;
 import sprite.SpriteType;
-
-import java.awt.*;
+import utils.Action;
+import utils.Direction;
 
 /**
  * Abstract class of a nomad.
  */
 public abstract class Nomad extends Sprite {
 
-    protected Image[] images; // array of image according to the current sprite's action.
-    protected int nbImages; // number of images of the array of image.
-    protected int curImageIdx; // sprite's current image index.
-    private Image curImage; // sprite's current image.
+    protected Action curAction; // current action.
+    protected Action lastAction; // last action.
+    protected Direction curDirection; // current direction.
+    protected Direction lastDirection; // last direction.
 
     private final int actingTime; // acting time (in ms, defining the sprite's speed in term of action/sec).
-    private long lastActionTs; // last action timestamp.
+    protected long lastActionTs; // last action timestamp.
 
+    protected boolean paintedAtLeastOneTime; // to notice the current action has been painted at least 1 time.
+
+    private final int invincibilityTime; // invincibility time (in ms).
+    protected long lastInvincibilityTs; // last invincibility timestamp.
     private int invincibleFrameIdx; // current invincible frame index.
 
     /**
@@ -29,33 +35,46 @@ public abstract class Nomad extends Sprite {
      * @param refreshTime the sprite refresh time (i.e. defining the sprite's speed in term of image/sec)
      * @param actingTime  the sprite acting time (i.e. defining the sprite's speed in term of action/sec)
      */
-    public Nomad(int xMap, int yMap, SpriteType spriteType, int refreshTime, int actingTime) {
-        super(xMap, yMap, spriteType, refreshTime);
+    public Nomad(int xMap,
+                 int yMap,
+                 SpriteType spriteType,
+                 int refreshTime,
+                 int actingTime,
+                 int invincibilityTime) {
+        super(xMap,
+                yMap,
+                spriteType,
+                refreshTime);
         this.actingTime = actingTime;
+        this.invincibilityTime = invincibilityTime;
     }
 
-    public Image[] getImages() {
-        return images;
+    public Action getCurAction() {
+        return curAction;
     }
 
-    public void setImages(Image[] images) {
-        this.images = images;
+    public void setCurAction(Action curAction) {
+        this.curAction = curAction;
     }
 
-    public int getNbImages() {
-        return nbImages;
+    public void setLastAction(Action lastAction) {
+        this.lastAction = lastAction;
     }
 
-    public void setNbImages(int nbImages) {
-        this.nbImages = nbImages;
+    public Direction getCurDirection() {
+        return curDirection;
     }
 
-    public int getCurImageIdx() {
-        return curImageIdx;
+    public void setCurDirection(Direction curDirection) {
+        this.curDirection = curDirection;
     }
 
-    public void setCurImageIdx(int curImageIdx) {
-        this.curImageIdx = curImageIdx;
+    public Direction getLastDirection() {
+        return lastDirection;
+    }
+
+    public void setLastDirection(Direction lastDirection) {
+        this.lastDirection = lastDirection;
     }
 
     public int getActingTime() {
@@ -64,6 +83,18 @@ public abstract class Nomad extends Sprite {
 
     public void setLastActionTs(long lastActionTs) {
         this.lastActionTs = lastActionTs;
+    }
+
+    public int getInvincibilityTime() {
+        return invincibilityTime;
+    }
+
+    public long getLastInvincibilityTs() {
+        return lastInvincibilityTs;
+    }
+
+    public void setLastInvincibilityTs(long lastInvincibilityTs) {
+        this.lastInvincibilityTs = lastInvincibilityTs;
     }
 
     /**
@@ -84,6 +115,13 @@ public abstract class Nomad extends Sprite {
     }
 
     /**
+     * @return true if the sprite is invincible, false otherwise.
+     */
+    public boolean isInvincible() {
+        return lastInvincibilityTs + invincibilityTime >= currentTimeSupplier.get().toEpochMilli();
+    }
+
+    /**
      * Update the sprite's image according to the current sprite's action.
      */
     public abstract void updateSprite();
@@ -93,25 +131,14 @@ public abstract class Nomad extends Sprite {
      */
     public abstract boolean hasActionChanged();
 
-    /**
-     * @return true if the sprite is invincible, false otherwise.
-     */
-    public abstract boolean isInvincible();
-
-    @Override
-    public abstract boolean isFinished();
-
-    @Override
-    public Image getCurImage() {
-        return curImage;
-    }
-
     @Override
     public void updateImage() {
         updateSprite();
-        if (hasActionChanged() || // the action has changed
+        if ((hasActionChanged() && // the action has changed
+                !(paintedAtLeastOneTime = false)) || // just to re-init this variable when the action has changed.
                 (isTimeToRefresh() && // OR (it is time to refresh
-                        (++curImageIdx == nbImages))) { // AND it is the end of the sprite).
+                        (++curImageIdx == nbImages && // AND it is the end of the sprite - the image index is ++ here).
+                                (paintedAtLeastOneTime = true)))) { // just to notice the sprite has been painted once.
             curImageIdx = 0;
         }
         if (isInvincible() &&
@@ -120,5 +147,10 @@ public abstract class Nomad extends Sprite {
         } else {
             curImage = images[curImageIdx];
         }
+    }
+
+    @Override
+    public boolean isFinished() {
+        return curAction.equals(ACTION_DYING) && paintedAtLeastOneTime;
     }
 }

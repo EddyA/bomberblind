@@ -1,32 +1,30 @@
 package spriteList.ctrl;
 
-import static images.ImagesLoader.IMAGE_SIZE;
-import static spriteList.ctrl.AddingMethods.addEnemy;
+import exceptions.CannotPlaceEnemyOnMapException;
+import map.MapPoint;
+import sprite.nomad.*;
+import spriteList.SpriteList;
 
 import java.util.List;
 import java.util.Random;
 
-import exceptions.CannotPlaceEnemyOnMapException;
-import map.MapPoint;
-import sprite.nomad.CloakedSkeleton;
-import sprite.nomad.EnemyType;
-import sprite.nomad.MecaAngel;
-import sprite.nomad.Mummy;
-import spriteList.SpriteList;
+import static images.ImagesLoader.IMAGE_SIZE;
+import static spriteList.ctrl.AddingMethods.addBreakingEnemy;
+import static spriteList.ctrl.AddingMethods.addWalkingEnemy;
 
 public class GenerationMethodes {
 
     /**
      * Place a certain number of elements of a certain type of enemy.
      *
-     * @param EnemyType the type of enemy to place
-     * @param nbElt the number of elements to place
-     * @param spriteList the list into which adding the enemy
+     * @param EnemyType   the type of enemy to place
+     * @param nbElt       the number of elements to place
+     * @param spriteList  the list into which adding the enemy
      * @param emptyPtList the list of empty points (available points to place the enemies)
      * @throws CannotPlaceEnemyOnMapException if a sprite cannot be placed on map
      */
     public static void randomlyPlaceEnemy(SpriteList spriteList, EnemyType EnemyType, int nbElt,
-            List<MapPoint> emptyPtList) throws CannotPlaceEnemyOnMapException {
+                                          List<MapPoint> emptyPtList) throws CannotPlaceEnemyOnMapException {
 
         for (int i = 0; i < nbElt; i++) {
             if (emptyPtList.isEmpty()) {
@@ -40,18 +38,22 @@ public class GenerationMethodes {
 
             // create the enemy.
             switch (EnemyType) {
-            case CLOAKED_SKELETON: {
-                addEnemy(spriteList, new CloakedSkeleton(xMap, yMap));
-                break;
-            }
-            case MECA_ANGEL: {
-                addEnemy(spriteList, new MecaAngel(xMap, yMap));
-                break;
-            }
-            case MUMMY: {
-                addEnemy(spriteList, new Mummy(xMap, yMap));
-                break;
-            }
+                case CLOAKED_SKELETON: {
+                    addWalkingEnemy(spriteList, new CloakedSkeleton(xMap, yMap));
+                    break;
+                }
+                case MECA_ANGEL: {
+                    addWalkingEnemy(spriteList, new MecaAngel(xMap, yMap));
+                    break;
+                }
+                case MUMMY: {
+                    addWalkingEnemy(spriteList, new Mummy(xMap, yMap));
+                    break;
+                }
+                case MINOTOR: {
+                    addBreakingEnemy(spriteList, new Minotor(xMap, yMap));
+                    break;
+                }
             }
             emptyPtList.remove(caseIdx); // remove the current point from the list of empty points.
         }

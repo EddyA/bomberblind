@@ -4,25 +4,14 @@ import sprite.SpriteType;
 
 import java.awt.*;
 
-import static sprite.settled.TimedSettled.Status.STATUS_ALIVE;
-
 /**
  * Abstract class of a timed sprites.
- * The sprite loops during a certain durationTime.
+ * The sprite loops during a certain duration.
  */
-public abstract class TimedSettled extends Settled {
+public abstract class TimedSettled extends LoopedSettled {
 
-    /**
-     * enum the different available action of a timed settled.
-     */
-    public enum Status {
-        STATUS_ALIVE, STATUS_ENDED
-    }
-
-    private final int durationTime; // durationTime the sprite must loop (in ms).
+    private final int durationTime; // duration the sprite must loop (in ms).
     private long startTs; // start timestamp.
-
-    private Status curStatus = STATUS_ALIVE; // current status of the sprite.
 
     /**
      * Create a timed settled.
@@ -32,43 +21,41 @@ public abstract class TimedSettled extends Settled {
      * @param spriteType   the sprite's type
      * @param refreshTime  the sprite refreshTime (i.e. fps)
      * @param images       the sprite's array of images
-     * @param nbImages     the number of images
-     * @param durationTime the durationTime the sprite must loop
+     * @param nbImages     the number of images of the array
+     * @param durationTime the duration the sprite must loop
      */
-    TimedSettled(int rowIdx, int colIdx, SpriteType spriteType, int refreshTime, Image[] images, int nbImages,
-                        int durationTime) {
-        super(rowIdx, colIdx, spriteType, refreshTime, images, nbImages);
+    TimedSettled(int rowIdx,
+                 int colIdx,
+                 SpriteType spriteType,
+                 int refreshTime,
+                 Image[] images,
+                 int nbImages,
+                 int durationTime) {
+        super(rowIdx,
+                colIdx,
+                spriteType,
+                refreshTime,
+                images,
+                nbImages,
+                0);
         this.durationTime = durationTime;
-        this.startTs = currentTimeSupplier.get().toEpochMilli(); // get the current durationTime.
+        this.startTs = currentTimeSupplier.get().toEpochMilli(); // start the sprite.
     }
 
-    int getDurationTime() {
+    public int getDurationTime() {
         return durationTime;
     }
 
-    void setStartTs(long startTs) {
+    public void setStartTs(long startTs) {
         this.startTs = startTs;
-    }
-
-    public Status getCurStatus() {
-        return curStatus;
-    }
-
-    public void setCurStatus(Status curStatus) {
-        this.curStatus = curStatus;
     }
 
     @Override
     public boolean updateStatus() {
         if (currentTimeSupplier.get().toEpochMilli() - startTs >= durationTime) {
-            curStatus = Status.STATUS_ENDED;
+            status = Status.STATUS_ENDED;
             return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean isFinished() {
-        return curStatus.equals(Status.STATUS_ENDED);
     }
 }

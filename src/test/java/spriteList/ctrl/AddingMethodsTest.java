@@ -10,10 +10,11 @@ import sprite.Sprite;
 import sprite.nomad.BlueBomber;
 import sprite.nomad.Bomber;
 import sprite.nomad.CloakedSkeleton;
+import sprite.nomad.Minotor;
 import sprite.settled.Bomb;
 import sprite.settled.Flame;
 import sprite.settled.FlameEnd;
-import sprite.settled.Settled;
+import sprite.settled.LoopedSettled;
 import utils.Tuple2;
 
 import java.io.IOException;
@@ -38,13 +39,23 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addEnemyShouldAddTheEnemyToTheListOfSprite() throws Exception {
+    public void addWalkingEnemyShouldAddTheEnemyToTheListOfSprite() throws Exception {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(1, 2);
-        AddingMethods.addEnemy(spriteList, cloakedSkeleton);
+        AddingMethods.addWalkingEnemy(spriteList, cloakedSkeleton);
 
         // test.
         assertThat(spriteList.contains(cloakedSkeleton)).isTrue();
+    }
+
+    @Test
+    public void addBreakingEnemyShouldAddTheEnemyToTheListOfSprite() throws Exception {
+        LinkedList<Sprite> spriteList = new LinkedList<>();
+        Minotor minotor = new Minotor(1, 2);
+        AddingMethods.addBreakingEnemy(spriteList, minotor);
+
+        // test.
+        assertThat(spriteList.contains(minotor)).isTrue();
     }
 
     @Test
@@ -100,8 +111,8 @@ public class AddingMethodsTest implements WithAssertions {
         Bomb bomb = new Bomb(caseRowIdx, caseColIdx, flameSize);
         AddingMethods.addBomb(spriteList, mapPointMatrix, bomb);
         assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.BOMB);
-        assertThat(((Settled) spriteList.getFirst()).getRowIdx()).isEqualTo(caseRowIdx);
-        assertThat(((Settled) spriteList.getFirst()).getColIdx()).isEqualTo(caseColIdx);
+        assertThat(((LoopedSettled) spriteList.getFirst()).getRowIdx()).isEqualTo(caseRowIdx);
+        assertThat(((LoopedSettled) spriteList.getFirst()).getColIdx()).isEqualTo(caseColIdx);
         assertThat(mapPointMatrix[caseRowIdx][caseColIdx].isBombing()).isEqualTo(true);
     }
 
@@ -125,8 +136,8 @@ public class AddingMethodsTest implements WithAssertions {
         // test.
         assertThat(AddingMethods.addFlame(spriteList, mapPointMatrix, new Flame(pathwayCaseRowIdx, pathwayCaseColIdx))).isTrue();
         assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.FLAME);
-        assertThat(((Settled) spriteList.getFirst()).getRowIdx()).isEqualTo(pathwayCaseRowIdx);
-        assertThat(((Settled) spriteList.getFirst()).getColIdx()).isEqualTo(pathwayCaseColIdx);
+        assertThat(((LoopedSettled) spriteList.getFirst()).getRowIdx()).isEqualTo(pathwayCaseRowIdx);
+        assertThat(((LoopedSettled) spriteList.getFirst()).getColIdx()).isEqualTo(pathwayCaseColIdx);
         assertThat(mapPointMatrix[pathwayCaseRowIdx][pathwayCaseColIdx].isBurning()).isEqualTo(true);
     }
 
@@ -151,8 +162,8 @@ public class AddingMethodsTest implements WithAssertions {
         // test.
         assertThat(AddingMethods.addFlame(spriteList, mapPointMatrix, new Flame(mutableCaseRowIdx, mutableCaseColIdx))).isFalse();
         assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.FLAME);
-        assertThat(((Settled) spriteList.getFirst()).getRowIdx()).isEqualTo(mutableCaseRowIdx);
-        assertThat(((Settled) spriteList.getFirst()).getColIdx()).isEqualTo(mutableCaseColIdx);
+        assertThat(((LoopedSettled) spriteList.getFirst()).getRowIdx()).isEqualTo(mutableCaseRowIdx);
+        assertThat(((LoopedSettled) spriteList.getFirst()).getColIdx()).isEqualTo(mutableCaseColIdx);
         assertThat(mapPointMatrix[mutableCaseRowIdx][mutableCaseColIdx].isBurning()).isEqualTo(true);
         assertThat(mapPointMatrix[mutableCaseRowIdx][mutableCaseColIdx].isMutable()).isEqualTo(false); // no more
         // mutable.
@@ -432,7 +443,7 @@ public class AddingMethodsTest implements WithAssertions {
         // test.
         AddingMethods.addFlameEnd(spriteList, new FlameEnd(1, 2));
         assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.FLAME_END);
-        assertThat(((Settled) spriteList.getFirst()).getRowIdx()).isEqualTo(1);
-        assertThat(((Settled) spriteList.getFirst()).getColIdx()).isEqualTo(2);
+        assertThat(((LoopedSettled) spriteList.getFirst()).getRowIdx()).isEqualTo(1);
+        assertThat(((LoopedSettled) spriteList.getFirst()).getColIdx()).isEqualTo(2);
     }
 }

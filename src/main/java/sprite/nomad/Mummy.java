@@ -2,7 +2,7 @@ package sprite.nomad;
 
 import images.ImagesLoader;
 
-public class Mummy extends Enemy {
+public class Mummy extends WalkingEnemy {
 
     public final static int REFRESH_TIME = 300;
     public final static int ACTING_TIME = 40;

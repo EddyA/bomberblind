@@ -6,7 +6,7 @@ import org.junit.Test;
 public class SpritesSettingTest implements WithAssertions {
 
     @SuppressWarnings("FieldCanBeLocal")
-    final private String TEST_MAP_PROPERTIES_FILE = "/test.zelda.sprites.properties";
+    private final String TEST_MAP_PROPERTIES_FILE = "/test.zelda.sprites.properties";
 
     @Test
     public void rMapSettingShouldLoadExpectedValues() throws Exception {
@@ -18,5 +18,6 @@ public class SpritesSettingTest implements WithAssertions {
         assertThat(spritesSetting.getNbCloakedSkeleton()).isEqualTo(1);
         assertThat(spritesSetting.getNbMecaAngel()).isEqualTo(2);
         assertThat(spritesSetting.getNbMummy()).isEqualTo(3);
+        assertThat(spritesSetting.getNbMinotor()).isEqualTo(4);
     }
 }

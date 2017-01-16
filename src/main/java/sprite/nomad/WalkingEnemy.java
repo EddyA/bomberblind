@@ -5,33 +5,20 @@ import utils.Direction;
 
 import java.awt.*;
 
-import static sprite.nomad.Enemy.Action.ACTION_DYING;
-import static sprite.nomad.Enemy.Action.ACTION_WALKING;
+import static utils.Action.ACTION_WALKING;
 
 /**
- * Abstract class of an enemy.
+ * Abstract class of a walking enemy.
  */
-public abstract class Enemy extends Nomad {
+public abstract class WalkingEnemy extends Nomad {
 
-    /**
-     * enum the different available actions of an enemy.
-     */
-    public enum Action {
-        ACTION_DYING, ACTION_WALKING
-    }
-
-    private final Image[] deathImages;
-    private final int nbDeathFrame;
-    private final Image[] walkBackImages;
-    private final Image[] walkFrontImages;
-    private final Image[] walkLeftImages;
-    private final Image[] walkRightImages;
-    private final int nbWalkFrame;
-
-    private Action curAction = ACTION_WALKING; // current action.
-    private Action lastAction = curAction; // last action.
-    private Direction curDirection = Direction.getRandomDirection(); // init the current direction with a random one.
-    private Direction lastDirection = curDirection; // last direction.
+    protected final Image[] deathImages;
+    protected final int nbDeathFrame;
+    protected final Image[] walkBackImages;
+    protected final Image[] walkFrontImages;
+    protected final Image[] walkLeftImages;
+    protected final Image[] walkRightImages;
+    protected final int nbWalkFrame;
 
     /**
      * Create an enemy.
@@ -48,18 +35,18 @@ public abstract class Enemy extends Nomad {
      * @param refreshTime     the sprite refresh time (i.e. defining the sprite speed in term of image/sec)
      * @param actingTime      the sprite acting time (i.e. defining the sprite speed in term of action/sec)
      */
-    public Enemy(int xMap,
-          int yMap,
-          Image[] deathImages,
-          int nbDeathFrame,
-          Image[] walkBackImages,
-          Image[] walkFrontImages,
-          Image[] walkLeftImages,
-          Image[] walkRightImages,
-          int nbWalkFrame,
-          int refreshTime,
-          int actingTime) {
-        super(xMap, yMap, SpriteType.ENEMY, refreshTime, actingTime);
+    public WalkingEnemy(int xMap,
+                        int yMap,
+                        Image[] deathImages,
+                        int nbDeathFrame,
+                        Image[] walkBackImages,
+                        Image[] walkFrontImages,
+                        Image[] walkLeftImages,
+                        Image[] walkRightImages,
+                        int nbWalkFrame,
+                        int refreshTime,
+                        int actingTime) {
+        super(xMap, yMap, SpriteType.WALKING_ENEMY, refreshTime, actingTime, 0);
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
         this.walkBackImages = walkBackImages;
@@ -67,6 +54,9 @@ public abstract class Enemy extends Nomad {
         this.walkLeftImages = walkLeftImages;
         this.walkRightImages = walkRightImages;
         this.nbWalkFrame = nbWalkFrame;
+
+        curAction = ACTION_WALKING;
+        curDirection = Direction.getRandomDirection(); // init the sprite with a random direction.
     }
 
     public Image[] getDeathImages() {
@@ -95,38 +85,6 @@ public abstract class Enemy extends Nomad {
 
     public int getNbWalkFrame() {
         return nbWalkFrame;
-    }
-
-    public Action getCurAction() {
-        return curAction;
-    }
-
-    public void setCurAction(Action curAction) {
-        this.curAction = curAction;
-    }
-
-    public Direction getCurDirection() {
-        return curDirection;
-    }
-
-    public void setCurDirection(Direction curDirection) {
-        this.curDirection = curDirection;
-    }
-
-    public Action getLastAction() {
-        return lastAction;
-    }
-
-    public void setLastAction(Action lastAction) {
-        this.lastAction = lastAction;
-    }
-
-    public Direction getLastDirection() {
-        return lastDirection;
-    }
-
-    public void setLastDirection(Direction lastDirection) {
-        this.lastDirection = lastDirection;
     }
 
     @Override
@@ -175,15 +133,5 @@ public abstract class Enemy extends Nomad {
                 break;
             }
         }
-    }
-
-    @Override
-    public boolean isInvincible() {
-        return false;
-    }
-
-    @Override
-    public boolean isFinished() {
-        return curAction.equals(ACTION_DYING) && (curImageIdx == nbImages - 1);
     }
 }

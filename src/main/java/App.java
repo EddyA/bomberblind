@@ -31,9 +31,9 @@ public class App extends JFrame {
             ImagesLoader.fillImagesMatrix();
 
             System.out.println("- set screen mode ...");
-            this.setTitle("Bomberblind © Eddy ALBERT");
+            this.setTitle("Bomberblind (dev. in progress)");
             this.setIconImage(ImageIO.read(App.class.getResource("/images/icon.gif")));
-            if (!fullscreenResolution.isPresent() ||  // is the screen format supported by the software?
+            if (fullscreenResolution.isPresent() ||  // is the screen format supported by the software?
                     !ScreenMode.setFullscreenMode(graphicsDevice, // is the screen format supported by the hardware?
                             this,
                             screenWidth,

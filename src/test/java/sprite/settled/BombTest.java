@@ -24,8 +24,8 @@ public class BombTest implements WithAssertions {
         // check members value.
         assertThat(bomb.getRowIdx()).isEqualTo(5);
         assertThat(bomb.getColIdx()).isEqualTo(4);
-        assertThat(bomb.getXMap()).isEqualTo(Tools.getCaseCentreAbscissa(4));
-        assertThat(bomb.getYMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
+        assertThat(bomb.getxMap()).isEqualTo(Tools.getCaseCentreAbscissa(4));
+        assertThat(bomb.getyMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
         assertThat(bomb.getSpriteType()).isEqualTo(SpriteType.BOMB);
         assertThat(bomb.getRefreshTime()).isEqualTo(Bomb.REFRESH_TIME);
         assertThat(bomb.getImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bombMatrixRowIdx]);

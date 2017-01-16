@@ -1,14 +1,22 @@
 package map.ctrl;
 
-import map.MapPoint;
-import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import static images.ImagesLoader.IMAGE_SIZE;
+import static map.ctrl.NomadMethods.isNomadBlockedOffByMutable;
+import static utils.Direction.EAST;
+import static utils.Direction.NORTH;
+import static utils.Direction.SOUTH;
+import static utils.Direction.WEST;
+import static utils.Direction.convertKeyEventToDirection;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import static images.ImagesLoader.IMAGE_SIZE;
+import org.assertj.core.api.WithAssertions;
+import org.junit.Test;
+
+import map.MapPoint;
+import utils.Direction;
 
 public class NomadMethodsTest implements WithAssertions {
 
@@ -16,10 +24,10 @@ public class NomadMethodsTest implements WithAssertions {
     private final int MAP_HEIGHT = 10;
 
     @Test
-    public void isCharacterCrossingMapLimitShouldReturnExpectedValue() throws Exception {
+    public void isNomadCrossingMapLimitShouldReturnExpectedValue() throws Exception {
         
         /*
-        compute the character limits according to the map dimensions.
+        compute the nomad limits according to the map dimensions.
         ex: ZeldaMap(20, 10) = W=600px * H=300px.
         - yChar < 15px ||
         - yChar > 299px ||
@@ -47,7 +55,7 @@ public class NomadMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void isCharacterCrossingObstacleShouldReturnExpectedValue() throws Exception {
+    public void isNomadCrossingObstacleShouldReturnExpectedValue() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -60,7 +68,7 @@ public class NomadMethodsTest implements WithAssertions {
         mapPointMatrix[obsRowIdx][obsColIdx].setPathway(false);
 
         /*
-        compute the character limits according to the obstacle position.
+        compute the nomad limits according to the obstacle position.
         ex: Obs(1, 2) -> x=60px, y=30px.
         - yChar > 29px &&
         - yChar < 75px &&
@@ -80,16 +88,16 @@ public class NomadMethodsTest implements WithAssertions {
                     if ((xChar > leftObsLimit) && (xChar < rightObsLimit) &&
                             (yChar > topObsLimit) && (yChar < bottomObsLimit)) {
 
-                        // assert that the character is crossing an obstacle.
+                        // assert that the nomad is crossing an obstacle.
                         assertThat(NomadMethods.isNomadCrossingObstacle(mapPointMatrix, xChar, yChar)).isTrue();
                     } else {
 
-                        // assert that the character is not crossing an obstacle.
+                        // assert that the nomad is not crossing an obstacle.
                         assertThat(NomadMethods.isNomadCrossingObstacle(mapPointMatrix, xChar, yChar)).isFalse();
                     }
                 } catch (Exception e) {
 
-                    // assert that an exception has been thrown because the character is crossing the map limits.
+                    // assert that an exception has been thrown because the nomad is crossing the map limits.
                     assertThat(NomadMethods.isNomadCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
                 }
             }
@@ -97,7 +105,127 @@ public class NomadMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void isCharacterBurningShouldReturnExpectedValue() throws Exception {
+    public void isNomadCrossingMutableShouldReturnExpectedValue() throws Exception {
+        MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
+        for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
+            for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
+                mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
+                mapPointMatrix[rowIdx][colIdx].setPathway(true);
+            }
+        }
+        int mutableRowIdx = 1;
+        int mutableColIdx = 2;
+        mapPointMatrix[mutableRowIdx][mutableColIdx].setMutable(true);
+
+        /*
+        compute the nomad limits according to the mutable position.
+        ex: Mutable(1, 2) -> x=60px, y=30px.
+        - yChar > 29px &&
+        - yChar < 75px &&
+        - xChar > 45px &&
+        - xChar < 105px should fail
+        */
+
+        int topMutableLimit = mutableRowIdx * IMAGE_SIZE - 1; // 29px.
+        int bottomMutableLimit = (mutableRowIdx + 1) * IMAGE_SIZE + IMAGE_SIZE / 2; // 75px.
+        int leftMutableLimit = mutableColIdx * IMAGE_SIZE - IMAGE_SIZE / 2; // 45px.
+        int rightMutableLimit = (mutableColIdx + 1) * IMAGE_SIZE + IMAGE_SIZE / 2; // 105px.
+
+        // test.
+        for (int xChar = 0; xChar < MAP_WIDTH * IMAGE_SIZE; xChar++) {
+            for (int yChar = 0; yChar < MAP_HEIGHT * IMAGE_SIZE; yChar++) {
+                try {
+                    if ((xChar > leftMutableLimit) && (xChar < rightMutableLimit) &&
+                            (yChar > topMutableLimit) && (yChar < bottomMutableLimit)) {
+
+                        // assert that the nomad is crossing a mutable.
+                        assertThat(NomadMethods.isNomadCrossingMutable(mapPointMatrix, xChar, yChar)).isTrue();
+                    } else {
+
+                        // assert that the nomad is not crossing a mutable.
+                        assertThat(NomadMethods.isNomadCrossingMutable(mapPointMatrix, xChar, yChar)).isFalse();
+                    }
+                } catch (Exception e) {
+
+                    // assert that an exception has been thrown because the nomad is crossing the map limits.
+                    assertThat(NomadMethods.isNomadCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
+                }
+            }
+        }
+    }
+
+    @Test
+    public void isNomadBlockedOffByMutableShouldReturnExpectedValue() throws Exception {
+        MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
+        for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
+            for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
+                mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
+                mapPointMatrix[rowIdx][colIdx].setPathway(true);
+            }
+        }
+        int mutableRowIdx = 1;
+        int mutableColIdx = 2;
+        mapPointMatrix[mutableRowIdx][mutableColIdx].setMutable(true);
+
+        /*
+         * compute the nomad limits according to the mutable position.
+         * ex: Mutable(1, 2) -> x=60px, y=30px.
+         * - yChar > 29px &&
+         * - yChar < 75px &&
+         * - xChar > 45px &&
+         * - xChar < 105px should fail
+         */
+
+        int topMutableLimit = mutableRowIdx * IMAGE_SIZE - 1; // 29px.
+        int bottomMutableLimit = (mutableRowIdx + 1) * IMAGE_SIZE + IMAGE_SIZE / 2; // 75px.
+        int leftMutableLimit = mutableColIdx * IMAGE_SIZE - IMAGE_SIZE / 2; // 45px.
+        int rightMutableLimit = (mutableColIdx + 1) * IMAGE_SIZE + IMAGE_SIZE / 2; // 105px.
+
+        MapPoint blockingMutable;
+
+        // going toward south.
+        // - 2 pixels before crossing.
+        blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
+                mutableColIdx * IMAGE_SIZE, topMutableLimit - 1, SOUTH);
+        assertThat(blockingMutable).isNull();
+        // - 1 pixel before crossing.
+        blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
+                mutableColIdx * IMAGE_SIZE, topMutableLimit, SOUTH);
+        assertThat(blockingMutable).isEqualTo(mapPointMatrix[mutableRowIdx][mutableColIdx]);
+
+        // going toward north.
+        // - 2 pixels before crossing.
+        blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
+                mutableColIdx * IMAGE_SIZE, bottomMutableLimit + 1, NORTH);
+        assertThat(blockingMutable).isNull();
+        // - 1 pixel before crossing.
+        blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
+                mutableColIdx * IMAGE_SIZE, bottomMutableLimit, NORTH);
+        assertThat(blockingMutable).isEqualTo(mapPointMatrix[mutableRowIdx][mutableColIdx]);
+
+        // going toward west.
+        // - 2 pixels before crossing.
+        blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
+                rightMutableLimit + 1, mutableRowIdx * IMAGE_SIZE, WEST);
+        assertThat(blockingMutable).isNull();
+        // - 1 pixel before crossing.
+        blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
+                rightMutableLimit, mutableRowIdx * IMAGE_SIZE, WEST);
+        assertThat(blockingMutable).isEqualTo(mapPointMatrix[mutableRowIdx][mutableColIdx]);
+
+        // going toward east.
+        // - 2 pixels before crossing.
+        blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
+                leftMutableLimit - 1, mutableRowIdx * IMAGE_SIZE, EAST);
+        assertThat(blockingMutable).isNull();
+        // - 1 pixel before crossing.
+        blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
+                leftMutableLimit, mutableRowIdx * IMAGE_SIZE, EAST);
+        assertThat(blockingMutable).isEqualTo(mapPointMatrix[mutableRowIdx][mutableColIdx]);
+    }
+
+    @Test
+    public void isNomadBurningShouldReturnExpectedValue() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -110,7 +238,7 @@ public class NomadMethodsTest implements WithAssertions {
         mapPointMatrix[flameRowIdx][flameColIdx].addFlame();
 
         /*
-        compute the character limits according to the flame position.
+        compute the nomad limits according to the flame position.
         ex: Flame(1, 2) -> x=60px, y=30px.
         - yChar > 29px &&
         - yChar < 75px &&
@@ -130,16 +258,16 @@ public class NomadMethodsTest implements WithAssertions {
                     if ((xChar > leftFlameLimit) && (xChar < rightFlameLimit) &&
                             (yChar > topFlameLimit) && (yChar < bottomFlameLimit)) {
 
-                        // assert that the character is crossing a flame.
+                        // assert that the nomad is crossing a flame.
                         assertThat(NomadMethods.isNomadBurning(mapPointMatrix, xChar, yChar)).isTrue();
                     } else {
 
-                        // assert that the character is not crossing a flame.
+                        // assert that the nomad is not crossing a flame.
                         assertThat(NomadMethods.isNomadBurning(mapPointMatrix, xChar, yChar)).isFalse();
                     }
                 } catch (Exception e) {
 
-                    // assert that an exception has been thrown because the character is crossing the map limits.
+                    // assert that an exception has been thrown because the nomad is crossing the map limits.
                     assertThat(NomadMethods.isNomadCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
                 }
             }
@@ -148,7 +276,7 @@ public class NomadMethodsTest implements WithAssertions {
 
     @SuppressWarnings("ConstantConditions")
     @Test
-    public void isCharacterCrossingBombShouldReturnExpectedValue() throws Exception {
+    public void isNomadCrossingBombShouldReturnExpectedValue() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -161,7 +289,7 @@ public class NomadMethodsTest implements WithAssertions {
         mapPointMatrix[bombRowIdx][bombColIdx].setBombing(true);
 
         /*
-        compute the character limits according to the bomb position.
+        compute the nomad limits according to the bomb position.
         ex: Bomb(1, 2) -> x=60px, y=30px.
         - yChar == 30px && key is DOWN should fail
         - yChar == 74px && key is UP should fail
@@ -183,29 +311,30 @@ public class NomadMethodsTest implements WithAssertions {
 
         // test.
         for (Integer keyEvent : keyEventList) {
+            Direction direction = convertKeyEventToDirection(keyEvent);
             for (int xChar = 0; xChar < MAP_WIDTH * IMAGE_SIZE; xChar++) {
                 for (int yChar = 0; yChar < MAP_HEIGHT * IMAGE_SIZE; yChar++) {
                     try {
-                        // assert that the character is crossing a bomb.
+                        // assert that the nomad is crossing a bomb.
                         if (((xChar > leftBombLimit) && (xChar < rightBombLimit) &&
-                                (yChar == topBombLimit + 1) && keyEvent == KeyEvent.VK_DOWN) ||
+                                (yChar == topBombLimit + 1) && direction == SOUTH) ||
                                 ((xChar > leftBombLimit) && (xChar < rightBombLimit) &&
-                                        (yChar == bottomBombLimit - 1) && keyEvent == KeyEvent.VK_UP) ||
+                                        (yChar == bottomBombLimit - 1) && direction == NORTH) ||
                                 ((yChar > topBombLimit) && (yChar < bottomBombLimit) &&
-                                        (xChar == leftBombLimit + 1) && keyEvent == KeyEvent.VK_RIGHT) ||
+                                        (xChar == leftBombLimit + 1) && direction == EAST) ||
                                 ((yChar > topBombLimit) && (yChar < bottomBombLimit) &&
-                                        (xChar == rightBombLimit - 1) && keyEvent == KeyEvent.VK_LEFT)) {
-                            assertThat(NomadMethods.isNomadCrossingBomb(mapPointMatrix, xChar, yChar, keyEvent))
+                                        (xChar == rightBombLimit - 1) && direction == WEST)) {
+                            assertThat(NomadMethods.isNomadCrossingBomb(mapPointMatrix, xChar, yChar, direction))
                                     .isTrue();
                         } else {
 
-                            // assert that the character is not crossing a flame.
-                            assertThat(NomadMethods.isNomadCrossingBomb(mapPointMatrix, xChar, yChar, keyEvent))
+                            // assert that the nomad is not crossing a flame.
+                            assertThat(NomadMethods.isNomadCrossingBomb(mapPointMatrix, xChar, yChar, direction))
                                     .isFalse();
                         }
                     } catch (Exception e) {
 
-                        // assert that an exception has been thrown because the character is crossing the map limits.
+                        // assert that an exception has been thrown because the nomad is crossing the map limits.
                         assertThat(NomadMethods.isNomadCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
                     }
                 }

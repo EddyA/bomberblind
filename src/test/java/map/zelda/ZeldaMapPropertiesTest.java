@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class ZeldaMapPropertiesTest implements WithAssertions {
 
-    final private String TEST_MAP_PROPERTIES_FILE = "/test.zelda.map.properties";
+    private final String TEST_MAP_PROPERTIES_FILE = "/test.zelda.map.properties";
 
     @Test
     public void loadAndCheckPropertiesShouldLoadExpectedValues() throws Exception {

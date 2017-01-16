@@ -7,7 +7,7 @@ import exceptions.InvalidConfigurationException;
 
 public class SpritesPropertiesTest implements WithAssertions {
 
-    final private String TEST_MAP_PROPERTIES_FILE = "/test.zelda.sprites.properties";
+    private final String TEST_MAP_PROPERTIES_FILE = "/test.zelda.sprites.properties";
 
     @Test
     public void loadAndCheckPropertiesShouldLoadExpectedValues() throws Exception {
@@ -19,6 +19,7 @@ public class SpritesPropertiesTest implements WithAssertions {
         assertThat(spritesProperties.getSpritesEnemyCloakedSkeleton()).isEqualTo(1);
         assertThat(spritesProperties.getSpritesEnemyMecaAngel()).isEqualTo(2);
         assertThat(spritesProperties.getSpritesEnemyMummy()).isEqualTo(3);
+        assertThat(spritesProperties.getSpritesEnemyMinotor()).isEqualTo(4);
     }
 
     @Test
