@@ -8,7 +8,8 @@ public enum SpriteType {
     BREAKING_ENEMY,
     BOMB,
     FLAME,
-    FLAME_END;
+    FLAME_END,
+    BIRD;
 
     public static Optional<String> getlabel(SpriteType spriteType) {
         Optional<String> label = Optional.empty();

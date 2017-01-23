@@ -27,7 +27,7 @@ public abstract class LoopedSettled extends Sprite {
     protected int colIdx; // map column index of the sprite.
 
     private final int nbTimes; // number of times the sprite should be painted.
-    protected int timeIdx; // number of times the sprite has looped.
+    protected int loopIdx; // number of times the sprite has looped.
 
     public Status getStatus() {
         return status;
@@ -57,12 +57,12 @@ public abstract class LoopedSettled extends Sprite {
         return nbTimes;
     }
 
-    public int getTimeIdx() {
-        return timeIdx;
+    public int getLoopIdx() {
+        return loopIdx;
     }
 
-    public void setTimeIdx(int timeIdx) {
-        this.timeIdx = timeIdx;
+    public void setLoopIdx(int loopIdx) {
+        this.loopIdx = loopIdx;
     }
 
     /**
@@ -89,7 +89,7 @@ public abstract class LoopedSettled extends Sprite {
         this.images = images;
         this.nbImages = nbImages;
         this.nbTimes = nbTimes;
-        this.timeIdx = 0;
+        this.loopIdx = 0;
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class LoopedSettled extends Sprite {
      * @return true if the status has changed, false otherwise.
      */
     public boolean updateStatus() {
-        if ((timeIdx == nbTimes - 1) && (curImageIdx == nbImages - 1)) {
+        if ((loopIdx == nbTimes - 1) && (curImageIdx == nbImages - 1)) {
             status = STATUS_ENDED;
             return true;
         }
@@ -111,7 +111,7 @@ public abstract class LoopedSettled extends Sprite {
                 isTimeToRefresh()) { // it is time to refresh the sprite image.
             if (++curImageIdx == nbImages) {
                 curImageIdx = 0;
-                timeIdx++;
+                loopIdx++;
             }
             curImage = images[curImageIdx];
         }

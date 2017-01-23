@@ -42,7 +42,7 @@ public class LoopedSettledTest implements WithAssertions {
         FlameEnd flameEnd = new FlameEnd(5, 4);
 
         // set the start time.
-        flameEnd.setTimeIdx(FlameEnd.NB_TIMES - 2); // number of times not reached.
+        flameEnd.setLoopIdx(FlameEnd.NB_TIMES - 2); // number of times not reached.
         flameEnd.setCurImageIdx(NB_FLAME_END_FRAME - 1); // sprite ended.
         assertThat(flameEnd.updateStatus()).isFalse();
         assertThat(flameEnd.getStatus()).isEqualTo(STATUS_ALIVE);
@@ -53,7 +53,7 @@ public class LoopedSettledTest implements WithAssertions {
         FlameEnd flameEnd = new FlameEnd(5, 4);
 
         // set the start time.
-        flameEnd.setTimeIdx(FlameEnd.NB_TIMES - 1); // number of times reached.
+        flameEnd.setLoopIdx(FlameEnd.NB_TIMES - 1); // number of times reached.
         flameEnd.setCurImageIdx(NB_FLAME_END_FRAME - 2); // sprite not ended.
         assertThat(flameEnd.updateStatus()).isFalse();
         assertThat(flameEnd.getStatus()).isEqualTo(STATUS_ALIVE);
@@ -64,7 +64,7 @@ public class LoopedSettledTest implements WithAssertions {
         FlameEnd flameEnd = new FlameEnd(5, 4);
 
         // set the start time.
-        flameEnd.setTimeIdx(FlameEnd.NB_TIMES - 1); // number of times reached.
+        flameEnd.setLoopIdx(FlameEnd.NB_TIMES - 1); // number of times reached.
         flameEnd.setCurImageIdx(NB_FLAME_END_FRAME - 1); // sprite ended.
         assertThat(flameEnd.updateStatus()).isTrue();
         assertThat(flameEnd.getStatus()).isEqualTo(STATUS_ENDED);
@@ -78,13 +78,13 @@ public class LoopedSettledTest implements WithAssertions {
 
         // set settled.
         spyedFlameEnd.setCurImageIdx(1);
-        spyedFlameEnd.setTimeIdx(3);
+        spyedFlameEnd.setLoopIdx(3);
         spyedFlameEnd.setCurImage(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][1]);
 
         // call & check.
         spyedFlameEnd.updateImage();
         assertThat(spyedFlameEnd.getCurImageIdx()).isEqualTo(1);
-        assertThat(spyedFlameEnd.getTimeIdx()).isEqualTo(3);
+        assertThat(spyedFlameEnd.getLoopIdx()).isEqualTo(3);
         assertThat(spyedFlameEnd.getCurImage()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][1]);
     }
 
@@ -96,13 +96,13 @@ public class LoopedSettledTest implements WithAssertions {
 
         // set settled.
         spyedFlameEnd.setCurImageIdx(1);
-        spyedFlameEnd.setTimeIdx(3);
+        spyedFlameEnd.setLoopIdx(3);
         spyedFlameEnd.setCurImage(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][1]);
 
         // call & check.
         spyedFlameEnd.updateImage();
         assertThat(spyedFlameEnd.getCurImageIdx()).isEqualTo(1);
-        assertThat(spyedFlameEnd.getTimeIdx()).isEqualTo(3);
+        assertThat(spyedFlameEnd.getLoopIdx()).isEqualTo(3);
         assertThat(spyedFlameEnd.getCurImage()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][1]);
     }
 
@@ -115,12 +115,12 @@ public class LoopedSettledTest implements WithAssertions {
 
         // set settled.
         spyedFlameEnd.setCurImageIdx(1);
-        spyedFlameEnd.setTimeIdx(3);
+        spyedFlameEnd.setLoopIdx(3);
 
         // call & check.
         spyedFlameEnd.updateImage();
         assertThat(spyedFlameEnd.getCurImageIdx()).isEqualTo(2);
-        assertThat(spyedFlameEnd.getTimeIdx()).isEqualTo(3); // stay the same.
+        assertThat(spyedFlameEnd.getLoopIdx()).isEqualTo(3); // stay the same.
         assertThat(spyedFlameEnd.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][2]);
     }
@@ -135,12 +135,12 @@ public class LoopedSettledTest implements WithAssertions {
 
         // set settled.
         spyedFlameEnd.setCurImageIdx(NB_FLAME_END_FRAME - 1); // last image of the sprite.
-        spyedFlameEnd.setTimeIdx(3);
+        spyedFlameEnd.setLoopIdx(3);
 
         // call & check.
         spyedFlameEnd.updateImage();
         assertThat(spyedFlameEnd.getCurImageIdx()).isEqualTo(0);
-        assertThat(spyedFlameEnd.getTimeIdx()).isEqualTo(4);
+        assertThat(spyedFlameEnd.getLoopIdx()).isEqualTo(4);
         assertThat(spyedFlameEnd.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][0]);
     }

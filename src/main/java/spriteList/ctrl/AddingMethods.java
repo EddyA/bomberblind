@@ -1,15 +1,16 @@
 package spriteList.ctrl;
 
+import java.util.LinkedList;
+
 import map.MapPoint;
 import sprite.Sprite;
+import sprite.nomad.FlyingNomad;
 import sprite.nomad.Bomber;
 import sprite.nomad.BreakingEnemy;
 import sprite.nomad.WalkingEnemy;
 import sprite.settled.Bomb;
 import sprite.settled.Flame;
 import sprite.settled.FlameEnd;
-
-import java.util.LinkedList;
 
 /**
  * A collection of methods to add sprites to a list according to a map status.
@@ -47,6 +48,15 @@ public class AddingMethods {
         list.add(breakingEnemy);
     }
 
+    /**
+     * Add a bird to the list.
+     *
+     * @param list the list into which adding the sprite
+     * @param bird the bird to add
+     */
+    public static void addBird(LinkedList<Sprite> list, FlyingNomad bird) {
+        list.add(bird);
+    }
 
     /**
      * Add a bomb to a list.

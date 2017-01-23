@@ -22,22 +22,22 @@ public class BreakingEnemy extends WalkingEnemy {
     private MapPoint breakingMapPoint = null; // the current MapPoint the enemy is breaking.
 
     /**
-     * Create an enemy.
+     * Create a breaking enemy.
      *
-     * @param xMap             abscissa on the map
-     * @param yMap             ordinate on the map
+     * @param xMap             the abscissa on the map
+     * @param yMap             the ordinate on the map
      * @param breakBackImages  the array of images for the "break back" action
      * @param breakFrontImages the array of images for the "break front" action
      * @param breakLeftImages  the array of images for the "break left" action
      * @param breakRightImages the array of images for the "break right" action
-     * @param nbBreakFrame     number of images of the "break" arrays
+     * @param nbBreakFrame     the number of images of the "break" arrays
      * @param deathImages      the array of image for the "death" action
      * @param nbDeathFrame     the number of images of the "death" array
      * @param walkBackImages   the array of images for the "walk back" action
      * @param walkFrontImages  the array of images for the "walk front" action
      * @param walkLeftImages   the array of images for the "walk left" action
      * @param walkRightImages  the array of images for the "walk right" action
-     * @param nbWalkFrame      number of images of the "walk" arrays
+     * @param nbWalkFrame      the number of images of the "walk" arrays
      * @param refreshTime      the sprite refresh time (i.e. defining the sprite speed in term of image/sec)
      * @param actingTime       the sprite acting time (i.e. defining the sprite speed in term of action/sec)
      */
@@ -112,8 +112,7 @@ public class BreakingEnemy extends WalkingEnemy {
     public boolean hasActionChanged() {
         if (!curAction.equals(lastAction) || // either the action has changed
                 (curAction.equals(ACTION_BREAKING) && !curDirection.equals(lastDirection)) || // or walking to another direction.
-                (curAction.equals(ACTION_WALKING) && !curDirection.equals(lastDirection))) { // or breaking with another
-            // direction.
+                (curAction.equals(ACTION_WALKING) && !curDirection.equals(lastDirection))) { // or breaking with another direction.
             lastAction = curAction;
             lastDirection = curDirection;
             lastRefreshTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.

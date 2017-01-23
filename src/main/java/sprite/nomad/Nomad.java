@@ -142,7 +142,7 @@ public abstract class Nomad extends Sprite {
             curImageIdx = 0;
         }
         if (isInvincible() &&
-                invincibleFrameIdx++ % 320 > 160) {
+                invincibleFrameIdx++ % 240 > 120) {
             curImage = null;
         } else {
             curImage = images[curImageIdx];

@@ -1,11 +1,18 @@
 package spriteList;
 
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+
 import exceptions.CannotPlaceEnemyOnMapException;
 import images.ImagesLoader;
 import map.Map;
 import map.MapPoint;
 import sprite.Sprite;
 import sprite.SpriteType;
+import sprite.nomad.FlyingNomad;
 import sprite.nomad.Bomber;
 import sprite.nomad.BreakingEnemy;
 import sprite.nomad.EnemyType;
@@ -15,12 +22,6 @@ import sprite.settled.Flame;
 import sprite.settled.FlameEnd;
 import spriteList.ctrl.ActionMethods;
 import spriteList.ctrl.GenerationMethodes;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
 
 public class SpriteList extends LinkedList<Sprite> {
     private final SpritesSetting spritesSetting;
@@ -96,6 +97,10 @@ public class SpriteList extends LinkedList<Sprite> {
                 case BREAKING_ENEMY: {
                     shouldBeRemoved = ActionMethods.processBreakingEnemy(this, tmpList, map.getMapPointMatrix(),
                             map.getMapWidth(), map.getMapHeight(), (BreakingEnemy) sprite);
+                    break;
+                }
+                case BIRD: {
+                    shouldBeRemoved = ActionMethods.processBird(map.getMapWidth(), (FlyingNomad) sprite);
                     break;
                 }
                 case BOMB: {

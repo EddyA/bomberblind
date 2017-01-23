@@ -1,11 +1,11 @@
 package sprite.nomad;
 
+import static utils.Action.ACTION_WALKING;
+
+import java.awt.Image;
+
 import sprite.SpriteType;
 import utils.Direction;
-
-import java.awt.*;
-
-import static utils.Action.ACTION_WALKING;
 
 /**
  * Abstract class of a walking enemy.
@@ -21,19 +21,19 @@ public abstract class WalkingEnemy extends Nomad {
     protected final int nbWalkFrame;
 
     /**
-     * Create an enemy.
+     * Create a walking enemy.
      *
-     * @param xMap            abscissa on the map
-     * @param yMap            ordinate on the map
-     * @param deathImages     the array of image for the "death" action
-     * @param nbDeathFrame    the number of images of the "death" array
-     * @param walkBackImages  the array of images for the "walk back" action
+     * @param xMap the abscissa on the map
+     * @param yMap the ordinate on the map
+     * @param deathImages the array of image for the "death" action
+     * @param nbDeathFrame the number of images of the "death" array
+     * @param walkBackImages the array of images for the "walk back" action
      * @param walkFrontImages the array of images for the "walk front" action
-     * @param walkLeftImages  the array of images for the "walk left" action
+     * @param walkLeftImages the array of images for the "walk left" action
      * @param walkRightImages the array of images for the "walk right" action
-     * @param nbWalkFrame     number of images of the "walk" arrays
-     * @param refreshTime     the sprite refresh time (i.e. defining the sprite speed in term of image/sec)
-     * @param actingTime      the sprite acting time (i.e. defining the sprite speed in term of action/sec)
+     * @param nbWalkFrame the number of images of the "walk" arrays
+     * @param refreshTime the sprite refresh time (i.e. defining the sprite speed in term of image/sec)
+     * @param actingTime the sprite acting time (i.e. defining the sprite speed in term of action/sec)
      */
     public WalkingEnemy(int xMap,
                         int yMap,

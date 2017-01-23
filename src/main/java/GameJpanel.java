@@ -1,4 +1,5 @@
 import static images.ImagesLoader.IMAGE_SIZE;
+import static spriteList.ctrl.AddingMethods.addBird;
 import static spriteList.ctrl.AddingMethods.addBomber;
 
 import java.awt.Graphics;
@@ -22,9 +23,11 @@ import map.zelda.ZeldaMapProperties;
 import map.zelda.ZeldaMapSetting;
 import sprite.nomad.BlueBomber;
 import sprite.nomad.Bomber;
+import sprite.nomad.WhiteBird;
 import spriteList.SpriteList;
 import spriteList.SpritesProperties;
 import spriteList.SpritesSetting;
+import utils.Direction;
 import utils.Tuple2;
 
 public class GameJpanel extends JPanel implements Runnable, KeyListener {
@@ -62,6 +65,14 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         Tuple2<Integer, Integer> bbManInitialPosition = map.computeInitialBbManPosition();
         bomber = new BlueBomber(bbManInitialPosition.getFirst(), bbManInitialPosition.getSecond());
         addBomber(spriteList, bomber);
+
+        // create the 3 first birds :)
+        addBird(spriteList, 
+                new WhiteBird(0, bbManInitialPosition.getSecond() + 200, Direction.EAST, -6));
+        addBird(spriteList,
+                new WhiteBird(-50, bbManInitialPosition.getSecond() + 225, Direction.EAST, -6));
+        addBird(spriteList,
+                new WhiteBird(0, bbManInitialPosition.getSecond() + 250, Direction.EAST, -6));
 
         // create a list to handle pressed keys.
         pressedKeyList = new ArrayList<>();
