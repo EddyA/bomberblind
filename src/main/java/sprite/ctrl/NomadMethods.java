@@ -24,8 +24,8 @@ public class NomadMethods {
         boolean isCrossing = false;
         for (Sprite curSprite : spriteList) {
             if (curSprite != nomad && // the checked nomad is not the provided one
-                    (curSprite.getSpriteType().equals(SpriteType.WALKING_ENEMY) || // AND is a walking enemy
-                            curSprite.getSpriteType().equals(SpriteType.BREAKING_ENEMY))) { // OR is a breaking enemy.
+                    (curSprite.getSpriteType().equals(SpriteType.TYPE_WALKING_ENEMY) || // AND is a walking enemy
+                            curSprite.getSpriteType().equals(SpriteType.TYPE_BREAKING_ENEMY))) { // OR is a breaking enemy.
 
                 // the right bound of the provided abstracts is between the left & the right side of the checked one.
                 if (((getCharRightAbscissa(xChar) >= getCharLeftAbscissa(curSprite.getxMap()) &&

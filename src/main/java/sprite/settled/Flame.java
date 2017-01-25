@@ -20,7 +20,7 @@ public class Flame extends TimedSettled {
     public Flame(int rowIdx, int colIdx) {
         super(rowIdx,
                 colIdx,
-                SpriteType.FLAME,
+                SpriteType.TYPE_FLAME,
                 REFRESH_TIME,
                 ImagesLoader.imagesMatrix[ImagesLoader.flameMatrixRowIdx],
                 ImagesLoader.NB_FLAME_FRAME,

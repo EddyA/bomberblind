@@ -1,7 +1,7 @@
 package glue;
 
-import static utils.Action.ACTION_BREAKING;
-import static utils.Action.ACTION_DYING;
+import static sprite.SpriteAction.ACTION_BREAKING;
+import static sprite.SpriteAction.ACTION_DYING;
 
 import org.assertj.core.api.WithAssertions;
 import org.mockito.Mockito;
@@ -31,7 +31,7 @@ public class BreakingEnemyStepDef  implements WithAssertions {
 
     @Then("^the breaking enemy should die$")
     public void the_breaking_enemy_should_die() {
-        assertThat(breakingEnemyState.getEnemy().getCurAction()).isEqualTo(ACTION_DYING);
+        assertThat(breakingEnemyState.getEnemy().getCurSpriteAction()).isEqualTo(ACTION_DYING);
     }
 
     @Then("^the breaking enemy should get another direction$")
@@ -42,7 +42,7 @@ public class BreakingEnemyStepDef  implements WithAssertions {
 
     @Then("^the breaking enemy should break$")
     public void the_breaking_enemy_should_break_the() {
-        assertThat(breakingEnemyState.getEnemy().getCurAction()).isEqualTo(ACTION_BREAKING);
+        assertThat(breakingEnemyState.getEnemy().getCurSpriteAction()).isEqualTo(ACTION_BREAKING);
     }
 
     @And("^the breaking sprite is done$")

@@ -5,11 +5,11 @@ import static map.ctrl.NomadMethods.isNomadBlockedOffByMutable;
 import static map.ctrl.NomadMethods.isNomadBurning;
 import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
 import static spriteList.ctrl.AddingMethods.addBomb;
-import static utils.Action.ACTION_BREAKING;
-import static utils.Action.ACTION_DYING;
-import static utils.Action.ACTION_WAITING;
-import static utils.Action.ACTION_WALKING;
-import static utils.Action.ACTION_WINING;
+import static sprite.SpriteAction.ACTION_BREAKING;
+import static sprite.SpriteAction.ACTION_DYING;
+import static sprite.SpriteAction.ACTION_WAITING;
+import static sprite.SpriteAction.ACTION_WALKING;
+import static sprite.SpriteAction.ACTION_WINING;
 import static utils.Direction.EAST;
 import static utils.Direction.NORTH;
 import static utils.Direction.SOUTH;
@@ -68,22 +68,22 @@ public class ActionMethods {
         if (bomber.isFinished()) {
             bomber.init(); // re-init the bomber if finished.
 
-        } else if (bomber.getCurAction() != ACTION_DYING) { // the bomber is not finished and not dead.
+        } else if (bomber.getCurSpriteAction() != ACTION_DYING) { // the bomber is not finished and not dead.
 
             // should the bomber die?
             if (!bomber.isInvincible() &&
                     (isNomadBurning(mapPointMatrix, bomber.getxMap(), bomber.getyMap()) ||
                             isNomadCrossingEnemy(list, bomber.getxMap(), bomber.getyMap(), bomber))) {
-                bomber.setCurAction(ACTION_DYING);
+                bomber.setCurSpriteAction(ACTION_DYING);
 
             } else if (bomber.isTimeToAct()) { // it is time to act.
                 switch (pressedKey) {
                     case 0: {
-                        bomber.setCurAction(ACTION_WAITING);
+                        bomber.setCurSpriteAction(ACTION_WAITING);
                         break;
                     }
                     case KeyEvent.VK_UP: {
-                        bomber.setCurAction(ACTION_WALKING);
+                        bomber.setCurSpriteAction(ACTION_WALKING);
                         bomber.setCurDirection(NORTH);
                         if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
                                 bomber.getxMap(), bomber.getyMap() - 1)) {
@@ -99,7 +99,7 @@ public class ActionMethods {
                         break;
                     }
                     case KeyEvent.VK_DOWN: {
-                        bomber.setCurAction(ACTION_WALKING);
+                        bomber.setCurSpriteAction(ACTION_WALKING);
                         bomber.setCurDirection(Direction.SOUTH);
                         if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
                                 bomber.getxMap(), bomber.getyMap() + 1)) {
@@ -115,7 +115,7 @@ public class ActionMethods {
                         break;
                     }
                     case KeyEvent.VK_LEFT: {
-                        bomber.setCurAction(ACTION_WALKING);
+                        bomber.setCurSpriteAction(ACTION_WALKING);
                         bomber.setCurDirection(WEST);
                         if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
                                 bomber.getxMap() - 1, bomber.getyMap())) {
@@ -131,7 +131,7 @@ public class ActionMethods {
                         break;
                     }
                     case KeyEvent.VK_RIGHT: {
-                        bomber.setCurAction(ACTION_WALKING);
+                        bomber.setCurSpriteAction(ACTION_WALKING);
                         bomber.setCurDirection(Direction.EAST);
                         if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
                                 bomber.getxMap() + 1, bomber.getyMap())) {
@@ -152,7 +152,7 @@ public class ActionMethods {
                         break;
                     }
                     case KeyEvent.VK_W: {
-                        bomber.setCurAction(ACTION_WINING);
+                        bomber.setCurSpriteAction(ACTION_WINING);
                         break;
                     }
                 }
@@ -254,11 +254,11 @@ public class ActionMethods {
         boolean shouldBeRemoved = false;
         if (walkingEnemy.isFinished()) {
             shouldBeRemoved = true;
-        } else if (walkingEnemy.getCurAction() != ACTION_DYING) { // the enemy is not finished and not dead.
+        } else if (walkingEnemy.getCurSpriteAction() != ACTION_DYING) { // the enemy is not finished and not dead.
 
             // should the enemy die?
             if (isNomadBurning(mapPointMatrix, walkingEnemy.getxMap(), walkingEnemy.getyMap())) {
-                walkingEnemy.setCurAction(ACTION_DYING);
+                walkingEnemy.setCurSpriteAction(ACTION_DYING);
                 walkingEnemy.setRefreshTime(Sprite.REFRESH_TIME_WHEN_DYING); // normalize the frame rate for the dead sprite.
 
             } else if (walkingEnemy.isTimeToAct()) { // it is time to act.
@@ -292,15 +292,15 @@ public class ActionMethods {
         boolean shouldBeRemoved = false;
         if (breakingEnemy.isFinished()) {
             shouldBeRemoved = true;
-        } else if (breakingEnemy.getCurAction() != ACTION_DYING) { // -> the enemy is not dying.
+        } else if (breakingEnemy.getCurSpriteAction() != ACTION_DYING) { // -> the enemy is not dying.
 
             // should the enemy die?
             if (isNomadBurning(mapPointMatrix, breakingEnemy.getxMap(), breakingEnemy.getyMap())) {
-                breakingEnemy.setCurAction(ACTION_DYING);
+                breakingEnemy.setCurSpriteAction(ACTION_DYING);
                 breakingEnemy.setRefreshTime(Sprite.REFRESH_TIME_WHEN_DYING); // normalize the frame rate for the dead sprite.
 
             } else if (breakingEnemy.isTimeToAct()) { // it is time to act.
-                if (breakingEnemy.getCurAction() != ACTION_BREAKING) { // -> the enemy is not breaking.
+                if (breakingEnemy.getCurSpriteAction() != ACTION_BREAKING) { // -> the enemy is not breaking.
 
                     // is the nomad blocked off by a mutable?
                     MapPoint mapPointToBreak = isNomadBlockedOffByMutable(mapPointMatrix,
@@ -311,7 +311,7 @@ public class ActionMethods {
                             breakingEnemy.getCurDirection());
                     if (mapPointToBreak != null) { // if so, break the mutable.
                         breakingEnemy.setBreakingMapPoint(mapPointToBreak);
-                        breakingEnemy.setCurAction(ACTION_BREAKING);
+                        breakingEnemy.setCurSpriteAction(ACTION_BREAKING);
 
                     } else { // else, move.
                         moveEnemyIfPossible(list, mapPointMatrix, mapWidth, mapHeight, breakingEnemy);
@@ -359,7 +359,7 @@ public class ActionMethods {
                 walkingEnemy);
 
         if (newDirection != null) { // a new direction has been found (i.e. the enemy must change or direction).
-            walkingEnemy.setCurAction(ACTION_WALKING);
+            walkingEnemy.setCurSpriteAction(ACTION_WALKING);
             walkingEnemy.setCurDirection(newDirection);
             switch (newDirection) {
                 case NORTH: {
@@ -400,13 +400,13 @@ public class ActionMethods {
         } else if (bird.isTimeToAct()) {
             if (bird.getCurDirection() == Direction.EAST) {
                 if (bird.getxMap() - birdWidth > mapWidth * IMAGE_SIZE) { // outside the right limit.
-                    bird.setCurAction(ACTION_DYING);
+                    bird.setCurSpriteAction(ACTION_DYING);
                 } else {
                     bird.computeMove();
                 }
             } else {
                 if (bird.getxMap() + birdWidth < 0) { // outside the left limit.
-                    bird.setCurAction(ACTION_DYING);
+                    bird.setCurSpriteAction(ACTION_DYING);
                 } else {
                     bird.computeMove();
                 }

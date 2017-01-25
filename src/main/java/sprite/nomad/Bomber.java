@@ -1,11 +1,14 @@
 package sprite.nomad;
 
+import static sprite.SpriteAction.ACTION_DYING;
+import static sprite.SpriteAction.ACTION_WAITING;
+import static sprite.SpriteAction.ACTION_WALKING;
+import static sprite.SpriteAction.ACTION_WINING;
+
+import java.awt.Image;
+
+import sprite.SpriteAction;
 import sprite.SpriteType;
-
-import java.awt.*;
-
-import static utils.Action.ACTION_WAITING;
-import static utils.Action.ACTION_WALKING;
 
 /**
  * Abstract class of a bomber.
@@ -65,7 +68,7 @@ public abstract class Bomber extends Nomad {
                   int invincibilityTime) {
         super(xMap,
                 yMap,
-                SpriteType.BOMBER,
+                SpriteType.TYPE_BOMBER,
                 refreshTime,
                 actingTime,
                 invincibilityTime);
@@ -151,15 +154,24 @@ public abstract class Bomber extends Nomad {
     public void init() {
         xMap = initialXMap;
         yMap = initialYMap;
-        curAction = ACTION_WAITING;
+        curSpriteAction = ACTION_WAITING;
         lastInvincibilityTs = currentTimeSupplier.get().toEpochMilli(); // activate invincibility.
     }
 
     @Override
+    public boolean isActionAllowed(SpriteAction spriteAction) {
+        return !(spriteAction != ACTION_WAITING &&
+                spriteAction != ACTION_WALKING &&
+                spriteAction != ACTION_WINING &&
+                spriteAction != ACTION_DYING);
+    }
+
+    @Override
     public boolean hasActionChanged() {
-        if (!curAction.equals(lastAction) || // either the action has changed
-                (curAction.equals(ACTION_WALKING) && !curDirection.equals(lastDirection))) { // or the direction has changed.
-            lastAction = curAction;
+        if (!curSpriteAction.equals(lastSpriteAction) || // either the action has changed
+                (curSpriteAction.equals(ACTION_WALKING) && // or (is walking
+                        !curDirection.equals(lastDirection))) { // and the direction has changed).
+            lastSpriteAction = curSpriteAction;
             lastDirection = curDirection;
             lastRefreshTs = currentTimeSupplier.get().toEpochMilli();
             return true;
@@ -169,7 +181,7 @@ public abstract class Bomber extends Nomad {
 
     @Override
     public void updateSprite() {
-        switch (curAction) {
+        switch (curSpriteAction) {
             case ACTION_DYING: {
                 images = deathImages;
                 nbImages = nbDeathFrame;
@@ -209,9 +221,6 @@ public abstract class Bomber extends Nomad {
                 images = winImages;
                 nbImages = nbWinFrame;
                 break;
-            }
-            default: {
-                throw new RuntimeException("another action is not allowed here, please check the algorithm.");
             }
         }
     }

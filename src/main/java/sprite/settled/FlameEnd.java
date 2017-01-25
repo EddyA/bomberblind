@@ -20,7 +20,7 @@ public class FlameEnd extends LoopedSettled {
     public FlameEnd(int rowIdx, int colIdx) {
         super(rowIdx,
                 colIdx,
-                SpriteType.FLAME_END,
+                SpriteType.TYPE_FLAME_END,
                 REFRESH_TIME,
                 ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx],
                 ImagesLoader.NB_FLAME_END_FRAME,

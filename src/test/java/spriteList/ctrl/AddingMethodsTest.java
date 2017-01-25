@@ -110,7 +110,7 @@ public class AddingMethodsTest implements WithAssertions {
         // test.
         Bomb bomb = new Bomb(caseRowIdx, caseColIdx, flameSize);
         AddingMethods.addBomb(spriteList, mapPointMatrix, bomb);
-        assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.BOMB);
+        assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.TYPE_BOMB);
         assertThat(((LoopedSettled) spriteList.getFirst()).getRowIdx()).isEqualTo(caseRowIdx);
         assertThat(((LoopedSettled) spriteList.getFirst()).getColIdx()).isEqualTo(caseColIdx);
         assertThat(mapPointMatrix[caseRowIdx][caseColIdx].isBombing()).isEqualTo(true);
@@ -135,7 +135,7 @@ public class AddingMethodsTest implements WithAssertions {
 
         // test.
         assertThat(AddingMethods.addFlame(spriteList, mapPointMatrix, new Flame(pathwayCaseRowIdx, pathwayCaseColIdx))).isTrue();
-        assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.FLAME);
+        assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.TYPE_FLAME);
         assertThat(((LoopedSettled) spriteList.getFirst()).getRowIdx()).isEqualTo(pathwayCaseRowIdx);
         assertThat(((LoopedSettled) spriteList.getFirst()).getColIdx()).isEqualTo(pathwayCaseColIdx);
         assertThat(mapPointMatrix[pathwayCaseRowIdx][pathwayCaseColIdx].isBurning()).isEqualTo(true);
@@ -161,7 +161,7 @@ public class AddingMethodsTest implements WithAssertions {
 
         // test.
         assertThat(AddingMethods.addFlame(spriteList, mapPointMatrix, new Flame(mutableCaseRowIdx, mutableCaseColIdx))).isFalse();
-        assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.FLAME);
+        assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.TYPE_FLAME);
         assertThat(((LoopedSettled) spriteList.getFirst()).getRowIdx()).isEqualTo(mutableCaseRowIdx);
         assertThat(((LoopedSettled) spriteList.getFirst()).getColIdx()).isEqualTo(mutableCaseColIdx);
         assertThat(mapPointMatrix[mutableCaseRowIdx][mutableCaseColIdx].isBurning()).isEqualTo(true);
@@ -255,7 +255,7 @@ public class AddingMethodsTest implements WithAssertions {
 
             // check if the expected flame has been added to the sprite list.
             for (Sprite aSpriteList : spriteList) {
-                assertThat(aSpriteList.getSpriteType()).isEqualTo(SpriteType.FLAME);
+                assertThat(aSpriteList.getSpriteType()).isEqualTo(SpriteType.TYPE_FLAME);
                 if (expectedFlamesCoordinate.getFirst() == ((Flame) aSpriteList).getRowIdx() &&
                         expectedFlamesCoordinate.getSecond() == ((Flame) aSpriteList).getColIdx()) {
                     found = true;
@@ -336,7 +336,7 @@ public class AddingMethodsTest implements WithAssertions {
 
             // check if the expected flame has been added to the sprite list.
             for (Sprite aSpriteList : spriteList) {
-                assertThat(aSpriteList.getSpriteType()).isEqualTo(SpriteType.FLAME);
+                assertThat(aSpriteList.getSpriteType()).isEqualTo(SpriteType.TYPE_FLAME);
                 if (expectedFlamesCoordinate.getFirst() == ((Flame) aSpriteList).getRowIdx() &&
                         expectedFlamesCoordinate.getSecond() == ((Flame) aSpriteList).getColIdx()) {
                     found = true;
@@ -413,7 +413,7 @@ public class AddingMethodsTest implements WithAssertions {
 
             // check if the expected flame has been added to the sprite list.
             for (Sprite aSpriteList : spriteList) {
-                assertThat(aSpriteList.getSpriteType()).isEqualTo(SpriteType.FLAME);
+                assertThat(aSpriteList.getSpriteType()).isEqualTo(SpriteType.TYPE_FLAME);
                 if (expectedFlamesCoordinate.getFirst() == ((Flame) aSpriteList).getRowIdx() &&
                         expectedFlamesCoordinate.getSecond() == ((Flame) aSpriteList).getColIdx()) {
                     found = true;
@@ -442,7 +442,7 @@ public class AddingMethodsTest implements WithAssertions {
 
         // test.
         AddingMethods.addFlameEnd(spriteList, new FlameEnd(1, 2));
-        assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.FLAME_END);
+        assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.TYPE_FLAME_END);
         assertThat(((LoopedSettled) spriteList.getFirst()).getRowIdx()).isEqualTo(1);
         assertThat(((LoopedSettled) spriteList.getFirst()).getColIdx()).isEqualTo(2);
     }

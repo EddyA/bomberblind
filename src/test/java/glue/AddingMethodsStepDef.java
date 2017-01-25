@@ -94,7 +94,7 @@ public class AddingMethodsStepDef implements WithAssertions {
             assertThat(listOfSprites.isSpriteInSpriteList(
                     Tools.getCaseCentreAbscissa(entry.getColIdx()),
                     Tools.getCaseBottomOrdinate(entry.getRowIdx()),
-                    SpriteType.FLAME)).isTrue();
+                    SpriteType.TYPE_FLAME)).isTrue();
         }
     }
 }

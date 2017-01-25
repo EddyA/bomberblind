@@ -8,7 +8,7 @@ import sprite.SpriteType;
 
 import java.io.IOException;
 
-import static utils.Action.ACTION_WALKING;
+import static sprite.SpriteAction.ACTION_WALKING;
 
 public class MummyTest implements WithAssertions {
 
@@ -24,7 +24,7 @@ public class MummyTest implements WithAssertions {
         // check members value.
         assertThat(mummy.getxMap()).isEqualTo(15);
         assertThat(mummy.getyMap()).isEqualTo(30);
-        assertThat(mummy.getSpriteType()).isEqualTo(SpriteType.WALKING_ENEMY);
+        assertThat(mummy.getSpriteType()).isEqualTo(SpriteType.TYPE_WALKING_ENEMY);
         assertThat(mummy.getRefreshTime()).isEqualTo(Mummy.REFRESH_TIME);
         assertThat(mummy.getActingTime()).isEqualTo(Mummy.ACTING_TIME);
         assertThat(mummy.getDeathImages())
@@ -39,6 +39,6 @@ public class MummyTest implements WithAssertions {
         assertThat(mummy.getWalkRightImages())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.mummyWalkRightMatrixRowIdx]);
         assertThat(mummy.getNbWalkFrame()).isEqualTo(ImagesLoader.NB_MUMMY_WALK_FRAME);
-        assertThat(mummy.getCurAction()).isEqualTo(ACTION_WALKING);
+        assertThat(mummy.getCurSpriteAction()).isEqualTo(ACTION_WALKING);
     }
 }

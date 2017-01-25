@@ -1,11 +1,12 @@
 package sprite.nomad;
 
-import static utils.Action.ACTION_DYING;
-import static utils.Action.ACTION_FLYING;
+import static sprite.SpriteAction.ACTION_DYING;
+import static sprite.SpriteAction.ACTION_FLYING;
 
 import java.awt.Image;
 import java.util.Random;
 
+import sprite.SpriteAction;
 import sprite.SpriteType;
 import utils.Direction;
 
@@ -49,7 +50,7 @@ public abstract class FlyingNomad extends Nomad {
             int deviation,
             int refreshTime,
             int actingTime) {
-        super(xMap, yMap, SpriteType.BIRD, refreshTime, actingTime, 0);
+        super(xMap, yMap, SpriteType.TYPE_FLYING_NOMAD, refreshTime, actingTime, 0);
         this.flyFrontImages = flyFrontImages;
         this.flyBackImages = flyBackImages;
         this.flyLeftImages = flyLeftImages;
@@ -57,13 +58,42 @@ public abstract class FlyingNomad extends Nomad {
         this.nbFlyFrame = nbFlyFrame;
         this.deviation = deviation;
 
-        // update cur/last - action/direction to avoid re-init curImageIdx to 0.
-        curAction = ACTION_FLYING;
-        lastAction = ACTION_FLYING;
-        curDirection = direction;
-        lastDirection = direction;
         moveIdx = 0;
         curImageIdx = new Random().nextInt(nbFlyFrame); // init the sprite with a random image index.
+
+        // update cur/last - action/direction to avoid re-init curImageIdx to 0.
+        curSpriteAction = ACTION_FLYING;
+        lastSpriteAction = ACTION_FLYING;
+        curDirection = direction;
+        lastDirection = direction;
+    }
+
+    public Image[] getFlyBackImages() {
+        return flyBackImages;
+    }
+
+    public Image[] getFlyFrontImages() {
+        return flyFrontImages;
+    }
+
+    public Image[] getFlyLeftImages() {
+        return flyLeftImages;
+    }
+
+    public Image[] getFlyRightImages() {
+        return flyRightImages;
+    }
+
+    public int getNbFlyFrame() {
+        return nbFlyFrame;
+    }
+
+    public int getDeviation() {
+        return deviation;
+    }
+
+    public int getMoveIdx() {
+        return moveIdx;
     }
 
     /**
@@ -118,11 +148,16 @@ public abstract class FlyingNomad extends Nomad {
     }
 
     @Override
+    public boolean isActionAllowed(SpriteAction spriteAction) {
+        return !(spriteAction != ACTION_FLYING &&
+                spriteAction != ACTION_DYING);
+    }
+
+    @Override
     public boolean hasActionChanged() {
-        if (!curAction.equals(lastAction) || // either the action has changed
-                (curAction.equals(ACTION_FLYING) && !curDirection.equals(lastDirection))) { // or flying to another
-                                                                                            // direction.
-            lastAction = curAction;
+        if (!curSpriteAction.equals(lastSpriteAction) || // either the action has changed
+                (curSpriteAction.equals(ACTION_FLYING) && // or (is flying
+                        !curDirection.equals(lastDirection))) { // and the direction has changed).
             lastDirection = curDirection;
             lastRefreshTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
             return true;
@@ -132,7 +167,7 @@ public abstract class FlyingNomad extends Nomad {
 
     @Override
     public void updateSprite() {
-        switch (curAction) {
+        switch (curSpriteAction) {
         case ACTION_FLYING: {
             switch (curDirection) {
             case NORTH: {
@@ -163,6 +198,6 @@ public abstract class FlyingNomad extends Nomad {
 
     @Override
     public boolean isFinished() {
-        return curAction.equals(ACTION_DYING);
+        return curSpriteAction.equals(ACTION_DYING);
     }
 }

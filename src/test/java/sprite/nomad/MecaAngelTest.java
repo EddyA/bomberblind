@@ -8,7 +8,7 @@ import sprite.SpriteType;
 
 import java.io.IOException;
 
-import static utils.Action.ACTION_WALKING;
+import static sprite.SpriteAction.ACTION_WALKING;
 
 public class MecaAngelTest implements WithAssertions {
 
@@ -24,7 +24,7 @@ public class MecaAngelTest implements WithAssertions {
         // check members value.
         assertThat(mecaAngel.getxMap()).isEqualTo(10);
         assertThat(mecaAngel.getyMap()).isEqualTo(20);
-        assertThat(mecaAngel.getSpriteType()).isEqualTo(SpriteType.WALKING_ENEMY);
+        assertThat(mecaAngel.getSpriteType()).isEqualTo(SpriteType.TYPE_WALKING_ENEMY);
         assertThat(mecaAngel.getRefreshTime()).isEqualTo(MecaAngel.REFRESH_TIME);
         assertThat(mecaAngel.getActingTime()).isEqualTo(MecaAngel.ACTING_TIME);
         assertThat(mecaAngel.getDeathImages()).
@@ -39,6 +39,6 @@ public class MecaAngelTest implements WithAssertions {
         assertThat(mecaAngel.getWalkRightImages()).
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.mecaAngelWalkRightMatrixRowIdx]);
         assertThat(mecaAngel.getNbWalkFrame()).isEqualTo(ImagesLoader.NB_MECA_ANGEL_WALK_FRAME);
-        assertThat(mecaAngel.getCurAction()).isEqualTo(ACTION_WALKING);
+        assertThat(mecaAngel.getCurSpriteAction()).isEqualTo(ACTION_WALKING);
     }
 }

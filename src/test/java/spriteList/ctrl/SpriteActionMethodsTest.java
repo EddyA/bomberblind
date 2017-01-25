@@ -12,7 +12,7 @@ import map.MapPoint;
 import sprite.nomad.BlueBomber;
 import utils.Direction;
 
-public class ActionMethodsTest implements WithAssertions {
+public class SpriteActionMethodsTest implements WithAssertions {
 
     private final int MAP_WIDTH = 20;
     private final int MAP_HEIGHT = 10;

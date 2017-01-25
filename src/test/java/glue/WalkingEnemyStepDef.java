@@ -1,6 +1,6 @@
 package glue;
 
-import static utils.Action.ACTION_DYING;
+import static sprite.SpriteAction.ACTION_DYING;
 
 import org.assertj.core.api.WithAssertions;
 import org.mockito.Mockito;
@@ -30,7 +30,7 @@ public class WalkingEnemyStepDef implements WithAssertions {
 
     @Then("^the walking enemy should die$")
     public void the_walking_enemy_should_die() {
-        assertThat(walkingEnemyState.getEnemy().getCurAction()).isEqualTo(ACTION_DYING);
+        assertThat(walkingEnemyState.getEnemy().getCurSpriteAction()).isEqualTo(ACTION_DYING);
     }
 
     @Then("^the walking enemy should get another direction$")

@@ -23,7 +23,7 @@ public class Bomb extends TimedSettled {
     public Bomb(int rowIdx, int colIdx, int flameSize) {
         super(rowIdx,
                 colIdx,
-                SpriteType.BOMB,
+                SpriteType.TYPE_BOMB,
                 REFRESH_TIME,
                 ImagesLoader.imagesMatrix[ImagesLoader.bombMatrixRowIdx],
                 ImagesLoader.NB_BOMB_FRAME,

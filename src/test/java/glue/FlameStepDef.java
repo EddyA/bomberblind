@@ -31,7 +31,7 @@ public class FlameStepDef implements WithAssertions {
         assertThat(listOfSprites.isSpriteInSpriteList(
                 Tools.getCaseCentreAbscissa(colIdx),
                 Tools.getCaseBottomOrdinate(rowIdx),
-                SpriteType.FLAME_END)).isTrue();
+                SpriteType.TYPE_FLAME_END)).isTrue();
     }
 
     @Then("^the flame should be marked as removable from the sprite list$")

@@ -1,10 +1,10 @@
 package sprite.nomad;
 
-import static utils.Action.ACTION_DYING;
+import static sprite.SpriteAction.ACTION_DYING;
 
 import sprite.Sprite;
+import sprite.SpriteAction;
 import sprite.SpriteType;
-import utils.Action;
 import utils.Direction;
 
 /**
@@ -12,8 +12,8 @@ import utils.Direction;
  */
 public abstract class Nomad extends Sprite {
 
-    protected Action curAction; // current action.
-    protected Action lastAction; // last action.
+    protected SpriteAction curSpriteAction; // current action.
+    protected SpriteAction lastSpriteAction; // last action.
     protected Direction curDirection; // current direction.
     protected Direction lastDirection; // last direction.
 
@@ -49,16 +49,26 @@ public abstract class Nomad extends Sprite {
         this.invincibilityTime = invincibilityTime;
     }
 
-    public Action getCurAction() {
-        return curAction;
+    public SpriteAction getCurSpriteAction() {
+        return curSpriteAction;
     }
 
-    public void setCurAction(Action curAction) {
-        this.curAction = curAction;
+    public void setCurSpriteAction(SpriteAction curSpriteAction) {
+        if (!isActionAllowed(curSpriteAction)) {
+            String msg = "'" + SpriteAction.getlabel(curSpriteAction).orElse("no_name")
+                    + "' action is not allowed here.";
+            throw new RuntimeException(msg);
+        }
+        this.curSpriteAction = curSpriteAction;
     }
 
-    public void setLastAction(Action lastAction) {
-        this.lastAction = lastAction;
+    public void setLastSpriteAction(SpriteAction lastSpriteAction) {
+        if (!isActionAllowed(lastSpriteAction)) {
+            String msg = "'" + SpriteAction.getlabel(lastSpriteAction).orElse("no_name")
+                    + "' action is not allowed here.";
+            throw new RuntimeException(msg);
+        }
+        this.lastSpriteAction = lastSpriteAction;
     }
 
     public Direction getCurDirection() {
@@ -81,8 +91,20 @@ public abstract class Nomad extends Sprite {
         return actingTime;
     }
 
+    public SpriteAction getLastSpriteAction() {
+        return lastSpriteAction;
+    }
+
     public void setLastActionTs(long lastActionTs) {
         this.lastActionTs = lastActionTs;
+    }
+
+    public boolean isPaintedAtLeastOneTime() {
+        return paintedAtLeastOneTime;
+    }
+
+    public void setPaintedAtLeastOneTime(boolean paintedAtLeastOneTime) {
+        this.paintedAtLeastOneTime = paintedAtLeastOneTime;
     }
 
     public int getInvincibilityTime() {
@@ -122,14 +144,22 @@ public abstract class Nomad extends Sprite {
     }
 
     /**
-     * Update the sprite's image according to the current sprite's action.
+     * Is an action allowed in the class.
+     *
+     * @param spriteAction the relative action
+     * @return true if the action is allowed, false otherwise.
      */
-    public abstract void updateSprite();
+    public abstract boolean isActionAllowed(SpriteAction spriteAction);
 
     /**
      * @return true if the current action has changed, false otherwise.
      */
     public abstract boolean hasActionChanged();
+
+    /**
+     * Update the sprite's image according to the current sprite's action.
+     */
+    public abstract void updateSprite();
 
     @Override
     public void updateImage() {
@@ -151,6 +181,6 @@ public abstract class Nomad extends Sprite {
 
     @Override
     public boolean isFinished() {
-        return curAction.equals(ACTION_DYING) && paintedAtLeastOneTime;
+        return curSpriteAction.equals(ACTION_DYING) && paintedAtLeastOneTime;
     }
 }

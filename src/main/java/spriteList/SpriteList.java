@@ -84,35 +84,35 @@ public class SpriteList extends LinkedList<Sprite> {
             Sprite sprite = iterator.next();
             boolean shouldBeRemoved;
             switch (sprite.getSpriteType()) { // process the sprite's action.
-                case BOMBER: {
+                case TYPE_BOMBER: {
                     shouldBeRemoved = ActionMethods.processBomber(this, tmpList, map.getMapPointMatrix(), map.getMapWidth(),
                             map.getMapHeight(), (Bomber) sprite, pressedKey);
                     break;
                 }
-                case WALKING_ENEMY: {
+                case TYPE_WALKING_ENEMY: {
                     shouldBeRemoved = ActionMethods.processWalkingEnemy(this, map.getMapPointMatrix(), map.getMapWidth(),
                             map.getMapHeight(), (WalkingEnemy) sprite);
                     break;
                 }
-                case BREAKING_ENEMY: {
+                case TYPE_BREAKING_ENEMY: {
                     shouldBeRemoved = ActionMethods.processBreakingEnemy(this, tmpList, map.getMapPointMatrix(),
                             map.getMapWidth(), map.getMapHeight(), (BreakingEnemy) sprite);
                     break;
                 }
-                case BIRD: {
+                case TYPE_FLYING_NOMAD: {
                     shouldBeRemoved = ActionMethods.processBird(map.getMapWidth(), (FlyingNomad) sprite);
                     break;
                 }
-                case BOMB: {
+                case TYPE_BOMB: {
                     shouldBeRemoved = ActionMethods.processBomb(tmpList, map.getMapPointMatrix(), map.getMapWidth(),
                             map.getMapHeight(), (Bomb) sprite);
                     break;
                 }
-                case FLAME: {
+                case TYPE_FLAME: {
                     shouldBeRemoved = ActionMethods.processFlame(tmpList, map.getMapPointMatrix(), (Flame) sprite);
                     break;
                 }
-                case FLAME_END: {
+                case TYPE_FLAME_END: {
                     shouldBeRemoved = ActionMethods.processFlameEnd((FlameEnd) sprite);
                     break;
                 }

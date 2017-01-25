@@ -26,7 +26,7 @@ public class BombTest implements WithAssertions {
         assertThat(bomb.getColIdx()).isEqualTo(4);
         assertThat(bomb.getxMap()).isEqualTo(Tools.getCaseCentreAbscissa(4));
         assertThat(bomb.getyMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
-        assertThat(bomb.getSpriteType()).isEqualTo(SpriteType.BOMB);
+        assertThat(bomb.getSpriteType()).isEqualTo(SpriteType.TYPE_BOMB);
         assertThat(bomb.getRefreshTime()).isEqualTo(Bomb.REFRESH_TIME);
         assertThat(bomb.getImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bombMatrixRowIdx]);
         assertThat(bomb.getNbImages()).isEqualTo(ImagesLoader.NB_BOMB_FRAME);

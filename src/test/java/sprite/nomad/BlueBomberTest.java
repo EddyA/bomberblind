@@ -8,7 +8,7 @@ import sprite.SpriteType;
 
 import java.io.IOException;
 
-import static utils.Action.ACTION_WAITING;
+import static sprite.SpriteAction.ACTION_WAITING;
 
 public class BlueBomberTest implements WithAssertions {
 
@@ -24,7 +24,7 @@ public class BlueBomberTest implements WithAssertions {
         // check members value.
         assertThat(blueBomber.getxMap()).isEqualTo(15);
         assertThat(blueBomber.getyMap()).isEqualTo(30);
-        assertThat(blueBomber.getSpriteType()).isEqualTo(SpriteType.BOMBER);
+        assertThat(blueBomber.getSpriteType()).isEqualTo(SpriteType.TYPE_BOMBER);
         assertThat(blueBomber.getRefreshTime()).isEqualTo(BlueBomber.REFRESH_TIME);
         assertThat(blueBomber.getActingTime()).isEqualTo(BlueBomber.ACTING_TIME);
         assertThat(blueBomber.getInvincibilityTime()).isEqualTo(BlueBomber.INVINCIBILITY_TIME);
@@ -48,7 +48,7 @@ public class BlueBomberTest implements WithAssertions {
         assertThat(blueBomber.getNbWinFrame()).isEqualTo(ImagesLoader.NB_BOMBER_WIN_FRAME);
         assertThat(blueBomber.getInitialXMap()).isEqualTo(blueBomber.getxMap());
         assertThat(blueBomber.getInitialYMap()).isEqualTo(blueBomber.getyMap());
-        assertThat(blueBomber.getCurAction()).isEqualTo(ACTION_WAITING);
+        assertThat(blueBomber.getCurSpriteAction()).isEqualTo(ACTION_WAITING);
         assertThat(blueBomber.isInvincible()).isTrue();
     }
 }

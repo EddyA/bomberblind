@@ -1,12 +1,14 @@
 package sprite.nomad;
 
+import static sprite.SpriteAction.ACTION_BREAKING;
+import static sprite.SpriteAction.ACTION_DYING;
+import static sprite.SpriteAction.ACTION_WALKING;
+
+import java.awt.Image;
+
 import map.MapPoint;
+import sprite.SpriteAction;
 import sprite.SpriteType;
-
-import java.awt.*;
-
-import static utils.Action.ACTION_BREAKING;
-import static utils.Action.ACTION_WALKING;
 
 /**
  * Abstract class of a breaking enemy.
@@ -68,7 +70,7 @@ public class BreakingEnemy extends WalkingEnemy {
                 nbWalkFrame,
                 refreshTime,
                 actingTime);
-        this.setSpriteType(SpriteType.BREAKING_ENEMY); // override the type of sprite.
+        this.setSpriteType(SpriteType.TYPE_BREAKING_ENEMY); // override the type of sprite.
         this.breakBackImages = breakBackImages;
         this.breakFrontImages = breakFrontImages;
         this.breakLeftImages = breakLeftImages;
@@ -105,15 +107,23 @@ public class BreakingEnemy extends WalkingEnemy {
     }
 
     public boolean isBreakingSpriteFinished() {
-        return curAction.equals(ACTION_BREAKING) && paintedAtLeastOneTime;
+        return curSpriteAction.equals(ACTION_BREAKING) && paintedAtLeastOneTime;
+    }
+
+    @Override
+    public boolean isActionAllowed(SpriteAction spriteAction) {
+        return !(spriteAction != ACTION_BREAKING &&
+                spriteAction != ACTION_DYING &&
+                spriteAction != ACTION_WALKING);
     }
 
     @Override
     public boolean hasActionChanged() {
-        if (!curAction.equals(lastAction) || // either the action has changed
-                (curAction.equals(ACTION_BREAKING) && !curDirection.equals(lastDirection)) || // or walking to another direction.
-                (curAction.equals(ACTION_WALKING) && !curDirection.equals(lastDirection))) { // or breaking with another direction.
-            lastAction = curAction;
+        if (!curSpriteAction.equals(lastSpriteAction) || // either the action has changed
+                ((curSpriteAction.equals(ACTION_BREAKING) || // or ((is breaking
+                        curSpriteAction.equals(ACTION_WALKING)) && // or is walking)
+                        !curDirection.equals(lastDirection))) { // and the direction has changed).
+            lastSpriteAction = curSpriteAction;
             lastDirection = curDirection;
             lastRefreshTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
             return true;
@@ -123,7 +133,7 @@ public class BreakingEnemy extends WalkingEnemy {
 
     @Override
     public void updateSprite() {
-        switch (curAction) {
+        switch (curSpriteAction) {
             case ACTION_BREAKING: {
                 switch (curDirection) {
                     case NORTH: {

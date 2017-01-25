@@ -1,7 +1,7 @@
 package glue;
 
-import static utils.Action.ACTION_DYING;
-import static utils.Action.ACTION_WAITING;
+import static sprite.SpriteAction.ACTION_DYING;
+import static sprite.SpriteAction.ACTION_WAITING;
 
 import org.assertj.core.api.WithAssertions;
 import org.mockito.Mockito;
@@ -36,19 +36,19 @@ public class BomberStepDef implements WithAssertions {
 
     @Then("^the bomber should die$")
     public void the_bomber_should_die() {
-        assertThat(bomberState.getBomber().getCurAction()).isEqualTo(ACTION_DYING);
+        assertThat(bomberState.getBomber().getCurSpriteAction()).isEqualTo(ACTION_DYING);
     }
 
     @Then("^the bomber should not die$")
     public void the_bomber_should_not_die() {
-        assertThat(bomberState.getBomber().getCurAction()).isNotEqualTo(ACTION_DYING);
+        assertThat(bomberState.getBomber().getCurSpriteAction()).isNotEqualTo(ACTION_DYING);
     }
 
     @Then("^the bomber is re-init$")
     public void the_bomber_is_reset() {
         assertThat(bomberState.getBomber().getxMap()).isEqualTo(bomberState.getBomber().getInitialXMap());
         assertThat(bomberState.getBomber().getyMap()).isEqualTo(bomberState.getBomber().getInitialYMap());
-        assertThat(bomberState.getBomber().getCurAction()).isEqualTo(ACTION_WAITING);
+        assertThat(bomberState.getBomber().getCurSpriteAction()).isEqualTo(ACTION_WAITING);
         assertThat(bomberState.getBomber().isInvincible()).isTrue();
     }
 }

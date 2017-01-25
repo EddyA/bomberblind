@@ -1,14 +1,15 @@
 package sprite.nomad;
 
-import images.ImagesLoader;
-import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
-import sprite.SpriteType;
+import static sprite.SpriteAction.ACTION_WALKING;
 
 import java.io.IOException;
 
-import static utils.Action.ACTION_WALKING;
+import org.assertj.core.api.WithAssertions;
+import org.junit.Before;
+import org.junit.Test;
+
+import images.ImagesLoader;
+import sprite.SpriteType;
 
 public class CloakedSkeletonTest implements WithAssertions {
 
@@ -24,9 +25,7 @@ public class CloakedSkeletonTest implements WithAssertions {
         // check members value.
         assertThat(cloakedSkeleton.getxMap()).isEqualTo(15);
         assertThat(cloakedSkeleton.getyMap()).isEqualTo(30);
-        assertThat(cloakedSkeleton.getSpriteType()).isEqualTo(SpriteType.WALKING_ENEMY);
-        assertThat(cloakedSkeleton.getRefreshTime()).isEqualTo(CloakedSkeleton.REFRESH_TIME);
-        assertThat(cloakedSkeleton.getActingTime()).isEqualTo(CloakedSkeleton.ACTING_TIME);
+        assertThat(cloakedSkeleton.getSpriteType()).isEqualTo(SpriteType.TYPE_WALKING_ENEMY);
         assertThat(cloakedSkeleton.getDeathImages())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonDeathMatrixRowIdx]);
         assertThat(cloakedSkeleton.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME);
@@ -39,6 +38,8 @@ public class CloakedSkeletonTest implements WithAssertions {
         assertThat(cloakedSkeleton.getWalkRightImages())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkRightMatrixRowIdx]);
         assertThat(cloakedSkeleton.getNbWalkFrame()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
-        assertThat(cloakedSkeleton.getCurAction()).isEqualTo(ACTION_WALKING);
+        assertThat(cloakedSkeleton.getRefreshTime()).isEqualTo(CloakedSkeleton.REFRESH_TIME);
+        assertThat(cloakedSkeleton.getActingTime()).isEqualTo(CloakedSkeleton.ACTING_TIME);
+        assertThat(cloakedSkeleton.getCurSpriteAction()).isEqualTo(ACTION_WALKING);
     }
 }

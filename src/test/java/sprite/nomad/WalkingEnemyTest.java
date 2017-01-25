@@ -9,8 +9,12 @@ import utils.Direction;
 
 import java.io.IOException;
 
-import static utils.Action.ACTION_DYING;
-import static utils.Action.ACTION_WALKING;
+import static sprite.SpriteAction.ACTION_BREAKING;
+import static sprite.SpriteAction.ACTION_DYING;
+import static sprite.SpriteAction.ACTION_FLYING;
+import static sprite.SpriteAction.ACTION_WAITING;
+import static sprite.SpriteAction.ACTION_WALKING;
+import static sprite.SpriteAction.ACTION_WINING;
 
 public class WalkingEnemyTest implements WithAssertions {
 
@@ -26,7 +30,7 @@ public class WalkingEnemyTest implements WithAssertions {
         // check members value.
         assertThat(cloakedSkeleton.getxMap()).isEqualTo(15);
         assertThat(cloakedSkeleton.getyMap()).isEqualTo(30);
-        assertThat(cloakedSkeleton.getSpriteType()).isEqualTo(SpriteType.WALKING_ENEMY);
+        assertThat(cloakedSkeleton.getSpriteType()).isEqualTo(SpriteType.TYPE_WALKING_ENEMY);
         assertThat(cloakedSkeleton.getDeathImages())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonDeathMatrixRowIdx]);
         assertThat(cloakedSkeleton.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME);
@@ -41,7 +45,23 @@ public class WalkingEnemyTest implements WithAssertions {
         assertThat(cloakedSkeleton.getNbWalkFrame()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
         assertThat(cloakedSkeleton.getRefreshTime()).isEqualTo(CloakedSkeleton.REFRESH_TIME);
         assertThat(cloakedSkeleton.getActingTime()).isEqualTo(CloakedSkeleton.ACTING_TIME);
-        assertThat(cloakedSkeleton.getCurAction()).isEqualTo(ACTION_WALKING);
+        assertThat(cloakedSkeleton.getCurSpriteAction()).isEqualTo(ACTION_WALKING);
+    }
+
+    @Test
+    public void isActionAllowedShouldReturnTrue() throws Exception {
+        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
+        assertThat(cloakedSkeleton.isActionAllowed(ACTION_DYING)).isTrue();
+        assertThat(cloakedSkeleton.isActionAllowed(ACTION_WALKING)).isTrue();
+    }
+
+    @Test
+    public void isActionAllowedShouldReturnFalse() throws Exception {
+        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
+        assertThat(cloakedSkeleton.isActionAllowed(ACTION_BREAKING)).isFalse();
+        assertThat(cloakedSkeleton.isActionAllowed(ACTION_FLYING)).isFalse();
+        assertThat(cloakedSkeleton.isActionAllowed(ACTION_WAITING)).isFalse();
+        assertThat(cloakedSkeleton.isActionAllowed(ACTION_WINING)).isFalse();
     }
 
     @Test
@@ -49,21 +69,21 @@ public class WalkingEnemyTest implements WithAssertions {
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
 
         // set test.
-        cloakedSkeleton.setCurAction(ACTION_DYING);
-        cloakedSkeleton.setLastAction(ACTION_DYING);
+        cloakedSkeleton.setCurSpriteAction(ACTION_DYING);
+        cloakedSkeleton.setLastSpriteAction(ACTION_DYING);
 
         // call & check.
         assertThat(cloakedSkeleton.hasActionChanged()).isFalse();
     }
 
     @Test
-    public void hasActionChangedWithTheSameDirectionShouldReturnFalse() {
+    public void hasActionChangedAndWalkingToTheSameDirectionShouldReturnFalse() {
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
 
         // set test.
-        cloakedSkeleton.setCurAction(ACTION_WALKING);
+        cloakedSkeleton.setCurSpriteAction(ACTION_WALKING);
         cloakedSkeleton.setCurDirection(Direction.NORTH);
-        cloakedSkeleton.setLastAction(ACTION_WALKING);
+        cloakedSkeleton.setLastSpriteAction(ACTION_WALKING);
         cloakedSkeleton.setLastDirection(Direction.NORTH);
 
         // call & check.
@@ -75,21 +95,21 @@ public class WalkingEnemyTest implements WithAssertions {
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
 
         // set test.
-        cloakedSkeleton.setCurAction(ACTION_WALKING);
-        cloakedSkeleton.setLastAction(ACTION_DYING);
+        cloakedSkeleton.setCurSpriteAction(ACTION_WALKING);
+        cloakedSkeleton.setLastSpriteAction(ACTION_DYING);
 
         // call & check.
         assertThat(cloakedSkeleton.hasActionChanged()).isTrue();
     }
 
     @Test
-    public void hasActionChangedWithADifferentDirectionShouldReturnTrue() throws Exception {
+    public void hasActionChangedWalkingToADifferentDirectionShouldReturnTrue() throws Exception {
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
 
         // set test.
-        cloakedSkeleton.setCurAction(ACTION_WALKING);
+        cloakedSkeleton.setCurSpriteAction(ACTION_WALKING);
         cloakedSkeleton.setCurDirection(Direction.NORTH);
-        cloakedSkeleton.setLastAction(ACTION_WALKING);
+        cloakedSkeleton.setLastSpriteAction(ACTION_WALKING);
         cloakedSkeleton.setLastDirection(Direction.SOUTH);
 
         // call & check.
@@ -101,42 +121,37 @@ public class WalkingEnemyTest implements WithAssertions {
         CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
 
         // dying.
-        cloakedSkeleton.setCurAction(ACTION_DYING);
+        cloakedSkeleton.setCurSpriteAction(ACTION_DYING);
         cloakedSkeleton.updateSprite();
-        assertThat(cloakedSkeleton.getImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonDeathMatrixRowIdx]);
-        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME);
+        assertThat(cloakedSkeleton.getImages()).isEqualTo(cloakedSkeleton.getDeathImages());
+        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(cloakedSkeleton.getNbDeathFrame());
 
         // walking back.
-        cloakedSkeleton.setCurAction(ACTION_WALKING);
+        cloakedSkeleton.setCurSpriteAction(ACTION_WALKING);
         cloakedSkeleton.setCurDirection(Direction.NORTH);
         cloakedSkeleton.updateSprite();
-        assertThat(cloakedSkeleton.getImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkBackMatrixRowIdx]);
-        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
+        assertThat(cloakedSkeleton.getImages()).isEqualTo(cloakedSkeleton.getWalkBackImages());
+        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(cloakedSkeleton.getNbWalkFrame());
 
         // walking front.
-        cloakedSkeleton.setCurAction(ACTION_WALKING);
+        cloakedSkeleton.setCurSpriteAction(ACTION_WALKING);
         cloakedSkeleton.setCurDirection(Direction.SOUTH);
         cloakedSkeleton.updateSprite();
-        assertThat(cloakedSkeleton.getImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkFrontMatrixRowIdx]);
-        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
+        assertThat(cloakedSkeleton.getImages()).isEqualTo(cloakedSkeleton.getWalkFrontImages());
+        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(cloakedSkeleton.getNbWalkFrame());
 
         // walking left.
-        cloakedSkeleton.setCurAction(ACTION_WALKING);
+        cloakedSkeleton.setCurSpriteAction(ACTION_WALKING);
         cloakedSkeleton.setCurDirection(Direction.WEST);
         cloakedSkeleton.updateSprite();
-        assertThat(cloakedSkeleton.getImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkLeftMatrixRowIdx]);
-        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
+        assertThat(cloakedSkeleton.getImages()).isEqualTo(cloakedSkeleton.getWalkLeftImages());
+        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(cloakedSkeleton.getNbWalkFrame());
 
         // walking right.
-        cloakedSkeleton.setCurAction(ACTION_WALKING);
+        cloakedSkeleton.setCurSpriteAction(ACTION_WALKING);
         cloakedSkeleton.setCurDirection(Direction.EAST);
         cloakedSkeleton.updateSprite();
-        assertThat(cloakedSkeleton.getImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkRightMatrixRowIdx]);
-        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
+        assertThat(cloakedSkeleton.getImages()).isEqualTo(cloakedSkeleton.getWalkRightImages());
+        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(cloakedSkeleton.getNbWalkFrame());
     }
 }

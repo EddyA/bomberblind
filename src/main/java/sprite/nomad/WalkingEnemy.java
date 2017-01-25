@@ -1,9 +1,11 @@
 package sprite.nomad;
 
-import static utils.Action.ACTION_WALKING;
+import static sprite.SpriteAction.ACTION_DYING;
+import static sprite.SpriteAction.ACTION_WALKING;
 
 import java.awt.Image;
 
+import sprite.SpriteAction;
 import sprite.SpriteType;
 import utils.Direction;
 
@@ -46,7 +48,7 @@ public abstract class WalkingEnemy extends Nomad {
                         int nbWalkFrame,
                         int refreshTime,
                         int actingTime) {
-        super(xMap, yMap, SpriteType.WALKING_ENEMY, refreshTime, actingTime, 0);
+        super(xMap, yMap, SpriteType.TYPE_WALKING_ENEMY, refreshTime, actingTime, 0);
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
         this.walkBackImages = walkBackImages;
@@ -55,7 +57,7 @@ public abstract class WalkingEnemy extends Nomad {
         this.walkRightImages = walkRightImages;
         this.nbWalkFrame = nbWalkFrame;
 
-        curAction = ACTION_WALKING;
+        curSpriteAction = ACTION_WALKING;
         curDirection = Direction.getRandomDirection(); // init the sprite with a random direction.
     }
 
@@ -88,10 +90,17 @@ public abstract class WalkingEnemy extends Nomad {
     }
 
     @Override
+    public boolean isActionAllowed(SpriteAction spriteAction) {
+        return !(spriteAction != ACTION_WALKING &&
+                spriteAction != ACTION_DYING);
+    }
+
+    @Override
     public boolean hasActionChanged() {
-        if (!curAction.equals(lastAction) || // either the action has changed
-                (curAction.equals(ACTION_WALKING) && !curDirection.equals(lastDirection))) { // or the direction has changed.
-            lastAction = curAction;
+        if (!curSpriteAction.equals(lastSpriteAction) || // either the action has changed
+                (curSpriteAction.equals(ACTION_WALKING) && // or (is walking
+                        !curDirection.equals(lastDirection))) { // and the direction has changed).
+            lastSpriteAction = curSpriteAction;
             lastDirection = curDirection;
             lastRefreshTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
             return true;
@@ -101,7 +110,7 @@ public abstract class WalkingEnemy extends Nomad {
 
     @Override
     public void updateSprite() {
-        switch (curAction) {
+        switch (curSpriteAction) {
             case ACTION_DYING: {
                 images = deathImages;
                 nbImages = nbDeathFrame;

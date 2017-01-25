@@ -21,6 +21,7 @@ import map.Map;
 import map.zelda.ZeldaMap;
 import map.zelda.ZeldaMapProperties;
 import map.zelda.ZeldaMapSetting;
+import sprite.SpriteType;
 import sprite.nomad.BlueBomber;
 import sprite.nomad.Bomber;
 import sprite.nomad.WhiteBird;
@@ -70,9 +71,9 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         addBird(spriteList, 
                 new WhiteBird(0, bbManInitialPosition.getSecond() + 200, Direction.EAST, -6));
         addBird(spriteList,
-                new WhiteBird(-50, bbManInitialPosition.getSecond() + 225, Direction.EAST, -6));
+                new WhiteBird(-50, bbManInitialPosition.getSecond() + 225, Direction.EAST, -8));
         addBird(spriteList,
-                new WhiteBird(0, bbManInitialPosition.getSecond() + 250, Direction.EAST, -6));
+                new WhiteBird(0, bbManInitialPosition.getSecond() + 250, Direction.EAST, -12));
 
         // create a list to handle pressed keys.
         pressedKeyList = new ArrayList<>();
@@ -147,10 +148,12 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
                 // update the list order to handle sprites superposition.
                 spriteList.sort((o1, o2) -> {
-                    if (o1.getyMap() < o2.getyMap()) {
-                        return -1;
-                    } else if (o1.getyMap() > o2.getyMap()) {
-                        return 1;
+                    if (o1.getSpriteType() != o2.getSpriteType() &&
+                            (o1.getSpriteType() == SpriteType.TYPE_FLYING_NOMAD ||
+                                    o2.getSpriteType() == SpriteType.TYPE_FLYING_NOMAD)) {
+                        return o1.getSpriteType() == SpriteType.TYPE_FLYING_NOMAD ? 1 : -1;
+                    } else if (o1.getyMap() != o2.getyMap()) {
+                        return o1.getyMap() > o2.getyMap() ? 1 : -1;
                     } else {
                         return 0;
                     }
