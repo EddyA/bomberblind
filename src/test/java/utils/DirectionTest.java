@@ -62,6 +62,13 @@ public class DirectionTest implements WithAssertions {
     }
 
     @Test
+    public void convertKeyEventToDirectionWithABadKeyShouldThrownAnException() throws Exception {
+        assertThatThrownBy(() -> Direction.convertKeyEventToDirection(KeyEvent.VK_B))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Cannot convert KeyEvent '66' to Direction.");
+    }
+
+    @Test
     public void convertKeyEventToDirectionShouldReturnTheExpectedDirection() throws Exception {
         assertThat(Direction.convertKeyEventToDirection(KeyEvent.VK_UP)).isEqualTo(NORTH);
         assertThat(Direction.convertKeyEventToDirection(KeyEvent.VK_DOWN)).isEqualTo(SOUTH);

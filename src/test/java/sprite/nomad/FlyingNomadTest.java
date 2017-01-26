@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import images.ImagesLoader;
-import sprite.SpriteAction;
 import sprite.SpriteType;
 import utils.Direction;
 

@@ -1,6 +1,5 @@
 package spriteList.ctrl;
 
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import org.assertj.core.api.WithAssertions;

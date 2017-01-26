@@ -11,10 +11,12 @@ import sprite.nomad.BlueBomber;
 import sprite.nomad.Bomber;
 import sprite.nomad.CloakedSkeleton;
 import sprite.nomad.Minotor;
+import sprite.nomad.WhiteBird;
 import sprite.settled.Bomb;
 import sprite.settled.Flame;
 import sprite.settled.FlameEnd;
 import sprite.settled.LoopedSettled;
+import utils.Direction;
 import utils.Tuple2;
 
 import java.io.IOException;
@@ -440,10 +442,23 @@ public class AddingMethodsTest implements WithAssertions {
             }
         }
 
+        // add sprite.
+        FlameEnd flameEnd = new FlameEnd(1, 2);
+        AddingMethods.addFlameEnd(spriteList, flameEnd);
+
         // test.
-        AddingMethods.addFlameEnd(spriteList, new FlameEnd(1, 2));
-        assertThat(spriteList.getFirst().getSpriteType()).isEqualTo(SpriteType.TYPE_FLAME_END);
-        assertThat(((LoopedSettled) spriteList.getFirst()).getRowIdx()).isEqualTo(1);
-        assertThat(((LoopedSettled) spriteList.getFirst()).getColIdx()).isEqualTo(2);
+        assertThat(spriteList.contains(flameEnd)).isTrue();
+    }
+
+    @Test
+    public void addBirdShouldAddABird() throws Exception {
+        LinkedList<Sprite> spriteList = new LinkedList<>();
+
+        // add sprite.
+        WhiteBird whiteBird = new WhiteBird(1, 2, Direction.EAST, -5);
+        AddingMethods.addBird(spriteList, whiteBird);
+
+        // test.
+        assertThat(spriteList.contains(whiteBird)).isTrue();
     }
 }
