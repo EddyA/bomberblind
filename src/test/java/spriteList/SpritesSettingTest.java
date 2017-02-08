@@ -6,11 +6,11 @@ import org.junit.Test;
 public class SpritesSettingTest implements WithAssertions {
 
     @SuppressWarnings("FieldCanBeLocal")
-    private final String TEST_MAP_PROPERTIES_FILE = "/test.zelda.sprites.properties";
+    private final String TEST_SPRITES_PROPERTIES_FILE = "/test.zelda.sprites.properties";
 
     @Test
     public void rMapSettingShouldLoadExpectedValues() throws Exception {
-        SpritesProperties spritesProperties = new SpritesProperties(TEST_MAP_PROPERTIES_FILE);
+        SpritesProperties spritesProperties = new SpritesProperties(TEST_SPRITES_PROPERTIES_FILE);
         spritesProperties.loadProperties();
         spritesProperties.checkProperties();
 

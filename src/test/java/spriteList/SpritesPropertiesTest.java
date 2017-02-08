@@ -7,11 +7,11 @@ import exceptions.InvalidConfigurationException;
 
 public class SpritesPropertiesTest implements WithAssertions {
 
-    private final String TEST_MAP_PROPERTIES_FILE = "/test.zelda.sprites.properties";
+    private final String TEST_SPRITES_PROPERTIES_FILE = "/test.zelda.sprites.properties";
 
     @Test
     public void loadAndCheckPropertiesShouldLoadExpectedValues() throws Exception {
-        SpritesProperties spritesProperties = new SpritesProperties(TEST_MAP_PROPERTIES_FILE);
+        SpritesProperties spritesProperties = new SpritesProperties(TEST_SPRITES_PROPERTIES_FILE);
         spritesProperties.loadProperties();
         spritesProperties.checkProperties();
 
@@ -20,6 +20,7 @@ public class SpritesPropertiesTest implements WithAssertions {
         assertThat(spritesProperties.getSpritesEnemyMecaAngel()).isEqualTo(2);
         assertThat(spritesProperties.getSpritesEnemyMummy()).isEqualTo(3);
         assertThat(spritesProperties.getSpritesEnemyMinotor()).isEqualTo(4);
+        assertThat(spritesProperties.getSpritesBirdsArrivalTimeInterval()).isEqualTo(5);
     }
 
     @Test
@@ -48,7 +49,7 @@ public class SpritesPropertiesTest implements WithAssertions {
 
     @Test
     public void checkPropertiesWithNotIntegerPropertiesShouldThrowExpectedException() throws Exception {
-        SpritesProperties zeldaMapProperties = new SpritesProperties(TEST_MAP_PROPERTIES_FILE);
+        SpritesProperties zeldaMapProperties = new SpritesProperties(TEST_SPRITES_PROPERTIES_FILE);
         zeldaMapProperties.loadProperties();
 
         // set a field with a bad value.
@@ -63,7 +64,7 @@ public class SpritesPropertiesTest implements WithAssertions {
 
     @Test
     public void checkPropertiesWithMissingPropertiesShouldThrowExpectedException() throws Exception {
-        SpritesProperties zeldaMapProperties = new SpritesProperties(TEST_MAP_PROPERTIES_FILE);
+        SpritesProperties zeldaMapProperties = new SpritesProperties(TEST_SPRITES_PROPERTIES_FILE);
         zeldaMapProperties.loadProperties();
 
         // remove a mandatory field.

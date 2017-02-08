@@ -22,8 +22,8 @@ public class Bird extends FlyingNomad {
     public Bird(int xMap, int yMap, Direction direction, int deviation) {
         super(xMap,
                 yMap,
-                ImagesLoader.imagesMatrix[ImagesLoader.birdFlyFrontMatrixRowIdx],
                 ImagesLoader.imagesMatrix[ImagesLoader.birdFlyBackMatrixRowIdx],
+                ImagesLoader.imagesMatrix[ImagesLoader.birdFlyFrontMatrixRowIdx],
                 ImagesLoader.imagesMatrix[ImagesLoader.birdFlyLeftMatrixRowIdx],
                 ImagesLoader.imagesMatrix[ImagesLoader.birdFlyRightMatrixRowIdx],
                 ImagesLoader.NB_BIRD_FLY_FRAME,

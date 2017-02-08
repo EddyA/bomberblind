@@ -51,8 +51,8 @@ public abstract class FlyingNomad extends Nomad {
             int refreshTime,
             int actingTime) {
         super(xMap, yMap, SpriteType.TYPE_FLYING_NOMAD, refreshTime, actingTime, 0);
-        this.flyFrontImages = flyFrontImages;
         this.flyBackImages = flyBackImages;
+        this.flyFrontImages = flyFrontImages;
         this.flyLeftImages = flyLeftImages;
         this.flyRightImages = flyRightImages;
         this.nbFlyFrame = nbFlyFrame;

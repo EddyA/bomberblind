@@ -27,8 +27,10 @@ public class BirdTest implements WithAssertions {
         assertThat(bird.getxMap()).isEqualTo(15);
         assertThat(bird.getyMap()).isEqualTo(30);
         assertThat(bird.getSpriteType()).isEqualTo(SpriteType.TYPE_FLYING_NOMAD);
-        assertThat(bird.getFlyFrontImages()).isNull();
-        assertThat(bird.getFlyBackImages()).isNull();
+        assertThat(bird.getFlyBackImages()).
+                isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.birdFlyBackMatrixRowIdx]);
+        assertThat(bird.getFlyFrontImages()).
+                isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.birdFlyFrontMatrixRowIdx]);
         assertThat(bird.getFlyLeftImages())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.birdFlyLeftMatrixRowIdx]);
         assertThat(bird.getFlyRightImages())
