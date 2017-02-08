@@ -226,7 +226,7 @@ public class NomadTest implements WithAssertions {
 
         // set test.
         blueBomber.setCurSpriteAction(ACTION_WALKING);
-        blueBomber.setCurDirection(Direction.NORTH);
+        blueBomber.setCurDirection(Direction.DIRECTION_NORTH);
         blueBomber.updateSprite();
         blueBomber.setCurImageIdx(ImagesLoader.NB_BOMBER_DEATH_FRAME - 1);
 

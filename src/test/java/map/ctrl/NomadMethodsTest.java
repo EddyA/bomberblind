@@ -2,10 +2,10 @@ package map.ctrl;
 
 import static images.ImagesLoader.IMAGE_SIZE;
 import static map.ctrl.NomadMethods.isNomadBlockedOffByMutable;
-import static utils.Direction.EAST;
-import static utils.Direction.NORTH;
-import static utils.Direction.SOUTH;
-import static utils.Direction.WEST;
+import static utils.Direction.DIRECTION_EAST;
+import static utils.Direction.DIRECTION_NORTH;
+import static utils.Direction.DIRECTION_SOUTH;
+import static utils.Direction.DIRECTION_WEST;
 import static utils.Direction.convertKeyEventToDirection;
 
 import java.awt.event.KeyEvent;
@@ -186,41 +186,41 @@ public class NomadMethodsTest implements WithAssertions {
         // going toward south.
         // - 2 pixels before crossing.
         blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
-                mutableColIdx * IMAGE_SIZE, topMutableLimit - 1, SOUTH);
+                mutableColIdx * IMAGE_SIZE, topMutableLimit - 1, DIRECTION_SOUTH);
         assertThat(blockingMutable).isNull();
         // - 1 pixel before crossing.
         blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
-                mutableColIdx * IMAGE_SIZE, topMutableLimit, SOUTH);
+                mutableColIdx * IMAGE_SIZE, topMutableLimit, DIRECTION_SOUTH);
         assertThat(blockingMutable).isEqualTo(mapPointMatrix[mutableRowIdx][mutableColIdx]);
 
         // going toward north.
         // - 2 pixels before crossing.
         blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
-                mutableColIdx * IMAGE_SIZE, bottomMutableLimit + 1, NORTH);
+                mutableColIdx * IMAGE_SIZE, bottomMutableLimit + 1, DIRECTION_NORTH);
         assertThat(blockingMutable).isNull();
         // - 1 pixel before crossing.
         blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
-                mutableColIdx * IMAGE_SIZE, bottomMutableLimit, NORTH);
+                mutableColIdx * IMAGE_SIZE, bottomMutableLimit, DIRECTION_NORTH);
         assertThat(blockingMutable).isEqualTo(mapPointMatrix[mutableRowIdx][mutableColIdx]);
 
         // going toward west.
         // - 2 pixels before crossing.
         blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
-                rightMutableLimit + 1, mutableRowIdx * IMAGE_SIZE, WEST);
+                rightMutableLimit + 1, mutableRowIdx * IMAGE_SIZE, DIRECTION_WEST);
         assertThat(blockingMutable).isNull();
         // - 1 pixel before crossing.
         blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
-                rightMutableLimit, mutableRowIdx * IMAGE_SIZE, WEST);
+                rightMutableLimit, mutableRowIdx * IMAGE_SIZE, DIRECTION_WEST);
         assertThat(blockingMutable).isEqualTo(mapPointMatrix[mutableRowIdx][mutableColIdx]);
 
         // going toward east.
         // - 2 pixels before crossing.
         blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
-                leftMutableLimit - 1, mutableRowIdx * IMAGE_SIZE, EAST);
+                leftMutableLimit - 1, mutableRowIdx * IMAGE_SIZE, DIRECTION_EAST);
         assertThat(blockingMutable).isNull();
         // - 1 pixel before crossing.
         blockingMutable = isNomadBlockedOffByMutable(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
-                leftMutableLimit, mutableRowIdx * IMAGE_SIZE, EAST);
+                leftMutableLimit, mutableRowIdx * IMAGE_SIZE, DIRECTION_EAST);
         assertThat(blockingMutable).isEqualTo(mapPointMatrix[mutableRowIdx][mutableColIdx]);
     }
 
@@ -317,13 +317,13 @@ public class NomadMethodsTest implements WithAssertions {
                     try {
                         // assert that the nomad is crossing a bomb.
                         if (((xChar > leftBombLimit) && (xChar < rightBombLimit) &&
-                                (yChar == topBombLimit + 1) && direction == SOUTH) ||
+                                (yChar == topBombLimit + 1) && direction == DIRECTION_SOUTH) ||
                                 ((xChar > leftBombLimit) && (xChar < rightBombLimit) &&
-                                        (yChar == bottomBombLimit - 1) && direction == NORTH) ||
+                                        (yChar == bottomBombLimit - 1) && direction == DIRECTION_NORTH) ||
                                 ((yChar > topBombLimit) && (yChar < bottomBombLimit) &&
-                                        (xChar == leftBombLimit + 1) && direction == EAST) ||
+                                        (xChar == leftBombLimit + 1) && direction == DIRECTION_EAST) ||
                                 ((yChar > topBombLimit) && (yChar < bottomBombLimit) &&
-                                        (xChar == rightBombLimit - 1) && direction == WEST)) {
+                                        (xChar == rightBombLimit - 1) && direction == DIRECTION_WEST)) {
                             assertThat(NomadMethods.isNomadCrossingBomb(mapPointMatrix, xChar, yChar, direction))
                                     .isTrue();
                         } else {

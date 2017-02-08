@@ -24,466 +24,466 @@ public class FlyingNomadTest implements WithAssertions {
         ImagesLoader.fillImagesMatrix();
     }
 
-    // ToDo: The whole class is tested with WhiteBird.class, replace it using a 4-way directionnal class when available.
+    // ToDo: The whole class is tested with Bird.class, replace it using a 4-way directionnal class when available.
 
     @Test
     public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.EAST, 5);
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_EAST, 5);
 
         // check members value.
-        assertThat(whiteBird.getxMap()).isEqualTo(15);
-        assertThat(whiteBird.getyMap()).isEqualTo(30);
-        assertThat(whiteBird.getSpriteType()).isEqualTo(SpriteType.TYPE_FLYING_NOMAD);
-        assertThat(whiteBird.getFlyFrontImages()).isNull();
-        assertThat(whiteBird.getFlyBackImages()).isNull();
-        assertThat(whiteBird.getFlyLeftImages())
+        assertThat(bird.getxMap()).isEqualTo(15);
+        assertThat(bird.getyMap()).isEqualTo(30);
+        assertThat(bird.getSpriteType()).isEqualTo(SpriteType.TYPE_FLYING_NOMAD);
+        assertThat(bird.getFlyFrontImages()).isNull();
+        assertThat(bird.getFlyBackImages()).isNull();
+        assertThat(bird.getFlyLeftImages())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.birdFlyLeftMatrixRowIdx]);
-        assertThat(whiteBird.getFlyRightImages())
+        assertThat(bird.getFlyRightImages())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.birdFlyRightMatrixRowIdx]);
-        assertThat(whiteBird.getNbFlyFrame()).isEqualTo(ImagesLoader.NB_BIRD_FLY_FRAME);
-        assertThat(whiteBird.getRefreshTime()).isEqualTo(WhiteBird.REFRESH_TIME);
-        assertThat(whiteBird.getActingTime()).isEqualTo(WhiteBird.ACTING_TIME);
-        assertThat(whiteBird.getCurSpriteAction()).isEqualTo(ACTION_FLYING);
-        assertThat(whiteBird.getLastSpriteAction()).isEqualTo(ACTION_FLYING);
-        assertThat(whiteBird.getCurDirection()).isEqualTo(Direction.EAST);
-        assertThat(whiteBird.getLastDirection()).isEqualTo(Direction.EAST);
-        assertThat(whiteBird.getDeviation()).isEqualTo(5);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(0);
-        assertThat(whiteBird.getCurImageIdx()).isBetween(0, ImagesLoader.NB_BIRD_FLY_FRAME - 1);
+        assertThat(bird.getNbFlyFrame()).isEqualTo(ImagesLoader.NB_BIRD_FLY_FRAME);
+        assertThat(bird.getRefreshTime()).isEqualTo(Bird.REFRESH_TIME);
+        assertThat(bird.getActingTime()).isEqualTo(Bird.ACTING_TIME);
+        assertThat(bird.getCurSpriteAction()).isEqualTo(ACTION_FLYING);
+        assertThat(bird.getLastSpriteAction()).isEqualTo(ACTION_FLYING);
+        assertThat(bird.getCurDirection()).isEqualTo(Direction.DIRECTION_EAST);
+        assertThat(bird.getLastDirection()).isEqualTo(Direction.DIRECTION_EAST);
+        assertThat(bird.getDeviation()).isEqualTo(5);
+        assertThat(bird.getMoveIdx()).isEqualTo(0);
+        assertThat(bird.getCurImageIdx()).isBetween(0, ImagesLoader.NB_BIRD_FLY_FRAME - 1);
     }
 
     @Test
     public void computeMoveTowardNorthWithAEastDeviationShouldSetMembersWithTheExpectedValues() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.NORTH, 3);
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_NORTH, 3);
 
         // yChar is decreasing each call, xChar is increasing every 3 calls.
 
         // 1st cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(16); // x + 1.
-        assertThat(whiteBird.getyMap()).isEqualTo(29);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(1);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(16); // x + 1.
+        assertThat(bird.getyMap()).isEqualTo(29);
+        assertThat(bird.getMoveIdx()).isEqualTo(1);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(16); // same x.
-        assertThat(whiteBird.getyMap()).isEqualTo(28);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(2);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(16); // same x.
+        assertThat(bird.getyMap()).isEqualTo(28);
+        assertThat(bird.getMoveIdx()).isEqualTo(2);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(16); // same x.
-        assertThat(whiteBird.getyMap()).isEqualTo(27);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(3);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(16); // same x.
+        assertThat(bird.getyMap()).isEqualTo(27);
+        assertThat(bird.getMoveIdx()).isEqualTo(3);
 
         // 2nd cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(17); // x + 1.
-        assertThat(whiteBird.getyMap()).isEqualTo(26);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(4);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(17); // x + 1.
+        assertThat(bird.getyMap()).isEqualTo(26);
+        assertThat(bird.getMoveIdx()).isEqualTo(4);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(17); // same x.
-        assertThat(whiteBird.getyMap()).isEqualTo(25);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(5);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(17); // same x.
+        assertThat(bird.getyMap()).isEqualTo(25);
+        assertThat(bird.getMoveIdx()).isEqualTo(5);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(17); // same x.
-        assertThat(whiteBird.getyMap()).isEqualTo(24);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(6);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(17); // same x.
+        assertThat(bird.getyMap()).isEqualTo(24);
+        assertThat(bird.getMoveIdx()).isEqualTo(6);
 
         // 3rd cycle, etc ...
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(18); // x + 1.
-        assertThat(whiteBird.getyMap()).isEqualTo(23);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(7);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(18); // x + 1.
+        assertThat(bird.getyMap()).isEqualTo(23);
+        assertThat(bird.getMoveIdx()).isEqualTo(7);
     }
 
     @Test
     public void computeMoveTowardNorthWithAWestDeviationShouldSetMembersWithTheExpectedValues() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.NORTH, -2);
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_NORTH, -2);
 
         // yChar is decreasing each call, xChar is decreasing every 2 calls.
 
         // 1st cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(14); // x - 1.
-        assertThat(whiteBird.getyMap()).isEqualTo(29);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(1);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(14); // x - 1.
+        assertThat(bird.getyMap()).isEqualTo(29);
+        assertThat(bird.getMoveIdx()).isEqualTo(1);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(14); // same x.
-        assertThat(whiteBird.getyMap()).isEqualTo(28);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(2);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(14); // same x.
+        assertThat(bird.getyMap()).isEqualTo(28);
+        assertThat(bird.getMoveIdx()).isEqualTo(2);
 
         // 2nd cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(13); // x - 1.
-        assertThat(whiteBird.getyMap()).isEqualTo(27);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(3);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(13); // x - 1.
+        assertThat(bird.getyMap()).isEqualTo(27);
+        assertThat(bird.getMoveIdx()).isEqualTo(3);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(13); // same x.
-        assertThat(whiteBird.getyMap()).isEqualTo(26);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(4);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(13); // same x.
+        assertThat(bird.getyMap()).isEqualTo(26);
+        assertThat(bird.getMoveIdx()).isEqualTo(4);
 
         // 3rd cycle, etc ...
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(12); // x - 1.
-        assertThat(whiteBird.getyMap()).isEqualTo(25);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(5);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(12); // x - 1.
+        assertThat(bird.getyMap()).isEqualTo(25);
+        assertThat(bird.getMoveIdx()).isEqualTo(5);
     }
 
     @Test
     public void computeMoveTowardSouthWithAEastDeviationShouldSetMembersWithTheExpectedValues() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.SOUTH, 3);
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_SOUTH, 3);
 
         // yChar is increasing each call, xChar is increasing every 3 calls.
 
         // 1st cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(16); // x + 1.
-        assertThat(whiteBird.getyMap()).isEqualTo(31);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(1);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(16); // x + 1.
+        assertThat(bird.getyMap()).isEqualTo(31);
+        assertThat(bird.getMoveIdx()).isEqualTo(1);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(16); // same x.
-        assertThat(whiteBird.getyMap()).isEqualTo(32);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(2);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(16); // same x.
+        assertThat(bird.getyMap()).isEqualTo(32);
+        assertThat(bird.getMoveIdx()).isEqualTo(2);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(16); // same x.
-        assertThat(whiteBird.getyMap()).isEqualTo(33);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(3);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(16); // same x.
+        assertThat(bird.getyMap()).isEqualTo(33);
+        assertThat(bird.getMoveIdx()).isEqualTo(3);
 
         // 2nd cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(17); // x + 1.
-        assertThat(whiteBird.getyMap()).isEqualTo(34);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(4);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(17); // x + 1.
+        assertThat(bird.getyMap()).isEqualTo(34);
+        assertThat(bird.getMoveIdx()).isEqualTo(4);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(17); // same x.
-        assertThat(whiteBird.getyMap()).isEqualTo(35);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(5);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(17); // same x.
+        assertThat(bird.getyMap()).isEqualTo(35);
+        assertThat(bird.getMoveIdx()).isEqualTo(5);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(17); // same x.
-        assertThat(whiteBird.getyMap()).isEqualTo(36);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(6);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(17); // same x.
+        assertThat(bird.getyMap()).isEqualTo(36);
+        assertThat(bird.getMoveIdx()).isEqualTo(6);
 
         // 3rd cycle, etc ...
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(18); // x + 1.
-        assertThat(whiteBird.getyMap()).isEqualTo(37);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(7);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(18); // x + 1.
+        assertThat(bird.getyMap()).isEqualTo(37);
+        assertThat(bird.getMoveIdx()).isEqualTo(7);
     }
 
     @Test
     public void computeMoveTowardSouthWithAWestDeviationShouldSetMembersWithTheExpectedValues() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.SOUTH, -2);
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_SOUTH, -2);
 
         // yChar is increasing each call, xChar is decreasing every 2 calls.
 
         // 1st cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(14); // x - 1.
-        assertThat(whiteBird.getyMap()).isEqualTo(31);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(1);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(14); // x - 1.
+        assertThat(bird.getyMap()).isEqualTo(31);
+        assertThat(bird.getMoveIdx()).isEqualTo(1);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(14); // same x.
-        assertThat(whiteBird.getyMap()).isEqualTo(32);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(2);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(14); // same x.
+        assertThat(bird.getyMap()).isEqualTo(32);
+        assertThat(bird.getMoveIdx()).isEqualTo(2);
 
         // 2nd cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(13); // x - 1.
-        assertThat(whiteBird.getyMap()).isEqualTo(33);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(3);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(13); // x - 1.
+        assertThat(bird.getyMap()).isEqualTo(33);
+        assertThat(bird.getMoveIdx()).isEqualTo(3);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(13); // same x.
-        assertThat(whiteBird.getyMap()).isEqualTo(34);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(4);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(13); // same x.
+        assertThat(bird.getyMap()).isEqualTo(34);
+        assertThat(bird.getMoveIdx()).isEqualTo(4);
 
         // 3rd cycle, etc ...
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(12); // x - 1.
-        assertThat(whiteBird.getyMap()).isEqualTo(35);
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(5);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(12); // x - 1.
+        assertThat(bird.getyMap()).isEqualTo(35);
+        assertThat(bird.getMoveIdx()).isEqualTo(5);
     }
 
     @Test
     public void computeMoveTowardWestWithASouthDeviationShouldSetMembersWithTheExpectedValues() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.WEST, 3);
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_WEST, 3);
 
         // xChar is decreasing each call, yChar is increasing every 3 calls.
 
         // 1st cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(14);
-        assertThat(whiteBird.getyMap()).isEqualTo(31); // y + 1.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(1);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(14);
+        assertThat(bird.getyMap()).isEqualTo(31); // y + 1.
+        assertThat(bird.getMoveIdx()).isEqualTo(1);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(13);
-        assertThat(whiteBird.getyMap()).isEqualTo(31); // same y.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(2);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(13);
+        assertThat(bird.getyMap()).isEqualTo(31); // same y.
+        assertThat(bird.getMoveIdx()).isEqualTo(2);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(12);
-        assertThat(whiteBird.getyMap()).isEqualTo(31); // same y.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(3);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(12);
+        assertThat(bird.getyMap()).isEqualTo(31); // same y.
+        assertThat(bird.getMoveIdx()).isEqualTo(3);
 
         // 2nd cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(11);
-        assertThat(whiteBird.getyMap()).isEqualTo(32); // y + 1.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(4);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(11);
+        assertThat(bird.getyMap()).isEqualTo(32); // y + 1.
+        assertThat(bird.getMoveIdx()).isEqualTo(4);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(10);
-        assertThat(whiteBird.getyMap()).isEqualTo(32); // same y.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(5);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(10);
+        assertThat(bird.getyMap()).isEqualTo(32); // same y.
+        assertThat(bird.getMoveIdx()).isEqualTo(5);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(9);
-        assertThat(whiteBird.getyMap()).isEqualTo(32); // same y.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(6);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(9);
+        assertThat(bird.getyMap()).isEqualTo(32); // same y.
+        assertThat(bird.getMoveIdx()).isEqualTo(6);
 
         // 3rd cycle, etc ...
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(8);
-        assertThat(whiteBird.getyMap()).isEqualTo(33); // y + 1.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(7);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(8);
+        assertThat(bird.getyMap()).isEqualTo(33); // y + 1.
+        assertThat(bird.getMoveIdx()).isEqualTo(7);
     }
 
     @Test
     public void computeMoveTowardWestWithANorthDeviationShouldSetMembersWithTheExpectedValues() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.WEST, -2);
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_WEST, -2);
 
         // xChar is decreasing each call, yChar is decreasing every 2 calls.
 
         // 1st cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(14);
-        assertThat(whiteBird.getyMap()).isEqualTo(29); // y - 1.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(1);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(14);
+        assertThat(bird.getyMap()).isEqualTo(29); // y - 1.
+        assertThat(bird.getMoveIdx()).isEqualTo(1);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(13);
-        assertThat(whiteBird.getyMap()).isEqualTo(29); // same y.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(2);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(13);
+        assertThat(bird.getyMap()).isEqualTo(29); // same y.
+        assertThat(bird.getMoveIdx()).isEqualTo(2);
 
         // 2nd cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(12);
-        assertThat(whiteBird.getyMap()).isEqualTo(28); // y - 1.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(3);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(12);
+        assertThat(bird.getyMap()).isEqualTo(28); // y - 1.
+        assertThat(bird.getMoveIdx()).isEqualTo(3);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(11);
-        assertThat(whiteBird.getyMap()).isEqualTo(28); // same y.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(4);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(11);
+        assertThat(bird.getyMap()).isEqualTo(28); // same y.
+        assertThat(bird.getMoveIdx()).isEqualTo(4);
 
         // 3rd cycle, etc ...
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(10);
-        assertThat(whiteBird.getyMap()).isEqualTo(27); // same y.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(5);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(10);
+        assertThat(bird.getyMap()).isEqualTo(27); // same y.
+        assertThat(bird.getMoveIdx()).isEqualTo(5);
     }
 
     @Test
     public void computeMoveTowardEastWithASouthDeviationShouldSetMembersWithTheExpectedValues() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.EAST, 3);
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_EAST, 3);
 
         // xChar is increasing each call, yChar is increasing every 3 calls.
 
         // 1st cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(16);
-        assertThat(whiteBird.getyMap()).isEqualTo(31); // y + 1.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(1);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(16);
+        assertThat(bird.getyMap()).isEqualTo(31); // y + 1.
+        assertThat(bird.getMoveIdx()).isEqualTo(1);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(17);
-        assertThat(whiteBird.getyMap()).isEqualTo(31); // same y.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(2);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(17);
+        assertThat(bird.getyMap()).isEqualTo(31); // same y.
+        assertThat(bird.getMoveIdx()).isEqualTo(2);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(18);
-        assertThat(whiteBird.getyMap()).isEqualTo(31); // same y.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(3);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(18);
+        assertThat(bird.getyMap()).isEqualTo(31); // same y.
+        assertThat(bird.getMoveIdx()).isEqualTo(3);
 
         // 2nd cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(19);
-        assertThat(whiteBird.getyMap()).isEqualTo(32); // y + 1.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(4);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(19);
+        assertThat(bird.getyMap()).isEqualTo(32); // y + 1.
+        assertThat(bird.getMoveIdx()).isEqualTo(4);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(20);
-        assertThat(whiteBird.getyMap()).isEqualTo(32); // same y.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(5);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(20);
+        assertThat(bird.getyMap()).isEqualTo(32); // same y.
+        assertThat(bird.getMoveIdx()).isEqualTo(5);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(21);
-        assertThat(whiteBird.getyMap()).isEqualTo(32); // same y.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(6);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(21);
+        assertThat(bird.getyMap()).isEqualTo(32); // same y.
+        assertThat(bird.getMoveIdx()).isEqualTo(6);
 
         // 3rd cycle, etc ...
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(22);
-        assertThat(whiteBird.getyMap()).isEqualTo(33); // y + 1.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(7);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(22);
+        assertThat(bird.getyMap()).isEqualTo(33); // y + 1.
+        assertThat(bird.getMoveIdx()).isEqualTo(7);
     }
 
     @Test
     public void computeMoveTowardEastWithANorthDeviationShouldSetMembersWithTheExpectedValues() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.EAST, -2);
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_EAST, -2);
 
         // xChar is decreasing each call, yChar is decreasing every 2 calls.
 
         // 1st cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(16);
-        assertThat(whiteBird.getyMap()).isEqualTo(29); // y - 1.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(1);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(16);
+        assertThat(bird.getyMap()).isEqualTo(29); // y - 1.
+        assertThat(bird.getMoveIdx()).isEqualTo(1);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(17);
-        assertThat(whiteBird.getyMap()).isEqualTo(29); // same y.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(2);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(17);
+        assertThat(bird.getyMap()).isEqualTo(29); // same y.
+        assertThat(bird.getMoveIdx()).isEqualTo(2);
 
         // 2nd cycle.
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(18);
-        assertThat(whiteBird.getyMap()).isEqualTo(28); // y - 1.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(3);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(18);
+        assertThat(bird.getyMap()).isEqualTo(28); // y - 1.
+        assertThat(bird.getMoveIdx()).isEqualTo(3);
 
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(19);
-        assertThat(whiteBird.getyMap()).isEqualTo(28); // same y.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(4);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(19);
+        assertThat(bird.getyMap()).isEqualTo(28); // same y.
+        assertThat(bird.getMoveIdx()).isEqualTo(4);
 
         // 3rd cycle, etc ...
-        whiteBird.computeMove();
-        assertThat(whiteBird.getxMap()).isEqualTo(20);
-        assertThat(whiteBird.getyMap()).isEqualTo(27); // same y.
-        assertThat(whiteBird.getMoveIdx()).isEqualTo(5);
+        bird.computeMove();
+        assertThat(bird.getxMap()).isEqualTo(20);
+        assertThat(bird.getyMap()).isEqualTo(27); // same y.
+        assertThat(bird.getMoveIdx()).isEqualTo(5);
     }
 
     @Test
     public void isActionAllowedShouldReturnTrue() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.NORTH, 0);
-        assertThat(whiteBird.isActionAllowed(ACTION_DYING)).isTrue();
-        assertThat(whiteBird.isActionAllowed(ACTION_FLYING)).isTrue();
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_NORTH, 0);
+        assertThat(bird.isActionAllowed(ACTION_DYING)).isTrue();
+        assertThat(bird.isActionAllowed(ACTION_FLYING)).isTrue();
     }
 
     @Test
     public void isActionAllowedShouldReturnFalse() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.NORTH, 0);
-        assertThat(whiteBird.isActionAllowed(ACTION_BREAKING)).isFalse();
-        assertThat(whiteBird.isActionAllowed(ACTION_WAITING)).isFalse();
-        assertThat(whiteBird.isActionAllowed(ACTION_WALKING)).isFalse();
-        assertThat(whiteBird.isActionAllowed(ACTION_WINING)).isFalse();
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_NORTH, 0);
+        assertThat(bird.isActionAllowed(ACTION_BREAKING)).isFalse();
+        assertThat(bird.isActionAllowed(ACTION_WAITING)).isFalse();
+        assertThat(bird.isActionAllowed(ACTION_WALKING)).isFalse();
+        assertThat(bird.isActionAllowed(ACTION_WINING)).isFalse();
     }
 
     @Test
     public void hasActionChangedWithTheSameActionShouldReturnFalse() {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.NORTH, 0);
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_NORTH, 0);
 
         // set test.
-        whiteBird.setCurSpriteAction(ACTION_DYING);
-        whiteBird.setLastSpriteAction(ACTION_DYING);
+        bird.setCurSpriteAction(ACTION_DYING);
+        bird.setLastSpriteAction(ACTION_DYING);
 
         // call & check.
-        assertThat(whiteBird.hasActionChanged()).isFalse();
+        assertThat(bird.hasActionChanged()).isFalse();
     }
 
     @Test
     public void hasActionChangedAndFlyingToTheSameDirectionShouldReturnFalse() {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.NORTH, 0);
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_NORTH, 0);
 
         // set test.
-        whiteBird.setCurSpriteAction(ACTION_FLYING);
-        whiteBird.setCurDirection(Direction.NORTH);
-        whiteBird.setLastSpriteAction(ACTION_FLYING);
-        whiteBird.setLastDirection(Direction.NORTH);
+        bird.setCurSpriteAction(ACTION_FLYING);
+        bird.setCurDirection(Direction.DIRECTION_NORTH);
+        bird.setLastSpriteAction(ACTION_FLYING);
+        bird.setLastDirection(Direction.DIRECTION_NORTH);
 
         // call & check.
-        assertThat(whiteBird.hasActionChanged()).isFalse();
+        assertThat(bird.hasActionChanged()).isFalse();
     }
 
     @Test
     public void hasActionChangedWithADifferentActionShouldReturnTrue() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.NORTH, 0);
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_NORTH, 0);
 
         // set test.
-        whiteBird.setCurSpriteAction(ACTION_FLYING);
-        whiteBird.setLastSpriteAction(ACTION_DYING);
+        bird.setCurSpriteAction(ACTION_FLYING);
+        bird.setLastSpriteAction(ACTION_DYING);
 
         // call & check.
-        assertThat(whiteBird.hasActionChanged()).isTrue();
+        assertThat(bird.hasActionChanged()).isTrue();
     }
 
     @Test
     public void hasActionChangedAndFlyingToADifferentDirectionShouldReturnTrue() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.NORTH, 0);
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_NORTH, 0);
 
         // set test.
-        whiteBird.setCurSpriteAction(ACTION_FLYING);
-        whiteBird.setCurDirection(Direction.NORTH);
-        whiteBird.setLastSpriteAction(ACTION_FLYING);
-        whiteBird.setLastDirection(Direction.SOUTH);
+        bird.setCurSpriteAction(ACTION_FLYING);
+        bird.setCurDirection(Direction.DIRECTION_NORTH);
+        bird.setLastSpriteAction(ACTION_FLYING);
+        bird.setLastDirection(Direction.DIRECTION_SOUTH);
 
         // call & check.
-        assertThat(whiteBird.hasActionChanged()).isTrue();
+        assertThat(bird.hasActionChanged()).isTrue();
     }
 
     @Test
     public void updateSpriteShouldSetTheExpectedMember() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.EAST, -10);
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_EAST, -10);
 
         // walking back.
-        whiteBird.setCurSpriteAction(ACTION_FLYING);
-        whiteBird.setCurDirection(Direction.NORTH);
-        whiteBird.updateSprite();
-        assertThat(whiteBird.getImages()).isEqualTo(whiteBird.getFlyBackImages());
-        assertThat(whiteBird.getNbImages()).isEqualTo(whiteBird.getNbFlyFrame());
+        bird.setCurSpriteAction(ACTION_FLYING);
+        bird.setCurDirection(Direction.DIRECTION_NORTH);
+        bird.updateSprite();
+        assertThat(bird.getImages()).isEqualTo(bird.getFlyBackImages());
+        assertThat(bird.getNbImages()).isEqualTo(bird.getNbFlyFrame());
 
         // walking front.
-        whiteBird.setCurSpriteAction(ACTION_FLYING);
-        whiteBird.setCurDirection(Direction.SOUTH);
-        whiteBird.updateSprite();
-        assertThat(whiteBird.getImages()).isEqualTo(whiteBird.getFlyFrontImages());
-        assertThat(whiteBird.getNbImages()).isEqualTo(whiteBird.getNbFlyFrame());
+        bird.setCurSpriteAction(ACTION_FLYING);
+        bird.setCurDirection(Direction.DIRECTION_SOUTH);
+        bird.updateSprite();
+        assertThat(bird.getImages()).isEqualTo(bird.getFlyFrontImages());
+        assertThat(bird.getNbImages()).isEqualTo(bird.getNbFlyFrame());
 
         // walking left.
-        whiteBird.setCurSpriteAction(ACTION_FLYING);
-        whiteBird.setCurDirection(Direction.WEST);
-        whiteBird.updateSprite();
-        assertThat(whiteBird.getImages()).isEqualTo(whiteBird.getFlyLeftImages());
-        assertThat(whiteBird.getNbImages()).isEqualTo(whiteBird.getNbFlyFrame());
+        bird.setCurSpriteAction(ACTION_FLYING);
+        bird.setCurDirection(Direction.DIRECTION_WEST);
+        bird.updateSprite();
+        assertThat(bird.getImages()).isEqualTo(bird.getFlyLeftImages());
+        assertThat(bird.getNbImages()).isEqualTo(bird.getNbFlyFrame());
 
         // walking right.
-        whiteBird.setCurSpriteAction(ACTION_FLYING);
-        whiteBird.setCurDirection(Direction.EAST);
-        whiteBird.updateSprite();
-        assertThat(whiteBird.getImages()).isEqualTo(whiteBird.getFlyRightImages());
-        assertThat(whiteBird.getNbImages()).isEqualTo(whiteBird.getNbFlyFrame());
+        bird.setCurSpriteAction(ACTION_FLYING);
+        bird.setCurDirection(Direction.DIRECTION_EAST);
+        bird.updateSprite();
+        assertThat(bird.getImages()).isEqualTo(bird.getFlyRightImages());
+        assertThat(bird.getNbImages()).isEqualTo(bird.getNbFlyFrame());
     }
 
     @Test
     public void isFinishedShouldReturnFalse() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.EAST, -10);
-        whiteBird.setCurSpriteAction(ACTION_FLYING);
-        assertThat(whiteBird.isFinished()).isFalse();
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_EAST, -10);
+        bird.setCurSpriteAction(ACTION_FLYING);
+        assertThat(bird.isFinished()).isFalse();
     }
 
     @Test
     public void isFinishedShouldReturnTruee() throws Exception {
-        WhiteBird whiteBird = new WhiteBird(15, 30, Direction.EAST, -10);
-        whiteBird.setCurSpriteAction(ACTION_DYING);
-        assertThat(whiteBird.isFinished()).isTrue();
+        Bird bird = new Bird(15, 30, Direction.DIRECTION_EAST, -10);
+        bird.setCurSpriteAction(ACTION_DYING);
+        assertThat(bird.isFinished()).isTrue();
     }
 }

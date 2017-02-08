@@ -7,11 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 import sprite.SpriteType;
 import sprite.Sprite;
-import sprite.nomad.BlueBomber;
-import sprite.nomad.Bomber;
-import sprite.nomad.CloakedSkeleton;
-import sprite.nomad.Minotor;
-import sprite.nomad.WhiteBird;
+import sprite.nomad.*;
+import sprite.nomad.Bird;
 import sprite.settled.Bomb;
 import sprite.settled.Flame;
 import sprite.settled.FlameEnd;
@@ -455,10 +452,10 @@ public class AddingMethodsTest implements WithAssertions {
         LinkedList<Sprite> spriteList = new LinkedList<>();
 
         // add sprite.
-        WhiteBird whiteBird = new WhiteBird(1, 2, Direction.EAST, -5);
-        AddingMethods.addBird(spriteList, whiteBird);
+        Bird bird = new Bird(1, 2, Direction.DIRECTION_EAST, -5);
+        AddingMethods.addBird(spriteList, bird);
 
         // test.
-        assertThat(spriteList.contains(whiteBird)).isTrue();
+        assertThat(spriteList.contains(bird)).isTrue();
     }
 }

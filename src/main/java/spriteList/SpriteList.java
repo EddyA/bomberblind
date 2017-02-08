@@ -1,33 +1,35 @@
 package spriteList;
 
-import java.awt.Graphics2D;
+import exceptions.CannotPlaceEnemyOnMapException;
+import map.Map;
+import map.MapPoint;
+import sprite.Sprite;
+import sprite.SpriteType;
+import sprite.nomad.*;
+import sprite.settled.Bomb;
+import sprite.settled.Flame;
+import sprite.settled.FlameEnd;
+import spriteList.ctrl.ActionMethods;
+import spriteList.ctrl.GenerationMethods;
+import utils.CurrentTimeSupplier;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import exceptions.CannotPlaceEnemyOnMapException;
-import images.ImagesLoader;
-import map.Map;
-import map.MapPoint;
-import sprite.Sprite;
-import sprite.SpriteType;
-import sprite.nomad.FlyingNomad;
-import sprite.nomad.Bomber;
-import sprite.nomad.BreakingEnemy;
-import sprite.nomad.EnemyType;
-import sprite.nomad.WalkingEnemy;
-import sprite.settled.Bomb;
-import sprite.settled.Flame;
-import sprite.settled.FlameEnd;
-import spriteList.ctrl.ActionMethods;
-import spriteList.ctrl.GenerationMethodes;
+import static images.ImagesLoader.IMAGE_SIZE;
 
 public class SpriteList extends LinkedList<Sprite> {
+    protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
+
     private final SpritesSetting spritesSetting;
     private final Map map;
     private final int screenWidth; // width of the screen (expressed in pixel).
     private final int screenHeight; // height of the screen (expressed in pixel).
+
+    private long birdsArrivalLastTs; // the last ts a group of bird has been added to the list.
 
     // create a temporary list to manage addings and avoid concurent accesses.
     private final LinkedList<Sprite> tmpList = new LinkedList<>();
@@ -37,6 +39,7 @@ public class SpriteList extends LinkedList<Sprite> {
         this.map = map;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+        this.birdsArrivalLastTs = currentTimeSupplier.get().toEpochMilli();
     }
 
     /**
@@ -61,18 +64,18 @@ public class SpriteList extends LinkedList<Sprite> {
 
         // walking enemies:
         // - cloaked skeleton
-        GenerationMethodes.randomlyPlaceEnemy(this, EnemyType.CLOAKED_SKELETON,
+        GenerationMethods.randomlyPlaceEnemies(this, EnemyType.CLOAKED_SKELETON,
                 spritesSetting.getNbCloakedSkeleton(), emptyPtList);
         // - meca angel
-        GenerationMethodes.randomlyPlaceEnemy(this, EnemyType.MECA_ANGEL,
+        GenerationMethods.randomlyPlaceEnemies(this, EnemyType.MECA_ANGEL,
                 spritesSetting.getNbMecaAngel(), emptyPtList);
         // - mummy
-        GenerationMethodes.randomlyPlaceEnemy(this, EnemyType.MUMMY,
+        GenerationMethods.randomlyPlaceEnemies(this, EnemyType.MUMMY,
                 spritesSetting.getNbMummy(), emptyPtList);
 
         // breaking enemies:
         // - minotor
-        GenerationMethodes.randomlyPlaceEnemy(this, EnemyType.MINOTOR,
+        GenerationMethods.randomlyPlaceEnemies(this, EnemyType.MINOTOR,
                 spritesSetting.getNbMinotor(), emptyPtList);
     }
 
@@ -80,6 +83,8 @@ public class SpriteList extends LinkedList<Sprite> {
      * Process sprite's action and clean the latter if needed.
      */
     public synchronized void update(int pressedKey) {
+
+        // process sprites.
         for (ListIterator<Sprite> iterator = this.listIterator(); iterator.hasNext(); ) {
             Sprite sprite = iterator.next();
             boolean shouldBeRemoved;
@@ -100,7 +105,7 @@ public class SpriteList extends LinkedList<Sprite> {
                     break;
                 }
                 case TYPE_FLYING_NOMAD: {
-                    shouldBeRemoved = ActionMethods.processBird(map.getMapWidth(), (FlyingNomad) sprite);
+                    shouldBeRemoved = ActionMethods.processFlyingNomad(map.getMapWidth(), map.getMapHeight(), (FlyingNomad) sprite);
                     break;
                 }
                 case TYPE_BOMB: {
@@ -128,6 +133,15 @@ public class SpriteList extends LinkedList<Sprite> {
             }
             sprite.updateImage(); // update the sprite's images.
         }
+
+        // add birds (every X ms).
+        long currentTs = currentTimeSupplier.get().toEpochMilli();
+        if (birdsArrivalLastTs + (spritesSetting.getBirdsArrivalTimeInterval()) <= currentTs) {
+            GenerationMethods.randomlyPlaceAGroupOfBird(this, screenWidth, screenHeight,
+                    map.getMapWidth() * IMAGE_SIZE, map.getMapHeight() * IMAGE_SIZE);
+            birdsArrivalLastTs = currentTs;
+        }
+
         if (!tmpList.isEmpty()) {
             this.addAll(tmpList); // add sprites from the temporary list to the main one.
             tmpList.clear(); // clear the temporary list.
@@ -147,9 +161,9 @@ public class SpriteList extends LinkedList<Sprite> {
         for (Sprite sprite : this) {
             if ((sprite.getCurImage() != null)) { // happens when the bomber is invincible.
                 if ((sprite.getyMap() >= yMap)
-                        && (sprite.getyMap() <= yMap + sprite.getCurImage().getWidth(null) + screenHeight + ImagesLoader.IMAGE_SIZE)
+                        && (sprite.getyMap() <= yMap + sprite.getCurImage().getWidth(null) + screenHeight + IMAGE_SIZE)
                         && (sprite.getxMap() >= xMap - sprite.getCurImage().getWidth(null) / 2)
-                        && (sprite.getxMap() <= xMap + sprite.getCurImage().getHeight(null) / 2 + screenWidth + ImagesLoader.IMAGE_SIZE)) {
+                        && (sprite.getxMap() <= xMap + sprite.getCurImage().getHeight(null) / 2 + screenWidth + IMAGE_SIZE)) {
                     sprite.paintBuffer(g, sprite.getxMap() - xMap, sprite.getyMap() - yMap);
                 }
             }

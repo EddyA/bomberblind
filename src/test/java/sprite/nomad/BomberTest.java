@@ -122,9 +122,9 @@ public class BomberTest implements WithAssertions {
 
         // set test.
         blueBomber.setCurSpriteAction(ACTION_WALKING);
-        blueBomber.setCurDirection(Direction.NORTH);
+        blueBomber.setCurDirection(Direction.DIRECTION_NORTH);
         blueBomber.setLastSpriteAction(ACTION_WALKING);
-        blueBomber.setLastDirection(Direction.NORTH);
+        blueBomber.setLastDirection(Direction.DIRECTION_NORTH);
 
         // call & check.
         assertThat(blueBomber.hasActionChanged()).isFalse();
@@ -148,9 +148,9 @@ public class BomberTest implements WithAssertions {
 
         // set test.
         blueBomber.setCurSpriteAction(ACTION_WALKING);
-        blueBomber.setCurDirection(Direction.NORTH);
+        blueBomber.setCurDirection(Direction.DIRECTION_NORTH);
         blueBomber.setLastSpriteAction(ACTION_WALKING);
-        blueBomber.setLastDirection(Direction.SOUTH);
+        blueBomber.setLastDirection(Direction.DIRECTION_SOUTH);
 
         // call & check.
         assertThat(blueBomber.hasActionChanged()).isTrue();
@@ -174,28 +174,28 @@ public class BomberTest implements WithAssertions {
 
         // walking back.
         blueBomber.setCurSpriteAction(ACTION_WALKING);
-        blueBomber.setCurDirection(Direction.NORTH);
+        blueBomber.setCurDirection(Direction.DIRECTION_NORTH);
         blueBomber.updateSprite();
         assertThat(blueBomber.getImages()).isEqualTo(blueBomber.getWalkBackImages());
         assertThat(blueBomber.getNbImages()).isEqualTo(blueBomber.getNbWalkFrame());
 
         // walking front.
         blueBomber.setCurSpriteAction(ACTION_WALKING);
-        blueBomber.setCurDirection(Direction.SOUTH);
+        blueBomber.setCurDirection(Direction.DIRECTION_SOUTH);
         blueBomber.updateSprite();
         assertThat(blueBomber.getImages()).isEqualTo(blueBomber.getWalkFrontImages());
         assertThat(blueBomber.getNbImages()).isEqualTo(blueBomber.getNbWalkFrame());
 
         // walking left.
         blueBomber.setCurSpriteAction(ACTION_WALKING);
-        blueBomber.setCurDirection(Direction.WEST);
+        blueBomber.setCurDirection(Direction.DIRECTION_WEST);
         blueBomber.updateSprite();
         assertThat(blueBomber.getImages()).isEqualTo(blueBomber.getWalkLeftImages());
         assertThat(blueBomber.getNbImages()).isEqualTo(blueBomber.getNbWalkFrame());
 
         // walking right.
         blueBomber.setCurSpriteAction(ACTION_WALKING);
-        blueBomber.setCurDirection(Direction.EAST);
+        blueBomber.setCurDirection(Direction.DIRECTION_EAST);
         blueBomber.updateSprite();
         assertThat(blueBomber.getImages()).isEqualTo(blueBomber.getWalkRightImages());
         assertThat(blueBomber.getNbImages()).isEqualTo(blueBomber.getNbWalkFrame());

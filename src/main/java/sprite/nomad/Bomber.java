@@ -194,22 +194,22 @@ public abstract class Bomber extends Nomad {
             }
             case ACTION_WALKING: {
                 switch (curDirection) {
-                    case NORTH: {
+                    case DIRECTION_NORTH: {
                         images = walkBackImages;
                         nbImages = nbWalkFrame;
                         break;
                     }
-                    case SOUTH: {
+                    case DIRECTION_SOUTH: {
                         images = walkFrontImages;
                         nbImages = nbWalkFrame;
                         break;
                     }
-                    case WEST: {
+                    case DIRECTION_WEST: {
                         images = walkLeftImages;
                         nbImages = nbWalkFrame;
                         break;
                     }
-                    case EAST: {
+                    case DIRECTION_EAST: {
                         images = walkRightImages;
                         nbImages = nbWalkFrame;
                         break;

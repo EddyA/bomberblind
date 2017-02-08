@@ -1,15 +1,14 @@
 package spriteList;
 
-import static utils.Tools.isValidInteger;
+import com.google.common.base.Preconditions;
+import exceptions.InvalidConfigurationException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import com.google.common.base.Preconditions;
-
-import exceptions.InvalidConfigurationException;
+import static utils.Tools.isValidInteger;
 
 /**
  * Open, read and check a sprites map properties file.
@@ -22,6 +21,8 @@ public class SpritesProperties {
     public final static String SPRITES_ENEMY_MUMMY = "sprite.enemy.mummy";
 
     public final static String SPRITES_ENEMY_MINOTOR = "sprite.enemy.minotor";
+
+    public final static String SPRITES_BIRDS_ARRIVAL_TIME_INTERVAL = "sprite.birds.arrival.time.interval";
 
     private final String propertiesFile;
     private final Properties properties = new Properties();
@@ -44,6 +45,10 @@ public class SpritesProperties {
 
     public int getSpritesEnemyMinotor() {
         return Integer.parseInt(properties.getProperty(SPRITES_ENEMY_MINOTOR));
+    }
+
+    public int getSpritesBirdsArrivalTimeInterval() {
+        return Integer.parseInt(properties.getProperty(SPRITES_BIRDS_ARRIVAL_TIME_INTERVAL));
     }
 
     public Properties getProperties() {
@@ -81,7 +86,8 @@ public class SpritesProperties {
         if (!isValidInteger(properties.getProperty(SPRITES_ENEMY_CLOAKED_SKELETON)) ||
                 !isValidInteger(properties.getProperty(SPRITES_ENEMY_MECA_ANGEL)) ||
                 !isValidInteger(properties.getProperty(SPRITES_ENEMY_MUMMY)) ||
-                !isValidInteger(properties.getProperty(SPRITES_ENEMY_MINOTOR))) {
+                !isValidInteger(properties.getProperty(SPRITES_ENEMY_MINOTOR)) ||
+                !isValidInteger(properties.getProperty(SPRITES_BIRDS_ARRIVAL_TIME_INTERVAL))) {
             throw new InvalidConfigurationException("'" + propertiesFile + "' is not a valid properties file: "
                     + "some field are missing or not integer convertible.");
         }

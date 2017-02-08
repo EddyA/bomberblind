@@ -100,14 +100,14 @@ public class NomadMethods {
                                                       Direction direction) {
         MapPoint blockingMutable = null;
         switch (direction) {
-            case NORTH: {
+            case DIRECTION_NORTH: {
                 if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar, yChar - 1) &&
                         isNomadCrossingMutable(mapPointMatrix, xChar, yChar - 1)) {
                     blockingMutable = mapPointMatrix[getCharTopRowIdx(yChar - 1)][Tools.getCharColIdx(xChar)];
                 }
                 break;
             }
-            case SOUTH: {
+            case DIRECTION_SOUTH: {
                 if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar, yChar + 1) &&
                         isNomadCrossingMutable(mapPointMatrix, xChar, yChar + 1)) {
                     blockingMutable = mapPointMatrix[getCharBottomRowIdx(yChar + 1)][Tools.getCharColIdx(xChar)];
@@ -115,14 +115,14 @@ public class NomadMethods {
                 }
                 break;
             }
-            case WEST: {
+            case DIRECTION_WEST: {
                 if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar - 1, yChar) &&
                         isNomadCrossingMutable(mapPointMatrix, xChar - 1, yChar)) {
                     blockingMutable = mapPointMatrix[Tools.getCharRowIdx(yChar)][getCharLeftColIdx(xChar - 1)];
                 }
                 break;
             }
-            case EAST: {
+            case DIRECTION_EAST: {
                 if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar + 1, yChar) &&
                         isNomadCrossingMutable(mapPointMatrix, xChar + 1, yChar)) {
                     blockingMutable = mapPointMatrix[Tools.getCharRowIdx(yChar)][getCharRightColIdx(xChar + 1)];
@@ -179,7 +179,7 @@ public class NomadMethods {
 
         boolean isCrossing = false;
         switch (direction) {
-            case NORTH: {
+            case DIRECTION_NORTH: {
                 if ((mapPointMatrix[topRowIdx][mostLeftColIdx].isBombing() ||
                         mapPointMatrix[topRowIdx][mostRightColIdx].isBombing()) &&
                         topRowIdx != getCharTopRowIdx(yChar + 1)) {
@@ -187,7 +187,7 @@ public class NomadMethods {
                 }
                 break;
             }
-            case SOUTH: {
+            case DIRECTION_SOUTH: {
                 if ((mapPointMatrix[bottomRowIdx][mostLeftColIdx].isBombing() ||
                         mapPointMatrix[bottomRowIdx][mostRightColIdx].isBombing()) &&
                         bottomRowIdx != getCharBottomRowIdx(yChar - 1)) {
@@ -195,7 +195,7 @@ public class NomadMethods {
                 }
                 break;
             }
-            case WEST: {
+            case DIRECTION_WEST: {
                 if ((mapPointMatrix[topRowIdx][mostLeftColIdx].isBombing() ||
                         mapPointMatrix[bottomRowIdx][mostLeftColIdx].isBombing()) &&
                         mostLeftColIdx != getCharLeftColIdx(xChar + 1)) {
@@ -203,7 +203,7 @@ public class NomadMethods {
                 }
                 break;
             }
-            case EAST: {
+            case DIRECTION_EAST: {
                 if ((mapPointMatrix[topRowIdx][mostRightColIdx].isBombing() ||
                         mapPointMatrix[bottomRowIdx][mostRightColIdx].isBombing()) &&
                         mostRightColIdx != getCharRightColIdx(xChar - 1)) {

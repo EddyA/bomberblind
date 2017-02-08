@@ -1,21 +1,18 @@
 package utils;
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public enum Direction {
 
-    NORTH, SOUTH, WEST, EAST; // available directions.
+    DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, DIRECTION_EAST; // available directions.
     private final static Random random = new Random(); // init once the random object.
 
     /**
      * Create a list of direction.
      */
-    private final static List<Direction> directionList = new ArrayList<>(Arrays.asList(NORTH, SOUTH, WEST, EAST));
+    private final static List<Direction> directionList =
+            new ArrayList<>(Arrays.asList(DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, DIRECTION_EAST));
 
     /**
      * @return a random direction.
@@ -47,14 +44,37 @@ public enum Direction {
     public static Direction convertKeyEventToDirection(Integer keyEvent) {
         switch (keyEvent) {
             case KeyEvent.VK_UP:
-                return NORTH;
+                return DIRECTION_NORTH;
             case KeyEvent.VK_DOWN:
-                return SOUTH;
+                return DIRECTION_SOUTH;
             case KeyEvent.VK_LEFT:
-                return WEST;
+                return DIRECTION_WEST;
             case KeyEvent.VK_RIGHT:
-                return EAST;
+                return DIRECTION_EAST;
         }
-        throw new RuntimeException("Cannot convert KeyEvent '" + keyEvent + "' to Direction.");
+        throw new RuntimeException("cannot convert KeyEvent '" + keyEvent + "' to Direction.");
+    }
+
+    public static Optional<String> getlabel(Direction direction) {
+        Optional<String> label = Optional.empty();
+        switch (direction) {
+            case DIRECTION_NORTH: {
+                label = Optional.of("north");
+                break;
+            }
+            case DIRECTION_SOUTH: {
+                label = Optional.of("south");
+                break;
+            }
+            case DIRECTION_WEST: {
+                label = Optional.of("west");
+                break;
+            }
+            case DIRECTION_EAST: {
+                label = Optional.of("east");
+                break;
+            }
+        }
+        return label;
     }
 }

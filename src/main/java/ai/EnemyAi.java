@@ -44,41 +44,41 @@ public class EnemyAi {
         while (!resultFound && curCheckedDirection != null) {
             checkedDirections.add(curCheckedDirection); // add the current direction to the set of checked direction.
             switch (curCheckedDirection) {
-                case NORTH: {
+                case DIRECTION_NORTH: {
                     if (!isNomadCrossingMapLimit(mapWidth, mapHeight, nomad.getxMap(), nomad.getyMap() - 1) &&
                             !isNomadCrossingObstacle(mapPointMatrix, nomad.getxMap(), nomad.getyMap() - 1) &&
                             !isNomadBurning(mapPointMatrix, nomad.getxMap(), nomad.getyMap() - 1) &&
-                            !isNomadCrossingBomb(mapPointMatrix, nomad.getxMap(), nomad.getyMap() - 1, NORTH) &&
+                            !isNomadCrossingBomb(mapPointMatrix, nomad.getxMap(), nomad.getyMap() - 1, DIRECTION_NORTH) &&
                             !isNomadCrossingEnemy(spriteList, nomad.getxMap(), nomad.getyMap() - 1, nomad)) {
                         resultFound = true;
                     }
                     break;
                 }
-                case SOUTH: {
+                case DIRECTION_SOUTH: {
                     if (!isNomadCrossingMapLimit(mapWidth, mapHeight, nomad.getxMap(), nomad.getyMap() + 1) &&
                             !isNomadCrossingObstacle(mapPointMatrix, nomad.getxMap(), nomad.getyMap() + 1) &&
                             !isNomadBurning(mapPointMatrix, nomad.getxMap(), nomad.getyMap() + 1) &&
-                            !isNomadCrossingBomb(mapPointMatrix, nomad.getxMap(), nomad.getyMap() + 1, SOUTH) &&
+                            !isNomadCrossingBomb(mapPointMatrix, nomad.getxMap(), nomad.getyMap() + 1, DIRECTION_SOUTH) &&
                             !isNomadCrossingEnemy(spriteList, nomad.getxMap(), nomad.getyMap() + 1, nomad)) {
                         resultFound = true;
                     }
                     break;
                 }
-                case WEST: {
+                case DIRECTION_WEST: {
                     if (!isNomadCrossingMapLimit(mapWidth, mapHeight, nomad.getxMap() - 1, nomad.getyMap()) &&
                             !isNomadCrossingObstacle(mapPointMatrix, nomad.getxMap() - 1, nomad.getyMap()) &&
                             !isNomadBurning(mapPointMatrix, nomad.getxMap() - 1, nomad.getyMap()) &&
-                            !isNomadCrossingBomb(mapPointMatrix, nomad.getxMap() - 1, nomad.getyMap(), WEST) &&
+                            !isNomadCrossingBomb(mapPointMatrix, nomad.getxMap() - 1, nomad.getyMap(), DIRECTION_WEST) &&
                             !isNomadCrossingEnemy(spriteList, nomad.getxMap() - 1, nomad.getyMap(), nomad)) {
                         resultFound = true;
                     }
                     break;
                 }
-                case EAST: {
+                case DIRECTION_EAST: {
                     if (!isNomadCrossingMapLimit(mapWidth, mapHeight, nomad.getxMap() + 1, nomad.getyMap()) &&
                             !isNomadCrossingObstacle(mapPointMatrix, nomad.getxMap() + 1, nomad.getyMap()) &&
                             !isNomadBurning(mapPointMatrix, nomad.getxMap() + 1, nomad.getyMap()) &&
-                            !isNomadCrossingBomb(mapPointMatrix, nomad.getxMap() + 1, nomad.getyMap(), EAST) &&
+                            !isNomadCrossingBomb(mapPointMatrix, nomad.getxMap() + 1, nomad.getyMap(), DIRECTION_EAST) &&
                             !isNomadCrossingEnemy(spriteList, nomad.getxMap() + 1, nomad.getyMap(), nomad)) {
                         resultFound = true;
                     }

@@ -16,7 +16,7 @@ public class ImagesLoader {
     public final static int IMAGE_SIZE = 30; // size of an 'Image' in pixels (30*30).
 
     public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
-    public final static int NB_MATRIX_ROW = 50;
+    public final static int NB_MATRIX_ROW = 52;
     public final static int NB_MATRIX_COL = 80;
 
     // images location.
@@ -86,6 +86,8 @@ public class ImagesLoader {
 
     // - bird
     public final static int NB_BIRD_FLY_FRAME = 3;
+    public static int birdFlyBackMatrixRowIdx;
+    public static int birdFlyFrontMatrixRowIdx;
     public static int birdFlyLeftMatrixRowIdx;
     public static int birdFlyRightMatrixRowIdx;
 
@@ -326,6 +328,16 @@ public class ImagesLoader {
         minotorBreakRightMatrixRowIdx = rowIdx++;
 
         // bird:
+        for (int i = 0; i < NB_BIRD_FLY_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(BIRD_SKIN_DIR + "/fly_back_" + imageIdx + ".png");
+        }
+        birdFlyBackMatrixRowIdx = rowIdx++;
+        for (int i = 0; i < NB_BIRD_FLY_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(BIRD_SKIN_DIR + "/fly_front_" + imageIdx + ".png");
+        }
+        birdFlyFrontMatrixRowIdx = rowIdx++;
         for (int i = 0; i < NB_BIRD_FLY_FRAME; i++) {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(BIRD_SKIN_DIR + "/fly_left_" + imageIdx + ".png");

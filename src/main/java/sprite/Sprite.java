@@ -1,9 +1,8 @@
 package sprite;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-
 import utils.CurrentTimeSupplier;
+
+import java.awt.*;
 
 /**
  * Abstract class of a sprite.

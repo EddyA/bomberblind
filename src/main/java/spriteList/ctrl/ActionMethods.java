@@ -1,31 +1,12 @@
 package spriteList.ctrl;
 
-import static images.ImagesLoader.IMAGE_SIZE;
-import static map.ctrl.NomadMethods.isNomadBlockedOffByMutable;
-import static map.ctrl.NomadMethods.isNomadBurning;
-import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
-import static spriteList.ctrl.AddingMethods.addBomb;
-import static sprite.SpriteAction.ACTION_BREAKING;
-import static sprite.SpriteAction.ACTION_DYING;
-import static sprite.SpriteAction.ACTION_WAITING;
-import static sprite.SpriteAction.ACTION_WALKING;
-import static sprite.SpriteAction.ACTION_WINING;
-import static utils.Direction.EAST;
-import static utils.Direction.NORTH;
-import static utils.Direction.SOUTH;
-import static utils.Direction.WEST;
-import static utils.Tools.getCharColIdx;
-
-import java.awt.event.KeyEvent;
-import java.util.LinkedList;
-
 import ai.EnemyAi;
 import map.MapPoint;
 import map.ctrl.NomadMethods;
 import sprite.Sprite;
-import sprite.nomad.FlyingNomad;
 import sprite.nomad.Bomber;
 import sprite.nomad.BreakingEnemy;
+import sprite.nomad.FlyingNomad;
 import sprite.nomad.WalkingEnemy;
 import sprite.settled.Bomb;
 import sprite.settled.Flame;
@@ -33,6 +14,18 @@ import sprite.settled.FlameEnd;
 import sprite.settled.TimedSettled;
 import utils.Direction;
 import utils.Tools;
+
+import java.awt.event.KeyEvent;
+import java.util.LinkedList;
+
+import static images.ImagesLoader.IMAGE_SIZE;
+import static map.ctrl.NomadMethods.isNomadBlockedOffByMutable;
+import static map.ctrl.NomadMethods.isNomadBurning;
+import static sprite.SpriteAction.*;
+import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
+import static spriteList.ctrl.AddingMethods.addBomb;
+import static utils.Direction.*;
+import static utils.Tools.getCharColIdx;
 
 /**
  * Define a collection of methods to process sprites.
@@ -84,64 +77,64 @@ public class ActionMethods {
                     }
                     case KeyEvent.VK_UP: {
                         bomber.setCurSpriteAction(ACTION_WALKING);
-                        bomber.setCurDirection(NORTH);
+                        bomber.setCurDirection(DIRECTION_NORTH);
                         if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
                                 bomber.getxMap(), bomber.getyMap() - 1)) {
                             if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getxMap(),
                                     bomber.getyMap() - 1) &&
                                     !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getxMap(),
-                                            bomber.getyMap() - 1, NORTH)) {
+                                            bomber.getyMap() - 1, DIRECTION_NORTH)) {
                                 bomber.setyMap(bomber.getyMap() - 1);
                             } else {
-                            shiftBomberIfPossible(mapPointMatrix, bomber, NORTH);
+                                shiftBomberIfPossible(mapPointMatrix, bomber, DIRECTION_NORTH);
                             }
                         }
                         break;
                     }
                     case KeyEvent.VK_DOWN: {
                         bomber.setCurSpriteAction(ACTION_WALKING);
-                        bomber.setCurDirection(Direction.SOUTH);
+                        bomber.setCurDirection(Direction.DIRECTION_SOUTH);
                         if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
                                 bomber.getxMap(), bomber.getyMap() + 1)) {
                             if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getxMap(),
                                     bomber.getyMap() + 1) &&
                                     !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getxMap(),
-                                            bomber.getyMap() + 1, SOUTH)) {
+                                            bomber.getyMap() + 1, DIRECTION_SOUTH)) {
                                 bomber.setyMap(bomber.getyMap() + 1);
                             } else {
-                            shiftBomberIfPossible(mapPointMatrix, bomber, SOUTH);
+                                shiftBomberIfPossible(mapPointMatrix, bomber, DIRECTION_SOUTH);
                             }
                         }
                         break;
                     }
                     case KeyEvent.VK_LEFT: {
                         bomber.setCurSpriteAction(ACTION_WALKING);
-                        bomber.setCurDirection(WEST);
+                        bomber.setCurDirection(DIRECTION_WEST);
                         if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
                                 bomber.getxMap() - 1, bomber.getyMap())) {
                             if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getxMap() - 1,
                                     bomber.getyMap()) &&
                                     !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getxMap() - 1,
-                                            bomber.getyMap(), WEST)) {
+                                            bomber.getyMap(), DIRECTION_WEST)) {
                                 bomber.setxMap(bomber.getxMap() - 1);
                             } else {
-                            shiftBomberIfPossible(mapPointMatrix, bomber, WEST);
+                                shiftBomberIfPossible(mapPointMatrix, bomber, DIRECTION_WEST);
                             }
                         }
                         break;
                     }
                     case KeyEvent.VK_RIGHT: {
                         bomber.setCurSpriteAction(ACTION_WALKING);
-                        bomber.setCurDirection(Direction.EAST);
+                        bomber.setCurDirection(Direction.DIRECTION_EAST);
                         if (!NomadMethods.isNomadCrossingMapLimit(mapWidth, mapHeight,
                                 bomber.getxMap() + 1, bomber.getyMap())) {
                             if (!NomadMethods.isNomadCrossingObstacle(mapPointMatrix, bomber.getxMap() + 1,
                                     bomber.getyMap()) &&
                                     !NomadMethods.isNomadCrossingBomb(mapPointMatrix, bomber.getxMap() + 1,
-                                            bomber.getyMap(), EAST)) {
+                                            bomber.getyMap(), DIRECTION_EAST)) {
                                 bomber.setxMap(bomber.getxMap() + 1);
                             } else {
-                            shiftBomberIfPossible(mapPointMatrix, bomber, EAST);
+                                shiftBomberIfPossible(mapPointMatrix, bomber, DIRECTION_EAST);
                             }
                         }
                         break;
@@ -175,7 +168,7 @@ public class ActionMethods {
         int bbManColShift = bomber.getxMap() % IMAGE_SIZE;
 
         switch (direction) {
-        case NORTH: {
+            case DIRECTION_NORTH: {
                 if (mapPointMatrix[bbManRowIdx - 1][bbManColIdx].isPathway() && // the upper case is a pathway
                         !mapPointMatrix[bbManRowIdx - 1][bbManColIdx].isBombing()) { // && !bombing.
                     if (bbManColShift < IMAGE_SIZE / 2) { // bomber on left side of its case.
@@ -186,7 +179,7 @@ public class ActionMethods {
                 }
                 break;
             }
-        case SOUTH: {
+            case DIRECTION_SOUTH: {
                 if (mapPointMatrix[bbManRowIdx + 1][bbManColIdx].isPathway() && // the lower case is a pathway
                         !mapPointMatrix[bbManRowIdx + 1][bbManColIdx].isBombing()) { // && !bombing.
                     if (bbManColShift < IMAGE_SIZE / 2) { // bomber on left side of its case.
@@ -197,7 +190,7 @@ public class ActionMethods {
                 }
                 break;
             }
-        case WEST: {
+            case DIRECTION_WEST: {
                 if (mapPointMatrix[bbManRowIdx][bbManColIdx - 1].isPathway() && // the left case is a pathway
                         !mapPointMatrix[bbManRowIdx][bbManColIdx - 1].isBombing()) { // && !bombing.
                     if (bbManRowShift < IMAGE_SIZE / 2) { // bomber on upper side of its case.
@@ -213,7 +206,7 @@ public class ActionMethods {
                 }
                 break;
             }
-        case EAST: {
+            case DIRECTION_EAST: {
                 if (mapPointMatrix[bbManRowIdx][bbManColIdx + 1].isPathway() && // the right case is a pathway
                         !mapPointMatrix[bbManRowIdx][bbManColIdx + 1].isBombing()) { // && !bombing.
                     if (bbManRowShift < IMAGE_SIZE / 2) { // bomber on upper side of its case.
@@ -362,19 +355,19 @@ public class ActionMethods {
             walkingEnemy.setCurSpriteAction(ACTION_WALKING);
             walkingEnemy.setCurDirection(newDirection);
             switch (newDirection) {
-                case NORTH: {
+                case DIRECTION_NORTH: {
                     walkingEnemy.setyMap(walkingEnemy.getyMap() - 1);
                     break;
                 }
-                case SOUTH: {
+                case DIRECTION_SOUTH: {
                     walkingEnemy.setyMap(walkingEnemy.getyMap() + 1);
                     break;
                 }
-                case WEST: {
+                case DIRECTION_WEST: {
                     walkingEnemy.setxMap(walkingEnemy.getxMap() - 1);
                     break;
                 }
-                case EAST: {
+                case DIRECTION_EAST: {
                     walkingEnemy.setxMap(walkingEnemy.getxMap() + 1);
                     break;
                 }
@@ -383,32 +376,55 @@ public class ActionMethods {
     }
 
     /**
-     * - Notice that the bird must be removed from the list (if the sprite is finished),
-     * - OR ended the bird (if the bird is outside the map),
+     * - Notice that the flyingNomad must be removed from the list (if the sprite is finished),
+     * - OR ended the flyingNomad (if the flyingNomad is outside the map),
      * - OR compute the next move.
      *
      * @param mapWidth the map width
-     * @param bird the bird
-     * @return true if the bird should be removed from the list, false otherwise.
+     * @param mapHeight the map height
+     * @param flyingNomad the flyingNomad
+     * @return true if the flyingNomad should be removed from the list, false otherwise.
      */
-    public static boolean processBird(int mapWidth, FlyingNomad bird) {
+    public static boolean processFlyingNomad(int mapWidth, int mapHeight, FlyingNomad flyingNomad) {
         boolean shouldBeRemoved = false;
-        int birdWidth = bird.getCurImage() != null ? bird.getCurImage().getWidth(null) : 0;
-        if (bird.isFinished()) {
+        int birdWidth = flyingNomad.getCurImage() != null ? flyingNomad.getCurImage().getWidth(null) : 0;
+        int birdHeight = flyingNomad.getCurImage() != null ? flyingNomad.getCurImage().getHeight(null) : 0;
+        if (flyingNomad.isFinished()) {
             shouldBeRemoved = true;
 
-        } else if (bird.isTimeToAct()) {
-            if (bird.getCurDirection() == Direction.EAST) {
-                if (bird.getxMap() - birdWidth > mapWidth * IMAGE_SIZE) { // outside the right limit.
-                    bird.setCurSpriteAction(ACTION_DYING);
-                } else {
-                    bird.computeMove();
+        } else if (flyingNomad.isTimeToAct()) {
+            switch (flyingNomad.getCurDirection()) {
+                case DIRECTION_NORTH: {
+                    if (flyingNomad.getyMap() + birdHeight < 0) { // outside the north limit.
+                        flyingNomad.setCurSpriteAction(ACTION_DYING);
+                    } else {
+                        flyingNomad.computeMove();
+                    }
+                    break;
                 }
-            } else {
-                if (bird.getxMap() + birdWidth < 0) { // outside the left limit.
-                    bird.setCurSpriteAction(ACTION_DYING);
-                } else {
-                    bird.computeMove();
+                case DIRECTION_SOUTH: {
+                    if (flyingNomad.getyMap() - birdHeight > mapHeight * IMAGE_SIZE) { // outside the south limit.
+                        flyingNomad.setCurSpriteAction(ACTION_DYING);
+                    } else {
+                        flyingNomad.computeMove();
+                    }
+                    break;
+                }
+                case DIRECTION_WEST: {
+                    if (flyingNomad.getxMap() + birdWidth < 0) { // outside the left limit.
+                        flyingNomad.setCurSpriteAction(ACTION_DYING);
+                    } else {
+                        flyingNomad.computeMove();
+                    }
+                    break;
+                }
+                case DIRECTION_EAST: {
+                    if (flyingNomad.getxMap() - birdWidth > mapWidth * IMAGE_SIZE) { // outside the right limit.
+                        flyingNomad.setCurSpriteAction(ACTION_DYING);
+                    } else {
+                        flyingNomad.computeMove();
+                    }
+                    break;
                 }
             }
         }

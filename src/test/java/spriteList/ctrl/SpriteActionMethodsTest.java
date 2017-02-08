@@ -54,7 +54,7 @@ public class SpriteActionMethodsTest implements WithAssertions {
         for (int xChar = 46; xChar < 105; xChar++) {
             blueBomber.setxMap(xChar);
             int xMapBeforeShifting = blueBomber.getxMap();
-            ActionMethods.shiftBomberIfPossible(mapPointMatrix, blueBomber, Direction.NORTH);
+            ActionMethods.shiftBomberIfPossible(mapPointMatrix, blueBomber, Direction.DIRECTION_NORTH);
             if (xChar >= 60 && xChar < 75) {
                 assertThat(blueBomber.getxMap()).isEqualTo(xMapBeforeShifting + 1); // shift to the right.
             } else if (xChar > 75 && xChar < 90) {
@@ -98,7 +98,7 @@ public class SpriteActionMethodsTest implements WithAssertions {
         for (int xChar = 46; xChar < 105; xChar++) {
             blueBomber.setxMap(xChar);
             int xMapBeforeShifting = blueBomber.getxMap();
-            ActionMethods.shiftBomberIfPossible(mapPointMatrix, blueBomber, Direction.SOUTH);
+            ActionMethods.shiftBomberIfPossible(mapPointMatrix, blueBomber, Direction.DIRECTION_SOUTH);
             if (xChar >= 60 && xChar < 75) {
                 assertThat(blueBomber.getxMap()).isEqualTo(xMapBeforeShifting + 1); // shift to the right.
             } else if (xChar > 75 && xChar < 90) {
@@ -144,7 +144,7 @@ public class SpriteActionMethodsTest implements WithAssertions {
         for (int yChar = 46; yChar < 120; yChar++) {
             blueBomber.setyMap(yChar);
             int yMapBeforeShifting = blueBomber.getyMap();
-            ActionMethods.shiftBomberIfPossible(mapPointMatrix, blueBomber, Direction.WEST);
+            ActionMethods.shiftBomberIfPossible(mapPointMatrix, blueBomber, Direction.DIRECTION_WEST);
             if (yChar >= 60 && yChar < 75) {
                 assertThat(blueBomber.getyMap()).isEqualTo(yMapBeforeShifting + 1); // shift to the right.
             } else if (yChar >= 90 && yChar < 105) {
@@ -190,7 +190,7 @@ public class SpriteActionMethodsTest implements WithAssertions {
         for (int yChar = 46; yChar < 120; yChar++) {
             blueBomber.setyMap(yChar);
             int yMapBeforeShifting = blueBomber.getyMap();
-            ActionMethods.shiftBomberIfPossible(mapPointMatrix, blueBomber, Direction.EAST);
+            ActionMethods.shiftBomberIfPossible(mapPointMatrix, blueBomber, Direction.DIRECTION_EAST);
             if (yChar >= 60 && yChar < 75) {
                 assertThat(blueBomber.getyMap()).isEqualTo(yMapBeforeShifting + 1); // shift to the right.
             } else if (yChar >= 90 && yChar < 105) {

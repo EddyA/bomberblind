@@ -117,9 +117,9 @@ public class BreakingEnemyTest implements WithAssertions {
 
         // set test.
         minotor.setCurSpriteAction(ACTION_WALKING);
-        minotor.setCurDirection(Direction.NORTH);
+        minotor.setCurDirection(Direction.DIRECTION_NORTH);
         minotor.setLastSpriteAction(ACTION_WALKING);
-        minotor.setLastDirection(Direction.NORTH);
+        minotor.setLastDirection(Direction.DIRECTION_NORTH);
 
         // call & check.
         assertThat(minotor.hasActionChanged()).isFalse();
@@ -131,9 +131,9 @@ public class BreakingEnemyTest implements WithAssertions {
 
         // set test.
         minotor.setCurSpriteAction(ACTION_BREAKING);
-        minotor.setCurDirection(Direction.NORTH);
+        minotor.setCurDirection(Direction.DIRECTION_NORTH);
         minotor.setLastSpriteAction(ACTION_BREAKING);
-        minotor.setLastDirection(Direction.NORTH);
+        minotor.setLastDirection(Direction.DIRECTION_NORTH);
 
         // call & check.
         assertThat(minotor.hasActionChanged()).isFalse();
@@ -157,9 +157,9 @@ public class BreakingEnemyTest implements WithAssertions {
 
         // set test.
         minotor.setCurSpriteAction(ACTION_WALKING);
-        minotor.setCurDirection(Direction.NORTH);
+        minotor.setCurDirection(Direction.DIRECTION_NORTH);
         minotor.setLastSpriteAction(ACTION_WALKING);
-        minotor.setLastDirection(Direction.SOUTH);
+        minotor.setLastDirection(Direction.DIRECTION_SOUTH);
 
         // call & check.
         assertThat(minotor.hasActionChanged()).isTrue();
@@ -171,9 +171,9 @@ public class BreakingEnemyTest implements WithAssertions {
 
         // set test.
         minotor.setCurSpriteAction(ACTION_BREAKING);
-        minotor.setCurDirection(Direction.NORTH);
+        minotor.setCurDirection(Direction.DIRECTION_NORTH);
         minotor.setLastSpriteAction(ACTION_BREAKING);
-        minotor.setLastDirection(Direction.SOUTH);
+        minotor.setLastDirection(Direction.DIRECTION_SOUTH);
 
         // call & check.
         assertThat(minotor.hasActionChanged()).isTrue();
@@ -185,28 +185,28 @@ public class BreakingEnemyTest implements WithAssertions {
 
         // breaking back.
         minotor.setCurSpriteAction(ACTION_BREAKING);
-        minotor.setCurDirection(Direction.NORTH);
+        minotor.setCurDirection(Direction.DIRECTION_NORTH);
         minotor.updateSprite();
         assertThat(minotor.getImages()).isEqualTo(minotor.getBreakBackImages());
         assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbBreakFrame());
 
         // breaking back.
         minotor.setCurSpriteAction(ACTION_BREAKING);
-        minotor.setCurDirection(Direction.SOUTH);
+        minotor.setCurDirection(Direction.DIRECTION_SOUTH);
         minotor.updateSprite();
         assertThat(minotor.getImages()).isEqualTo(minotor.getBreakFrontImages());
         assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbBreakFrame());
 
         // breaking back.
         minotor.setCurSpriteAction(ACTION_BREAKING);
-        minotor.setCurDirection(Direction.WEST);
+        minotor.setCurDirection(Direction.DIRECTION_WEST);
         minotor.updateSprite();
         assertThat(minotor.getImages()).isEqualTo(minotor.getBreakLeftImages());
         assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbBreakFrame());
 
         // breaking back.
         minotor.setCurSpriteAction(ACTION_BREAKING);
-        minotor.setCurDirection(Direction.EAST);
+        minotor.setCurDirection(Direction.DIRECTION_EAST);
         minotor.updateSprite();
         assertThat(minotor.getImages()).isEqualTo(minotor.getBreakRightImages());
         assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbBreakFrame());
@@ -219,28 +219,28 @@ public class BreakingEnemyTest implements WithAssertions {
 
         // walking back.
         minotor.setCurSpriteAction(ACTION_WALKING);
-        minotor.setCurDirection(Direction.NORTH);
+        minotor.setCurDirection(Direction.DIRECTION_NORTH);
         minotor.updateSprite();
         assertThat(minotor.getImages()).isEqualTo(minotor.getWalkBackImages());
         assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbWalkFrame());
 
         // walking front.
         minotor.setCurSpriteAction(ACTION_WALKING);
-        minotor.setCurDirection(Direction.SOUTH);
+        minotor.setCurDirection(Direction.DIRECTION_SOUTH);
         minotor.updateSprite();
         assertThat(minotor.getImages()).isEqualTo(minotor.getWalkFrontImages());
         assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbWalkFrame());
 
         // walking left.
         minotor.setCurSpriteAction(ACTION_WALKING);
-        minotor.setCurDirection(Direction.WEST);
+        minotor.setCurDirection(Direction.DIRECTION_WEST);
         minotor.updateSprite();
         assertThat(minotor.getImages()).isEqualTo(minotor.getWalkLeftImages());
         assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbWalkFrame());
 
         // walking right.
         minotor.setCurSpriteAction(ACTION_WALKING);
-        minotor.setCurDirection(Direction.EAST);
+        minotor.setCurDirection(Direction.DIRECTION_EAST);
         minotor.updateSprite();
         assertThat(minotor.getImages()).isEqualTo(minotor.getWalkRightImages());
         assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbWalkFrame());

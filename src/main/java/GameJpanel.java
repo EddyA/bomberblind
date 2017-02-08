@@ -1,18 +1,3 @@
-import static images.ImagesLoader.IMAGE_SIZE;
-import static spriteList.ctrl.AddingMethods.addBird;
-import static spriteList.ctrl.AddingMethods.addBomber;
-
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.swing.JPanel;
-
 import exceptions.CannotCreateMapElementException;
 import exceptions.CannotPlaceEnemyOnMapException;
 import exceptions.InvalidConfigurationException;
@@ -24,12 +9,25 @@ import map.zelda.ZeldaMapSetting;
 import sprite.SpriteType;
 import sprite.nomad.BlueBomber;
 import sprite.nomad.Bomber;
-import sprite.nomad.WhiteBird;
 import spriteList.SpriteList;
 import spriteList.SpritesProperties;
 import spriteList.SpritesSetting;
-import utils.Direction;
+import utils.CurrentTimeSupplier;
 import utils.Tuple2;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static images.ImagesLoader.IMAGE_SIZE;
+import static spriteList.ctrl.AddingMethods.addBomber;
+import static spriteList.ctrl.GenerationMethods.placeAGroupOfBird;
+import static utils.Direction.DIRECTION_EAST;
 
 public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
@@ -42,15 +40,15 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private int xMapStartPosOnScreen;
     private int yMapStartPosOnScreen;
 
-    public GameJpanel(int widthScreen, int heightScreen) throws IOException, InvalidPropertiesException,
+    public GameJpanel(int screenWidth, int screenHeight) throws IOException, InvalidPropertiesException,
             InvalidConfigurationException, CannotCreateMapElementException, CannotPlaceEnemyOnMapException {
 
         // create the map.
         map = new ZeldaMap(
                 new ZeldaMapSetting(
                         new ZeldaMapProperties("/zelda.map.properties").loadProperties().checkProperties()),
-                widthScreen,
-                heightScreen);
+                screenWidth,
+                screenHeight);
         map.generateMap();
 
         // create the list of sprites.
@@ -58,8 +56,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 new SpritesSetting(
                         new SpritesProperties("/zelda.sprites.properties").loadProperties().checkProperties()),
                 map,
-                widthScreen,
-                heightScreen);
+                screenWidth,
+                screenHeight);
         spriteList.generateSprites();
 
         // create the main bomber and add it to the list of sprites.
@@ -68,12 +66,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         addBomber(spriteList, bomber);
 
         // create the 3 first birds :)
-        addBird(spriteList, 
-                new WhiteBird(0, bbManInitialPosition.getSecond() + 200, Direction.EAST, -6));
-        addBird(spriteList,
-                new WhiteBird(-50, bbManInitialPosition.getSecond() + 225, Direction.EAST, -8));
-        addBird(spriteList,
-                new WhiteBird(0, bbManInitialPosition.getSecond() + 250, Direction.EAST, -12));
+        placeAGroupOfBird(spriteList, 3, -100, bbManInitialPosition.getSecond() + 225, DIRECTION_EAST, -8);
 
         // create a list to handle pressed keys.
         pressedKeyList = new ArrayList<>();
@@ -137,6 +130,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void run() {
+        CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
+
         while (true) {
             try {
                 int pressedKey = pressedKeyList.get(pressedKeyList.size() - 1).intValue();

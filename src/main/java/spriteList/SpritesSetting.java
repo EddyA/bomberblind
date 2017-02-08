@@ -11,11 +11,14 @@ public class SpritesSetting {
 
     private final int nbMinotor; // the number of minotor to place.
 
+    private final int birdsArrivalTimeInterval; // the time to wait before creating a new groups of bird (in ms).
+
     public SpritesSetting(SpritesProperties spritesProperties) {
         this.nbCloakedSkeleton = spritesProperties.getSpritesEnemyCloakedSkeleton();
         this.nbMecaAngel = spritesProperties.getSpritesEnemyMecaAngel();
         this.nbMummy = spritesProperties.getSpritesEnemyMummy();
         this.nbMinotor = spritesProperties.getSpritesEnemyMinotor();
+        this.birdsArrivalTimeInterval = spritesProperties.getSpritesBirdsArrivalTimeInterval();
     }
 
     public int getNbCloakedSkeleton() {
@@ -32,5 +35,9 @@ public class SpritesSetting {
 
     public int getNbMinotor() {
         return nbMinotor;
+    }
+
+    public int getBirdsArrivalTimeInterval() {
+        return birdsArrivalTimeInterval;
     }
 }

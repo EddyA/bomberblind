@@ -136,22 +136,22 @@ public class BreakingEnemy extends WalkingEnemy {
         switch (curSpriteAction) {
             case ACTION_BREAKING: {
                 switch (curDirection) {
-                    case NORTH: {
+                    case DIRECTION_NORTH: {
                         images = breakBackImages;
                         nbImages = nbBreakFrame;
                         break;
                     }
-                    case SOUTH: {
+                    case DIRECTION_SOUTH: {
                         images = breakFrontImages;
                         nbImages = nbBreakFrame;
                         break;
                     }
-                    case WEST: {
+                    case DIRECTION_WEST: {
                         images = breakLeftImages;
                         nbImages = nbBreakFrame;
                         break;
                     }
-                    case EAST: {
+                    case DIRECTION_EAST: {
                         images = breakRightImages;
                         nbImages = nbBreakFrame;
                         break;
@@ -166,22 +166,22 @@ public class BreakingEnemy extends WalkingEnemy {
             }
             case ACTION_WALKING: {
                 switch (curDirection) {
-                    case NORTH: {
+                    case DIRECTION_NORTH: {
                         images = walkBackImages;
                         nbImages = nbWalkFrame;
                         break;
                     }
-                    case SOUTH: {
+                    case DIRECTION_SOUTH: {
                         images = walkFrontImages;
                         nbImages = nbWalkFrame;
                         break;
                     }
-                    case WEST: {
+                    case DIRECTION_WEST: {
                         images = walkLeftImages;
                         nbImages = nbWalkFrame;
                         break;
                     }
-                    case EAST: {
+                    case DIRECTION_EAST: {
                         images = walkRightImages;
                         nbImages = nbWalkFrame;
                         break;

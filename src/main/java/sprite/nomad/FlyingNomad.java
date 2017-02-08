@@ -1,14 +1,14 @@
 package sprite.nomad;
 
-import static sprite.SpriteAction.ACTION_DYING;
-import static sprite.SpriteAction.ACTION_FLYING;
-
-import java.awt.Image;
-import java.util.Random;
-
 import sprite.SpriteAction;
 import sprite.SpriteType;
 import utils.Direction;
+
+import java.awt.*;
+import java.util.Random;
+
+import static sprite.SpriteAction.ACTION_DYING;
+import static sprite.SpriteAction.ACTION_FLYING;
 
 /**
  * Abstract class of a flying nomad.
@@ -101,7 +101,7 @@ public abstract class FlyingNomad extends Nomad {
      */
     public void computeMove() {
         switch (curDirection) {
-        case NORTH: {
+            case DIRECTION_NORTH: {
             yMap--;
             if (moveIdx % deviation == 0) {
                 if (deviation < 0) {
@@ -111,8 +111,8 @@ public abstract class FlyingNomad extends Nomad {
                 }
             }
             break;
-        }
-        case SOUTH: {
+            }
+            case DIRECTION_SOUTH: {
             yMap++;
             if (moveIdx % deviation == 0) {
                 if (deviation < 0) {
@@ -122,8 +122,8 @@ public abstract class FlyingNomad extends Nomad {
                 }
             }
             break;
-        }
-        case WEST: {
+            }
+            case DIRECTION_WEST: {
             xMap--;
             if (moveIdx % deviation == 0) {
                 if (deviation < 0) {
@@ -132,8 +132,8 @@ public abstract class FlyingNomad extends Nomad {
                     yMap++;
             }
             break;
-        }
-        case EAST: {
+            }
+            case DIRECTION_EAST: {
             xMap++;
             if (moveIdx % deviation == 0) {
                 if (deviation < 0) {
@@ -170,22 +170,22 @@ public abstract class FlyingNomad extends Nomad {
         switch (curSpriteAction) {
         case ACTION_FLYING: {
             switch (curDirection) {
-            case NORTH: {
+                case DIRECTION_NORTH: {
                 images = flyBackImages;
                 nbImages = nbFlyFrame;
                 break;
             }
-            case SOUTH: {
+                case DIRECTION_SOUTH: {
                 images = flyFrontImages;
                 nbImages = nbFlyFrame;
                 break;
             }
-            case WEST: {
+                case DIRECTION_WEST: {
                 images = flyLeftImages;
                 nbImages = nbFlyFrame;
                 break;
             }
-            case EAST: {
+                case DIRECTION_EAST: {
                 images = flyRightImages;
                 nbImages = nbFlyFrame;
                 break;

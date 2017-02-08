@@ -20,8 +20,8 @@ public class BreakingEnemyStepDef  implements WithAssertions {
 
     @And("^the breaking enemy is walking to the south$")
     public void the_breaking_enemy_is_breaking_toward() {
-        breakingEnemyState.getEnemy().setCurDirection(Direction.SOUTH);
-        breakingEnemyState.getEnemy().setLastDirection(Direction.SOUTH);
+        breakingEnemyState.getEnemy().setCurDirection(Direction.DIRECTION_SOUTH);
+        breakingEnemyState.getEnemy().setLastDirection(Direction.DIRECTION_SOUTH);
     }
 
     @And("^the breaking enemy is dead$")
