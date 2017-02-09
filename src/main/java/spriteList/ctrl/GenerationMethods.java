@@ -16,7 +16,7 @@ import static spriteList.ctrl.AddingMethods.addWalkingEnemy;
 public class GenerationMethods {
 
     // init a Random for the whole process.
-    private static Random random;
+    private final static Random random;
 
     static {
         random = new Random();
@@ -39,7 +39,7 @@ public class GenerationMethods {
             if (emptyPtList.isEmpty()) {
                 String msg = "cannot (create) and place a '" + EnemyType.getlabel(enemyType).orElse("no_name") +
                         "' on map, the list of empty point is empty.";
-                throw new RuntimeException(msg);
+                throw new CannotPlaceEnemyOnMapException(msg);
             }
             Random R = new Random(); // randomly get a point.
             int caseIdx = Math.abs(R.nextInt(emptyPtList.size()));
@@ -74,7 +74,7 @@ public class GenerationMethods {
      * The random conditions:
      * - a random number of birds between [3; 6],
      * - a random direction,
-     * - a random deviation between [-20; 20] excluding 0,
+     * - a random deviation between [-15; 15],
      * - a random ordinate.
      *
      * @param spriteList   the list into which adding the birds
@@ -90,7 +90,7 @@ public class GenerationMethods {
                                                  int mapHeight) {
         int nbElts = 3 + random.nextInt(3);
         Direction direction = Direction.getRandomDirection();
-        int deviation = (1 + random.nextInt(20)) * (random.nextInt(1) == 0 ? -1 : 1);
+        int deviation = random.nextInt(15) * (random.nextInt(1) == 0 ? -1 : 1);
 
         switch (direction) {
             case DIRECTION_NORTH: {
@@ -140,26 +140,26 @@ public class GenerationMethods {
             switch (direction) {
                 case DIRECTION_NORTH: {
                     int xChar = fstXChar - ((eltIdx + 1) / 2 * IMAGE_SIZE * (eltIdx % 2 == 0 ? 1 : -1));
-                    int yChar = fstYChar - ((eltIdx + 1) / 2) * 50;
-                    AddingMethods.addBird(spriteList, new Bird(xChar, yChar, direction, deviation));
+                    int yChar = fstYChar + ((eltIdx + 1) / 2) * 50;
+                    AddingMethods.addFlyingNomad(spriteList, new Bird(xChar, yChar, direction, deviation));
                     break;
                 }
                 case DIRECTION_SOUTH: {
                     int xChar = fstXChar + ((eltIdx + 1) / 2 * IMAGE_SIZE * (eltIdx % 2 == 0 ? 1 : -1));
-                    int yChar = fstYChar + ((eltIdx + 1) / 2) * 50;
-                    AddingMethods.addBird(spriteList, new Bird(xChar, yChar, direction, deviation));
+                    int yChar = fstYChar - ((eltIdx + 1) / 2) * 50;
+                    AddingMethods.addFlyingNomad(spriteList, new Bird(xChar, yChar, direction, deviation));
                     break;
                 }
                 case DIRECTION_WEST: {
-                    int xChar = fstXChar - ((eltIdx + 1) / 2) * 50;
+                    int xChar = fstXChar + ((eltIdx + 1) / 2) * 50;
                     int yChar = fstYChar - ((eltIdx + 1) / 2 * IMAGE_SIZE * (eltIdx % 2 == 0 ? 1 : -1));
-                    AddingMethods.addBird(spriteList, new Bird(xChar, yChar, direction, deviation));
+                    AddingMethods.addFlyingNomad(spriteList, new Bird(xChar, yChar, direction, deviation));
                     break;
                 }
                 case DIRECTION_EAST: {
-                    int xChar = fstXChar + ((eltIdx + 1) / 2) * 50;
+                    int xChar = fstXChar - ((eltIdx + 1) / 2) * 50;
                     int yChar = fstYChar + ((eltIdx + 1) / 2 * IMAGE_SIZE * (eltIdx % 2 == 0 ? 1 : -1));
-                    AddingMethods.addBird(spriteList, new Bird(xChar, yChar, direction, deviation));
+                    AddingMethods.addFlyingNomad(spriteList, new Bird(xChar, yChar, direction, deviation));
                     break;
                 }
             }

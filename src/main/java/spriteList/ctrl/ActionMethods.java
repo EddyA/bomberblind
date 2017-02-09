@@ -37,6 +37,38 @@ import static utils.Tools.getCharColIdx;
 public class ActionMethods {
 
     /**
+     * - Notice that the bomb must be removed from the list (if the sprite is finished),
+     * -- AND add flames,
+     * -- AND remove the bombing status of the relative case.
+     * - OR ended the bomb (if the bomb is on a burning case),
+     * - OR do nothing.
+     *
+     * @param tmpList        the temporary list of sprites to add new elements
+     * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
+     * @param mapWidth       the map width
+     * @param mapHeight      the map height
+     * @param bomb           the bomb
+     * @return true if the bomb should be removed from the list, false otherwise.
+     */
+    public static boolean processBomb(LinkedList<Sprite> tmpList,
+                                      MapPoint[][] mapPointMatrix,
+                                      int mapWidth,
+                                      int mapHeight,
+                                      Bomb bomb) {
+        boolean shouldBeRemoved = false;
+        if (bomb.isFinished()) {
+            AddingMethods.addFlames(tmpList, mapPointMatrix, mapWidth, mapHeight, bomb.getRowIdx(), bomb.getColIdx(),
+                    bomb.getFlameSize()); // create flames.
+            mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].setBombing(false);
+            shouldBeRemoved = true;
+
+        } else if (mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBurning()) {  // is it on a burning case?
+            bomb.setStatus(TimedSettled.Status.STATUS_ENDED);
+        }
+        return shouldBeRemoved;
+    }
+
+    /**
      * - Re-init the bomber (if the bomber is finished - i.e. dead and the sprite ended),
      * - OR kill the bomber (if the bomber is on a burning case or is crossing an enemy),
      * - OR the bomber acts (if it is time to act),
@@ -233,42 +265,6 @@ public class ActionMethods {
      * - OR do nothing.
      *
      * @param list           the list of sprites
-     * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param mapWidth       the map width
-     * @param mapHeight      the map height
-     * @param walkingEnemy   the enemy
-     * @return true if the enemy should be removed from the list, false otherwise.
-     */
-    public static boolean processWalkingEnemy(LinkedList<Sprite> list,
-                                              MapPoint[][] mapPointMatrix,
-                                              int mapWidth,
-                                              int mapHeight,
-                                              WalkingEnemy walkingEnemy) {
-        boolean shouldBeRemoved = false;
-        if (walkingEnemy.isFinished()) {
-            shouldBeRemoved = true;
-        } else if (walkingEnemy.getCurSpriteAction() != ACTION_DYING) { // the enemy is not finished and not dead.
-
-            // should the enemy die?
-            if (isNomadBurning(mapPointMatrix, walkingEnemy.getxMap(), walkingEnemy.getyMap())) {
-                walkingEnemy.setCurSpriteAction(ACTION_DYING);
-                walkingEnemy.setRefreshTime(Sprite.REFRESH_TIME_WHEN_DYING); // normalize the frame rate for the dead sprite.
-
-            } else if (walkingEnemy.isTimeToAct()) { // it is time to act.
-                moveEnemyIfPossible(list, mapPointMatrix, mapWidth, mapHeight, walkingEnemy);
-            }
-        }
-        return shouldBeRemoved;
-    }
-
-    /**
-     * - Notice that the enemy must be removed from the list (if the enemy is finished - i.e. dead and the sprite
-     * ended),
-     * - OR kill the enemy (if the enemy is on a burning case),
-     * - OR compute the next direction (if it is tim to act),
-     * - OR do nothing.
-     *
-     * @param list           the list of sprites
      * @param tmpList        the temporary list of sprites to add new elements
      * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth       the map width
@@ -376,12 +372,51 @@ public class ActionMethods {
     }
 
     /**
+     * - Notice that the flame must be removed from the list (if the sprite is finished),
+     * -- AND add a flame end.
+     * - OR do nothing.
+     *
+     * @param tmpList        the temporary list of sprites to add new elements
+     * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
+     * @param flame          the flame
+     * @return true if the flame should be removed from the list, false otherwise.
+     */
+    public static boolean processFlame(LinkedList<Sprite> tmpList,
+                                       MapPoint[][] mapPointMatrix,
+                                       Flame flame) {
+        boolean shouldBeRemoved = false;
+        if (flame.isFinished()) {
+
+            // create flame ends.
+            AddingMethods.addFlameEnd(tmpList, new FlameEnd(flame.getRowIdx(), flame.getColIdx()));
+            mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].removeFlame();
+            shouldBeRemoved = true;
+        }
+        return shouldBeRemoved;
+    }
+
+    /**
+     * - Notice that the flame end must be removed from the list (if the sprite is finished),
+     * - OR do nothing.
+     *
+     * @param flameEnd the flame end
+     * @return true if the flame end should be removed from the list, false otherwise.
+     */
+    public static boolean processFlameEnd(FlameEnd flameEnd) {
+        boolean shouldBeRemoved = false;
+        if (flameEnd.isFinished()) {
+            shouldBeRemoved = true;
+        }
+        return shouldBeRemoved;
+    }
+
+    /**
      * - Notice that the flyingNomad must be removed from the list (if the sprite is finished),
      * - OR ended the flyingNomad (if the flyingNomad is outside the map),
      * - OR compute the next move.
      *
-     * @param mapWidth the map width
-     * @param mapHeight the map height
+     * @param mapWidth    the map width
+     * @param mapHeight   the map height
      * @param flyingNomad the flyingNomad
      * @return true if the flyingNomad should be removed from the list, false otherwise.
      */
@@ -432,72 +467,37 @@ public class ActionMethods {
     }
 
     /**
-     * - Notice that the bomb must be removed from the list (if the sprite is finished),
-     * -- AND add flames,
-     * -- AND remove the bombing status of the relative case.
-     * - OR ended the bomb (if the bomb is on a burning case),
+     * - Notice that the enemy must be removed from the list (if the enemy is finished - i.e. dead and the sprite
+     * ended),
+     * - OR kill the enemy (if the enemy is on a burning case),
+     * - OR compute the next direction (if it is tim to act),
      * - OR do nothing.
      *
-     * @param tmpList        the temporary list of sprites to add new elements
+     * @param list           the list of sprites
      * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth       the map width
      * @param mapHeight      the map height
-     * @param bomb           the bomb
-     * @return true if the bomb should be removed from the list, false otherwise.
+     * @param walkingEnemy   the enemy
+     * @return true if the enemy should be removed from the list, false otherwise.
      */
-    public static boolean processBomb(LinkedList<Sprite> tmpList,
-                                      MapPoint[][] mapPointMatrix,
-                                      int mapWidth,
-                                      int mapHeight,
-                                      Bomb bomb) {
+    public static boolean processWalkingEnemy(LinkedList<Sprite> list,
+                                              MapPoint[][] mapPointMatrix,
+                                              int mapWidth,
+                                              int mapHeight,
+                                              WalkingEnemy walkingEnemy) {
         boolean shouldBeRemoved = false;
-        if (bomb.isFinished()) {
-            AddingMethods.addFlames(tmpList, mapPointMatrix, mapWidth, mapHeight, bomb.getRowIdx(), bomb.getColIdx(),
-                    bomb.getFlameSize()); // create flames.
-            mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].setBombing(false);
+        if (walkingEnemy.isFinished()) {
             shouldBeRemoved = true;
+        } else if (walkingEnemy.getCurSpriteAction() != ACTION_DYING) { // the enemy is not finished and not dead.
 
-        } else if (mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBurning()) {  // is it on a burning case?
-            bomb.setStatus(TimedSettled.Status.STATUS_ENDED);
-        }
-        return shouldBeRemoved;
-    }
+            // should the enemy die?
+            if (isNomadBurning(mapPointMatrix, walkingEnemy.getxMap(), walkingEnemy.getyMap())) {
+                walkingEnemy.setCurSpriteAction(ACTION_DYING);
+                walkingEnemy.setRefreshTime(Sprite.REFRESH_TIME_WHEN_DYING); // normalize the frame rate for the dead sprite.
 
-    /**
-     * - Notice that the flame must be removed from the list (if the sprite is finished),
-     * -- AND add a flame end.
-     * - OR do nothing.
-     *
-     * @param tmpList        the temporary list of sprites to add new elements
-     * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
-     * @param flame          the flame
-     * @return true if the flame should be removed from the list, false otherwise.
-     */
-    public static boolean processFlame(LinkedList<Sprite> tmpList,
-                                       MapPoint[][] mapPointMatrix,
-                                       Flame flame) {
-        boolean shouldBeRemoved = false;
-        if (flame.isFinished()) {
-
-            // create flame ends.
-            AddingMethods.addFlameEnd(tmpList, new FlameEnd(flame.getRowIdx(), flame.getColIdx()));
-            mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].removeFlame();
-            shouldBeRemoved = true;
-        }
-        return shouldBeRemoved;
-    }
-
-    /**
-     * - Notice that the flame end must be removed from the list (if the sprite is finished),
-     * - OR do nothing.
-     *
-     * @param flameEnd the flame end
-     * @return true if the flame end should be removed from the list, false otherwise.
-     */
-    public static boolean processFlameEnd(FlameEnd flameEnd) {
-        boolean shouldBeRemoved = false;
-        if (flameEnd.isFinished()) {
-            shouldBeRemoved = true;
+            } else if (walkingEnemy.isTimeToAct()) { // it is time to act.
+                moveEnemyIfPossible(list, mapPointMatrix, mapWidth, mapHeight, walkingEnemy);
+            }
         }
         return shouldBeRemoved;
     }

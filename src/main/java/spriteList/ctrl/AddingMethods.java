@@ -1,62 +1,21 @@
 package spriteList.ctrl;
 
-import java.util.LinkedList;
-
 import map.MapPoint;
 import sprite.Sprite;
-import sprite.nomad.FlyingNomad;
 import sprite.nomad.Bomber;
 import sprite.nomad.BreakingEnemy;
+import sprite.nomad.FlyingNomad;
 import sprite.nomad.WalkingEnemy;
 import sprite.settled.Bomb;
 import sprite.settled.Flame;
 import sprite.settled.FlameEnd;
 
+import java.util.LinkedList;
+
 /**
  * A collection of methods to add sprites to a list according to a map status.
  */
 public class AddingMethods {
-
-    /**
-     * Add a bomber to the list.
-     *
-     * @param list   the list into which adding the sprite
-     * @param bomber the bomber to add
-     */
-    public static void addBomber(LinkedList<Sprite> list, Bomber bomber) {
-        list.add(bomber);
-    }
-
-    /**
-     * Add a walking enemy to the list.
-     *
-     * @param list  the list into which adding the sprite
-     * @param walkingEnemy the walking enemy to add
-     */
-    public static void addWalkingEnemy(LinkedList<Sprite> list, WalkingEnemy walkingEnemy) {
-        list.add(walkingEnemy);
-    }
-
-
-    /**
-     * Add a breaking enemy to the list.
-     *
-     * @param list  the list into which adding the sprite
-     * @param breakingEnemy the walking enemy to add
-     */
-    public static void addBreakingEnemy(LinkedList<Sprite> list, BreakingEnemy breakingEnemy) {
-        list.add(breakingEnemy);
-    }
-
-    /**
-     * Add a bird to the list.
-     *
-     * @param list the list into which adding the sprite
-     * @param bird the bird to add
-     */
-    public static void addBird(LinkedList<Sprite> list, FlyingNomad bird) {
-        list.add(bird);
-    }
 
     /**
      * Add a bomb to a list.
@@ -76,6 +35,36 @@ public class AddingMethods {
             mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].setBombing(true);
             list.add(bomb);
         }
+    }
+
+    /**
+     * Add a bomber to the list.
+     *
+     * @param list   the list into which adding the sprite
+     * @param bomber the bomber to add
+     */
+    public static void addBomber(LinkedList<Sprite> list, Bomber bomber) {
+        list.add(bomber);
+    }
+
+    /**
+     * Add a breaking enemy to the list.
+     *
+     * @param list  the list into which adding the sprite
+     * @param breakingEnemy the walking enemy to add
+     */
+    public static void addBreakingEnemy(LinkedList<Sprite> list, BreakingEnemy breakingEnemy) {
+        list.add(breakingEnemy);
+    }
+
+    /**
+     * Add a flying nomad to the list.
+     *
+     * @param list the list into which adding the sprite
+     * @param flyingNomad the flying nomad to add
+     */
+    public static void addFlyingNomad(LinkedList<Sprite> list, FlyingNomad flyingNomad) {
+        list.add(flyingNomad);
     }
 
     /**
@@ -165,5 +154,15 @@ public class AddingMethods {
      */
     public static void addFlameEnd(LinkedList<Sprite> list, FlameEnd flameEnd) {
         list.add(flameEnd);
+    }
+
+    /**
+     * Add a walking enemy to the list.
+     *
+     * @param list         the list into which adding the sprite
+     * @param walkingEnemy the walking enemy to add
+     */
+    public static void addWalkingEnemy(LinkedList<Sprite> list, WalkingEnemy walkingEnemy) {
+        list.add(walkingEnemy);
     }
 }

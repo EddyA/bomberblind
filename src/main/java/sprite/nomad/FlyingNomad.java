@@ -21,7 +21,7 @@ public abstract class FlyingNomad extends Nomad {
     private final Image[] flyRightImages;
     private final int nbFlyFrame;
 
-    private final int deviation; // the number of iterations before shifting to the orthogonal direction.
+    private int deviation; // the number of iterations before shifting to the orthogonal direction.
     private int moveIdx; // number of times the sprite has moved.
 
     /**
@@ -92,6 +92,10 @@ public abstract class FlyingNomad extends Nomad {
         return deviation;
     }
 
+    public void setDeviation(int deviation) {
+        this.deviation = deviation;
+    }
+
     public int getMoveIdx() {
         return moveIdx;
     }
@@ -102,47 +106,49 @@ public abstract class FlyingNomad extends Nomad {
     public void computeMove() {
         switch (curDirection) {
             case DIRECTION_NORTH: {
-            yMap--;
-            if (moveIdx % deviation == 0) {
-                if (deviation < 0) {
-                    xMap--;
-                } else if (deviation > 0) {
-                    xMap++;
+                yMap--;
+                if ((deviation != 0) && (moveIdx % deviation == 0)) {
+                    if (deviation < 0) {
+                        xMap--;
+                    } else if (deviation > 0) {
+                        xMap++;
+                    }
                 }
-            }
-            break;
+                break;
             }
             case DIRECTION_SOUTH: {
-            yMap++;
-            if (moveIdx % deviation == 0) {
-                if (deviation < 0) {
-                    xMap--;
-                } else if (deviation > 0) {
-                    xMap++;
+                yMap++;
+                if ((deviation != 0) && (moveIdx % deviation == 0)) {
+                    if (deviation < 0) {
+                        xMap--;
+                    } else if (deviation > 0) {
+                        xMap++;
+                    }
                 }
-            }
-            break;
+                break;
             }
             case DIRECTION_WEST: {
-            xMap--;
-            if (moveIdx % deviation == 0) {
-                if (deviation < 0) {
-                    yMap--;
-                } else if (deviation > 0)
-                    yMap++;
-            }
-            break;
+                xMap--;
+                if ((deviation != 0) && (moveIdx % deviation == 0)) {
+                    if (deviation < 0) {
+                        yMap--;
+                    } else if (deviation > 0) {
+                        yMap++;
+                    }
+                }
+                break;
             }
             case DIRECTION_EAST: {
-            xMap++;
-            if (moveIdx % deviation == 0) {
-                if (deviation < 0) {
-                    yMap--;
-                } else if (deviation > 0)
-                    yMap++;
+                xMap++;
+                if ((deviation != 0) && (moveIdx % deviation == 0)) {
+                    if (deviation < 0) {
+                        yMap--;
+                    } else if (deviation > 0) {
+                        yMap++;
+                    }
+                }
+                break;
             }
-            break;
-        }
         }
         moveIdx++;
     }
