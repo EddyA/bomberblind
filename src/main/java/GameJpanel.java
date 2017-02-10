@@ -12,6 +12,7 @@ import sprite.nomad.Bomber;
 import spriteList.SpriteList;
 import spriteList.SpritesProperties;
 import spriteList.SpritesSetting;
+import timer.GraphTimer;
 import utils.CurrentTimeSupplier;
 import utils.Tuple2;
 
@@ -35,6 +36,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private Bomber bomber;
     private SpriteList spriteList;
     private List<Long> pressedKeyList;
+
+    GraphTimer graphTimer = new GraphTimer();
 
     // this members allow printing map from a certain point.
     private int xMapStartPosOnScreen;
@@ -105,6 +108,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         try {
             map.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             spriteList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
+            graphTimer.paintBuffer(g2d, 800, 50);
         } catch (Exception e) {
             System.err.println("GameJPanel.paintComponent(): " + e);
         }
@@ -130,7 +134,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void run() {
-        CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
+        graphTimer.start(); // start the timer.
 
         while (true) {
             try {
@@ -153,6 +157,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         return 0;
                     }
                 });
+
                 repaint();
                 Thread.sleep(1);
             } catch (InterruptedException e) {

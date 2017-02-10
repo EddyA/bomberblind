@@ -16,7 +16,7 @@ public class ImagesLoader {
     public final static int IMAGE_SIZE = 30; // size of an 'Image' in pixels (30*30).
 
     public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
-    public final static int NB_MATRIX_ROW = 52;
+    public final static int NB_MATRIX_ROW = 53;
     public final static int NB_MATRIX_COL = 80;
 
     // images location.
@@ -26,6 +26,7 @@ public class ImagesLoader {
     public final static String FLAME_SKIN_DIR = "/images/sprites/flame";
     public final static String BIRD_SKIN_DIR = "/images/sprites/bird";
     public final static String SCENE_SKIN_DIR = "/images/scene";
+    public final static String DIGITS_SKIN_DIR = "/images/digits";
 
     // bomber:
     public final static int NB_BOMBER_DEATH_FRAME = 9;
@@ -129,6 +130,9 @@ public class ImagesLoader {
     public static int singlePathwayMatrixRowIdx;
     public final static int NB_SINGLE_MUTABLE = 3;
     public static int singleMutableMatrixRowIdx;
+
+    // timer:
+    public static int digitsMatrixRowIdx;
 
     public static int lastRowIdx; // for test purpose.
     public static boolean imageLoaded = false; // for test purpose.
@@ -456,7 +460,15 @@ public class ImagesLoader {
             String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
             imagesMatrix[rowIdx][i] = createImage(SCENE_SKIN_DIR + "/mutable/mutable_" + imageIdx + ".png");
         }
-        singleMutableMatrixRowIdx = rowIdx;
+        singleMutableMatrixRowIdx = rowIdx++;
+
+        // digits.
+        for (int i = 0; i < 10; i++) {
+            String imageIdx = String.format("%2s", i).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(DIGITS_SKIN_DIR + "/" + imageIdx + ".png");
+        }
+        digitsMatrixRowIdx = rowIdx;
+
         lastRowIdx = rowIdx;
         imageLoaded = true;
     }
