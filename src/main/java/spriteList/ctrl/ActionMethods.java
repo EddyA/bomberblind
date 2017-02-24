@@ -81,7 +81,7 @@ public class ActionMethods {
      * @param mapHeight      the map height
      * @param bomber         the bomber
      * @param pressedKey     the pressed key
-     * @return false (today, the bomber is never removed from the list of sprites).
+     * @return true if the bomber should be removed from the list, false otherwise.
      */
     public static boolean processBomber(LinkedList<Sprite> list,
                                         LinkedList<Sprite> tmpList,
@@ -90,8 +90,9 @@ public class ActionMethods {
                                         int mapHeight,
                                         Bomber bomber,
                                         int pressedKey) {
+        boolean shouldBeRemoved = false;
         if (bomber.isFinished()) {
-            bomber.init(); // re-init the bomber if finished.
+            shouldBeRemoved = bomber.init(); // re-init the bomber if finished.
 
         } else if (bomber.getCurSpriteAction() != ACTION_DYING) { // the bomber is not finished and not dead.
 
@@ -99,6 +100,7 @@ public class ActionMethods {
             if (!bomber.isInvincible() &&
                     (isNomadBurning(mapPointMatrix, bomber.getxMap(), bomber.getyMap()) ||
                             isNomadCrossingEnemy(list, bomber.getxMap(), bomber.getyMap(), bomber))) {
+                bomber.setNbLife(bomber.getNbLife() - 1);
                 bomber.setCurSpriteAction(ACTION_DYING);
 
             } else if (bomber.isTimeToAct()) { // it is time to act.
@@ -183,7 +185,7 @@ public class ActionMethods {
                 }
             }
         }
-        return false;
+        return shouldBeRemoved;
     }
 
     /**

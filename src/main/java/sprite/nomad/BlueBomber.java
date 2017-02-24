@@ -34,6 +34,7 @@ public class BlueBomber extends Bomber {
                 ImagesLoader.NB_BOMBER_WIN_FRAME,
                 REFRESH_TIME,
                 ACTING_TIME,
-                INVINCIBILITY_TIME);
+                INVINCIBILITY_TIME,
+                5);
     }
 }

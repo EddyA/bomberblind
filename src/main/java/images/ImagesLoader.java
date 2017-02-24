@@ -16,17 +16,18 @@ public class ImagesLoader {
     public final static int IMAGE_SIZE = 30; // size of an 'Image' in pixels (30*30).
 
     public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
-    public final static int NB_MATRIX_ROW = 53;
-    public final static int NB_MATRIX_COL = 80;
+    public final static int NB_MATRIX_ROW = 54;
+    public final static int NB_MATRIX_COL = 128;
 
     // images location.
-    public final static String BOMBER_SKIN_DIR = "/images/sprites/bomber";
-    public final static String ENEMY_SKIN_DIR = "/images/sprites/enemy";
-    public final static String BOMB_SKIN_DIR = "/images/sprites/bomb";
-    public final static String FLAME_SKIN_DIR = "/images/sprites/flame";
-    public final static String BIRD_SKIN_DIR = "/images/sprites/bird";
-    public final static String SCENE_SKIN_DIR = "/images/scene";
-    public final static String DIGITS_SKIN_DIR = "/images/digits";
+    public final static String IMAGES_DIR = "/images";
+    public final static String BOMBER_SKIN_DIR = IMAGES_DIR + "/sprites/bomber";
+    public final static String ENEMY_SKIN_DIR = IMAGES_DIR + "/sprites/enemy";
+    public final static String BOMB_SKIN_DIR = IMAGES_DIR + "/sprites/bomb";
+    public final static String FLAME_SKIN_DIR = IMAGES_DIR + "/sprites/flame";
+    public final static String BIRD_SKIN_DIR = IMAGES_DIR + "/sprites/bird";
+    public final static String SCENE_SKIN_DIR = IMAGES_DIR + "/scene";
+    public final static String ASCII_SKIN_DIR = IMAGES_DIR + "/ascii";
 
     // bomber:
     public final static int NB_BOMBER_DEATH_FRAME = 9;
@@ -131,8 +132,11 @@ public class ImagesLoader {
     public final static int NB_SINGLE_MUTABLE = 3;
     public static int singleMutableMatrixRowIdx;
 
-    // timer:
-    public static int digitsMatrixRowIdx;
+    // ascii:
+    public static int asciiMatrixRowIdx;
+
+    // others:
+    public static int heartMatrixRowIdx;
 
     public static int lastRowIdx; // for test purpose.
     public static boolean imageLoaded = false; // for test purpose.
@@ -462,12 +466,20 @@ public class ImagesLoader {
         }
         singleMutableMatrixRowIdx = rowIdx++;
 
-        // digits.
-        for (int i = 0; i < 10; i++) {
+        // ascii.
+        for (int i = 0; i <= 127; i++) {
             String imageIdx = String.format("%2s", i).replace(' ', '0');
-            imagesMatrix[rowIdx][i] = createImage(DIGITS_SKIN_DIR + "/" + imageIdx + ".png");
+            try {
+                imagesMatrix[rowIdx][i] = createImage(ASCII_SKIN_DIR + "/" + imageIdx + ".png");
+            } catch (IOException e) { // the ascii character is not available, put an empty image.
+                imagesMatrix[rowIdx][i] = createImage(ASCII_SKIN_DIR + "/32.png");
+            }
         }
-        digitsMatrixRowIdx = rowIdx;
+        asciiMatrixRowIdx = rowIdx++;
+
+        // others.
+        imagesMatrix[rowIdx][0] = createImage(IMAGES_DIR + "/heart.png");
+        heartMatrixRowIdx = rowIdx;
 
         lastRowIdx = rowIdx;
         imageLoaded = true;

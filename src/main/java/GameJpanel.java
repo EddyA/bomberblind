@@ -12,8 +12,8 @@ import sprite.nomad.Bomber;
 import spriteList.SpriteList;
 import spriteList.SpritesProperties;
 import spriteList.SpritesSetting;
-import timer.GraphTimer;
-import utils.CurrentTimeSupplier;
+import utils.SkinnedLife;
+import utils.SkinnedTimer;
 import utils.Tuple2;
 
 import javax.swing.*;
@@ -37,7 +37,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private SpriteList spriteList;
     private List<Long> pressedKeyList;
 
-    GraphTimer graphTimer = new GraphTimer();
+    private SkinnedTimer skinnedTimer = new SkinnedTimer();
 
     // this members allow printing map from a certain point.
     private int xMapStartPosOnScreen;
@@ -108,7 +108,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         try {
             map.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             spriteList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
-            graphTimer.paintBuffer(g2d, 800, 50);
+            skinnedTimer.paintBuffer(g2d, map.getScreenWidth() - 235, 25);
+            SkinnedLife.paintBuffer(g2d, 25, 25, bomber.getNbLife());
         } catch (Exception e) {
             System.err.println("GameJPanel.paintComponent(): " + e);
         }
@@ -134,7 +135,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void run() {
-        graphTimer.start(); // start the timer.
+        skinnedTimer.start(); // start the skinnedTimer.
 
         while (true) {
             try {
