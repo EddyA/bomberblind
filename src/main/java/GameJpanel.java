@@ -13,6 +13,7 @@ import spriteList.SpriteList;
 import spriteList.SpritesProperties;
 import spriteList.SpritesSetting;
 import utils.SkinnedLife;
+import utils.SkinnedText;
 import utils.SkinnedTimer;
 import utils.Tuple2;
 
@@ -110,6 +111,13 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
             spriteList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             skinnedTimer.paintBuffer(g2d, map.getScreenWidth() - 235, 25);
             SkinnedLife.paintBuffer(g2d, 25, 25, bomber.getNbLife());
+            if (bomber.getNbLife() == 0) {
+                skinnedTimer.stop();
+                SkinnedText.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedText.TEXT_GAME_OVER);
+            } else if (spriteList.isEnemiesAreDead()) {
+                skinnedTimer.stop();
+                SkinnedText.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedText.TEXT_WIN);
+            }
         } catch (Exception e) {
             System.err.println("GameJPanel.paintComponent(): " + e);
         }

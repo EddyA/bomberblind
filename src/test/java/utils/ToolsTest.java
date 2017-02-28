@@ -87,4 +87,17 @@ public class ToolsTest implements WithAssertions {
         assertThat(Tools.getCharRightColIdx(46)).isEqualTo(2); // moving to another case.
     }
 
+    @Test
+    public void getCaseCentreAbscissaShouldReturnTheExpectedValue() throws Exception {
+        assertThat(Tools.getCaseCentreAbscissa(0)).isEqualTo(15);
+        assertThat(Tools.getCaseCentreAbscissa(1)).isEqualTo(45);
+        assertThat(Tools.getCaseCentreAbscissa(10)).isEqualTo(315);
+    }
+
+    @Test
+    public void getCaseBottomOrdinateShouldReturnTheExpectedValue() throws Exception {
+        assertThat(Tools.getCaseBottomOrdinate(0)).isEqualTo(29);
+        assertThat(Tools.getCaseBottomOrdinate(1)).isEqualTo(59);
+        assertThat(Tools.getCaseBottomOrdinate(10)).isEqualTo(329);
+    }
 }

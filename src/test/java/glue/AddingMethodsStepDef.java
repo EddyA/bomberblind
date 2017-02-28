@@ -51,12 +51,13 @@ public class AddingMethodsStepDef implements WithAssertions {
         AddingMethods.addBomb(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(), bombState.getBomb());
     }
 
-    @Given("^a bomber at rowIdx (\\d+) and coldIdx (\\d+)$")
-    public void a_bomber_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
+    @Given("^a bomber at rowIdx (\\d+) and coldIdx (\\d+) with (\\d+) lifes$")
+    public void a_bomber_at_rowIdx_and_coldIdx(int rowIdx, int colIdx, int nbLifes) {
         bomberState.getBomber().setxMap(Tools.getCaseCentreAbscissa(colIdx));
         bomberState.getBomber().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
         bomberState.getBomber().setInitialXMap(Tools.getCaseCentreAbscissa(colIdx));
         bomberState.getBomber().setInitialYMap(Tools.getCaseBottomOrdinate(rowIdx));
+        bomberState.getBomber().setNbLife(nbLifes);
         bomberState.getBomber().setLastInvincibilityTs(0); // deactivate the invincibility at init.
         AddingMethods.addBomber(listOfSprites.getSpriteList(), bomberState.getBomber());
     }

@@ -22,6 +22,6 @@ public class SkinnedLife {
      */
     public static void paintBuffer(Graphics2D g, int xScreen, int yScreen, int nbRemainingLife) {
         g.drawImage(heartImage, xScreen, yScreen, null);
-        SkinnedAscii.paintBuffer(g, xScreen + heartImage.getWidth(null) + 10, yScreen + 1, String.valueOf(nbRemainingLife));
+        SkinnedLine.paintBuffer(g, xScreen + heartImage.getWidth(null) + 10, yScreen + 1, String.valueOf(nbRemainingLife));
     }
 }

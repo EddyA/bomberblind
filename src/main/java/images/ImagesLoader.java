@@ -16,7 +16,7 @@ public class ImagesLoader {
     public final static int IMAGE_SIZE = 30; // size of an 'Image' in pixels (30*30).
 
     public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
-    public final static int NB_MATRIX_ROW = 54;
+    public final static int NB_MATRIX_ROW = 55;
     public final static int NB_MATRIX_COL = 128;
 
     // images location.
@@ -137,6 +137,7 @@ public class ImagesLoader {
 
     // others:
     public static int heartMatrixRowIdx;
+    public static int gameOverMatrixRowIdx;
 
     public static int lastRowIdx; // for test purpose.
     public static boolean imageLoaded = false; // for test purpose.
@@ -479,7 +480,9 @@ public class ImagesLoader {
 
         // others.
         imagesMatrix[rowIdx][0] = createImage(IMAGES_DIR + "/heart.png");
-        heartMatrixRowIdx = rowIdx;
+        heartMatrixRowIdx = rowIdx++;
+        imagesMatrix[rowIdx][0] = createImage(IMAGES_DIR + "/game_over_board.png");
+        gameOverMatrixRowIdx = rowIdx;
 
         lastRowIdx = rowIdx;
         imageLoaded = true;
