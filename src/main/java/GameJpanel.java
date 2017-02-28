@@ -12,7 +12,9 @@ import sprite.nomad.Bomber;
 import spriteList.SpriteList;
 import spriteList.SpritesProperties;
 import spriteList.SpritesSetting;
-import utils.CurrentTimeSupplier;
+import utils.SkinnedLife;
+import utils.SkinnedText;
+import utils.SkinnedTimer;
 import utils.Tuple2;
 
 import javax.swing.*;
@@ -35,6 +37,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private Bomber bomber;
     private SpriteList spriteList;
     private List<Long> pressedKeyList;
+
+    private SkinnedTimer skinnedTimer = new SkinnedTimer();
 
     // this members allow printing map from a certain point.
     private int xMapStartPosOnScreen;
@@ -105,6 +109,15 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         try {
             map.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             spriteList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
+            skinnedTimer.paintBuffer(g2d, map.getScreenWidth() - 235, 25);
+            SkinnedLife.paintBuffer(g2d, 25, 25, bomber.getNbLife());
+            if (bomber.getNbLife() == 0) {
+                skinnedTimer.stop();
+                SkinnedText.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedText.TEXT_GAME_OVER);
+            } else if (spriteList.isEnemiesAreDead()) {
+                skinnedTimer.stop();
+                SkinnedText.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedText.TEXT_WIN);
+            }
         } catch (Exception e) {
             System.err.println("GameJPanel.paintComponent(): " + e);
         }
@@ -130,7 +143,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void run() {
-        CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
+        skinnedTimer.start(); // start the skinnedTimer.
 
         while (true) {
             try {
@@ -153,6 +166,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         return 0;
                     }
                 });
+
                 repaint();
                 Thread.sleep(1);
             } catch (InterruptedException e) {

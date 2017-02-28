@@ -46,18 +46,16 @@ public class ActionMethodsStepDef implements WithAssertions {
 
     @When("processing the bomber$")
     public void processing_the_bomber() {
-        ActionMethods.processBomber(listOfSprites.getSpriteList(), listOfSprites.getSpriteList(),
-                mapPointMatrixState.getMapPointMatrix(), mapPointMatrixState.getMapWidth(),
-                mapPointMatrixState.getMapHeight(), bomberState.getBomber(), 0);
+        bomberState.setShouldBeRemoved(
+                ActionMethods.processBomber(listOfSprites.getSpriteList(), listOfSprites.getSpriteList(),
+                        mapPointMatrixState.getMapPointMatrix(), mapPointMatrixState.getMapWidth(),
+                        mapPointMatrixState.getMapHeight(), bomberState.getBomber(), 0));
     }
-
-
 
     @When("^processing the breaking enemy$")
     public void processing_the_breaking_enemy() {
         breakingEnemyState.setShouldBeRemoved(
-                ActionMethods
-                        .processBreakingEnemy(listOfSprites.getSpriteList(), listOfSprites.getSpriteList(),
+                ActionMethods.processBreakingEnemy(listOfSprites.getSpriteList(), listOfSprites.getSpriteList(),
                                 mapPointMatrixState.getMapPointMatrix(), mapPointMatrixState.getMapWidth(),
                                 mapPointMatrixState.getMapHeight(), breakingEnemyState.getEnemy()));
     }

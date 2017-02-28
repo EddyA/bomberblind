@@ -44,11 +44,21 @@ public class BomberStepDef implements WithAssertions {
         assertThat(bomberState.getBomber().getCurSpriteAction()).isNotEqualTo(ACTION_DYING);
     }
 
+    @Then("^the bomber should has (\\d+) lifes$")
+    public void the_bomber_should_has_lifes(int nbLifes) {
+        assertThat(bomberState.getBomber().getNbLife()).isNotEqualTo(nbLifes);
+    }
+
     @Then("^the bomber is re-init$")
     public void the_bomber_is_reset() {
         assertThat(bomberState.getBomber().getxMap()).isEqualTo(bomberState.getBomber().getInitialXMap());
         assertThat(bomberState.getBomber().getyMap()).isEqualTo(bomberState.getBomber().getInitialYMap());
         assertThat(bomberState.getBomber().getCurSpriteAction()).isEqualTo(ACTION_WAITING);
         assertThat(bomberState.getBomber().isInvincible()).isTrue();
+    }
+
+    @Then("^the bomber should be marked as removable from the sprite list$")
+    public void the_bomber_should_be_marked_as_removable_from_the_sprite_list() {
+        assertThat(bomberState.isShouldBeRemoved()).isTrue();
     }
 }

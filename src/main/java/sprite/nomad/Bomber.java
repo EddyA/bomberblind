@@ -1,14 +1,11 @@
 package sprite.nomad;
 
-import static sprite.SpriteAction.ACTION_DYING;
-import static sprite.SpriteAction.ACTION_WAITING;
-import static sprite.SpriteAction.ACTION_WALKING;
-import static sprite.SpriteAction.ACTION_WINING;
-
-import java.awt.Image;
-
 import sprite.SpriteAction;
 import sprite.SpriteType;
+
+import java.awt.*;
+
+import static sprite.SpriteAction.*;
 
 /**
  * Abstract class of a bomber.
@@ -30,6 +27,8 @@ public abstract class Bomber extends Nomad {
     private int initialXMap; // initial abscissa on map.
     private int initialYMap; // initial ordinate on map.
 
+    private int nbLife;
+
     /**
      * Create a bomber.
      *
@@ -49,6 +48,7 @@ public abstract class Bomber extends Nomad {
      * @param refreshTime       the sprite refresh time (i.e. defining the sprite speed in term of image/sec)
      * @param actingTime        the sprite acting time (i.e. defining the sprite speed in term of action/sec)
      * @param invincibilityTime the sprite invincibility time
+     * @param nbLife            the number of life
      */
     public Bomber(int xMap,
                   int yMap,
@@ -65,7 +65,8 @@ public abstract class Bomber extends Nomad {
                   int nbWinFrame,
                   int refreshTime,
                   int actingTime,
-                  int invincibilityTime) {
+                  int invincibilityTime,
+                  int nbLife) {
         super(xMap,
                 yMap,
                 SpriteType.TYPE_BOMBER,
@@ -85,6 +86,7 @@ public abstract class Bomber extends Nomad {
         this.nbWinFrame = nbWinFrame;
         this.initialXMap = xMap;
         this.initialYMap = yMap;
+        this.nbLife = nbLife;
         init();
     }
 
@@ -148,14 +150,29 @@ public abstract class Bomber extends Nomad {
         this.initialYMap = initialYMap;
     }
 
+    public int getNbLife() {
+        return nbLife;
+    }
+
+    public void setNbLife(int nbLife) {
+        this.nbLife = nbLife;
+    }
+
     /**
-     * This function is mainly used to re-init the bomber after he died.
+     * This function is mainly used to process the bomber after he died.
+     *
+     * @return true if the bomber is definitively dead, false otherwise.
      */
-    public void init() {
-        xMap = initialXMap;
-        yMap = initialYMap;
-        curSpriteAction = ACTION_WAITING;
-        lastInvincibilityTs = currentTimeSupplier.get().toEpochMilli(); // activate invincibility.
+    public boolean init() {
+        if (nbLife > 0) {
+            xMap = initialXMap;
+            yMap = initialYMap;
+            curSpriteAction = ACTION_WAITING;
+            lastInvincibilityTs = currentTimeSupplier.get().toEpochMilli(); // activate invincibility.
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override

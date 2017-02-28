@@ -31,6 +31,8 @@ public class SpriteList extends LinkedList<Sprite> {
 
     private long birdsArrivalLastTs; // the last ts a group of bird has been added to the list.
 
+    private boolean enemiesAreDead; // to know when all enemies are dead.
+
     // create a temporary list to manage addings and avoid concurent accesses.
     private final LinkedList<Sprite> tmpList = new LinkedList<>();
 
@@ -40,6 +42,11 @@ public class SpriteList extends LinkedList<Sprite> {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.birdsArrivalLastTs = currentTimeSupplier.get().toEpochMilli();
+        this.enemiesAreDead = false; // initially flase :)
+    }
+
+    public boolean isEnemiesAreDead() {
+        return enemiesAreDead;
     }
 
     /**
@@ -83,34 +90,27 @@ public class SpriteList extends LinkedList<Sprite> {
      * Process sprite's action and clean the latter if needed.
      */
     public synchronized void update(int pressedKey) {
+        boolean isThereEnemy = false; // firstly considering there is no enemy.
 
         // process sprites.
         for (ListIterator<Sprite> iterator = this.listIterator(); iterator.hasNext(); ) {
             Sprite sprite = iterator.next();
             boolean shouldBeRemoved;
             switch (sprite.getSpriteType()) { // process the sprite's action.
+                case TYPE_BOMB: {
+                    shouldBeRemoved = ActionMethods.processBomb(tmpList, map.getMapPointMatrix(), map.getMapWidth(),
+                            map.getMapHeight(), (Bomb) sprite);
+                    break;
+                }
                 case TYPE_BOMBER: {
                     shouldBeRemoved = ActionMethods.processBomber(this, tmpList, map.getMapPointMatrix(), map.getMapWidth(),
                             map.getMapHeight(), (Bomber) sprite, pressedKey);
                     break;
                 }
-                case TYPE_WALKING_ENEMY: {
-                    shouldBeRemoved = ActionMethods.processWalkingEnemy(this, map.getMapPointMatrix(), map.getMapWidth(),
-                            map.getMapHeight(), (WalkingEnemy) sprite);
-                    break;
-                }
                 case TYPE_BREAKING_ENEMY: {
                     shouldBeRemoved = ActionMethods.processBreakingEnemy(this, tmpList, map.getMapPointMatrix(),
                             map.getMapWidth(), map.getMapHeight(), (BreakingEnemy) sprite);
-                    break;
-                }
-                case TYPE_FLYING_NOMAD: {
-                    shouldBeRemoved = ActionMethods.processFlyingNomad(map.getMapWidth(), map.getMapHeight(), (FlyingNomad) sprite);
-                    break;
-                }
-                case TYPE_BOMB: {
-                    shouldBeRemoved = ActionMethods.processBomb(tmpList, map.getMapPointMatrix(), map.getMapWidth(),
-                            map.getMapHeight(), (Bomb) sprite);
+                    isThereEnemy = true;
                     break;
                 }
                 case TYPE_FLAME: {
@@ -119,6 +119,16 @@ public class SpriteList extends LinkedList<Sprite> {
                 }
                 case TYPE_FLAME_END: {
                     shouldBeRemoved = ActionMethods.processFlameEnd((FlameEnd) sprite);
+                    break;
+                }
+                case TYPE_FLYING_NOMAD: {
+                    shouldBeRemoved = ActionMethods.processFlyingNomad(map.getMapWidth(), map.getMapHeight(), (FlyingNomad) sprite);
+                    break;
+                }
+                case TYPE_WALKING_ENEMY: {
+                    shouldBeRemoved = ActionMethods.processWalkingEnemy(this, map.getMapPointMatrix(), map.getMapWidth(),
+                            map.getMapHeight(), (WalkingEnemy) sprite);
+                    isThereEnemy = true;
                     break;
                 }
                 default: {
@@ -132,6 +142,9 @@ public class SpriteList extends LinkedList<Sprite> {
                 continue;
             }
             sprite.updateImage(); // update the sprite's images.
+        }
+        if (!isThereEnemy) {
+            enemiesAreDead = true; // notice the end of the stage.
         }
 
         // add birds (every X ms).
