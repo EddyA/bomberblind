@@ -11,6 +11,10 @@ public class Timer {
         this.stopTs = 0;
     }
 
+    public void setCurrentTimeSupplier(CurrentTimeSupplier currentTimeSupplier) {
+        this.currentTimeSupplier = currentTimeSupplier;
+    }
+
     /**
      * Start the timer.
      */
