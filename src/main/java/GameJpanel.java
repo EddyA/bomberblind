@@ -12,9 +12,9 @@ import sprite.nomad.Bomber;
 import spriteList.SpriteList;
 import spriteList.SpritesProperties;
 import spriteList.SpritesSetting;
-import utils.SkinnedLife;
+import utils.UpperBar;
 import utils.SkinnedText;
-import utils.SkinnedTimer;
+import utils.Timer;
 import utils.Tuple2;
 
 import javax.swing.*;
@@ -38,7 +38,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private SpriteList spriteList;
     private List<Long> pressedKeyList;
 
-    private SkinnedTimer skinnedTimer = new SkinnedTimer();
+    private Timer timer = new Timer();
 
     // this members allow printing map from a certain point.
     private int xMapStartPosOnScreen;
@@ -109,13 +109,12 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         try {
             map.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             spriteList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
-            skinnedTimer.paintBuffer(g2d, map.getScreenWidth() - 235, 25);
-            SkinnedLife.paintBuffer(g2d, 25, 25, bomber.getNbLife());
+            UpperBar.paintBuffer(g2d, map.getScreenWidth(), bomber.getNbLife(), timer.getElapsedTime());
             if (bomber.getNbLife() == 0) {
-                skinnedTimer.stop();
+                timer.stop();
                 SkinnedText.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedText.TEXT_GAME_OVER);
             } else if (spriteList.isEnemiesAreDead()) {
-                skinnedTimer.stop();
+                timer.stop();
                 SkinnedText.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedText.TEXT_WIN);
             }
         } catch (Exception e) {
@@ -143,7 +142,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void run() {
-        skinnedTimer.start(); // start the skinnedTimer.
+        timer.start(); // start the timer.
 
         while (true) {
             try {

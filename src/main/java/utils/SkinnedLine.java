@@ -6,10 +6,14 @@ import java.awt.*;
 
 public class SkinnedLine {
 
-    private final static Image[] skinnedAscii;
+    private final static Image[] skinnedAscii = ImagesLoader.imagesMatrix[ImagesLoader.asciiMatrixRowIdx];
+    private final static int skinnedAsciiHeight = 24; // height of a skinned ascii (in px).
 
-    static {
-        skinnedAscii = ImagesLoader.imagesMatrix[ImagesLoader.asciiMatrixRowIdx];
+    /**
+     * @return the height of the skinned ascii.
+     */
+    public static int getSkinnedAsciiHeight() {
+        return skinnedAsciiHeight;
     }
 
     /**
