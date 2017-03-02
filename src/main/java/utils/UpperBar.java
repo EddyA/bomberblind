@@ -8,7 +8,7 @@ import java.awt.geom.RoundRectangle2D;
 import static utils.Configuration.*;
 
 public class UpperBar {
-    private final static Image heartImage = ImagesLoader.imagesMatrix[ImagesLoader.heartMatrixRowIdx][0];
+    private final static Image heartImage = ImagesLoader.imagesMatrix[ImagesLoader.bonusHeartMatrixRowIdx][0];
 
     /**
      * Paint the number of remaining lifes on the left corner.
@@ -30,7 +30,7 @@ public class UpperBar {
         g.fill(ornament);
 
         // print heart.
-        g.drawImage(heartImage, ORNAMENT_PADDING_SIZE, ORNAMENT_PADDING_SIZE, null);
+        g.drawImage(heartImage, ORNAMENT_PADDING_SIZE, ORNAMENT_PADDING_SIZE - 2, null);
 
         // print the number of remaining lifes.
         SkinnedLine.paintBuffer(g,

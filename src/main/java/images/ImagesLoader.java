@@ -16,7 +16,7 @@ public class ImagesLoader {
     public final static int IMAGE_SIZE = 30; // size of an 'Image' in pixels (30*30).
 
     public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
-    public final static int NB_MATRIX_ROW = 55;
+    public final static int NB_MATRIX_ROW = 57;
     public final static int NB_MATRIX_COL = 128;
 
     // images location.
@@ -28,6 +28,7 @@ public class ImagesLoader {
     public final static String BIRD_SKIN_DIR = IMAGES_DIR + "/sprites/bird";
     public final static String SCENE_SKIN_DIR = IMAGES_DIR + "/scene";
     public final static String ASCII_SKIN_DIR = IMAGES_DIR + "/ascii";
+    public final static String BONUS_SKIN_DIR = IMAGES_DIR + "/bonus";
 
     // bomber:
     public final static int NB_BOMBER_DEATH_FRAME = 9;
@@ -135,9 +136,11 @@ public class ImagesLoader {
     // ascii:
     public static int asciiMatrixRowIdx;
 
-    // others:
-    public static int heartMatrixRowIdx;
-    public static int gameOverMatrixRowIdx;
+    // bonus:
+    public static int bonusBombMatrixRowIdx;
+    public static int bonusFlameMatrixRowIdx;
+    public static int bonusHeartMatrixRowIdx;
+    public static int bonusRollerMatrixRowIdx;
 
     public static int lastRowIdx; // for test purpose.
     public static boolean imageLoaded = false; // for test purpose.
@@ -479,10 +482,14 @@ public class ImagesLoader {
         asciiMatrixRowIdx = rowIdx++;
 
         // others.
-        imagesMatrix[rowIdx][0] = createImage(IMAGES_DIR + "/heart.png");
-        heartMatrixRowIdx = rowIdx++;
-        imagesMatrix[rowIdx][0] = createImage(IMAGES_DIR + "/game_over_board.png");
-        gameOverMatrixRowIdx = rowIdx;
+        imagesMatrix[rowIdx][0] = createImage(BONUS_SKIN_DIR + "/bomb.png");
+        bonusBombMatrixRowIdx = rowIdx++;
+        imagesMatrix[rowIdx][0] = createImage(BONUS_SKIN_DIR + "/flame.png");
+        bonusFlameMatrixRowIdx = rowIdx++;
+        imagesMatrix[rowIdx][0] = createImage(BONUS_SKIN_DIR + "/heart.png");
+        bonusHeartMatrixRowIdx = rowIdx++;
+        imagesMatrix[rowIdx][0] = createImage(BONUS_SKIN_DIR + "/roller.png");
+        bonusRollerMatrixRowIdx = rowIdx;
 
         lastRowIdx = rowIdx;
         imageLoaded = true;
