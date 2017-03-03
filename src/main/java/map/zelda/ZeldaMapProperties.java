@@ -1,15 +1,14 @@
 package map.zelda;
 
-import static utils.Tools.isValidInteger;
+import com.google.common.base.Preconditions;
+import exceptions.InvalidConfigurationException;
+import map.MapProperties;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import com.google.common.base.Preconditions;
-
-import exceptions.InvalidConfigurationException;
-import map.MapProperties;
+import static utils.Tools.isValidInteger;
 
 /**
  * This class extends {@link MapProperties}.
@@ -28,6 +27,10 @@ public class ZeldaMapProperties extends MapProperties {
     public final static String MAP_ELEMENT_PER_SINGLE_MUTABLE = "map.element.single.mutable.percentage";
     public final static String MAP_ELEMENT_PER_SINGLE_OBSTACLE = "map.element.single.obstacle.percentage";
     public final static String MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY = "map.element.single.dynamic.pathway.percentage";
+    public final static String MAP_BONUS_NB_BOMB = "map.bonus.bomb.number";
+    public final static String MAP_BONUS_NB_FLAME = "map.bonus.flame.number";
+    public final static String MAP_BONUS_NB_HEART = "map.bonus.heart.number";
+    public final static String MAP_BONUS_NB_ROLLER = "map.bonus.roller.number";
 
     public ZeldaMapProperties(String mapPropertiesFile) {
         super(mapPropertiesFile);
@@ -77,6 +80,22 @@ public class ZeldaMapProperties extends MapProperties {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY));
     }
 
+    public int getMapBonusNbBomb() {
+        return Integer.parseInt(properties.getProperty(MAP_BONUS_NB_BOMB));
+    }
+
+    public int getMapBonusNbFlame() {
+        return Integer.parseInt(properties.getProperty(MAP_BONUS_NB_FLAME));
+    }
+
+    public int getMapBonusNbHeart() {
+        return Integer.parseInt(properties.getProperty(MAP_BONUS_NB_HEART));
+    }
+
+    public int getMapBonusNbRoller() {
+        return Integer.parseInt(properties.getProperty(MAP_BONUS_NB_ROLLER));
+    }
+
     public MapProperties loadProperties()
             throws IllegalArgumentException, IOException, InvalidConfigurationException {
         Preconditions.checkArgument((propertiesFile != null) &&
@@ -103,7 +122,11 @@ public class ZeldaMapProperties extends MapProperties {
                 !isValidInteger(properties.getProperty(MAP_ELEMENT_NB_PUDDLE2)) ||
                 !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_MUTABLE)) ||
                 !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_OBSTACLE)) ||
-                !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY))) {
+                !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY)) ||
+                !isValidInteger(properties.getProperty(MAP_BONUS_NB_BOMB)) ||
+                !isValidInteger(properties.getProperty(MAP_BONUS_NB_FLAME)) ||
+                !isValidInteger(properties.getProperty(MAP_BONUS_NB_HEART)) ||
+                !isValidInteger(properties.getProperty(MAP_BONUS_NB_ROLLER))) {
             throw new InvalidConfigurationException("'" + propertiesFile + "' is not a valid properties file: "
                     + "some field are missing or not integer convertible.");
         }

@@ -137,9 +137,13 @@ public class ImagesLoader {
     public static int asciiMatrixRowIdx;
 
     // bonus:
+    public final static int NB_BONUS_BOMB_FRAME = 1;
     public static int bonusBombMatrixRowIdx;
+    public final static int NB_BONUS_FLAME_FRAME = 1;
     public static int bonusFlameMatrixRowIdx;
+    public final static int NB_BONUS_HEART_FRAME = 1;
     public static int bonusHeartMatrixRowIdx;
+    public final static int NB_BONUS_ROLLER_FRAME = 1;
     public static int bonusRollerMatrixRowIdx;
 
     public static int lastRowIdx; // for test purpose.
@@ -481,14 +485,26 @@ public class ImagesLoader {
         }
         asciiMatrixRowIdx = rowIdx++;
 
-        // others.
-        imagesMatrix[rowIdx][0] = createImage(BONUS_SKIN_DIR + "/bomb.png");
+        // bonus:
+        for (int i = 0; i < NB_BONUS_BOMB_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(BONUS_SKIN_DIR + "/bomb/bomb_" + imageIdx + ".png");
+        }
         bonusBombMatrixRowIdx = rowIdx++;
-        imagesMatrix[rowIdx][0] = createImage(BONUS_SKIN_DIR + "/flame.png");
+        for (int i = 0; i < NB_BONUS_FLAME_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(BONUS_SKIN_DIR + "/flame/flame_" + imageIdx + ".png");
+        }
         bonusFlameMatrixRowIdx = rowIdx++;
-        imagesMatrix[rowIdx][0] = createImage(BONUS_SKIN_DIR + "/heart.png");
+        for (int i = 0; i < NB_BONUS_HEART_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(BONUS_SKIN_DIR + "/heart/heart_" + imageIdx + ".png");
+        }
         bonusHeartMatrixRowIdx = rowIdx++;
-        imagesMatrix[rowIdx][0] = createImage(BONUS_SKIN_DIR + "/roller.png");
+        for (int i = 0; i < NB_BONUS_ROLLER_FRAME; i++) {
+            String imageIdx = String.format("%2s", i + 1).replace(' ', '0');
+            imagesMatrix[rowIdx][i] = createImage(BONUS_SKIN_DIR + "/roller/roller_" + imageIdx + ".png");
+        }
         bonusRollerMatrixRowIdx = rowIdx;
 
         lastRowIdx = rowIdx;
