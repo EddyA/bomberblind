@@ -53,12 +53,30 @@ public class ZeldaMap extends Map {
         complexEltPatterns.put(tree2, zeldaMapSetting.getNbTree2());
         complexEltPatterns.put(puddle1, zeldaMapSetting.getNbPuddle1());
         complexEltPatterns.put(puddle2, zeldaMapSetting.getNbPuddle2());
-        GenerationMethods.randomlyPlaceComplexElements(mapPointMatrix, zeldaMapSetting.getMapWidth(), zeldaMapSetting.getMapHeight(),
-                tree1.getHeight(), edge.getHeight(), complexEltPatterns, maxNbTry);
+        GenerationMethods.randomlyPlaceComplexElements(mapPointMatrix,
+                zeldaMapSetting.getMapWidth(),
+                zeldaMapSetting.getMapHeight(),
+                tree1.getHeight(),
+                edge.getHeight(),
+                complexEltPatterns,
+                maxNbTry);
 
         // place single elements.
-        GenerationMethods.randomlyPlaceSingleElements(mapPointMatrix, zeldaMapSetting.getMapWidth(), zeldaMapSetting.getMapHeight(),
-                zeldaMapSetting.getPerSingleMutable(), zeldaMapSetting.getPerSingleObstacle(), zeldaMapSetting.getPerSingleDynPathway());
+        GenerationMethods.randomlyPlaceSingleElements(mapPointMatrix,
+                zeldaMapSetting.getMapWidth(),
+                zeldaMapSetting.getMapHeight(),
+                zeldaMapSetting.getPerSingleMutable(),
+                zeldaMapSetting.getPerSingleObstacle(),
+                zeldaMapSetting.getPerSingleDynPathway());
+
+        // place bonus.
+        GenerationMethods.randomlyPlaceBonus(mapPointMatrix,
+                zeldaMapSetting.getMapWidth(),
+                zeldaMapSetting.getMapHeight(),
+                zeldaMapSetting.getNbBonusBomb(),
+                zeldaMapSetting.getNbBonusFlame(),
+                zeldaMapSetting.getNbBonusHeart(),
+                zeldaMapSetting.getNbBonusRoller());
     }
 
     @Override

@@ -2,8 +2,11 @@ package sprite.nomad;
 
 import sprite.SpriteAction;
 import sprite.SpriteType;
+import sprite.settled.Bomb;
 
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 import static sprite.SpriteAction.*;
 
@@ -27,7 +30,17 @@ public abstract class Bomber extends Nomad {
     private int initialXMap; // initial abscissa on map.
     private int initialYMap; // initial ordinate on map.
 
-    private int nbLife;
+    private final static int DEFAULT_ACTING_TIME = 7;
+    private LinkedList<Bomb> droppedBombs; // array of dropped bombs.
+
+    private int nbBonusBomb;
+    private final static int NB_BONUS_BOMB = 1;
+    private int nbBonusFlame;
+    private final static int NB_BONUS_FLAME = 1;
+    private int nbBonusHeart;
+    private final static int NB_BONUS_HEART = 5;
+    private int nbBonusRoller;
+    private final static int NB_BONUS_ROLLER = 1;
 
     /**
      * Create a bomber.
@@ -46,9 +59,7 @@ public abstract class Bomber extends Nomad {
      * @param winImages         the array of image for the "win" action
      * @param nbWinFrame        the number of images of the "win" array
      * @param refreshTime       the sprite refresh time (i.e. defining the sprite speed in term of image/sec)
-     * @param actingTime        the sprite acting time (i.e. defining the sprite speed in term of action/sec)
      * @param invincibilityTime the sprite invincibility time
-     * @param nbLife            the number of life
      */
     public Bomber(int xMap,
                   int yMap,
@@ -64,14 +75,12 @@ public abstract class Bomber extends Nomad {
                   Image[] winImages,
                   int nbWinFrame,
                   int refreshTime,
-                  int actingTime,
-                  int invincibilityTime,
-                  int nbLife) {
+                  int invincibilityTime) {
         super(xMap,
                 yMap,
                 SpriteType.TYPE_BOMBER,
                 refreshTime,
-                actingTime,
+                DEFAULT_ACTING_TIME,
                 invincibilityTime);
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
@@ -84,9 +93,13 @@ public abstract class Bomber extends Nomad {
         this.nbWalkFrame = nbWalkFrame;
         this.winImages = winImages;
         this.nbWinFrame = nbWinFrame;
-        this.initialXMap = xMap;
-        this.initialYMap = yMap;
-        this.nbLife = nbLife;
+        initialXMap = xMap;
+        initialYMap = yMap;
+        droppedBombs = new LinkedList<>();
+        nbBonusBomb = NB_BONUS_BOMB;
+        nbBonusFlame = NB_BONUS_FLAME;
+        nbBonusHeart = NB_BONUS_HEART;
+        nbBonusRoller = NB_BONUS_ROLLER;
         init();
     }
 
@@ -150,12 +163,57 @@ public abstract class Bomber extends Nomad {
         this.initialYMap = initialYMap;
     }
 
-    public int getNbLife() {
-        return nbLife;
+    public void dropBomb(Bomb bomb) {
+        droppedBombs.add(bomb);
     }
 
-    public void setNbLife(int nbLife) {
-        this.nbLife = nbLife;
+    /**
+     * Get the number of not finished bomb and cleaned finished bomb from the list of dropped bombs.
+     */
+    public int getNbDroppedBomb() {
+        int nbDroppedBombs = 0;
+        for (ListIterator<Bomb> iterator = droppedBombs.listIterator(); iterator.hasNext(); ) {
+            Bomb bomb = iterator.next();
+            if (!bomb.isFinished()) {
+                nbDroppedBombs++;
+            } else {
+                iterator.remove();
+            }
+        }
+        return nbDroppedBombs;
+    }
+
+    public int getNbBonusHeart() {
+        return nbBonusHeart;
+    }
+
+    public void setNbBonusHeart(int nbBonusHeart) {
+        this.nbBonusHeart = nbBonusHeart;
+    }
+
+    public int getNbBonusBomb() {
+        return nbBonusBomb;
+    }
+
+    public void setNbBonusBomb(int nbBonusBomb) {
+        this.nbBonusBomb = nbBonusBomb;
+    }
+
+    public int getNbBonusFlame() {
+        return nbBonusFlame;
+    }
+
+    public void setNbBonusFlame(int nbBonusFlame) {
+        this.nbBonusFlame = nbBonusFlame;
+    }
+
+    public int getNbBonusRoller() {
+        return nbBonusRoller;
+    }
+
+    public void setNbBonusRoller(int nbBonusRoller) {
+        this.nbBonusRoller = nbBonusRoller;
+        setActingTime(DEFAULT_ACTING_TIME + NB_BONUS_ROLLER - this.nbBonusRoller); // update the acting time.
     }
 
     /**
@@ -164,11 +222,15 @@ public abstract class Bomber extends Nomad {
      * @return true if the bomber is definitively dead, false otherwise.
      */
     public boolean init() {
-        if (nbLife > 0) {
+        if (nbBonusHeart > 0) {
             xMap = initialXMap;
             yMap = initialYMap;
             curSpriteAction = ACTION_WAITING;
             lastInvincibilityTs = currentTimeSupplier.get().toEpochMilli(); // activate invincibility.
+            nbBonusBomb = NB_BONUS_BOMB;
+            nbBonusFlame = NB_BONUS_FLAME;
+            nbBonusRoller = NB_BONUS_ROLLER;
+            setActingTime(DEFAULT_ACTING_TIME);
             return false;
         } else {
             return true;

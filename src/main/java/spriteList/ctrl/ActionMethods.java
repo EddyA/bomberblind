@@ -8,10 +8,7 @@ import sprite.nomad.Bomber;
 import sprite.nomad.BreakingEnemy;
 import sprite.nomad.FlyingNomad;
 import sprite.nomad.WalkingEnemy;
-import sprite.settled.Bomb;
-import sprite.settled.Flame;
-import sprite.settled.FlameEnd;
-import sprite.settled.TimedSettled;
+import sprite.settled.*;
 import utils.Direction;
 import utils.Tools;
 
@@ -22,6 +19,7 @@ import static images.ImagesLoader.IMAGE_SIZE;
 import static map.ctrl.NomadMethods.isNomadBlockedOffByMutable;
 import static map.ctrl.NomadMethods.isNomadBurning;
 import static sprite.SpriteAction.*;
+import static sprite.ctrl.NomadMethods.isNomadCrossingBonus;
 import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
 import static spriteList.ctrl.AddingMethods.addBomb;
 import static utils.Direction.*;
@@ -91,16 +89,41 @@ public class ActionMethods {
                                         Bomber bomber,
                                         int pressedKey) {
         boolean shouldBeRemoved = false;
+
+        // handle bonus.
+        Bonus bonus = isNomadCrossingBonus(list, bomber.getxMap(), bomber.getyMap());
+        if (bonus != null) { // the bomber is crossing a bonus.
+            switch (bonus.getBonusType()) {
+                case TYPE_BONUS_BOMB: {
+                    bomber.setNbBonusBomb(bomber.getNbBonusBomb() + 1);
+                    break;
+                }
+                case TYPE_BONUS_FLAME: {
+                    bomber.setNbBonusFlame(bomber.getNbBonusFlame() + 1);
+                    break;
+                }
+                case TYPE_BONUS_HEART: {
+                    bomber.setNbBonusHeart(bomber.getNbBonusHeart() + 1);
+                    break;
+                }
+                case TYPE_BONUS_ROLLER: {
+                    bomber.setNbBonusRoller(bomber.getNbBonusRoller() + 1);
+                    break;
+                }
+            }
+            bonus.setStatus(Bonus.Status.STATUS_ENDED); // end the bonus.
+        }
+
+        // act bomber.
         if (bomber.isFinished()) {
             shouldBeRemoved = bomber.init(); // re-init the bomber if finished.
-
         } else if (bomber.getCurSpriteAction() != ACTION_DYING) { // the bomber is not finished and not dead.
 
             // should the bomber die?
             if (!bomber.isInvincible() &&
                     (isNomadBurning(mapPointMatrix, bomber.getxMap(), bomber.getyMap()) ||
                             isNomadCrossingEnemy(list, bomber.getxMap(), bomber.getyMap(), bomber))) {
-                bomber.setNbLife(bomber.getNbLife() - 1);
+                bomber.setNbBonusHeart(bomber.getNbBonusHeart() - 1);
                 bomber.setCurSpriteAction(ACTION_DYING);
 
             } else if (bomber.isTimeToAct()) { // it is time to act.
@@ -174,8 +197,14 @@ public class ActionMethods {
                         break;
                     }
                     case KeyEvent.VK_B: {
-                        addBomb(tmpList, mapPointMatrix, new Bomb(Tools.getCharRowIdx(bomber.getyMap()),
-                                getCharColIdx(bomber.getxMap()), 3));
+                        if (bomber.getNbDroppedBomb() < bomber.getNbBonusBomb()) {
+                            Bomb bomb = new Bomb(Tools.getCharRowIdx(bomber.getyMap()),
+                                    getCharColIdx(bomber.getxMap()),
+                                    bomber.getNbBonusFlame());
+                            if(addBomb(tmpList, mapPointMatrix, bomb)) {
+                                bomber.dropBomb(bomb);
+                            }
+                        }
                         break;
                     }
                     case KeyEvent.VK_W: {
@@ -257,6 +286,21 @@ public class ActionMethods {
                 break;
             }
         }
+    }
+
+    /**
+     * - Notice that the bonus must be removed from the list (if the sprite is finished),
+     * - OR do nothing.
+     *
+     * @param bonus the bonus
+     * @return true if the bonus should be removed from the list, false otherwise.
+     */
+    public static boolean processBonus(Bonus bonus) {
+        boolean shouldBeRemoved = false;
+        if (bonus.isFinished()) {
+            shouldBeRemoved = true;
+        }
+        return shouldBeRemoved;
     }
 
     /**

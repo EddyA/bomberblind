@@ -1,6 +1,7 @@
 package map;
 
 import images.ImagesLoader;
+import sprite.settled.BonusType;
 import utils.CurrentTimeSupplier;
 
 import java.awt.*;
@@ -30,10 +31,13 @@ public class MapPoint {
     private boolean isBombing; // is bombed (bomb on case)?
     private int nbFlames; // number of flames on that case (can be multiple because of crossing explosions).
 
+    private BonusType bonusType; // attached bonus.
+
     public MapPoint(int rowIdx, int colIdx) {
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
         this.isAvailable = true;
+        this.bonusType = null;
     }
 
     public int getRowIdx() {
@@ -118,6 +122,14 @@ public class MapPoint {
 
     public boolean isBurning() {
         return nbFlames > 0;
+    }
+
+    public BonusType getBonusType() {
+        return bonusType;
+    }
+
+    public void setBonusType(BonusType bonusType) {
+        this.bonusType = bonusType;
     }
 
     public void setImages(Image[] images, int nbImages) {

@@ -57,7 +57,7 @@ public class AddingMethodsStepDef implements WithAssertions {
         bomberState.getBomber().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
         bomberState.getBomber().setInitialXMap(Tools.getCaseCentreAbscissa(colIdx));
         bomberState.getBomber().setInitialYMap(Tools.getCaseBottomOrdinate(rowIdx));
-        bomberState.getBomber().setNbLife(nbLifes);
+        bomberState.getBomber().setNbBonusHeart(nbLifes);
         bomberState.getBomber().setLastInvincibilityTs(0); // deactivate the invincibility at init.
         AddingMethods.addBomber(listOfSprites.getSpriteList(), bomberState.getBomber());
     }

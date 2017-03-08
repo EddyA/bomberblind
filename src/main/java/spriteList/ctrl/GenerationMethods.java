@@ -48,19 +48,19 @@ public class GenerationMethods {
 
             // create the enemy.
             switch (enemyType) {
-                case CLOAKED_SKELETON: {
+                case TYPE_ENEMY_CLOAKED_SKELETON: {
                     addWalkingEnemy(spriteList, new CloakedSkeleton(xMap, yMap));
                     break;
                 }
-                case MECA_ANGEL: {
+                case TYPE_ENEMY_MECA_ANGEL: {
                     addWalkingEnemy(spriteList, new MecaAngel(xMap, yMap));
                     break;
                 }
-                case MUMMY: {
+                case TYPE_ENEMY_MUMMY: {
                     addWalkingEnemy(spriteList, new Mummy(xMap, yMap));
                     break;
                 }
-                case MINOTOR: {
+                case TYPE_ENEMY_MINOTOR: {
                     addBreakingEnemy(spriteList, new Minotor(xMap, yMap));
                     break;
                 }

@@ -15,7 +15,7 @@ public class BonusFlame extends Bonus {
                       int colIdx) {
         super(rowIdx,
                 colIdx,
-                SpriteType.TYPE_BONUS_FLAME,
+                BonusType.TYPE_BONUS_FLAME,
                 ImagesLoader.imagesMatrix[ImagesLoader.bonusFlameMatrixRowIdx],
                 ImagesLoader.NB_BONUS_FLAME_FRAME);
     }

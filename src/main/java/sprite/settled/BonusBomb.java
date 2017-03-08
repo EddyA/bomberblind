@@ -15,7 +15,7 @@ public class BonusBomb extends Bonus {
                      int colIdx) {
         super(rowIdx,
                 colIdx,
-                SpriteType.TYPE_BONUS_BOMB,
+                BonusType.TYPE_BONUS_BOMB,
                 ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx],
                 ImagesLoader.NB_BONUS_BOMB_FRAME);
     }

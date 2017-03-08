@@ -37,7 +37,7 @@ public class BomberTest implements WithAssertions {
         assertThat(blueBomber.getyMap()).isEqualTo(30);
         assertThat(blueBomber.getSpriteType()).isEqualTo(SpriteType.TYPE_BOMBER);
         assertThat(blueBomber.getRefreshTime()).isEqualTo(BlueBomber.REFRESH_TIME);
-        assertThat(blueBomber.getActingTime()).isEqualTo(BlueBomber.ACTING_TIME);
+        assertThat(blueBomber.getActingTime()).isEqualTo(BlueBomber.DEFAULT_ACTING_TIME);
         assertThat(blueBomber.getInvincibilityTime()).isEqualTo(BlueBomber.INVINCIBILITY_TIME);
         assertThat(blueBomber.getDeathImages()).
                 isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberDeathMatrixRowIdx]);

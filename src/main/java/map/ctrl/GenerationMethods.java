@@ -1,22 +1,18 @@
 package map.ctrl;
 
-import static map.ctrl.PatternMethods.generateRandomColIdx;
-import static map.ctrl.PatternMethods.generateRandomRowIdx;
-import static map.ctrl.PatternMethods.placeCastleOnMap;
-import static map.ctrl.PatternMethods.placePatternOnMap;
-import static map.ctrl.SingleMethods.placeSingleMutableOnMap;
-import static map.ctrl.SingleMethods.placeSingleObstacleOnMap;
-import static map.ctrl.SingleMethods.placeSinglePathwayOnMap;
+import exceptions.CannotCreateMapElementException;
+import map.MapPattern;
+import map.MapPoint;
+import sprite.settled.BonusType;
+import utils.Tuple2;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import exceptions.CannotCreateMapElementException;
-import map.MapPattern;
-import map.MapPoint;
-import utils.Tuple2;
+import static map.ctrl.PatternMethods.*;
+import static map.ctrl.SingleMethods.*;
 
 public class GenerationMethods {
     public static int totalNbTry = 0; // test purpose.
@@ -36,9 +32,13 @@ public class GenerationMethods {
      * @return the MapPoint of the two placed castles
      * @throws CannotCreateMapElementException as soon as a castle cannot be placed
      */
-    public static Tuple2<MapPoint, MapPoint> randomlyPlaceCastles(MapPoint[][] mapPointMatrix, int mapWidth,
-                                                                  int mapHeight, int hMargin, int vMargin,
-                                                                  int northEdgeHeight, int southEdgeHeight,
+    public static Tuple2<MapPoint, MapPoint> randomlyPlaceCastles(MapPoint[][] mapPointMatrix,
+                                                                  int mapWidth,
+                                                                  int mapHeight,
+                                                                  int hMargin,
+                                                                  int vMargin,
+                                                                  int northEdgeHeight,
+                                                                  int southEdgeHeight,
                                                                   Tuple2<MapPattern, MapPattern> patterns,
                                                                   int perDynamicPathwayElt)
             throws CannotCreateMapElementException {
@@ -86,9 +86,13 @@ public class GenerationMethods {
      *                                         (e.g. the map size can be too small or the margins too high according
      *                                         to the relative pattern size and the north/south edge heights).
      */
-    public static void randomlyPlaceComplexElements(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
-                                                    int northEdgeHeight, int southEdgeHeight,
-                                                    Map<MapPattern, Integer> patterns, int maxNbTry)
+    public static void randomlyPlaceComplexElements(MapPoint[][] mapPointMatrix,
+                                                    int mapWidth,
+                                                    int mapHeight,
+                                                    int northEdgeHeight,
+                                                    int southEdgeHeight,
+                                                    Map<MapPattern, Integer> patterns,
+                                                    int maxNbTry)
             throws CannotCreateMapElementException {
         for (Map.Entry<MapPattern, Integer> eltConf : patterns.entrySet()) {
             try {
@@ -129,8 +133,12 @@ public class GenerationMethods {
      * @param perDynPathwayElt  the percentage of dynamic pathway elements to place among available cases
      * @throws CannotCreateMapElementException as soon as a castle cannot be placed
      */
-    public static void randomlyPlaceSingleElements(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
-                                                   int perSingleMutable, int perSingleObstacle, int perDynPathwayElt)
+    public static void randomlyPlaceSingleElements(MapPoint[][] mapPointMatrix,
+                                                   int mapWidth,
+                                                   int mapHeight,
+                                                   int perSingleMutable,
+                                                   int perSingleObstacle,
+                                                   int perDynPathwayElt)
             throws CannotCreateMapElementException {
 
         // create list of empty cases.
@@ -145,8 +153,9 @@ public class GenerationMethods {
         int nbEmptyPt = emptyPtList.size();
 
         // place single elements.
+        Random R = new Random();
         for (int i = 0; i < nbEmptyPt; i++) {
-            Random R = new Random();
+
             int randomPercent = Math.abs(R.nextInt(100)); // randomly choose a single element.
             int ptIdx = Math.abs(R.nextInt(emptyPtList.size())); // randomly choose an empty case.
             MapPoint mapPoint = emptyPtList.get(ptIdx);
@@ -164,6 +173,53 @@ public class GenerationMethods {
                 }
             }
             emptyPtList.remove(ptIdx);
+        }
+    }
+
+    /**
+     * Randomly place bonus.
+     *
+     * @param mapPointMatrix the map (represented by its matrix of MapPoint)
+     * @param mapWidth       the map width
+     * @param mapHeight      the map height
+     * @param nbBonusBomb    the number of bonus bomb
+     * @param nbBonusFlame   the number of bonus flame
+     * @param nbBonusHeart   the number of bonus heart
+     * @param nbBonusRoller  the number of bonus roller
+     */
+    public static void randomlyPlaceBonus(MapPoint[][] mapPointMatrix,
+                                          int mapWidth,
+                                          int mapHeight,
+                                          int nbBonusBomb,
+                                          int nbBonusFlame,
+                                          int nbBonusHeart,
+                                          int nbBonusRoller) {
+
+        // create list of mutable cases.
+        List<MapPoint> mutableCases = new ArrayList<>();
+        for (int rowIdx = 0; rowIdx < mapHeight; rowIdx++) {
+            for (int colIdx = 0; colIdx < mapWidth; colIdx++) {
+                if (mapPointMatrix[rowIdx][colIdx].isMutable()) {
+                    mutableCases.add(mapPointMatrix[rowIdx][colIdx]);
+                }
+            }
+        }
+
+        // place bonus.
+        Random R = new Random();
+        for (int i = 0; i < nbBonusBomb + nbBonusFlame + nbBonusHeart + nbBonusRoller; i++) {
+            int ptIdx = Math.abs(R.nextInt(mutableCases.size())); // randomly choose a mutable case.
+            MapPoint mapPoint = mutableCases.get(ptIdx);
+            if (i < nbBonusBomb) {
+                mapPoint.setBonusType(BonusType.TYPE_BONUS_BOMB);
+            } else if (i < nbBonusBomb + nbBonusFlame) {
+                mapPoint.setBonusType(BonusType.TYPE_BONUS_FLAME);
+            } else if (i < nbBonusBomb + nbBonusFlame + nbBonusHeart) {
+                mapPoint.setBonusType(BonusType.TYPE_BONUS_HEART);
+            } else {
+                mapPoint.setBonusType(BonusType.TYPE_BONUS_ROLLER);
+            }
+            mutableCases.remove(ptIdx);
         }
     }
 }

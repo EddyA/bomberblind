@@ -15,7 +15,7 @@ public class BonusHeart extends Bonus {
                       int colIdx) {
         super(rowIdx,
                 colIdx,
-                SpriteType.TYPE_BONUS_HEART,
+                BonusType.TYPE_BONUS_HEART,
                 ImagesLoader.imagesMatrix[ImagesLoader.bonusHeartMatrixRowIdx],
                 ImagesLoader.NB_BONUS_HEART_FRAME);
     }

@@ -15,7 +15,7 @@ public class BonusRoller extends Bonus {
                        int colIdx) {
         super(rowIdx,
                 colIdx,
-                SpriteType.TYPE_BONUS_ROLLER,
+                BonusType.TYPE_BONUS_ROLLER,
                 ImagesLoader.imagesMatrix[ImagesLoader.bonusRollerMatrixRowIdx],
                 ImagesLoader.NB_BONUS_ROLLER_FRAME);
     }

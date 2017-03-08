@@ -46,7 +46,7 @@ public class BomberStepDef implements WithAssertions {
 
     @Then("^the bomber should has (\\d+) lifes$")
     public void the_bomber_should_has_lifes(int nbLifes) {
-        assertThat(bomberState.getBomber().getNbLife()).isNotEqualTo(nbLifes);
+        assertThat(bomberState.getBomber().getNbBonusHeart()).isNotEqualTo(nbLifes);
     }
 
     @Then("^the bomber is re-init$")

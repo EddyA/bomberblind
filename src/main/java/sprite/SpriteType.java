@@ -5,10 +5,7 @@ import java.util.Optional;
 public enum SpriteType {
     TYPE_BOMB,
     TYPE_BOMBER,
-    TYPE_BONUS_BOMB,
-    TYPE_BONUS_FLAME,
-    TYPE_BONUS_HEART,
-    TYPE_BONUS_ROLLER,
+    TYPE_BONUS,
     TYPE_BREAKING_ENEMY,
     TYPE_FLAME,
     TYPE_FLAME_END,
@@ -26,20 +23,8 @@ public enum SpriteType {
                 label = Optional.of("bomber");
                 break;
             }
-            case TYPE_BONUS_BOMB: {
-                label = Optional.of("bonus_bomb");
-                break;
-            }
-            case TYPE_BONUS_FLAME: {
-                label = Optional.of("bonus_flame");
-                break;
-            }
-            case TYPE_BONUS_HEART: {
-                label = Optional.of("bonus_heart");
-                break;
-            }
-            case TYPE_BONUS_ROLLER: {
-                label = Optional.of("bonus_roller");
+            case TYPE_BONUS: {
+                label = Optional.of("bonus");
                 break;
             }
             case TYPE_BREAKING_ENEMY: {

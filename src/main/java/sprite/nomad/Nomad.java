@@ -17,7 +17,7 @@ public abstract class Nomad extends Sprite {
     protected Direction curDirection; // current direction.
     protected Direction lastDirection; // last direction.
 
-    private final int actingTime; // acting time (in ms, defining the sprite's speed in term of action/sec).
+    private int actingTime; // acting time (in ms, defining the sprite's speed in term of action/sec).
     protected long lastActionTs; // last action timestamp.
 
     protected boolean paintedAtLeastOneTime; // to notice the current action has been painted at least 1 time.
@@ -89,6 +89,10 @@ public abstract class Nomad extends Sprite {
 
     public int getActingTime() {
         return actingTime;
+    }
+
+    public void setActingTime(int actingTime) {
+        this.actingTime = actingTime;
     }
 
     public SpriteAction getLastSpriteAction() {
