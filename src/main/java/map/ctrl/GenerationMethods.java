@@ -1,6 +1,7 @@
 package map.ctrl;
 
 import exceptions.CannotCreateMapElementException;
+import exceptions.CannotPlaceBonusOnMapException;
 import map.MapPattern;
 import map.MapPoint;
 import sprite.settled.BonusType;
@@ -15,7 +16,6 @@ import static map.ctrl.PatternMethods.*;
 import static map.ctrl.SingleMethods.*;
 
 public class GenerationMethods {
-    public static int totalNbTry = 0; // test purpose.
 
     /**
      * Randomly place castles.
@@ -105,9 +105,10 @@ public class GenerationMethods {
                         if (!placePatternOnMap(mapPointMatrix, mapWidth, mapHeight, eltConf.getKey(), ySpElt, xSpElt)) {
                             if (nbTry < maxNbTry) {
                                 nbTry++;
-                                totalNbTry++; // test purpose.
                             } else {
-                                break;
+                                throw new CannotCreateMapElementException("not able to place a complex element based on pattern '" +
+                                        eltConf.getKey().getName() + "', despite a certain number of tries (" + String.valueOf(maxNbTry) +
+                                        "): no more room on the map to place it.");
                             }
                         } else {
                             break;
@@ -115,7 +116,7 @@ public class GenerationMethods {
                     }
                 }
             } catch (IllegalArgumentException e) {
-                throw new CannotCreateMapElementException("not able to place elements based on pattern '"
+                throw new CannotCreateMapElementException("not able to place a complex element based on pattern '"
                         + eltConf.getKey().getName() + "': the map size can be too small or the margins " +
                         "too high according to the relative pattern size and the north/south edge heights.");
             }
@@ -193,7 +194,7 @@ public class GenerationMethods {
                                           int nbBonusBomb,
                                           int nbBonusFlame,
                                           int nbBonusHeart,
-                                          int nbBonusRoller) {
+                                          int nbBonusRoller) throws CannotPlaceBonusOnMapException {
 
         // create list of mutable cases.
         List<MapPoint> mutableCases = new ArrayList<>();
@@ -208,17 +209,27 @@ public class GenerationMethods {
         // place bonus.
         Random R = new Random();
         for (int i = 0; i < nbBonusBomb + nbBonusFlame + nbBonusHeart + nbBonusRoller; i++) {
+
+            // compute the bonus to place.
+            BonusType bonusToPlace;
+            if (i < nbBonusBomb) {
+                bonusToPlace = BonusType.TYPE_BONUS_BOMB;
+            } else if (i < nbBonusBomb + nbBonusFlame) {
+                bonusToPlace = BonusType.TYPE_BONUS_FLAME;
+            } else if (i < nbBonusBomb + nbBonusFlame + nbBonusHeart) {
+                bonusToPlace = BonusType.TYPE_BONUS_HEART;
+            } else {
+                bonusToPlace = BonusType.TYPE_BONUS_ROLLER;
+            }
+
+            // place the bonus.
+            if (mutableCases.size() <= 0) {
+                throw new CannotPlaceBonusOnMapException("not able to place bonus '" + BonusType.getlabel(bonusToPlace).orElse("no_name")
+                        + "' on map, no more available mutable.");
+            }
             int ptIdx = Math.abs(R.nextInt(mutableCases.size())); // randomly choose a mutable case.
             MapPoint mapPoint = mutableCases.get(ptIdx);
-            if (i < nbBonusBomb) {
-                mapPoint.setBonusType(BonusType.TYPE_BONUS_BOMB);
-            } else if (i < nbBonusBomb + nbBonusFlame) {
-                mapPoint.setBonusType(BonusType.TYPE_BONUS_FLAME);
-            } else if (i < nbBonusBomb + nbBonusFlame + nbBonusHeart) {
-                mapPoint.setBonusType(BonusType.TYPE_BONUS_HEART);
-            } else {
-                mapPoint.setBonusType(BonusType.TYPE_BONUS_ROLLER);
-            }
+            mapPoint.setAttachedBonus(bonusToPlace);
             mutableCases.remove(ptIdx);
         }
     }

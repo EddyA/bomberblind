@@ -55,8 +55,8 @@ public class AddingMethods {
      * @param mapPoint thz MapPoint to check
      */
     public static void checkMapPointAndAddBonus(LinkedList<Sprite> list, MapPoint mapPoint) {
-        if (mapPoint.getBonusType() != null) {
-            switch (mapPoint.getBonusType()) {
+        if (mapPoint.getAttachedBonus() != null) {
+            switch (mapPoint.getAttachedBonus()) {
                 case TYPE_BONUS_BOMB: {
                     list.add(new BonusBomb(mapPoint.getRowIdx(), mapPoint.getColIdx()));
                     break;
@@ -74,7 +74,9 @@ public class AddingMethods {
                     break;
                 }
             }
-            mapPoint.setBonusType(null); // detached the bonus.
+            mapPoint.setBonusing(true); // note the case as bonusing (the bonus has been revealed).
+            mapPoint.setAttachedBonus(null); // detached the bonus.
+
         }
     }
 

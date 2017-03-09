@@ -84,8 +84,6 @@ public abstract class Bonus extends Sprite {
         this.colIdx = colIdx;
     }
 
-
-
     @Override
     public void updateImage() {
         if (isTimeToRefresh()) { // it is time to refresh the sprite image.

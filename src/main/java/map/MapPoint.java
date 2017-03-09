@@ -31,13 +31,14 @@ public class MapPoint {
     private boolean isBombing; // is bombed (bomb on case)?
     private int nbFlames; // number of flames on that case (can be multiple because of crossing explosions).
 
-    private BonusType bonusType; // attached bonus.
+    private BonusType attachedBonus; // attached bonus.
+    private boolean isBonusing; // the bonus has been revealed.
 
     public MapPoint(int rowIdx, int colIdx) {
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
         this.isAvailable = true;
-        this.bonusType = null;
+        this.attachedBonus = null;
     }
 
     public int getRowIdx() {
@@ -124,12 +125,20 @@ public class MapPoint {
         return nbFlames > 0;
     }
 
-    public BonusType getBonusType() {
-        return bonusType;
+    public BonusType getAttachedBonus() {
+        return attachedBonus;
     }
 
-    public void setBonusType(BonusType bonusType) {
-        this.bonusType = bonusType;
+    public void setAttachedBonus(BonusType attachedBonus) {
+        this.attachedBonus = attachedBonus;
+    }
+
+    public boolean isBonusing() {
+        return isBonusing;
+    }
+
+    public void setBonusing(boolean bonusing) {
+        isBonusing = bonusing;
     }
 
     public void setImages(Image[] images, int nbImages) {

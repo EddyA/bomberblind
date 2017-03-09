@@ -9,6 +9,8 @@ import utils.Tools;
 
 import java.io.IOException;
 
+import static images.ImagesLoader.NB_BONUS_BOMB_FRAME;
+
 public class BonusTest implements WithAssertions {
 
     @Before
@@ -27,7 +29,7 @@ public class BonusTest implements WithAssertions {
         assertThat(bonusBomb.getyMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
         assertThat(bonusBomb.getBonusType()).isEqualTo(BonusType.TYPE_BONUS_BOMB);
         assertThat(bonusBomb.getImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx]);
-        assertThat(bonusBomb.getNbImages()).isEqualTo(ImagesLoader.NB_BONUS_BOMB_FRAME);
+        assertThat(bonusBomb.getNbImages()).isEqualTo(NB_BONUS_BOMB_FRAME);
         assertThat(bonusBomb.getStatus()).isEqualTo(Bonus.Status.STATUS_ALIVE);
     }
 
@@ -51,8 +53,6 @@ public class BonusTest implements WithAssertions {
 
     @Test
     public void updateImageShouldIncreaseCurImageIdx() throws Exception {
-
-        // ToDo: Update that test when having a real sprite.
         BonusBomb bonusBomb = new BonusBomb(5, 4);
         BonusBomb spyedBonusBomb = Mockito.spy(bonusBomb);
         Mockito.when(spyedBonusBomb.isTimeToRefresh()).thenReturn(true);
@@ -63,21 +63,18 @@ public class BonusTest implements WithAssertions {
 
         // call & check.
         spyedBonusBomb.updateImage();
-        assertThat(spyedBonusBomb.getCurImageIdx()).isEqualTo(0);
-        assertThat(spyedBonusBomb.getCurImage()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx][0]);
+        assertThat(spyedBonusBomb.getCurImageIdx()).isEqualTo(1);
+        assertThat(spyedBonusBomb.getCurImage()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx][1]);
     }
 
     @Test
     public void updateImageWithTheLastImageShouldSetCurImageIdxTo0() throws Exception {
-
-        // ToDo: Update that test when having a real sprite.
         BonusBomb bonusBomb = new BonusBomb(5, 4);
         BonusBomb spyedBonusBomb = Mockito.spy(bonusBomb);
         Mockito.when(spyedBonusBomb.isTimeToRefresh()).thenReturn(true);
 
         // set bonus.
-        spyedBonusBomb.setCurImageIdx(0);
-        spyedBonusBomb.setCurImage(ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx][0]);
+        spyedBonusBomb.setCurImageIdx(NB_BONUS_BOMB_FRAME - 1);
 
         // call & check.
         spyedBonusBomb.updateImage();

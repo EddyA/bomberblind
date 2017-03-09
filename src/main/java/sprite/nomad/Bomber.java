@@ -15,6 +15,8 @@ import static sprite.SpriteAction.*;
  */
 public abstract class Bomber extends Nomad {
 
+    public final static int DEFAULT_ACTING_TIME = 7;
+
     private final Image[] deathImages;
     private final int nbDeathFrame;
     private final Image[] waitImages;
@@ -30,7 +32,6 @@ public abstract class Bomber extends Nomad {
     private int initialXMap; // initial abscissa on map.
     private int initialYMap; // initial ordinate on map.
 
-    private final static int DEFAULT_ACTING_TIME = 7;
     private LinkedList<Bomb> droppedBombs; // array of dropped bombs.
 
     private int nbBonusBomb;

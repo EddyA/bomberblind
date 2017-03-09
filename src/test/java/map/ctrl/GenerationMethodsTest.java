@@ -1,9 +1,10 @@
 package map.ctrl;
 
 import exceptions.CannotCreateMapElementException;
+import exceptions.CannotPlaceBonusOnMapException;
 import images.ImagesLoader;
-import map.MapPoint;
 import map.MapPattern;
+import map.MapPoint;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -106,13 +107,14 @@ public class GenerationMethodsTest {
         myMap.put(new MapPattern(new Image[6], MAP_WIDTH + 1, MAP_HEIGHT + 1, false, false, "pattern1"), 1);
         assertThatThrownBy(() -> randomlyPlaceComplexElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 0, myMap, 1))
                 .isInstanceOf(CannotCreateMapElementException.class)
-                .hasMessage("not able to place elements based on pattern 'pattern1': the map size can be too small "
-                        + "or the margins too high according to the relative pattern size and the north/south edge "
-                        + "heights.");
+                .hasMessage("not able to place a complex element based on pattern 'pattern1': the map size can be too "
+                        + "small or the margins too high according to the relative pattern size and the north/south "
+                        + "edge heights.");
     }
 
     @Test
-    public void randomlyPlaceComplexElementsShouldTryPlacingElementWithAMaxNumberOfTry() throws Exception {
+    public void randomlyPlaceComplexElementsWithNoMoreSpaceOnMapShouldThrowExpectedException()
+            throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -121,18 +123,14 @@ public class GenerationMethodsTest {
         }
 
         int maxNbTry = 10;
-        int nbPattern1ToPlace = 4;
-        int nbPattern2ToPlace = 5;
+        int nbPattern1ToPlace = 2;
         Map<MapPattern, Integer> myMap = new HashMap<>();
         myMap.put(new MapPattern(new Image[MAP_WIDTH*MAP_HEIGHT], MAP_WIDTH, MAP_HEIGHT, false, false, "pattern1"),
-                nbPattern1ToPlace);
-        myMap.put(new MapPattern(new Image[MAP_WIDTH*MAP_HEIGHT], MAP_WIDTH, MAP_HEIGHT, false, false, "pattern2"),
-                nbPattern2ToPlace);
-        randomlyPlaceComplexElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 0, myMap, maxNbTry);
-
-        // here, the map is too small to place all the elements, only the 1st has been placed.
-        assertThat(GenerationMethods.totalNbTry).isEqualTo((nbPattern1ToPlace - 1) * maxNbTry +
-                nbPattern2ToPlace * maxNbTry);
+                nbPattern1ToPlace); // the 2 complex elements to place has the size of the map :)!
+        assertThatThrownBy(() -> randomlyPlaceComplexElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 0, myMap, maxNbTry)).
+                isInstanceOf(CannotCreateMapElementException.class)
+                .hasMessage("not able to place a complex element based on pattern 'pattern1', despite a certain "
+                        + "number of tries (10): no more room on the map to place it.");
     }
 
     @Test
@@ -209,5 +207,71 @@ public class GenerationMethodsTest {
                 assertThat(mapPointMatrix[rowIdx][colIdx].getImages()).isNotNull();
             }
         }
+    }
+
+    @Test
+    public void randomlyPlaceBonusShouldFillMutableCasesOnlyWithTheExpectedNumberOfBonus() throws Exception {
+        MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
+        int nbMutableCase = 0;
+        for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
+            for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
+                mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
+                if (nbMutableCase < 100) {
+                    mapPointMatrix[rowIdx][colIdx].setMutable(true);
+                    nbMutableCase++;
+                } else {
+                    mapPointMatrix[rowIdx][colIdx].setMutable(false);
+                }
+            }
+        }
+        randomlyPlaceBonus(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 10, 20, 30, 40);
+
+        int nbBonusBomb = 0;
+        int nbBonusFlame = 0;
+        int nbBonusHeart = 0;
+        int nbBonusRoller = 0;
+        for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
+            for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
+                if (mapPointMatrix[rowIdx][colIdx].getAttachedBonus() != null) {
+                    assertThat(mapPointMatrix[rowIdx][colIdx].isMutable()).isTrue();
+                    switch (mapPointMatrix[rowIdx][colIdx].getAttachedBonus()) {
+                        case TYPE_BONUS_BOMB: {
+                            nbBonusBomb++;
+                            break;
+                        }
+                        case TYPE_BONUS_FLAME: {
+                            nbBonusFlame++;
+                            break;
+                        }
+                        case TYPE_BONUS_HEART: {
+                            nbBonusHeart++;
+                            break;
+                        }
+                        case TYPE_BONUS_ROLLER: {
+                            nbBonusRoller++;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        assertThat(nbBonusBomb).isEqualTo(10);
+        assertThat(nbBonusFlame).isEqualTo(20);
+        assertThat(nbBonusHeart).isEqualTo(30);
+        assertThat(nbBonusRoller).isEqualTo(40);
+    }
+
+    @Test
+    public void randomlyPlaceBonusWithTooManyBonusToPlaceShouldThrowTheExpectedExcpetion() throws Exception {
+        MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH]; // 200 cases.
+        for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
+            for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
+                mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
+                mapPointMatrix[rowIdx][colIdx].setMutable(true);
+            }
+        }
+        assertThatThrownBy(() -> randomlyPlaceBonus(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 200, 1, 0, 0)). // 200 + 1 bonus.
+                isInstanceOf(CannotPlaceBonusOnMapException.class)
+                .hasMessage("not able to place bonus 'bonus_flame' on map, no more available mutable.");
     }
 }

@@ -111,6 +111,7 @@ public class ActionMethods {
                     break;
                 }
             }
+            mapPointMatrix[bonus.getRowIdx()][bonus.getColIdx()].setBonusing(false); // the case is no more bonusing.
             bonus.setStatus(Bonus.Status.STATUS_ENDED); // end the bonus.
         }
 
