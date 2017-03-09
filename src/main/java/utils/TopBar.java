@@ -21,15 +21,15 @@ public class TopBar {
                                             SkinnedLine.getSkinnedAsciiHeight())))) + 2 * ORNAMENT_PADDING_SIZE - 2;
 
     /**
-     * Paint the number of hearts (top left corner).
+     * Paint the number of remaining lifes (top left corner).
      *
      * @param g       the graphics context
-     * @param nbHeart the number of hearts
+     * @param nbLifes the number of remaining lifes
      */
-    private static void paintHeart(Graphics2D g, int nbHeart) {
+    private static void paintNbRemainingLifes(Graphics2D g, int nbLifes) {
 
         // print ornament.
-        int zoneWidth = SkinnedLine.computeLineWidth(String.valueOf(nbHeart)) +
+        int zoneWidth = SkinnedLine.computeLineWidth(String.valueOf(nbLifes)) +
                 heartImage.getWidth(null) +
                 3 * ORNAMENT_PADDING_SIZE;
         RoundRectangle2D ornament = new RoundRectangle2D.Float(
@@ -48,7 +48,7 @@ public class TopBar {
         // print the number of remaining lifes.
         SkinnedLine.paintBuffer(g,
                 heartImage.getWidth(null) + 2 * ORNAMENT_PADDING_SIZE,
-                (zoneHeight - SkinnedLine.getSkinnedAsciiHeight()) / 2, String.valueOf(nbHeart));
+                (zoneHeight - SkinnedLine.getSkinnedAsciiHeight()) / 2, String.valueOf(nbLifes));
     }
 
     /**
@@ -58,7 +58,7 @@ public class TopBar {
      * @param screenWidth the screen width
      * @param elapsedTime the elasped time
      */
-    private static void paintTimer(Graphics2D g, int screenWidth, long elapsedTime) {
+    private static void paintElapsedTime(Graphics2D g, int screenWidth, long elapsedTime) {
 
         // convert to text.
         int elapsedMinutes = (int) (elapsedTime / 1000 / 60 % 60); // minutes.
@@ -144,8 +144,8 @@ public class TopBar {
      * @param elapsedTime the elasped time
      */
     public static void paintBuffer(Graphics2D g, int screenWidth, Bomber bomber, long elapsedTime) {
-        paintTimer(g, screenWidth, elapsedTime);
-        paintHeart(g, bomber.getNbBonusHeart());
+        paintElapsedTime(g, screenWidth, elapsedTime);
+        paintNbRemainingLifes(g, bomber.getNbBonusHeart());
         paintBonus(g, screenWidth, bomber.getNbBonusBomb(), bomber.getNbBonusFlame(), bomber.getNbBonusRoller());
     }
 }

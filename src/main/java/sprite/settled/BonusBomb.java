@@ -1,8 +1,10 @@
 package sprite.settled;
 
 import images.ImagesLoader;
-import sprite.SpriteType;
 
+/**
+ * A bonus bomb.
+ */
 public class BonusBomb extends Bonus {
 
     /**

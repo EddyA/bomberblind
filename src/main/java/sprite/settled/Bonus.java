@@ -9,9 +9,13 @@ import java.awt.*;
 import static sprite.settled.Bonus.Status.STATUS_ALIVE;
 import static sprite.settled.Bonus.Status.STATUS_ENDED;
 
+/**
+ * Abstract class of a bonus.
+ * The sprite loops until is ended.
+ */
 public abstract class Bonus extends Sprite {
 
-    public final static int REFRESH_TIME = 100;
+    public final static int REFRESH_TIME = 50;
 
     private final BonusType bonusType;
 

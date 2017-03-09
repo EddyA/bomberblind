@@ -137,13 +137,13 @@ public class ImagesLoader {
     public static int asciiMatrixRowIdx;
 
     // bonus:
-    public final static int NB_BONUS_BOMB_FRAME = 1;
+    public final static int NB_BONUS_BOMB_FRAME = 28;
     public static int bonusBombMatrixRowIdx;
-    public final static int NB_BONUS_FLAME_FRAME = 1;
+    public final static int NB_BONUS_FLAME_FRAME = 28;
     public static int bonusFlameMatrixRowIdx;
-    public final static int NB_BONUS_HEART_FRAME = 1;
+    public final static int NB_BONUS_HEART_FRAME = 32;
     public static int bonusHeartMatrixRowIdx;
-    public final static int NB_BONUS_ROLLER_FRAME = 1;
+    public final static int NB_BONUS_ROLLER_FRAME = 28;
     public static int bonusRollerMatrixRowIdx;
 
     public static int lastRowIdx; // for test purpose.

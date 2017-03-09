@@ -1,8 +1,10 @@
 package sprite.settled;
 
 import images.ImagesLoader;
-import sprite.SpriteType;
 
+/**
+ * A bonus roller.
+ */
 public class BonusRoller extends Bonus {
 
     /**

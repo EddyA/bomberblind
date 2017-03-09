@@ -2,6 +2,9 @@ package sprite.settled;
 
 import java.util.Optional;
 
+/**
+ * Enum the different type of bonus.
+ */
 public enum BonusType {
     TYPE_BONUS_BOMB,
     TYPE_BONUS_FLAME,
