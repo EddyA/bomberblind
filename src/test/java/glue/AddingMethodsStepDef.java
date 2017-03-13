@@ -18,6 +18,7 @@ public class AddingMethodsStepDef implements WithAssertions {
 
     private final BombState bombState;
     private final BomberState bomberState;
+    private final BonusFlameState bonusFlameState;
     private final BreakingEnemyState breakingEnemyState;
     private final FlameState flameState;
     private final FlameEndState flameEndState;
@@ -28,6 +29,7 @@ public class AddingMethodsStepDef implements WithAssertions {
                                 MapPointMatrixState mapPointMatrixState,
                                 BombState bombState,
                                 BomberState bomberState,
+                                BonusFlameState bonusFlameState,
                                 BreakingEnemyState breakingEnemyState,
                                 FlameState flameState,
                                 FlameEndState flameEndState,
@@ -37,6 +39,7 @@ public class AddingMethodsStepDef implements WithAssertions {
         this.mapPointMatrixState = mapPointMatrixState;
         this.bombState = bombState;
         this.bomberState = bomberState;
+        this.bonusFlameState = bonusFlameState;
         this.breakingEnemyState = breakingEnemyState;
         this.flameState = flameState;
         this.flameEndState = flameEndState;
@@ -58,9 +61,18 @@ public class AddingMethodsStepDef implements WithAssertions {
         bomberState.getBomber().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
         bomberState.getBomber().setInitialXMap(Tools.getCaseCentreAbscissa(colIdx));
         bomberState.getBomber().setInitialYMap(Tools.getCaseBottomOrdinate(rowIdx));
-        bomberState.getBomber().getBundleBonus().setBonus(BonusType.TYPE_BONUS_HEART, nbLifes);
+        bomberState.getBomber().setBonus(BonusType.TYPE_BONUS_HEART, nbLifes);
         bomberState.getBomber().setLastInvincibilityTs(0); // deactivate the invincibility at init.
         AddingMethods.addBomber(listOfSprites.getSpriteList(), bomberState.getBomber());
+    }
+
+    @Given("^a bonus flame at rowIdx (\\d+) and coldIdx (\\d+)$")
+    public void a_bonus_flame_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
+        bonusFlameState.getBonusFlame().setRowIdx(rowIdx);
+        bonusFlameState.getBonusFlame().setColIdx(colIdx);
+        bonusFlameState.getBonusFlame().setxMap(Tools.getCaseCentreAbscissa(colIdx));
+        bonusFlameState.getBonusFlame().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
+        AddingMethods.addBonus(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(), bonusFlameState.getBonusFlame());
     }
 
     @Given("^a breaking enemy at rowIdx (\\d+) and coldIdx (\\d+)$")

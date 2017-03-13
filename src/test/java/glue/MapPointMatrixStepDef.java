@@ -44,4 +44,9 @@ public class MapPointMatrixStepDef implements WithAssertions {
     public void the_case_at_rowIdx_and_coldIdx_is_no_more_burning(int rowIdx, int colIdx) {
         assertThat(mapPointMatrixState.getMapPoint(rowIdx, colIdx).isBurning()).isFalse();
     }
+
+    @Then("^the case at rowIdx (\\d+) and coldIdx (\\d+) is no more bonusing")
+    public void the_case_at_rowIdx_and_coldIdx_is_no_more_bonusing(int rowIdx, int colIdx) {
+        assertThat(mapPointMatrixState.getMapPoint(rowIdx, colIdx).isBonusing()).isFalse();
+    }
 }

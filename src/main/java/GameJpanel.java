@@ -111,7 +111,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
             map.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             spriteList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             TopBar.paintBuffer(g2d, map.getScreenWidth(), bomber, timer.getElapsedTime());
-            if (bomber.getBundleBonus().getBonus(BonusType.TYPE_BONUS_HEART) == 0) {
+            if (bomber.getBonus(BonusType.TYPE_BONUS_HEART) == 0) {
                 timer.stop();
                 SkinnedText.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedText.TEXT_GAME_OVER);
             } else if (spriteList.isEnemiesAreDead()) {

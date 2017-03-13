@@ -146,11 +146,11 @@ public class TopBar {
      */
     public static void paintBuffer(Graphics2D g, int screenWidth, Bomber bomber, long elapsedTime) {
         paintElapsedTime(g, screenWidth, elapsedTime);
-        paintNbRemainingLifes(g, bomber.getBundleBonus().getBonus(BonusType.TYPE_BONUS_HEART));
+        paintNbRemainingLifes(g, bomber.getBonus(BonusType.TYPE_BONUS_HEART));
         paintBonus(g,
                 screenWidth,
-                bomber.getBundleBonus().getBonus(BonusType.TYPE_BONUS_BOMB),
-                bomber.getBundleBonus().getBonus(BonusType.TYPE_BONUS_FLAME),
-                bomber.getBundleBonus().getBonus(BonusType.TYPE_BONUS_ROLLER));
+                bomber.getBonus(BonusType.TYPE_BONUS_BOMB),
+                bomber.getBonus(BonusType.TYPE_BONUS_FLAME),
+                bomber.getBonus(BonusType.TYPE_BONUS_ROLLER));
     }
 }

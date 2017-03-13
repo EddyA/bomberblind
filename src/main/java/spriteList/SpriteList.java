@@ -117,7 +117,7 @@ public class SpriteList extends LinkedList<Sprite> {
                     break;
                 }
                 case TYPE_BONUS: {
-                    shouldBeRemoved = ActionMethods.processBonus((Bonus) sprite);
+                    shouldBeRemoved = ActionMethods.processBonus(map.getMapPointMatrix(), (Bonus) sprite);
                     break;
                 }
                 case TYPE_BREAKING_ENEMY: {

@@ -72,8 +72,16 @@ public abstract class Bonus extends Sprite {
         return rowIdx;
     }
 
+    public void setRowIdx(int rowIdx) {
+        this.rowIdx = rowIdx;
+    }
+
     public int getColIdx() {
         return colIdx;
+    }
+
+    public void setColIdx(int colIdx) {
+        this.colIdx = colIdx;
     }
 
     @Override

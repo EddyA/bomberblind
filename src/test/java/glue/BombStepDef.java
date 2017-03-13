@@ -1,17 +1,15 @@
 package glue;
 
-import org.assertj.core.api.WithAssertions;
-import org.mockito.Mockito;
-
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
+import org.assertj.core.api.WithAssertions;
+import org.mockito.Mockito;
 
 public class BombStepDef implements WithAssertions {
 
     private final BombState bombState;
 
-    public BombStepDef(BombState bombState,
-            SpriteListState listOfSprites) {
+    public BombStepDef(BombState bombState) {
         this.bombState = bombState;
     }
 

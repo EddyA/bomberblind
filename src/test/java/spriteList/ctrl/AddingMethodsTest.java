@@ -9,6 +9,7 @@ import sprite.Sprite;
 import sprite.SpriteType;
 import sprite.nomad.*;
 import sprite.settled.Bomb;
+import sprite.settled.BonusFlame;
 import sprite.settled.Flame;
 import sprite.settled.FlameEnd;
 import utils.Direction;
@@ -52,7 +53,7 @@ public class AddingMethodsTest implements WithAssertions {
         // it is a burning case.
         mapPointMatrix[caseRowIdx][caseColIdx].setBombing(false);
         mapPointMatrix[caseRowIdx][caseColIdx].addFlame();
-        AddingMethods.addBomb(spriteList, mapPointMatrix, bomb);
+        assertThat(AddingMethods.addBomb(spriteList, mapPointMatrix, bomb)).isFalse();
         assertThat(spriteList.contains(bomb)).isFalse();
         assertThat(spriteList.isEmpty()).isTrue();
     }
@@ -78,7 +79,7 @@ public class AddingMethodsTest implements WithAssertions {
 
         // test.
         Bomb bomb = new Bomb(caseRowIdx, caseColIdx, flameSize);
-        AddingMethods.addBomb(spriteList, mapPointMatrix, bomb);
+        assertThat(AddingMethods.addBomb(spriteList, mapPointMatrix, bomb)).isTrue();
         assertThat(spriteList.contains(bomb)).isTrue();
         assertThat(mapPointMatrix[caseRowIdx][caseColIdx].isBombing()).isEqualTo(true);
     }
@@ -91,6 +92,63 @@ public class AddingMethodsTest implements WithAssertions {
 
         // test.
         assertThat(spriteList.contains(bomber)).isTrue();
+    }
+
+    @Test
+    public void addBonusShouldNotAddTheBonus() throws Exception {
+        LinkedList<Sprite> spriteList = new LinkedList<>();
+        int mapWidth = 10;
+        int mapHeight = 8;
+
+        // set map.
+        MapPoint[][] mapPointMatrix = new MapPoint[mapHeight][mapWidth];
+        for (int rowIdx = 0; rowIdx < mapHeight; rowIdx++) {
+            for (int colIdx = 0; colIdx < mapWidth; colIdx++) {
+                mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
+            }
+        }
+        int caseRowIdx = 5;
+        int caseColIdx = 6;
+
+        BonusFlame bonusFlame = new BonusFlame(caseRowIdx, caseColIdx);
+
+        // it is not a pathway.
+        mapPointMatrix[caseRowIdx][caseColIdx].setPathway(false);
+        AddingMethods.addBonus(spriteList, mapPointMatrix, bonusFlame);
+        assertThat(spriteList.contains(bonusFlame)).isFalse();
+        assertThat(spriteList.isEmpty()).isTrue();
+
+        // it is a bonusing case.
+        mapPointMatrix[caseRowIdx][caseColIdx].setPathway(true);
+        mapPointMatrix[caseRowIdx][caseColIdx].setBonusing(true);
+        assertThat(AddingMethods.addBonus(spriteList, mapPointMatrix, bonusFlame)).isFalse();
+        assertThat(spriteList.contains(bonusFlame)).isFalse();
+        assertThat(spriteList.isEmpty()).isTrue();
+    }
+
+    @Test
+    public void addBonusShouldAddTheBonusToTheListOfSpriteAndUpdateTheCaseStatus() throws Exception {
+        LinkedList<Sprite> spriteList = new LinkedList<>();
+        int mapWidth = 10;
+        int mapHeight = 8;
+
+        // set map.
+        MapPoint[][] mapPointMatrix = new MapPoint[mapHeight][mapWidth];
+        for (int rowIdx = 0; rowIdx < mapHeight; rowIdx++) {
+            for (int colIdx = 0; colIdx < mapWidth; colIdx++) {
+                mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
+            }
+        }
+        int caseRowIdx = 5;
+        int caseColIdx = 6;
+        mapPointMatrix[caseRowIdx][caseColIdx].setPathway(true);
+        mapPointMatrix[caseRowIdx][caseColIdx].setBonusing(false);
+
+        // test.
+        BonusFlame bonusFlame = new BonusFlame(caseRowIdx, caseColIdx);
+        assertThat(AddingMethods.addBonus(spriteList, mapPointMatrix, bonusFlame)).isTrue();
+        assertThat(spriteList.contains(bonusFlame)).isTrue();
+        assertThat(mapPointMatrix[caseRowIdx][caseColIdx].isBonusing()).isEqualTo(true);
     }
 
     @Test

@@ -61,7 +61,7 @@ public class ActionMethods {
             mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].setBombing(false);
             shouldBeRemoved = true;
 
-        } else if (mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBurning()) {  // is it on a burning case?
+        } else if (mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBurning()) { // is it on a burning case?
             bomb.setStatus(TimedSettled.Status.STATUS_ENDED);
         }
         return shouldBeRemoved;
@@ -94,9 +94,7 @@ public class ActionMethods {
         // handle bonus.
         Bonus bonus = isNomadCrossingBonus(list, bomber.getxMap(), bomber.getyMap());
         if (bonus != null) { // the bomber is crossing a bonus.
-            bomber.getBundleBonus().setBonus(bonus.getBonusType(),
-                    bomber.getBundleBonus().getBonus(bonus.getBonusType()) + 1); // add the bonus.
-            mapPointMatrix[bonus.getRowIdx()][bonus.getColIdx()].setBonusing(false); // the case is no more bonusing.
+            bomber.setBonus(bonus.getBonusType(), bomber.getBonus(bonus.getBonusType()) + 1); // add the bonus.
             bonus.setStatus(Bonus.Status.STATUS_ENDED); // end the bonus.
         }
 
@@ -110,7 +108,7 @@ public class ActionMethods {
                     mapHeight,
                     getCharRowIdx(bomber.getyMap()),
                     getCharColIdx(bomber.getxMap()),
-                    bomber.getBundleBonus().getCollectedBonus());
+                    bomber.getCollectedBonus());
 
             shouldBeRemoved = bomber.init(); // re-init the bomber if finished.
         } else if (bomber.getCurSpriteAction() != ACTION_DYING) { // the bomber is not finished and not dead.
@@ -119,8 +117,7 @@ public class ActionMethods {
             if (!bomber.isInvincible() &&
                     (isNomadBurning(mapPointMatrix, bomber.getxMap(), bomber.getyMap()) ||
                             isNomadCrossingEnemy(list, bomber.getxMap(), bomber.getyMap(), bomber))) {
-                bomber.getBundleBonus().setBonus(TYPE_BONUS_HEART,
-                        bomber.getBundleBonus().getBonus(TYPE_BONUS_HEART) - 1);
+                bomber.setBonus(TYPE_BONUS_HEART, bomber.getBonus(TYPE_BONUS_HEART) - 1);
                 bomber.setCurSpriteAction(ACTION_DYING);
 
             } else if (bomber.isTimeToAct()) { // it is time to act.
@@ -194,10 +191,10 @@ public class ActionMethods {
                         break;
                     }
                     case KeyEvent.VK_B: {
-                        if (bomber.getNbDroppedBomb() < bomber.getBundleBonus().getBonus(TYPE_BONUS_BOMB)) {
+                        if (bomber.getNbDroppedBomb() < bomber.getBonus(TYPE_BONUS_BOMB)) {
                             Bomb bomb = new Bomb(getCharRowIdx(bomber.getyMap()),
                                     getCharColIdx(bomber.getxMap()),
-                                    bomber.getBundleBonus().getBonus(TYPE_BONUS_FLAME));
+                                    bomber.getBonus(TYPE_BONUS_FLAME));
                             if(addBomb(tmpList, mapPointMatrix, bomb)) {
                                 bomber.dropBomb(bomb);
                             }
@@ -287,14 +284,17 @@ public class ActionMethods {
 
     /**
      * - Notice that the bonus must be removed from the list (if the sprite is finished),
+     * -- AND remove the bonusing status of the relative case.
      * - OR do nothing.
      *
+     * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param bonus the bonus
      * @return true if the bonus should be removed from the list, false otherwise.
      */
-    public static boolean processBonus(Bonus bonus) {
+    public static boolean processBonus(MapPoint[][] mapPointMatrix, Bonus bonus) {
         boolean shouldBeRemoved = false;
         if (bonus.isFinished()) {
+            mapPointMatrix[bonus.getRowIdx()][bonus.getColIdx()].setBonusing(false); // the case is no more bonusing.
             shouldBeRemoved = true;
         }
         return shouldBeRemoved;

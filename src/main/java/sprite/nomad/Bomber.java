@@ -9,6 +9,7 @@ import sprite.settled.BonusType;
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Map;
 
 import static sprite.SpriteAction.*;
 
@@ -176,8 +177,38 @@ public abstract class Bomber extends Nomad {
         return nbDroppedBombs;
     }
 
-    public BonusBundle getBundleBonus() {
-        return bundleBonus;
+    /**
+     * Get the number of bonus typed 'bonusType'.
+     *
+     * @param bonusType the bonus type
+     * @return the number of bonus typed 'bonusType'
+     */
+    public int getBonus(BonusType bonusType) {
+        return bundleBonus.getBonus(bonusType);
+    }
+
+    /**
+     * Set the number of bonus typed 'bonusType'.
+     *
+     * @param bonusType the bonus type
+     * @param nbBonus   the number of bonus typed 'bonusType'
+     */
+    public void setBonus(BonusType bonusType, int nbBonus) {
+        bundleBonus.setBonus(bonusType, nbBonus);
+        if (bonusType == BonusType.TYPE_BONUS_ROLLER) {
+            setActingTime(DEFAULT_ACTING_TIME - BonusBundle.DEFAULT_NB_BONUS_ROLLER - nbBonus);
+        }
+    }
+
+    /**
+     * Get the number of collected bonus with:
+     * - key: the type of bonus
+     * - value: the number of collected bonus
+     * <p>
+     * Note: this function does not take into account heart bonus.
+     */
+    public Map<BonusType, Integer> getCollectedBonus() {
+        return bundleBonus.getCollectedBonus();
     }
 
     /**
@@ -190,9 +221,9 @@ public abstract class Bomber extends Nomad {
             xMap = initialXMap;
             yMap = initialYMap;
             curSpriteAction = ACTION_WAITING;
-            lastInvincibilityTs = currentTimeSupplier.get().toEpochMilli(); // activate invincibility.
             bundleBonus.resetBonus();
             setActingTime(DEFAULT_ACTING_TIME);
+            lastInvincibilityTs = currentTimeSupplier.get().toEpochMilli(); // activate invincibility.
             return false;
         } else {
             return true;
