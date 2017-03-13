@@ -9,6 +9,7 @@ import map.zelda.ZeldaMapSetting;
 import sprite.SpriteType;
 import sprite.nomad.BlueBomber;
 import sprite.nomad.Bomber;
+import sprite.settled.BonusType;
 import spriteList.SpriteList;
 import spriteList.SpritesProperties;
 import spriteList.SpritesSetting;
@@ -38,7 +39,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private SpriteList spriteList;
     private List<Long> pressedKeyList;
 
-    private Timer timer = new Timer();
+    private final Timer timer = new Timer();
 
     // this members allow printing map from a certain point.
     private int xMapStartPosOnScreen;
@@ -110,7 +111,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
             map.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             spriteList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             TopBar.paintBuffer(g2d, map.getScreenWidth(), bomber, timer.getElapsedTime());
-            if (bomber.getNbBonusHeart() == 0) {
+            if (bomber.getBundleBonus().getBonus(BonusType.TYPE_BONUS_HEART) == 0) {
                 timer.stop();
                 SkinnedText.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedText.TEXT_GAME_OVER);
             } else if (spriteList.isEnemiesAreDead()) {

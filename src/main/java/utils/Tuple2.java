@@ -20,7 +20,15 @@ public class Tuple2<U, V> {
         return first;
     }
 
+    public void setFirst(U first) {
+        this.first = first;
+    }
+
     public V getSecond() {
         return second;
+    }
+
+    public void setSecond(V second) {
+        this.second = second;
     }
 }

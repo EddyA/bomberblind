@@ -92,10 +92,6 @@ public abstract class FlyingNomad extends Nomad {
         return deviation;
     }
 
-    public void setDeviation(int deviation) {
-        this.deviation = deviation;
-    }
-
     public int getMoveIdx() {
         return moveIdx;
     }

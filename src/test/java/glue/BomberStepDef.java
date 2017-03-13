@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
+import sprite.settled.BonusType;
 import utils.Tools;
 
 public class BomberStepDef implements WithAssertions {
@@ -46,7 +47,7 @@ public class BomberStepDef implements WithAssertions {
 
     @Then("^the bomber should has (\\d+) lifes$")
     public void the_bomber_should_has_lifes(int nbLifes) {
-        assertThat(bomberState.getBomber().getNbBonusHeart()).isNotEqualTo(nbLifes);
+        assertThat(bomberState.getBomber().getBundleBonus().getBonus(BonusType.TYPE_BONUS_HEART)).isNotEqualTo(nbLifes);
     }
 
     @Then("^the bomber is re-init$")

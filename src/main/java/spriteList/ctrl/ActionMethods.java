@@ -10,7 +10,6 @@ import sprite.nomad.FlyingNomad;
 import sprite.nomad.WalkingEnemy;
 import sprite.settled.*;
 import utils.Direction;
-import utils.Tools;
 
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
@@ -21,9 +20,11 @@ import static map.ctrl.NomadMethods.isNomadBurning;
 import static sprite.SpriteAction.*;
 import static sprite.ctrl.NomadMethods.isNomadCrossingBonus;
 import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
+import static sprite.settled.BonusType.*;
 import static spriteList.ctrl.AddingMethods.addBomb;
 import static utils.Direction.*;
 import static utils.Tools.getCharColIdx;
+import static utils.Tools.getCharRowIdx;
 
 /**
  * Define a collection of methods to process sprites.
@@ -93,30 +94,24 @@ public class ActionMethods {
         // handle bonus.
         Bonus bonus = isNomadCrossingBonus(list, bomber.getxMap(), bomber.getyMap());
         if (bonus != null) { // the bomber is crossing a bonus.
-            switch (bonus.getBonusType()) {
-                case TYPE_BONUS_BOMB: {
-                    bomber.setNbBonusBomb(bomber.getNbBonusBomb() + 1);
-                    break;
-                }
-                case TYPE_BONUS_FLAME: {
-                    bomber.setNbBonusFlame(bomber.getNbBonusFlame() + 1);
-                    break;
-                }
-                case TYPE_BONUS_HEART: {
-                    bomber.setNbBonusHeart(bomber.getNbBonusHeart() + 1);
-                    break;
-                }
-                case TYPE_BONUS_ROLLER: {
-                    bomber.setNbBonusRoller(bomber.getNbBonusRoller() + 1);
-                    break;
-                }
-            }
+            bomber.getBundleBonus().setBonus(bonus.getBonusType(),
+                    bomber.getBundleBonus().getBonus(bonus.getBonusType()) + 1); // add the bonus.
             mapPointMatrix[bonus.getRowIdx()][bonus.getColIdx()].setBonusing(false); // the case is no more bonusing.
             bonus.setStatus(Bonus.Status.STATUS_ENDED); // end the bonus.
         }
 
         // act bomber.
         if (bomber.isFinished()) {
+
+            // randomly replace bonus from the bomber's end point.
+            GenerationMethods.randomlyPlaceBonusFromAMapPoint(tmpList,
+                    mapPointMatrix,
+                    mapWidth,
+                    mapHeight,
+                    getCharRowIdx(bomber.getyMap()),
+                    getCharColIdx(bomber.getxMap()),
+                    bomber.getBundleBonus().getCollectedBonus());
+
             shouldBeRemoved = bomber.init(); // re-init the bomber if finished.
         } else if (bomber.getCurSpriteAction() != ACTION_DYING) { // the bomber is not finished and not dead.
 
@@ -124,7 +119,8 @@ public class ActionMethods {
             if (!bomber.isInvincible() &&
                     (isNomadBurning(mapPointMatrix, bomber.getxMap(), bomber.getyMap()) ||
                             isNomadCrossingEnemy(list, bomber.getxMap(), bomber.getyMap(), bomber))) {
-                bomber.setNbBonusHeart(bomber.getNbBonusHeart() - 1);
+                bomber.getBundleBonus().setBonus(TYPE_BONUS_HEART,
+                        bomber.getBundleBonus().getBonus(TYPE_BONUS_HEART) - 1);
                 bomber.setCurSpriteAction(ACTION_DYING);
 
             } else if (bomber.isTimeToAct()) { // it is time to act.
@@ -198,10 +194,10 @@ public class ActionMethods {
                         break;
                     }
                     case KeyEvent.VK_B: {
-                        if (bomber.getNbDroppedBomb() < bomber.getNbBonusBomb()) {
-                            Bomb bomb = new Bomb(Tools.getCharRowIdx(bomber.getyMap()),
+                        if (bomber.getNbDroppedBomb() < bomber.getBundleBonus().getBonus(TYPE_BONUS_BOMB)) {
+                            Bomb bomb = new Bomb(getCharRowIdx(bomber.getyMap()),
                                     getCharColIdx(bomber.getxMap()),
-                                    bomber.getNbBonusFlame());
+                                    bomber.getBundleBonus().getBonus(TYPE_BONUS_FLAME));
                             if(addBomb(tmpList, mapPointMatrix, bomb)) {
                                 bomber.dropBomb(bomb);
                             }

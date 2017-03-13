@@ -2,6 +2,7 @@ package utils;
 
 import images.ImagesLoader;
 import sprite.nomad.Bomber;
+import sprite.settled.BonusType;
 
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
@@ -145,7 +146,11 @@ public class TopBar {
      */
     public static void paintBuffer(Graphics2D g, int screenWidth, Bomber bomber, long elapsedTime) {
         paintElapsedTime(g, screenWidth, elapsedTime);
-        paintNbRemainingLifes(g, bomber.getNbBonusHeart());
-        paintBonus(g, screenWidth, bomber.getNbBonusBomb(), bomber.getNbBonusFlame(), bomber.getNbBonusRoller());
+        paintNbRemainingLifes(g, bomber.getBundleBonus().getBonus(BonusType.TYPE_BONUS_HEART));
+        paintBonus(g,
+                screenWidth,
+                bomber.getBundleBonus().getBonus(BonusType.TYPE_BONUS_BOMB),
+                bomber.getBundleBonus().getBonus(BonusType.TYPE_BONUS_FLAME),
+                bomber.getBundleBonus().getBonus(BonusType.TYPE_BONUS_ROLLER));
     }
 }

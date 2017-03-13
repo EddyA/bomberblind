@@ -49,6 +49,47 @@ public class AddingMethods {
     }
 
     /**
+     * Add a bonus to a list.
+     * The bonus is adding if:
+     * - it is a mutable case,
+     * - AND it is not a bonusing case.
+     *
+     * @param list           the list into which adding the bonus
+     * @param mapPointMatrix the map (represented by its matrix of MapPoint)
+     * @param bonus          the bonus to add
+     * @return true if the bonus has been added, false otherwise.
+     */
+    public static boolean addBonus(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, Bonus bonus) {
+        if (mapPointMatrix[bonus.getRowIdx()][bonus.getColIdx()].isPathway() &&
+                !mapPointMatrix[bonus.getRowIdx()][bonus.getColIdx()].isBonusing()) {
+            mapPointMatrix[bonus.getRowIdx()][bonus.getColIdx()].setBonusing(true);
+            list.add(bonus);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Add a breaking enemy to a list.
+     *
+     * @param list          the list into which adding the sprite
+     * @param breakingEnemy the walking enemy to add
+     */
+    public static void addBreakingEnemy(LinkedList<Sprite> list, BreakingEnemy breakingEnemy) {
+        list.add(breakingEnemy);
+    }
+
+    /**
+     * Add a flying nomad to a list.
+     *
+     * @param list        the list into which adding the sprite
+     * @param flyingNomad the flying nomad to add
+     */
+    public static void addFlyingNomad(LinkedList<Sprite> list, FlyingNomad flyingNomad) {
+        list.add(flyingNomad);
+    }
+
+    /**
      * Check if a bonus is attached to a MapPoint and add it to a list if so, do nothing otherwise.
      *
      * @param list     the list into which adding the bonus
@@ -78,26 +119,6 @@ public class AddingMethods {
             mapPoint.setAttachedBonus(null); // detached the bonus.
 
         }
-    }
-
-    /**
-     * Add a breaking enemy to a list.
-     *
-     * @param list  the list into which adding the sprite
-     * @param breakingEnemy the walking enemy to add
-     */
-    public static void addBreakingEnemy(LinkedList<Sprite> list, BreakingEnemy breakingEnemy) {
-        list.add(breakingEnemy);
-    }
-
-    /**
-     * Add a flying nomad to a list.
-     *
-     * @param list the list into which adding the sprite
-     * @param flyingNomad the flying nomad to add
-     */
-    public static void addFlyingNomad(LinkedList<Sprite> list, FlyingNomad flyingNomad) {
-        list.add(flyingNomad);
     }
 
     /**

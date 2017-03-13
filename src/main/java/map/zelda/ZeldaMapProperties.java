@@ -96,6 +96,7 @@ public class ZeldaMapProperties extends MapProperties {
         return Integer.parseInt(properties.getProperty(MAP_BONUS_NB_ROLLER));
     }
 
+    @Override
     public MapProperties loadProperties()
             throws IllegalArgumentException, IOException, InvalidConfigurationException {
         Preconditions.checkArgument((propertiesFile != null) &&
@@ -109,6 +110,7 @@ public class ZeldaMapProperties extends MapProperties {
         return this;
     }
 
+    @Override
     public MapProperties checkProperties() throws InvalidConfigurationException {
         if (!isValidInteger(properties.getProperty(MAP_SIZE_WIDTH)) ||
                 !isValidInteger(properties.getProperty(MAP_SIZE_HEIGHT)) ||

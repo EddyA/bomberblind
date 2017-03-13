@@ -3,6 +3,8 @@ package sprite.nomad;
 import sprite.SpriteAction;
 import sprite.SpriteType;
 import sprite.settled.Bomb;
+import sprite.settled.BonusBundle;
+import sprite.settled.BonusType;
 
 import java.awt.*;
 import java.util.LinkedList;
@@ -32,16 +34,9 @@ public abstract class Bomber extends Nomad {
     private int initialXMap; // initial abscissa on map.
     private int initialYMap; // initial ordinate on map.
 
-    private LinkedList<Bomb> droppedBombs; // array of dropped bombs.
+    private final LinkedList<Bomb> droppedBombs; // array of dropped bombs.
 
-    private int nbBonusBomb;
-    private final static int NB_BONUS_BOMB = 1;
-    private int nbBonusFlame;
-    private final static int NB_BONUS_FLAME = 1;
-    private int nbBonusHeart;
-    private final static int NB_BONUS_HEART = 5;
-    private int nbBonusRoller;
-    private final static int NB_BONUS_ROLLER = 1;
+    private final BonusBundle bundleBonus; // handle bonus.
 
     /**
      * Create a bomber.
@@ -97,10 +92,7 @@ public abstract class Bomber extends Nomad {
         initialXMap = xMap;
         initialYMap = yMap;
         droppedBombs = new LinkedList<>();
-        nbBonusBomb = NB_BONUS_BOMB;
-        nbBonusFlame = NB_BONUS_FLAME;
-        nbBonusHeart = NB_BONUS_HEART;
-        nbBonusRoller = NB_BONUS_ROLLER;
+        bundleBonus = new BonusBundle();
         init();
     }
 
@@ -184,37 +176,8 @@ public abstract class Bomber extends Nomad {
         return nbDroppedBombs;
     }
 
-    public int getNbBonusHeart() {
-        return nbBonusHeart;
-    }
-
-    public void setNbBonusHeart(int nbBonusHeart) {
-        this.nbBonusHeart = nbBonusHeart;
-    }
-
-    public int getNbBonusBomb() {
-        return nbBonusBomb;
-    }
-
-    public void setNbBonusBomb(int nbBonusBomb) {
-        this.nbBonusBomb = nbBonusBomb;
-    }
-
-    public int getNbBonusFlame() {
-        return nbBonusFlame;
-    }
-
-    public void setNbBonusFlame(int nbBonusFlame) {
-        this.nbBonusFlame = nbBonusFlame;
-    }
-
-    public int getNbBonusRoller() {
-        return nbBonusRoller;
-    }
-
-    public void setNbBonusRoller(int nbBonusRoller) {
-        this.nbBonusRoller = nbBonusRoller;
-        setActingTime(DEFAULT_ACTING_TIME + NB_BONUS_ROLLER - this.nbBonusRoller); // update the acting time.
+    public BonusBundle getBundleBonus() {
+        return bundleBonus;
     }
 
     /**
@@ -223,14 +186,12 @@ public abstract class Bomber extends Nomad {
      * @return true if the bomber is definitively dead, false otherwise.
      */
     public boolean init() {
-        if (nbBonusHeart > 0) {
+        if (bundleBonus.getBonus(BonusType.TYPE_BONUS_HEART) > 0) {
             xMap = initialXMap;
             yMap = initialYMap;
             curSpriteAction = ACTION_WAITING;
             lastInvincibilityTs = currentTimeSupplier.get().toEpochMilli(); // activate invincibility.
-            nbBonusBomb = NB_BONUS_BOMB;
-            nbBonusFlame = NB_BONUS_FLAME;
-            nbBonusRoller = NB_BONUS_ROLLER;
+            bundleBonus.resetBonus();
             setActingTime(DEFAULT_ACTING_TIME);
             return false;
         } else {

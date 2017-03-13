@@ -224,7 +224,8 @@ public class GenerationMethods {
 
             // place the bonus.
             if (mutableCases.size() <= 0) {
-                throw new CannotPlaceBonusOnMapException("not able to place bonus '" + BonusType.getlabel(bonusToPlace).orElse("no_name")
+                throw new CannotPlaceBonusOnMapException("not able to place bonus '" +
+                        BonusType.getlabel(bonusToPlace).orElse("no_name")
                         + "' on map, no more available mutable.");
             }
             int ptIdx = Math.abs(R.nextInt(mutableCases.size())); // randomly choose a mutable case.

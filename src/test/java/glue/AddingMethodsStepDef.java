@@ -5,6 +5,7 @@ import cucumber.api.java.en.Then;
 import map.MapPoint;
 import org.assertj.core.api.WithAssertions;
 import sprite.SpriteType;
+import sprite.settled.BonusType;
 import spriteList.ctrl.AddingMethods;
 import utils.Tools;
 
@@ -57,7 +58,7 @@ public class AddingMethodsStepDef implements WithAssertions {
         bomberState.getBomber().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
         bomberState.getBomber().setInitialXMap(Tools.getCaseCentreAbscissa(colIdx));
         bomberState.getBomber().setInitialYMap(Tools.getCaseBottomOrdinate(rowIdx));
-        bomberState.getBomber().setNbBonusHeart(nbLifes);
+        bomberState.getBomber().getBundleBonus().setBonus(BonusType.TYPE_BONUS_HEART, nbLifes);
         bomberState.getBomber().setLastInvincibilityTs(0); // deactivate the invincibility at init.
         AddingMethods.addBomber(listOfSprites.getSpriteList(), bomberState.getBomber());
     }
