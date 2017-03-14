@@ -22,11 +22,11 @@ A bomberman alike game.
   * Same as walking enemy, but breaks obstacles (and then, changes of direction) when reaching mutables.
 * Randomly create enemies.
   * The number/proportion of enemies is fully settable (.properties).
-* 4 Bonus (bomb, flame, heart, roller).
-  * The bomb bonus allows the bomber putting 1 more bomb at the same time.
-  * The flame bonus allows the bomber's bombs getting 1 more flame unit longer..
-  * The Heart allows the bomber getting 1 more life.
-  * The roller allows the bomber walking 1 speed unit faster. 
+* 4 bonus (bomb, flame, heart, roller).
+  * The bomb bonus allows the bomber putting one more bomb at the same time.
+  * The flame bonus allows the bomber's bomb blast sizing one more flame unit.
+  * The heart bonus allows the bomber having one more life.
+  * The roller bonus allows the bomber walking one speed unit faster.
 * Randomly create bonus.
   * The number/proportion of bonus is fully settable (.properties).
 * Flying nomad.
