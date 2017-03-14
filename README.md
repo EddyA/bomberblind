@@ -22,6 +22,13 @@ A bomberman alike game.
   * Same as walking enemy, but breaks obstacles (and then, changes of direction) when reaching mutables.
 * Randomly create enemies.
   * The number/proportion of enemies is fully settable (.properties).
+* 4 Bonus (bomb, flame, heart, roller).
+  * The bomb bonus allows the bomber putting 1 more bomb at the same time.
+  * The flame bonus allows the bomber's bombs getting 1 more flame unit longer..
+  * The Heart allows the bomber getting 1 more life.
+  * The roller allows the bomber walking 1 speed unit faster. 
+* Randomly create bonus.
+  * The number/proportion of bonus is fully settable (.properties).
 * Flying nomad.
   * A flying nomad is a scenary element (it does not interact with the other sprites) crossing the map (e.g. birds).
   * Flying nomads are dynamically & randomly created during the game.
