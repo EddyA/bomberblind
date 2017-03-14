@@ -2,16 +2,21 @@ package spriteList.ctrl;
 
 import exceptions.CannotPlaceEnemyOnMapException;
 import map.MapPoint;
+import sprite.Sprite;
 import sprite.nomad.*;
+import sprite.settled.BonusBomb;
+import sprite.settled.BonusFlame;
+import sprite.settled.BonusRoller;
+import sprite.settled.BonusType;
 import spriteList.SpriteList;
 import utils.Direction;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static images.ImagesLoader.IMAGE_SIZE;
 import static spriteList.ctrl.AddingMethods.addBreakingEnemy;
 import static spriteList.ctrl.AddingMethods.addWalkingEnemy;
+import static utils.Direction.*;
 
 public class GenerationMethods {
 
@@ -48,19 +53,19 @@ public class GenerationMethods {
 
             // create the enemy.
             switch (enemyType) {
-                case CLOAKED_SKELETON: {
+                case TYPE_ENEMY_CLOAKED_SKELETON: {
                     addWalkingEnemy(spriteList, new CloakedSkeleton(xMap, yMap));
                     break;
                 }
-                case MECA_ANGEL: {
+                case TYPE_ENEMY_MECA_ANGEL: {
                     addWalkingEnemy(spriteList, new MecaAngel(xMap, yMap));
                     break;
                 }
-                case MUMMY: {
+                case TYPE_ENEMY_MUMMY: {
                     addWalkingEnemy(spriteList, new Mummy(xMap, yMap));
                     break;
                 }
-                case MINOTOR: {
+                case TYPE_ENEMY_MINOTOR: {
                     addBreakingEnemy(spriteList, new Minotor(xMap, yMap));
                     break;
                 }
@@ -165,4 +170,74 @@ public class GenerationMethods {
             }
         }
     }
+
+    /**
+     * Randomly place a bundle of bonus from a map point.
+     *
+     * @param list           the list into which adding the bonus
+     * @param mapPointMatrix the map (represented by its matrix of MapPoint)
+     * @param mapWidth       the map width
+     * @param mapHeight      the map height
+     * @param rowIdx         the rowIdx from which adding the bonus
+     * @param colIdx         the colIdx from which adding the bonus
+     * @param bonusBundle    the list of bonus to place
+     */
+    public static void randomlyPlaceBonusFromAMapPoint(LinkedList<Sprite> list,
+                                                       MapPoint[][] mapPointMatrix,
+                                                       int mapWidth,
+                                                       int mapHeight,
+                                                       int rowIdx,
+                                                       int colIdx,
+                                                       Map<BonusType, Integer> bonusBundle) {
+        int nbBonusToPlace = 0;
+        ArrayList<BonusType> bonusTypesToPlace = new ArrayList<>();
+        for (Map.Entry<BonusType, Integer> bonusEntry : bonusBundle.entrySet()) {
+            if (bonusEntry.getValue() != 0) {
+                nbBonusToPlace += bonusEntry.getValue();
+                bonusTypesToPlace.add(bonusEntry.getKey());
+            }
+        }
+        if (rowIdx < 0 || rowIdx >= mapWidth || colIdx < 0 || colIdx >= mapHeight || // out of map.
+                nbBonusToPlace == 0) { // no more bonus to place.
+            return; // end of recursivity.
+        }
+
+        // randomly get a BonusType (among the available ones) and try to place it onto the current map point.
+        BonusType rbonusType = bonusTypesToPlace.get(random.nextInt(bonusTypesToPlace.size()));
+        boolean bonusAdded;
+        switch (rbonusType) {
+            case TYPE_BONUS_BOMB:
+                bonusAdded = AddingMethods.addBonus(list, mapPointMatrix, new BonusBomb(rowIdx, colIdx));
+                break;
+            case TYPE_BONUS_FLAME:
+                bonusAdded = AddingMethods.addBonus(list, mapPointMatrix, new BonusFlame(rowIdx, colIdx));
+                break;
+            case TYPE_BONUS_ROLLER:
+                bonusAdded = AddingMethods.addBonus(list, mapPointMatrix, new BonusRoller(rowIdx, colIdx));
+                break;
+            default: // should not happen.
+                throw new RuntimeException("the BonusType \""
+                        + BonusType.getlabel(rbonusType).orElse("n/a")
+                        + "\" is not handled by the switch.");
+        }
+        if (bonusAdded) {
+            bonusBundle.put(rbonusType, bonusBundle.get(rbonusType) - 1);
+        }
+
+        // recursivly explore other directions.b
+        Set<Direction> checkedDirections = new HashSet<>();
+        do {
+
+            Direction rDirection = Direction.getRandomDirectionWithExclusion(checkedDirections);
+            GenerationMethods.randomlyPlaceBonusFromAMapPoint(list,
+                    mapPointMatrix,
+                    mapWidth,
+                    mapHeight,
+                    rDirection == DIRECTION_NORTH ? rowIdx - 1 : rDirection == DIRECTION_SOUTH ? rowIdx + 1 : rowIdx,
+                    rDirection == DIRECTION_WEST ? colIdx - 1 : rDirection == DIRECTION_EAST ? colIdx + 1 : colIdx,
+                    bonusBundle);
+            checkedDirections.add(rDirection); // mark the random direction as checked.
+        } while (checkedDirections.size() != 4);
+    }
+
 }

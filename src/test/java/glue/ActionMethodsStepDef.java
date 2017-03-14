@@ -11,6 +11,7 @@ public class ActionMethodsStepDef implements WithAssertions {
 
     private final BombState bombState;
     private final BomberState bomberState;
+    private final BonusFlameState bonusFlameState;
     private final BreakingEnemyState breakingEnemyState;
     private final FlameState flameState;
     private final FlameEndState flameEndState;
@@ -21,6 +22,7 @@ public class ActionMethodsStepDef implements WithAssertions {
                                 MapPointMatrixState mapPointMatrixState,
                                 BombState bombState,
                                 BomberState bomberState,
+                                BonusFlameState bonusFlameState,
                                 BreakingEnemyState breakingEnemyState,
                                 FlameState flameState,
                                 FlameEndState flameEndState,
@@ -30,6 +32,7 @@ public class ActionMethodsStepDef implements WithAssertions {
         this.mapPointMatrixState = mapPointMatrixState;
         this.bombState = bombState;
         this.bomberState = bomberState;
+        this.bonusFlameState = bonusFlameState;
         this.breakingEnemyState = breakingEnemyState;
         this.flameState = flameState;
         this.flameEndState = flameEndState;
@@ -52,6 +55,12 @@ public class ActionMethodsStepDef implements WithAssertions {
                         mapPointMatrixState.getMapHeight(), bomberState.getBomber(), 0));
     }
 
+    @When("processing the bonus flame$")
+    public void processing_the_bonus_flame() {
+        bonusFlameState.setShouldBeRemoved(ActionMethods.processBonus(mapPointMatrixState.getMapPointMatrix(),
+                bonusFlameState.getBonusFlame()));
+    }
+
     @When("^processing the breaking enemy$")
     public void processing_the_breaking_enemy() {
         breakingEnemyState.setShouldBeRemoved(
@@ -69,8 +78,7 @@ public class ActionMethodsStepDef implements WithAssertions {
 
     @When("processing the flame end$")
     public void processing_the_flame_end() {
-        flameEndState.setShouldBeRemoved(
-                ActionMethods.processFlameEnd(flameEndState.getFlameEnd()));
+        flameEndState.setShouldBeRemoved(ActionMethods.processFlameEnd(flameEndState.getFlameEnd()));
     }
 
     @When("processing the flying nomad$")

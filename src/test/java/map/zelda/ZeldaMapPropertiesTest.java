@@ -1,7 +1,6 @@
 package map.zelda;
 
 import exceptions.InvalidConfigurationException;
-
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -29,6 +28,10 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
         assertThat(zeldaMapProperties.getMapElementPerSingleMutable()).isEqualTo(11);
         assertThat(zeldaMapProperties.getMapElementPerSingleObstacle()).isEqualTo(12);
         assertThat(zeldaMapProperties.getMapElementPerSingleDynPathway()).isEqualTo(13);
+        assertThat(zeldaMapProperties.getMapBonusNbBomb()).isEqualTo(14);
+        assertThat(zeldaMapProperties.getMapBonusNbFlame()).isEqualTo(15);
+        assertThat(zeldaMapProperties.getMapBonusNbHeart()).isEqualTo(16);
+        assertThat(zeldaMapProperties.getMapBonusNbRoller()).isEqualTo(17);
     }
 
     @Test

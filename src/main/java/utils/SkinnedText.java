@@ -9,7 +9,7 @@ public class SkinnedText {
     public final static String TEXT_GAME_OVER = "GAME OVER\nThank you for playing!\n\n(Press ESC to exit)";
     public final static String TEXT_WIN = "YOU WIN!\nThank you for playing!\n\n(Press ESC to exit)";
 
-    private static int lineSpacing = 25;
+    private final static int lineSpacing = 25;
 
     /**
      * Compute the abscissa from which painting a skinned line to horizontally center it.

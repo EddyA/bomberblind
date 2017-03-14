@@ -16,7 +16,7 @@ import static sprite.settled.LoopedSettled.Status.STATUS_ENDED;
 public abstract class LoopedSettled extends Sprite {
 
     /**
-     * enum the different available action of a looped settled.
+     * enum the different available status of a looped settled.
      */
     public enum Status {
         STATUS_ALIVE, STATUS_ENDED

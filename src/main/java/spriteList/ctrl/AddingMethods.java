@@ -6,9 +6,7 @@ import sprite.nomad.Bomber;
 import sprite.nomad.BreakingEnemy;
 import sprite.nomad.FlyingNomad;
 import sprite.nomad.WalkingEnemy;
-import sprite.settled.Bomb;
-import sprite.settled.Flame;
-import sprite.settled.FlameEnd;
+import sprite.settled.*;
 
 import java.util.LinkedList;
 
@@ -26,19 +24,22 @@ public class AddingMethods {
      * @param list           the list into which adding the bomb
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param bomb           the bomb to add
+     * @return true if the bomb has been added, false otherwise.
      */
-    public static void addBomb(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, Bomb bomb) {
+    public static boolean addBomb(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, Bomb bomb) {
         // to avoid adding several bombs when key is pressed.
         if (!mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBombing() &&
                 // to avoid adding a bomb on a burning case when the character is invicible.
                 !mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBurning()) {
             mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].setBombing(true);
             list.add(bomb);
+            return true;
         }
+        return false;
     }
 
     /**
-     * Add a bomber to the list.
+     * Add a bomber to a list.
      *
      * @param list   the list into which adding the sprite
      * @param bomber the bomber to add
@@ -48,9 +49,30 @@ public class AddingMethods {
     }
 
     /**
-     * Add a breaking enemy to the list.
+     * Add a bonus to a list.
+     * The bonus is adding if:
+     * - it is a mutable case,
+     * - AND it is not a bonusing case.
      *
-     * @param list  the list into which adding the sprite
+     * @param list           the list into which adding the bonus
+     * @param mapPointMatrix the map (represented by its matrix of MapPoint)
+     * @param bonus          the bonus to add
+     * @return true if the bonus has been added, false otherwise.
+     */
+    public static boolean addBonus(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, Bonus bonus) {
+        if (mapPointMatrix[bonus.getRowIdx()][bonus.getColIdx()].isPathway() &&
+                !mapPointMatrix[bonus.getRowIdx()][bonus.getColIdx()].isBonusing()) {
+            mapPointMatrix[bonus.getRowIdx()][bonus.getColIdx()].setBonusing(true);
+            list.add(bonus);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Add a breaking enemy to a list.
+     *
+     * @param list          the list into which adding the sprite
      * @param breakingEnemy the walking enemy to add
      */
     public static void addBreakingEnemy(LinkedList<Sprite> list, BreakingEnemy breakingEnemy) {
@@ -58,13 +80,44 @@ public class AddingMethods {
     }
 
     /**
-     * Add a flying nomad to the list.
+     * Add a flying nomad to a list.
      *
-     * @param list the list into which adding the sprite
+     * @param list        the list into which adding the sprite
      * @param flyingNomad the flying nomad to add
      */
     public static void addFlyingNomad(LinkedList<Sprite> list, FlyingNomad flyingNomad) {
         list.add(flyingNomad);
+    }
+
+    /**
+     * Check if a bonus is attached to a MapPoint and add it to a list if so, do nothing otherwise.
+     *
+     * @param list     the list into which adding the bonus
+     * @param mapPoint thz MapPoint to check
+     */
+    public static void checkMapPointAndAddBonus(LinkedList<Sprite> list, MapPoint mapPoint) {
+        if (mapPoint.getAttachedBonus() != null) {
+            switch (mapPoint.getAttachedBonus()) {
+                case TYPE_BONUS_BOMB: {
+                    list.add(new BonusBomb(mapPoint.getRowIdx(), mapPoint.getColIdx()));
+                    break;
+                }
+                case TYPE_BONUS_FLAME: {
+                    list.add(new BonusFlame(mapPoint.getRowIdx(), mapPoint.getColIdx()));
+                    break;
+                }
+                case TYPE_BONUS_HEART: {
+                    list.add(new BonusHeart(mapPoint.getRowIdx(), mapPoint.getColIdx()));
+                    break;
+                }
+                case TYPE_BONUS_ROLLER: {
+                    list.add(new BonusRoller(mapPoint.getRowIdx(), mapPoint.getColIdx()));
+                    break;
+                }
+            }
+            mapPoint.setBonusing(true); // note the case as bonusing (the bonus has been revealed).
+            mapPoint.setAttachedBonus(null); // detached the bonus.
+        }
     }
 
     /**
@@ -90,6 +143,7 @@ public class AddingMethods {
             mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].setMutable(false);
             mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].addFlame();
             mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].setImageAsBurned();
+            checkMapPointAndAddBonus(list, mapPointMatrix[flame.getRowIdx()][flame.getColIdx()]);
             list.add(flame);
             return false; // the next case should NOT be tested.
         } else {

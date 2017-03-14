@@ -7,6 +7,7 @@ import sprite.Sprite;
 import sprite.SpriteType;
 import sprite.nomad.*;
 import sprite.settled.Bomb;
+import sprite.settled.Bonus;
 import sprite.settled.Flame;
 import sprite.settled.FlameEnd;
 import spriteList.ctrl.ActionMethods;
@@ -71,19 +72,27 @@ public class SpriteList extends LinkedList<Sprite> {
 
         // walking enemies:
         // - cloaked skeleton
-        GenerationMethods.randomlyPlaceEnemies(this, EnemyType.CLOAKED_SKELETON,
-                spritesSetting.getNbCloakedSkeleton(), emptyPtList);
+        GenerationMethods.randomlyPlaceEnemies(this,
+                EnemyType.TYPE_ENEMY_CLOAKED_SKELETON,
+                spritesSetting.getNbCloakedSkeleton(),
+                emptyPtList);
         // - meca angel
-        GenerationMethods.randomlyPlaceEnemies(this, EnemyType.MECA_ANGEL,
-                spritesSetting.getNbMecaAngel(), emptyPtList);
+        GenerationMethods.randomlyPlaceEnemies(this,
+                EnemyType.TYPE_ENEMY_MECA_ANGEL,
+                spritesSetting.getNbMecaAngel(),
+                emptyPtList);
         // - mummy
-        GenerationMethods.randomlyPlaceEnemies(this, EnemyType.MUMMY,
-                spritesSetting.getNbMummy(), emptyPtList);
+        GenerationMethods.randomlyPlaceEnemies(this,
+                EnemyType.TYPE_ENEMY_MUMMY,
+                spritesSetting.getNbMummy(),
+                emptyPtList);
 
         // breaking enemies:
         // - minotor
-        GenerationMethods.randomlyPlaceEnemies(this, EnemyType.MINOTOR,
-                spritesSetting.getNbMinotor(), emptyPtList);
+        GenerationMethods.randomlyPlaceEnemies(this,
+                EnemyType.TYPE_ENEMY_MINOTOR,
+                spritesSetting.getNbMinotor(),
+                emptyPtList);
     }
 
     /**
@@ -105,6 +114,10 @@ public class SpriteList extends LinkedList<Sprite> {
                 case TYPE_BOMBER: {
                     shouldBeRemoved = ActionMethods.processBomber(this, tmpList, map.getMapPointMatrix(), map.getMapWidth(),
                             map.getMapHeight(), (Bomber) sprite, pressedKey);
+                    break;
+                }
+                case TYPE_BONUS: {
+                    shouldBeRemoved = ActionMethods.processBonus(map.getMapPointMatrix(), (Bonus) sprite);
                     break;
                 }
                 case TYPE_BREAKING_ENEMY: {
@@ -132,9 +145,9 @@ public class SpriteList extends LinkedList<Sprite> {
                     break;
                 }
                 default: {
-                    throw new RuntimeException("the SpriteType \"" +
-                            SpriteType.getlabel(sprite.getSpriteType()).orElse("n/a") +
-                            "\" is not handled by the switch.");
+                    throw new RuntimeException("the SpriteType \""
+                            + SpriteType.getlabel(sprite.getSpriteType()).orElse("n/a")
+                            + "\" is not handled by the switch.");
                 }
             }
             if (shouldBeRemoved) { // should the sprite be removed from the list?

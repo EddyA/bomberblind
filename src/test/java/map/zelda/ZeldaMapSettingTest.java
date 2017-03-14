@@ -28,5 +28,9 @@ public class ZeldaMapSettingTest implements WithAssertions {
         assertThat(zeldaMapSetting.getPerSingleMutable()).isEqualTo(11);
         assertThat(zeldaMapSetting.getPerSingleObstacle()).isEqualTo(12);
         assertThat(zeldaMapSetting.getPerSingleDynPathway()).isEqualTo(13);
+        assertThat(zeldaMapSetting.getNbBonusBomb()).isEqualTo(14);
+        assertThat(zeldaMapSetting.getNbBonusFlame()).isEqualTo(15);
+        assertThat(zeldaMapSetting.getNbBonusHeart()).isEqualTo(16);
+        assertThat(zeldaMapSetting.getNbBonusRoller()).isEqualTo(17);
     }
 }

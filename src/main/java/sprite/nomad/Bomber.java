@@ -2,8 +2,14 @@ package sprite.nomad;
 
 import sprite.SpriteAction;
 import sprite.SpriteType;
+import sprite.settled.Bomb;
+import sprite.settled.BonusBundle;
+import sprite.settled.BonusType;
 
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.Map;
 
 import static sprite.SpriteAction.*;
 
@@ -11,6 +17,8 @@ import static sprite.SpriteAction.*;
  * Abstract class of a bomber.
  */
 public abstract class Bomber extends Nomad {
+
+    public final static int DEFAULT_ACTING_TIME = 7;
 
     private final Image[] deathImages;
     private final int nbDeathFrame;
@@ -27,7 +35,9 @@ public abstract class Bomber extends Nomad {
     private int initialXMap; // initial abscissa on map.
     private int initialYMap; // initial ordinate on map.
 
-    private int nbLife;
+    private final LinkedList<Bomb> droppedBombs; // array of dropped bombs.
+
+    private final BonusBundle bundleBonus; // handle bonus.
 
     /**
      * Create a bomber.
@@ -46,9 +56,7 @@ public abstract class Bomber extends Nomad {
      * @param winImages         the array of image for the "win" action
      * @param nbWinFrame        the number of images of the "win" array
      * @param refreshTime       the sprite refresh time (i.e. defining the sprite speed in term of image/sec)
-     * @param actingTime        the sprite acting time (i.e. defining the sprite speed in term of action/sec)
      * @param invincibilityTime the sprite invincibility time
-     * @param nbLife            the number of life
      */
     public Bomber(int xMap,
                   int yMap,
@@ -64,14 +72,12 @@ public abstract class Bomber extends Nomad {
                   Image[] winImages,
                   int nbWinFrame,
                   int refreshTime,
-                  int actingTime,
-                  int invincibilityTime,
-                  int nbLife) {
+                  int invincibilityTime) {
         super(xMap,
                 yMap,
                 SpriteType.TYPE_BOMBER,
                 refreshTime,
-                actingTime,
+                DEFAULT_ACTING_TIME,
                 invincibilityTime);
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
@@ -84,9 +90,10 @@ public abstract class Bomber extends Nomad {
         this.nbWalkFrame = nbWalkFrame;
         this.winImages = winImages;
         this.nbWinFrame = nbWinFrame;
-        this.initialXMap = xMap;
-        this.initialYMap = yMap;
-        this.nbLife = nbLife;
+        initialXMap = xMap;
+        initialYMap = yMap;
+        droppedBombs = new LinkedList<>();
+        bundleBonus = new BonusBundle();
         init();
     }
 
@@ -150,12 +157,62 @@ public abstract class Bomber extends Nomad {
         this.initialYMap = initialYMap;
     }
 
-    public int getNbLife() {
-        return nbLife;
+    public LinkedList<Bomb> getDroppedBombs() {
+        return droppedBombs;
     }
 
-    public void setNbLife(int nbLife) {
-        this.nbLife = nbLife;
+    public void dropBomb(Bomb bomb) {
+        droppedBombs.add(bomb);
+    }
+
+    /**
+     * Get the number of (not finished) bombs and remove finished bombs from the list of dropped bombs.
+     */
+    public int getNbDroppedBomb() {
+        int nbDroppedBombs = 0;
+        for (ListIterator<Bomb> iterator = droppedBombs.listIterator(); iterator.hasNext(); ) {
+            Bomb bomb = iterator.next();
+            if (!bomb.isFinished()) {
+                nbDroppedBombs++;
+            } else {
+                iterator.remove();
+            }
+        }
+        return nbDroppedBombs;
+    }
+
+    /**
+     * Get the number of bonus typed 'bonusType'.
+     *
+     * @param bonusType the bonus type
+     * @return the number of bonus typed 'bonusType'
+     */
+    public int getBonus(BonusType bonusType) {
+        return bundleBonus.getBonus(bonusType);
+    }
+
+    /**
+     * Set the number of bonus typed 'bonusType'.
+     *
+     * @param bonusType the bonus type
+     * @param nbBonus   the number of bonus typed 'bonusType'
+     */
+    public void setBonus(BonusType bonusType, int nbBonus) {
+        bundleBonus.setBonus(bonusType, nbBonus);
+        if (bonusType == BonusType.TYPE_BONUS_ROLLER) {
+            setActingTime(DEFAULT_ACTING_TIME - BonusBundle.DEFAULT_NB_BONUS_ROLLER - nbBonus);
+        }
+    }
+
+    /**
+     * Get the number of collected bonus with:
+     * - key: the type of bonus
+     * - value: the number of collected bonus
+     * <p>
+     * Note: this function does not take into account heart bonus.
+     */
+    public Map<BonusType, Integer> getCollectedBonus() {
+        return bundleBonus.getCollectedBonus();
     }
 
     /**
@@ -164,10 +221,12 @@ public abstract class Bomber extends Nomad {
      * @return true if the bomber is definitively dead, false otherwise.
      */
     public boolean init() {
-        if (nbLife > 0) {
+        if (bundleBonus.getBonus(BonusType.TYPE_BONUS_HEART) > 0) {
             xMap = initialXMap;
             yMap = initialYMap;
             curSpriteAction = ACTION_WAITING;
+            bundleBonus.resetBonus();
+            setActingTime(DEFAULT_ACTING_TIME);
             lastInvincibilityTs = currentTimeSupplier.get().toEpochMilli(); // activate invincibility.
             return false;
         } else {

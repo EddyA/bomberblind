@@ -126,8 +126,7 @@ public class LoopedSettledTest implements WithAssertions {
     }
 
     @Test
-    public void updateImageWithTheLastImageShouldSetCurImageIdxTo0AndIncrementCurLoopIdx()
-            throws Exception {
+    public void updateImageWithTheLastImageShouldSetCurImageIdxTo0AndIncrementCurLoopIdx() throws Exception {
         FlameEnd flameEnd = new FlameEnd(5, 4);
         FlameEnd spyedFlameEnd = Mockito.spy(flameEnd);
         Mockito.when(spyedFlameEnd.isTimeToRefresh()).thenReturn(true);

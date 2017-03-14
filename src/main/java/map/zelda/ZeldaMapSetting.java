@@ -24,6 +24,11 @@ public class ZeldaMapSetting extends MapSettings {
     private int perSingleObstacle; // the percentage of single obstacle to place among available cases.
     private int perSingleDynPathway; // the percentage of dynamic pathway to place among available cases.
 
+    private int nbBonusBomb; // the number of bonus bomb to place.
+    private int nbBonusFlame; // the number of bonus flame to place.
+    private int nbBonusHeart; // the number of bonus heart to place.
+    private int nbBonusRoller; // the number of bonus roller to place.
+
     public ZeldaMapSetting(MapProperties mapConfiguration) throws InvalidPropertiesException {
         super(mapConfiguration);
         if (mapConfiguration.getClass().getSimpleName().equals("ZeldaMapProperties")) {
@@ -39,6 +44,10 @@ public class ZeldaMapSetting extends MapSettings {
             this.perSingleMutable = zeldaMapProperties.getMapElementPerSingleMutable();
             this.perSingleObstacle = zeldaMapProperties.getMapElementPerSingleObstacle();
             this.perSingleDynPathway = zeldaMapProperties.getMapElementPerSingleDynPathway();
+            this.nbBonusBomb = zeldaMapProperties.getMapBonusNbBomb();
+            this.nbBonusFlame = zeldaMapProperties.getMapBonusNbFlame();
+            this.nbBonusHeart = zeldaMapProperties.getMapBonusNbHeart();
+            this.nbBonusRoller = zeldaMapProperties.getMapBonusNbRoller();
         } else {
             throw new InvalidPropertiesException("the provided MapProperties is badly typed.");
         }
@@ -86,5 +95,21 @@ public class ZeldaMapSetting extends MapSettings {
 
     int getPerSingleDynPathway() {
         return perSingleDynPathway;
+    }
+
+    public int getNbBonusBomb() {
+        return nbBonusBomb;
+    }
+
+    public int getNbBonusFlame() {
+        return nbBonusFlame;
+    }
+
+    public int getNbBonusHeart() {
+        return nbBonusHeart;
+    }
+
+    public int getNbBonusRoller() {
+        return nbBonusRoller;
     }
 }

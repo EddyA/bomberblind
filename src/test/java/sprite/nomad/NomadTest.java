@@ -37,7 +37,7 @@ public class NomadTest implements WithAssertions {
         assertThat(blueBomber.getyMap()).isEqualTo(4);
         assertThat(blueBomber.getSpriteType()).isEqualTo(SpriteType.TYPE_BOMBER);
         assertThat(blueBomber.getRefreshTime()).isEqualTo(BlueBomber.REFRESH_TIME);
-        assertThat(blueBomber.getActingTime()).isEqualTo(BlueBomber.ACTING_TIME);
+        assertThat(blueBomber.getActingTime()).isEqualTo(BlueBomber.DEFAULT_ACTING_TIME);
         assertThat(blueBomber.getInvincibilityTime()).isEqualTo(BlueBomber.INVINCIBILITY_TIME);
     }
 
@@ -81,7 +81,7 @@ public class NomadTest implements WithAssertions {
         blueBomber.setCurrentTimeSupplier(currentTimeSupplier);
 
         // current time - last refresh time - 1 < 1000ms -> should return false.
-        blueBomber.setLastActionTs(10000L - BlueBomber.ACTING_TIME + 1);
+        blueBomber.setLastActionTs(10000L - BlueBomber.DEFAULT_ACTING_TIME + 1);
 
         // call & check.
         assertThat(blueBomber.isTimeToAct()).isFalse();
@@ -97,7 +97,7 @@ public class NomadTest implements WithAssertions {
         blueBomber.setCurrentTimeSupplier(currentTimeSupplier);
 
         // current time - last refresh time >= 1000ms -> should return false.
-        blueBomber.setLastRefreshTs(10000L - BlueBomber.ACTING_TIME);
+        blueBomber.setLastRefreshTs(10000L - BlueBomber.DEFAULT_ACTING_TIME);
 
         // call & check.
         assertThat(blueBomber.isTimeToAct()).isTrue();

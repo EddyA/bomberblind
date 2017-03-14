@@ -1,6 +1,7 @@
 package map.zelda;
 
 import exceptions.CannotCreateMapElementException;
+import exceptions.CannotPlaceBonusOnMapException;
 import map.Map;
 import map.MapPattern;
 import map.MapPoint;
@@ -46,19 +47,45 @@ public class ZeldaMap extends Map {
         castleStartPoint = spCastles.getFirst();
 
         // place complex elements.
-        java.util.Map<MapPattern, Integer> complexEltPatterns = new HashMap<>();
-        complexEltPatterns.put(wood1, zeldaMapSetting.getNbWood1());
-        complexEltPatterns.put(wood2, zeldaMapSetting.getNbWood2());
-        complexEltPatterns.put(tree1, zeldaMapSetting.getNbTree1());
-        complexEltPatterns.put(tree2, zeldaMapSetting.getNbTree2());
-        complexEltPatterns.put(puddle1, zeldaMapSetting.getNbPuddle1());
-        complexEltPatterns.put(puddle2, zeldaMapSetting.getNbPuddle2());
-        GenerationMethods.randomlyPlaceComplexElements(mapPointMatrix, zeldaMapSetting.getMapWidth(), zeldaMapSetting.getMapHeight(),
-                tree1.getHeight(), edge.getHeight(), complexEltPatterns, maxNbTry);
+        try {
+            java.util.Map<MapPattern, Integer> complexEltPatterns = new HashMap<>();
+            complexEltPatterns.put(wood1, zeldaMapSetting.getNbWood1());
+            complexEltPatterns.put(wood2, zeldaMapSetting.getNbWood2());
+            complexEltPatterns.put(tree1, zeldaMapSetting.getNbTree1());
+            complexEltPatterns.put(tree2, zeldaMapSetting.getNbTree2());
+            complexEltPatterns.put(puddle1, zeldaMapSetting.getNbPuddle1());
+            complexEltPatterns.put(puddle2, zeldaMapSetting.getNbPuddle2());
+            GenerationMethods.randomlyPlaceComplexElements(mapPointMatrix,
+                    zeldaMapSetting.getMapWidth(),
+                    zeldaMapSetting.getMapHeight(),
+                    tree1.getHeight(),
+                    edge.getHeight(),
+                    complexEltPatterns,
+                    maxNbTry);
+        } catch (CannotCreateMapElementException e) {
+            System.out.print(e.getMessage() + "\n"); // log only, not very important.
+        }
 
         // place single elements.
-        GenerationMethods.randomlyPlaceSingleElements(mapPointMatrix, zeldaMapSetting.getMapWidth(), zeldaMapSetting.getMapHeight(),
-                zeldaMapSetting.getPerSingleMutable(), zeldaMapSetting.getPerSingleObstacle(), zeldaMapSetting.getPerSingleDynPathway());
+        GenerationMethods.randomlyPlaceSingleElements(mapPointMatrix,
+                zeldaMapSetting.getMapWidth(),
+                zeldaMapSetting.getMapHeight(),
+                zeldaMapSetting.getPerSingleMutable(),
+                zeldaMapSetting.getPerSingleObstacle(),
+                zeldaMapSetting.getPerSingleDynPathway());
+
+        // place bonus.
+        try {
+            GenerationMethods.randomlyPlaceBonus(mapPointMatrix,
+                    zeldaMapSetting.getMapWidth(),
+                    zeldaMapSetting.getMapHeight(),
+                    zeldaMapSetting.getNbBonusBomb(),
+                    zeldaMapSetting.getNbBonusFlame(),
+                    zeldaMapSetting.getNbBonusHeart(),
+                    zeldaMapSetting.getNbBonusRoller());
+        } catch (CannotPlaceBonusOnMapException e) {
+            System.out.print(e.getMessage() + "\n"); // log only, not very important.
+        }
     }
 
     @Override
