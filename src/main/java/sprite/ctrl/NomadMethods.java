@@ -5,6 +5,8 @@ import sprite.SpriteType;
 import sprite.nomad.Nomad;
 import sprite.settled.Bonus;
 
+import java.util.List;
+
 import static utils.Tools.*;
 
 public class NomadMethods {
@@ -18,7 +20,7 @@ public class NomadMethods {
      * @param nomad the relative nomad identifier (requiered to avoid comparing with itself)
      * @return true if the nomad is crossing an enemy, flase otherwise
      */
-    public static boolean isNomadCrossingEnemy(java.util.List<Sprite> spriteList, int xChar, int yChar, Nomad nomad) {
+    public static boolean isNomadCrossingEnemy(List<Sprite> spriteList, int xChar, int yChar, Nomad nomad) {
         for (Sprite curSprite : spriteList) {
             if (curSprite != nomad && // the checked nomad is not the provided one
                     (curSprite.getSpriteType().equals(SpriteType.TYPE_WALKING_ENEMY) || // AND is a walking enemy
@@ -48,7 +50,7 @@ public class NomadMethods {
         return false;
     }
 
-    public static Bonus isNomadCrossingBonus(java.util.List<Sprite> spriteList, int xChar, int yChar) {
+    public static Bonus isNomadCrossingBonus(List<Sprite> spriteList, int xChar, int yChar) {
         for (Sprite curSprite : spriteList) {
             if (curSprite.getSpriteType().equals(SpriteType.TYPE_BONUS)) { // it is a bonus.
 

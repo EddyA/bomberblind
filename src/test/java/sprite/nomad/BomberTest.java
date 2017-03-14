@@ -18,6 +18,8 @@ import org.mockito.Mockito;
 
 import images.ImagesLoader;
 import sprite.SpriteType;
+import sprite.settled.Bomb;
+import sprite.settled.LoopedSettled;
 import utils.CurrentTimeSupplier;
 import utils.Direction;
 
@@ -61,6 +63,63 @@ public class BomberTest implements WithAssertions {
         assertThat(blueBomber.getInitialYMap()).isEqualTo(blueBomber.getyMap());
         assertThat(blueBomber.getCurSpriteAction()).isEqualTo(ACTION_WAITING);
         assertThat(blueBomber.isInvincible()).isTrue();
+    }
+
+    @Test
+    public void dropBombShouldAddABombToTheDroppedBombsList() throws Exception {
+
+        // set test.
+        BlueBomber blueBomber = new BlueBomber(10, 20);
+        Bomb bomb_1 = new Bomb(1, 1, 1);
+        blueBomber.dropBomb(bomb_1);
+        Bomb bomb_2 = new Bomb(2, 2, 2);
+        blueBomber.dropBomb(bomb_2);
+        Bomb bomb_3 = new Bomb(3, 3, 3);
+        blueBomber.dropBomb(bomb_3);
+
+        // check.
+        assertThat(blueBomber.getDroppedBombs().contains(bomb_1)).isTrue();
+        assertThat(blueBomber.getDroppedBombs().contains(bomb_2)).isTrue();
+        assertThat(blueBomber.getDroppedBombs().contains(bomb_3)).isTrue();
+    }
+
+    @Test
+    public void getNbDroppedBombShouldReturnNbDroppedBombs() throws Exception {
+
+        // set test.
+        BlueBomber blueBomber = new BlueBomber(10, 20);
+        Bomb bomb_1 = new Bomb(1, 1, 1);
+        blueBomber.dropBomb(bomb_1);
+        Bomb bomb_2 = new Bomb(2, 2, 2);
+        blueBomber.dropBomb(bomb_2);
+        Bomb bomb_3 = new Bomb(3, 3, 3);
+        blueBomber.dropBomb(bomb_3);
+
+        // check.
+        assertThat(blueBomber.getNbDroppedBomb()).isEqualTo(3);
+    }
+
+    @Test
+    public void getNbDroppedBombShouldRemoveFinishedBombsFromTheDroppedBombsList() throws Exception {
+
+        // set test.
+        BlueBomber blueBomber = new BlueBomber(10, 20);
+
+        Bomb bomb_1 = Mockito.mock(Bomb.class); // bomb_1 is mocked to be finished.
+        Mockito.when(bomb_1.isFinished()).thenReturn(true);
+        blueBomber.dropBomb(bomb_1);
+        Bomb bomb_2 = new Bomb(2, 2, 2);
+        blueBomber.dropBomb(bomb_2);
+        Bomb bomb_3 = Mockito.mock(Bomb.class); // bomb_3 is mocked to be finished.
+        Mockito.when(bomb_3.isFinished()).thenReturn(true);
+        blueBomber.dropBomb(bomb_3);
+
+
+        // check.
+        assertThat(blueBomber.getNbDroppedBomb()).isEqualTo(1);
+        assertThat(blueBomber.getDroppedBombs().contains(bomb_1)).isFalse(); // no more in the list.
+        assertThat(blueBomber.getDroppedBombs().contains(bomb_2)).isTrue();
+        assertThat(blueBomber.getDroppedBombs().contains(bomb_3)).isFalse();// no more in the list.
     }
 
     @Test

@@ -117,7 +117,6 @@ public class AddingMethods {
             }
             mapPoint.setBonusing(true); // note the case as bonusing (the bonus has been revealed).
             mapPoint.setAttachedBonus(null); // detached the bonus.
-
         }
     }
 
@@ -136,7 +135,6 @@ public class AddingMethods {
         if (mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].isPathway()) {
             mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].addFlame();
             mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].setImageAsBurned();
-            checkMapPointAndAddBonus(list, mapPointMatrix[flame.getRowIdx()][flame.getColIdx()]);
             list.add(flame);
             return true; // the next case should be tested.
         } else if (mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].isMutable() ||

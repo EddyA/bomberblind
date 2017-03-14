@@ -35,8 +35,6 @@ public class BonusTest implements WithAssertions {
 
     @Test
     public void updateImageWhenItIsNotTimeToRefreshShouldDoNothing() throws Exception {
-
-        // ToDo: Update that test when having a real sprite.
         BonusBomb bonusBomb = new BonusBomb(5, 4);
         BonusBomb spyedBonusBomb = Mockito.spy(bonusBomb);
         Mockito.when(spyedBonusBomb.isTimeToRefresh()).thenReturn(false);

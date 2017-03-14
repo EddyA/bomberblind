@@ -24,6 +24,10 @@ public class BonusBundle {
      */
     private final Map<BonusType, Tuple2<Integer, Integer>> bonusBundle;
 
+    public Map<BonusType, Tuple2<Integer, Integer>> getBonusBundle() {
+        return bonusBundle;
+    }
+
     public BonusBundle() {
         this.bonusBundle = new HashMap<>();
         bonusBundle.put(BonusType.TYPE_BONUS_BOMB, new Tuple2<>(DEFAULT_NB_BONUS_BOMB, DEFAULT_NB_BONUS_BOMB));

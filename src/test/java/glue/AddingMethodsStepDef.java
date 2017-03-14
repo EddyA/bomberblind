@@ -5,6 +5,9 @@ import cucumber.api.java.en.Then;
 import map.MapPoint;
 import org.assertj.core.api.WithAssertions;
 import sprite.SpriteType;
+import sprite.settled.BonusBomb;
+import sprite.settled.BonusHeart;
+import sprite.settled.BonusRoller;
 import sprite.settled.BonusType;
 import spriteList.ctrl.AddingMethods;
 import utils.Tools;
@@ -18,7 +21,10 @@ public class AddingMethodsStepDef implements WithAssertions {
 
     private final BombState bombState;
     private final BomberState bomberState;
+    private final BonusBombState bonusBombState;
     private final BonusFlameState bonusFlameState;
+    private final BonusHeartState bonusHeartState;
+    private final BonusRollerState bonusRollerState;
     private final BreakingEnemyState breakingEnemyState;
     private final FlameState flameState;
     private final FlameEndState flameEndState;
@@ -29,7 +35,10 @@ public class AddingMethodsStepDef implements WithAssertions {
                                 MapPointMatrixState mapPointMatrixState,
                                 BombState bombState,
                                 BomberState bomberState,
+                                BonusBombState bonusBombState,
                                 BonusFlameState bonusFlameState,
+                                BonusHeartState bonusHeartState,
+                                BonusRollerState bonusRollerState,
                                 BreakingEnemyState breakingEnemyState,
                                 FlameState flameState,
                                 FlameEndState flameEndState,
@@ -39,7 +48,10 @@ public class AddingMethodsStepDef implements WithAssertions {
         this.mapPointMatrixState = mapPointMatrixState;
         this.bombState = bombState;
         this.bomberState = bomberState;
+        this.bonusBombState = bonusBombState;
         this.bonusFlameState = bonusFlameState;
+        this.bonusHeartState = bonusHeartState;
+        this.bonusRollerState = bonusRollerState;
         this.breakingEnemyState = breakingEnemyState;
         this.flameState = flameState;
         this.flameEndState = flameEndState;
@@ -55,15 +67,23 @@ public class AddingMethodsStepDef implements WithAssertions {
         AddingMethods.addBomb(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(), bombState.getBomb());
     }
 
-    @Given("^a bomber at rowIdx (\\d+) and coldIdx (\\d+) with (\\d+) lifes$")
-    public void a_bomber_at_rowIdx_and_coldIdx(int rowIdx, int colIdx, int nbLifes) {
+    @Given("^a bomber at rowIdx (\\d+) and coldIdx (\\d+)$")
+    public void a_bomber_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
         bomberState.getBomber().setxMap(Tools.getCaseCentreAbscissa(colIdx));
         bomberState.getBomber().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
         bomberState.getBomber().setInitialXMap(Tools.getCaseCentreAbscissa(colIdx));
         bomberState.getBomber().setInitialYMap(Tools.getCaseBottomOrdinate(rowIdx));
-        bomberState.getBomber().setBonus(BonusType.TYPE_BONUS_HEART, nbLifes);
         bomberState.getBomber().setLastInvincibilityTs(0); // deactivate the invincibility at init.
         AddingMethods.addBomber(listOfSprites.getSpriteList(), bomberState.getBomber());
+    }
+
+    @Given("^a bonus bomb at rowIdx (\\d+) and coldIdx (\\d+)$")
+    public void a_bonus_bomb_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
+        bonusBombState.getBonusBomb().setRowIdx(rowIdx);
+        bonusBombState.getBonusBomb().setColIdx(colIdx);
+        bonusBombState.getBonusBomb().setxMap(Tools.getCaseCentreAbscissa(colIdx));
+        bonusBombState.getBonusBomb().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
+        AddingMethods.addBonus(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(), bonusBombState.getBonusBomb());
     }
 
     @Given("^a bonus flame at rowIdx (\\d+) and coldIdx (\\d+)$")
@@ -73,6 +93,24 @@ public class AddingMethodsStepDef implements WithAssertions {
         bonusFlameState.getBonusFlame().setxMap(Tools.getCaseCentreAbscissa(colIdx));
         bonusFlameState.getBonusFlame().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
         AddingMethods.addBonus(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(), bonusFlameState.getBonusFlame());
+    }
+
+    @Given("^a bonus heart at rowIdx (\\d+) and coldIdx (\\d+)$")
+    public void a_bonus_heart_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
+        bonusHeartState.getBonusHeart().setRowIdx(rowIdx);
+        bonusHeartState.getBonusHeart().setColIdx(colIdx);
+        bonusHeartState.getBonusHeart().setxMap(Tools.getCaseCentreAbscissa(colIdx));
+        bonusHeartState.getBonusHeart().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
+        AddingMethods.addBonus(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(), bonusHeartState.getBonusHeart());
+    }
+
+    @Given("^a bonus roller at rowIdx (\\d+) and coldIdx (\\d+)$")
+    public void a_bonus_roller_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
+        bonusRollerState.getBonusRoller().setRowIdx(rowIdx);
+        bonusRollerState.getBonusRoller().setColIdx(colIdx);
+        bonusRollerState.getBonusRoller().setxMap(Tools.getCaseCentreAbscissa(colIdx));
+        bonusRollerState.getBonusRoller().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
+        AddingMethods.addBonus(listOfSprites.getSpriteList(), mapPointMatrixState.getMapPointMatrix(), bonusRollerState.getBonusRoller());
     }
 
     @Given("^a breaking enemy at rowIdx (\\d+) and coldIdx (\\d+)$")

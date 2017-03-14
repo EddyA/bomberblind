@@ -100,6 +100,7 @@ public class ActionMethods {
 
         // act bomber.
         if (bomber.isFinished()) {
+            bomber.setBonus(TYPE_BONUS_HEART, bomber.getBonus(TYPE_BONUS_HEART) - 1); // remove a life.
 
             // randomly replace bonus from the bomber's end point.
             GenerationMethods.randomlyPlaceBonusFromAMapPoint(tmpList,
@@ -117,7 +118,6 @@ public class ActionMethods {
             if (!bomber.isInvincible() &&
                     (isNomadBurning(mapPointMatrix, bomber.getxMap(), bomber.getyMap()) ||
                             isNomadCrossingEnemy(list, bomber.getxMap(), bomber.getyMap(), bomber))) {
-                bomber.setBonus(TYPE_BONUS_HEART, bomber.getBonus(TYPE_BONUS_HEART) - 1);
                 bomber.setCurSpriteAction(ACTION_DYING);
 
             } else if (bomber.isTimeToAct()) { // it is time to act.

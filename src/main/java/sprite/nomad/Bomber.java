@@ -157,12 +157,16 @@ public abstract class Bomber extends Nomad {
         this.initialYMap = initialYMap;
     }
 
+    public LinkedList<Bomb> getDroppedBombs() {
+        return droppedBombs;
+    }
+
     public void dropBomb(Bomb bomb) {
         droppedBombs.add(bomb);
     }
 
     /**
-     * Get the number of not finished bomb and cleaned finished bomb from the list of dropped bombs.
+     * Get the number of (not finished) bombs and remove finished bombs from the list of dropped bombs.
      */
     public int getNbDroppedBomb() {
         int nbDroppedBombs = 0;
