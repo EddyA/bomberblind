@@ -57,15 +57,15 @@ public class NomadMethods {
     }
 
     /**
-     * Is the nomad crossing a mutable?
+     * Is the nomad crossing a mutable obstacle?
      *
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param xChar          the nomad abscissa
      * @param yChar          the nomad ordinate
-     * @return true if the nomad is crossing an obstacle, false otherwise
+     * @return true if the nomad is crossing a mutable obstacle, false otherwise
      * @implSpec isNomadCrossingMapLimit() must be called before this function!
      */
-    public static boolean isNomadCrossingMutable(MapPoint[][] mapPointMatrix, int xChar, int yChar) {
+    public static boolean isNomadCrossingMutableObstacle(MapPoint[][] mapPointMatrix, int xChar, int yChar) {
         int topRowIdx = getCharTopRowIdx(yChar);
         int bottomRowIdx = getCharBottomRowIdx(yChar);
         int mostLeftColIdx = getCharLeftColIdx(xChar);
@@ -82,7 +82,7 @@ public class NomadMethods {
     }
 
     /**
-     * Is the nomad is blocked off by a mutable (according to its direction).
+     * Is the nomad is blocked off by a mutable obstacle (according to its direction).
      *
      * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth       the map width
@@ -92,24 +92,24 @@ public class NomadMethods {
      * @param direction      the nomad direction
      * @return the blocking MapPoint if the nomad is blocked off, null otherwise.
      */
-    public static MapPoint isNomadBlockedOffByMutable(MapPoint[][] mapPointMatrix,
-                                                      int mapWidth,
-                                                      int mapHeight,
-                                                      int xChar,
-                                                      int yChar,
-                                                      Direction direction) {
+    public static MapPoint isNomadBlockedOffByMutableObstacle(MapPoint[][] mapPointMatrix,
+                                                              int mapWidth,
+                                                              int mapHeight,
+                                                              int xChar,
+                                                              int yChar,
+                                                              Direction direction) {
         MapPoint blockingMutable = null;
         switch (direction) {
             case DIRECTION_NORTH: {
                 if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar, yChar - 1) &&
-                        isNomadCrossingMutable(mapPointMatrix, xChar, yChar - 1)) {
+                        isNomadCrossingMutableObstacle(mapPointMatrix, xChar, yChar - 1)) {
                     blockingMutable = mapPointMatrix[getCharTopRowIdx(yChar - 1)][Tools.getCharColIdx(xChar)];
                 }
                 break;
             }
             case DIRECTION_SOUTH: {
                 if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar, yChar + 1) &&
-                        isNomadCrossingMutable(mapPointMatrix, xChar, yChar + 1)) {
+                        isNomadCrossingMutableObstacle(mapPointMatrix, xChar, yChar + 1)) {
                     blockingMutable = mapPointMatrix[getCharBottomRowIdx(yChar + 1)][Tools.getCharColIdx(xChar)];
 
                 }
@@ -117,14 +117,14 @@ public class NomadMethods {
             }
             case DIRECTION_WEST: {
                 if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar - 1, yChar) &&
-                        isNomadCrossingMutable(mapPointMatrix, xChar - 1, yChar)) {
+                        isNomadCrossingMutableObstacle(mapPointMatrix, xChar - 1, yChar)) {
                     blockingMutable = mapPointMatrix[Tools.getCharRowIdx(yChar)][getCharLeftColIdx(xChar - 1)];
                 }
                 break;
             }
             case DIRECTION_EAST: {
                 if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar + 1, yChar) &&
-                        isNomadCrossingMutable(mapPointMatrix, xChar + 1, yChar)) {
+                        isNomadCrossingMutableObstacle(mapPointMatrix, xChar + 1, yChar)) {
                     blockingMutable = mapPointMatrix[Tools.getCharRowIdx(yChar)][getCharRightColIdx(xChar + 1)];
                 }
                 break;

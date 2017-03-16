@@ -20,9 +20,9 @@ public class ZeldaMapSetting extends MapSettings {
     private int nbPuddle1; // the number of puddle1 to place.
     private int nbPuddle2; // the number of puddle2 to place.
 
-    private int perSingleMutable; // the percentage of single mutable to place among available cases.
-    private int perSingleObstacle; // the percentage of single obstacle to place among available cases.
-    private int perSingleDynPathway; // the percentage of dynamic pathway to place among available cases.
+    private int perSingleMutableObstacle; // the percentage of single mutable obstacle to place among available cases.
+    private int perSingleImmutableObstacle; // the percentage of single immutable obstacle to place among available cases.
+    private int perSingleDynamicPathway; // the percentage of dynamic pathway to place among available cases.
 
     private int nbBonusBomb; // the number of bonus bomb to place.
     private int nbBonusFlame; // the number of bonus flame to place.
@@ -41,9 +41,9 @@ public class ZeldaMapSetting extends MapSettings {
             this.nbTree2 = zeldaMapProperties.getMapElementNbTree2();
             this.nbPuddle1 = zeldaMapProperties.getMapElementNbPuddle1();
             this.nbPuddle2 = zeldaMapProperties.getMapElementNbPuddle2();
-            this.perSingleMutable = zeldaMapProperties.getMapElementPerSingleMutable();
-            this.perSingleObstacle = zeldaMapProperties.getMapElementPerSingleObstacle();
-            this.perSingleDynPathway = zeldaMapProperties.getMapElementPerSingleDynPathway();
+            this.perSingleMutableObstacle = zeldaMapProperties.getMapElementPerSingleMutableObstacle();
+            this.perSingleImmutableObstacle = zeldaMapProperties.getMapElementPerSingleImmutableObstacle();
+            this.perSingleDynamicPathway = zeldaMapProperties.getMapElementPerSingleDynamicPathway();
             this.nbBonusBomb = zeldaMapProperties.getMapBonusNbBomb();
             this.nbBonusFlame = zeldaMapProperties.getMapBonusNbFlame();
             this.nbBonusHeart = zeldaMapProperties.getMapBonusNbHeart();
@@ -85,16 +85,16 @@ public class ZeldaMapSetting extends MapSettings {
         return nbPuddle2;
     }
 
-    int getPerSingleMutable() {
-        return perSingleMutable;
+    int getPerSingleMutableObstacle() {
+        return perSingleMutableObstacle;
     }
 
-    int getPerSingleObstacle() {
-        return perSingleObstacle;
+    int getPerSingleImmutableObstacle() {
+        return perSingleImmutableObstacle;
     }
 
-    int getPerSingleDynPathway() {
-        return perSingleDynPathway;
+    int getPerSingleDynamicPathway() {
+        return perSingleDynamicPathway;
     }
 
     public int getNbBonusBomb() {

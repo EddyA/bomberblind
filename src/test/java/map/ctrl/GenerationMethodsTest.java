@@ -134,7 +134,7 @@ public class GenerationMethodsTest {
     }
 
     @Test
-    public void randomlyPlaceSingleElementsShouldFillAvailableCasesWithSingleMutables() throws Exception {
+    public void randomlyPlaceSingleElementsShouldFillAvailableCasesWithSingleMutableObstacles() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -152,7 +152,7 @@ public class GenerationMethodsTest {
     }
 
     @Test
-    public void randomlyPlaceSingleElementsShouldFillAvailableCasesWithSingleObstacles() throws Exception {
+    public void randomlyPlaceSingleElementsShouldFillAvailableCasesWithSingleImmutableObstacles() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {

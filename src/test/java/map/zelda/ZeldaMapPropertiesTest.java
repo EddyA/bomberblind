@@ -25,9 +25,9 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
         assertThat(zeldaMapProperties.getMapElementNbTree2()).isEqualTo(8);
         assertThat(zeldaMapProperties.getMapElementNbPuddle1()).isEqualTo(9);
         assertThat(zeldaMapProperties.getMapElementNbPuddle2()).isEqualTo(10);
-        assertThat(zeldaMapProperties.getMapElementPerSingleMutable()).isEqualTo(11);
-        assertThat(zeldaMapProperties.getMapElementPerSingleObstacle()).isEqualTo(12);
-        assertThat(zeldaMapProperties.getMapElementPerSingleDynPathway()).isEqualTo(13);
+        assertThat(zeldaMapProperties.getMapElementPerSingleMutableObstacle()).isEqualTo(11);
+        assertThat(zeldaMapProperties.getMapElementPerSingleImmutableObstacle()).isEqualTo(12);
+        assertThat(zeldaMapProperties.getMapElementPerSingleDynamicPathway()).isEqualTo(13);
         assertThat(zeldaMapProperties.getMapBonusNbBomb()).isEqualTo(14);
         assertThat(zeldaMapProperties.getMapBonusNbFlame()).isEqualTo(15);
         assertThat(zeldaMapProperties.getMapBonusNbHeart()).isEqualTo(16);
@@ -64,7 +64,7 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
         zeldaMapProperties.loadProperties();
 
         // set a field with a bad value.
-        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY,
+        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_DYNAMIC_PATHWAY,
                 "notAnIntegerConvertibleString");
 
         assertThatThrownBy(zeldaMapProperties::checkProperties)
@@ -79,7 +79,7 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
         zeldaMapProperties.loadProperties();
 
         // remove a mandatory field.
-        zeldaMapProperties.getProperties().remove(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY);
+        zeldaMapProperties.getProperties().remove(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_DYNAMIC_PATHWAY);
 
         assertThatThrownBy(zeldaMapProperties::checkProperties)
                 .isInstanceOf(InvalidConfigurationException.class)
@@ -93,9 +93,9 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
         zeldaMapProperties.loadProperties();
 
         // set percentage fields too high values (i.e. sum(percentage) > 100).
-        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_MUTABLE, "50");
-        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_OBSTACLE, "40");
-        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY, "30");
+        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_MUTABLE_OBSTACLE, "50");
+        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_IMMUTABLE_OBSTACLE, "40");
+        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_DYNAMIC_PATHWAY, "30");
 
         assertThatThrownBy(zeldaMapProperties::checkProperties)
                 .isInstanceOf(InvalidConfigurationException.class)

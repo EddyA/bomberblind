@@ -9,8 +9,8 @@ public class MapPattern {
     private final int width;
     private final int height;
 
-    private final boolean isPathway;  // is a pathway object?
-    private final boolean isMutable; // is a mutable object?
+    private final boolean isPathway;  // is a pathway pattern?
+    private final boolean isMutable; // is a mutable pattern?
 
     private final String name;
 

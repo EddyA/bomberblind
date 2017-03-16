@@ -24,9 +24,9 @@ public class ZeldaMapProperties extends MapProperties {
     public final static String MAP_ELEMENT_NB_TREE2 = "map.element.tree2.number";
     public final static String MAP_ELEMENT_NB_PUDDLE1 = "map.element.puddle1.number";
     public final static String MAP_ELEMENT_NB_PUDDLE2 = "map.element.puddle2.number";
-    public final static String MAP_ELEMENT_PER_SINGLE_MUTABLE = "map.element.single.mutable.percentage";
-    public final static String MAP_ELEMENT_PER_SINGLE_OBSTACLE = "map.element.single.obstacle.percentage";
-    public final static String MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY = "map.element.single.dynamic.pathway.percentage";
+    public final static String MAP_ELEMENT_PER_SINGLE_MUTABLE_OBSTACLE = "map.element.single.mutable.percentage";
+    public final static String MAP_ELEMENT_PER_SINGLE_IMMUTABLE_OBSTACLE = "map.element.single.immutable.obstacle.percentage";
+    public final static String MAP_ELEMENT_PER_SINGLE_DYNAMIC_PATHWAY = "map.element.single.dynamic.pathway.percentage";
     public final static String MAP_BONUS_NB_BOMB = "map.bonus.bomb.number";
     public final static String MAP_BONUS_NB_FLAME = "map.bonus.flame.number";
     public final static String MAP_BONUS_NB_HEART = "map.bonus.heart.number";
@@ -68,16 +68,16 @@ public class ZeldaMapProperties extends MapProperties {
         return Integer.parseInt(properties.getProperty(MAP_ELEMENT_NB_PUDDLE2));
     }
 
-    public int getMapElementPerSingleMutable() {
-        return Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_MUTABLE));
+    public int getMapElementPerSingleMutableObstacle() {
+        return Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_MUTABLE_OBSTACLE));
     }
 
-    public int getMapElementPerSingleObstacle() {
-        return Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_OBSTACLE));
+    public int getMapElementPerSingleImmutableObstacle() {
+        return Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_IMMUTABLE_OBSTACLE));
     }
 
-    public int getMapElementPerSingleDynPathway() {
-        return Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY));
+    public int getMapElementPerSingleDynamicPathway() {
+        return Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYNAMIC_PATHWAY));
     }
 
     public int getMapBonusNbBomb() {
@@ -122,9 +122,9 @@ public class ZeldaMapProperties extends MapProperties {
                 !isValidInteger(properties.getProperty(MAP_ELEMENT_NB_TREE2)) ||
                 !isValidInteger(properties.getProperty(MAP_ELEMENT_NB_PUDDLE1)) ||
                 !isValidInteger(properties.getProperty(MAP_ELEMENT_NB_PUDDLE2)) ||
-                !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_MUTABLE)) ||
-                !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_OBSTACLE)) ||
-                !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY)) ||
+                !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_MUTABLE_OBSTACLE)) ||
+                !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_IMMUTABLE_OBSTACLE)) ||
+                !isValidInteger(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYNAMIC_PATHWAY)) ||
                 !isValidInteger(properties.getProperty(MAP_BONUS_NB_BOMB)) ||
                 !isValidInteger(properties.getProperty(MAP_BONUS_NB_FLAME)) ||
                 !isValidInteger(properties.getProperty(MAP_BONUS_NB_HEART)) ||
@@ -132,9 +132,9 @@ public class ZeldaMapProperties extends MapProperties {
             throw new InvalidConfigurationException("'" + propertiesFile + "' is not a valid properties file: "
                     + "some field are missing or not integer convertible.");
         }
-        int perSingleMutable = Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_MUTABLE));
-        int perSingleObstacle = Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_OBSTACLE));
-        int perSingleDynamicPathway = Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYN_PATHWAY));
+        int perSingleMutable = Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_MUTABLE_OBSTACLE));
+        int perSingleObstacle = Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_IMMUTABLE_OBSTACLE));
+        int perSingleDynamicPathway = Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_DYNAMIC_PATHWAY));
         if (perSingleMutable + perSingleObstacle + perSingleDynamicPathway > 100) {
             throw new InvalidConfigurationException("'" + propertiesFile + "' is not a valid properties file: "
                     + "sum of the percentage cannot exceed 100.");

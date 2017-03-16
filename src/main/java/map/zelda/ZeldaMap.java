@@ -43,7 +43,7 @@ public class ZeldaMap extends Map {
         Tuple2<MapPoint, MapPoint> spCastles = GenerationMethods.randomlyPlaceCastles(mapPointMatrix,
                 zeldaMapSetting.getMapWidth(), zeldaMapSetting.getMapHeight(), zeldaMapSetting.getHorizontalMargin(),
                 tree1.getHeight(), edge.getHeight(), zeldaMapSetting.getVerticalMargin(), castlePatterns,
-                zeldaMapSetting.getPerSingleDynPathway());
+                zeldaMapSetting.getPerSingleDynamicPathway());
         castleStartPoint = spCastles.getFirst();
 
         // place complex elements.
@@ -70,9 +70,9 @@ public class ZeldaMap extends Map {
         GenerationMethods.randomlyPlaceSingleElements(mapPointMatrix,
                 zeldaMapSetting.getMapWidth(),
                 zeldaMapSetting.getMapHeight(),
-                zeldaMapSetting.getPerSingleMutable(),
-                zeldaMapSetting.getPerSingleObstacle(),
-                zeldaMapSetting.getPerSingleDynPathway());
+                zeldaMapSetting.getPerSingleMutableObstacle(),
+                zeldaMapSetting.getPerSingleImmutableObstacle(),
+                zeldaMapSetting.getPerSingleDynamicPathway());
 
         // place bonus.
         try {

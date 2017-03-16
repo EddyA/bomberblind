@@ -15,7 +15,7 @@ import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
 import static images.ImagesLoader.IMAGE_SIZE;
-import static map.ctrl.NomadMethods.isNomadBlockedOffByMutable;
+import static map.ctrl.NomadMethods.isNomadBlockedOffByMutableObstacle;
 import static map.ctrl.NomadMethods.isNomadBurning;
 import static sprite.SpriteAction.*;
 import static sprite.ctrl.NomadMethods.isNomadCrossingBonus;
@@ -335,7 +335,7 @@ public class ActionMethods {
                 if (breakingEnemy.getCurSpriteAction() != ACTION_BREAKING) { // -> the enemy is not breaking.
 
                     // is the nomad blocked off by a mutable?
-                    MapPoint mapPointToBreak = isNomadBlockedOffByMutable(mapPointMatrix,
+                    MapPoint mapPointToBreak = isNomadBlockedOffByMutableObstacle(mapPointMatrix,
                             mapWidth,
                             mapHeight,
                             breakingEnemy.getxMap(),

@@ -38,15 +38,15 @@ public class SingleMethods {
     }
 
     /**
-     * Try to place a single mutable on map.
-     * If the case is available, place the mutable and return true, otherwise return false.
+     * Try to place a single mutable obstacle on map.
+     * If the case is available, place the mutable obstacle and return true, otherwise return false.
      *
-     * @param mapPoint the MapPoint to place the mutable
-     * @return true if the mutable has been placed, false otherwise
+     * @param mapPoint the MapPoint to place the mutable obstacle
+     * @return true if the mutable obstacle has been placed, false otherwise
      */
-    public static boolean placeSingleMutableOnMap(MapPoint mapPoint) {
+    public static boolean placeSingleMutableObstacleOnMap(MapPoint mapPoint) {
         if (mapPoint.isAvailable()) {
-            mapPoint.setImage(ImagesLoader.getRandomSingleMutable());
+            mapPoint.setImage(ImagesLoader.getRandomSingleMutableObstacle());
             mapPoint.setMutable(true);
             mapPoint.setPathway(false);
             mapPoint.setAvailable(false);
@@ -57,15 +57,15 @@ public class SingleMethods {
     }
 
     /**
-     * Try to place a single obstacle on map.
-     * If the case is available, place the obstacle and return true, otherwise return false.
+     * Try to place a single immutable obstacle on map.
+     * If the case is available, place the immutable obstacle and return true, otherwise return false.
      *
-     * @param mapPoint the MapPoint to place the obstacle
-     * @return true if the obstacle has been placed, false otherwise
+     * @param mapPoint the MapPoint to place the immutable obstacle
+     * @return true if the immutable obstacle has been placed, false otherwise
      */
-    public static boolean placeSingleObstacleOnMap(MapPoint mapPoint) {
+    public static boolean placeSingleImmutableObstacleOnMap(MapPoint mapPoint) {
         if (mapPoint.isAvailable()) {
-            mapPoint.setImage(ImagesLoader.getRandomSingleObstacle());
+            mapPoint.setImage(ImagesLoader.getRandomSingleImmutableObstacle());
             mapPoint.setMutable(false);
             mapPoint.setPathway(false);
             mapPoint.setAvailable(false);

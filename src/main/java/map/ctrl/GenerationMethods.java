@@ -129,17 +129,17 @@ public class GenerationMethods {
      * @param mapPointMatrix   the map (represented by its matrix of MapPoint)
      * @param mapWidth          the map width
      * @param mapHeight         the map height
-     * @param perSingleMutable  the percentage of single mutable to place among available cases
-     * @param perSingleObstacle the percentage of single obstacle to place among available cases
-     * @param perDynPathwayElt  the percentage of dynamic pathway elements to place among available cases
+     * @param perSingleMutableObstacle  the percentage of single mutable obstacle to place among available cases
+     * @param perSingleImmutableObstacle the percentage of single immutable obstacle to place among available cases
+     * @param perSingleDynamicPathway  the percentage of dynamic pathway elements to place among available cases
      * @throws CannotCreateMapElementException as soon as a castle cannot be placed
      */
     public static void randomlyPlaceSingleElements(MapPoint[][] mapPointMatrix,
                                                    int mapWidth,
                                                    int mapHeight,
-                                                   int perSingleMutable,
-                                                   int perSingleObstacle,
-                                                   int perDynPathwayElt)
+                                                   int perSingleMutableObstacle,
+                                                   int perSingleImmutableObstacle,
+                                                   int perSingleDynamicPathway)
             throws CannotCreateMapElementException {
 
         // create list of empty cases.
@@ -160,16 +160,16 @@ public class GenerationMethods {
             int randomPercent = Math.abs(R.nextInt(100)); // randomly choose a single element.
             int ptIdx = Math.abs(R.nextInt(emptyPtList.size())); // randomly choose an empty case.
             MapPoint mapPoint = emptyPtList.get(ptIdx);
-            if (randomPercent < perSingleObstacle) {
-                if (!placeSingleObstacleOnMap(mapPoint)) {
-                    throw new CannotCreateMapElementException("not able to create a single obstacle.");
+            if (randomPercent < perSingleImmutableObstacle) {
+                if (!placeSingleImmutableObstacleOnMap(mapPoint)) {
+                    throw new CannotCreateMapElementException("not able to create a single immutable obstacle.");
                 }
-            } else if (randomPercent < perSingleObstacle + perSingleMutable) {
-                if (!placeSingleMutableOnMap(mapPoint)) {
-                    throw new CannotCreateMapElementException("not able to create a single mutable.");
+            } else if (randomPercent < perSingleImmutableObstacle + perSingleMutableObstacle) {
+                if (!placeSingleMutableObstacleOnMap(mapPoint)) {
+                    throw new CannotCreateMapElementException("not able to create a single mutable obstacle.");
                 }
             } else {
-                if (!placeSinglePathwayOnMap(mapPoint, perDynPathwayElt)) {
+                if (!placeSinglePathwayOnMap(mapPoint, perSingleDynamicPathway)) {
                     throw new CannotCreateMapElementException("not able to create a single pathway.");
                 }
             }
@@ -196,7 +196,7 @@ public class GenerationMethods {
                                           int nbBonusHeart,
                                           int nbBonusRoller) throws CannotPlaceBonusOnMapException {
 
-        // create list of mutable cases.
+        // create list of single mutable obstacle.
         List<MapPoint> mutableCases = new ArrayList<>();
         for (int rowIdx = 0; rowIdx < mapHeight; rowIdx++) {
             for (int colIdx = 0; colIdx < mapWidth; colIdx++) {
@@ -228,7 +228,7 @@ public class GenerationMethods {
                         BonusType.getlabel(bonusToPlace).orElse("no_name")
                         + "' on map, no more available mutable.");
             }
-            int ptIdx = Math.abs(R.nextInt(mutableCases.size())); // randomly choose a mutable case.
+            int ptIdx = Math.abs(R.nextInt(mutableCases.size())); // randomly choose a single mutable obstacle.
             MapPoint mapPoint = mutableCases.get(ptIdx);
             mapPoint.setAttachedBonus(bonusToPlace);
             mutableCases.remove(ptIdx);

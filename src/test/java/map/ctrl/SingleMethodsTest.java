@@ -40,32 +40,32 @@ public class SingleMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void placeSingleMutableOnMapShouldReturnFalseBecauseNotAvailable() throws Exception {
+    public void placeSingleMutableObstacleOnMapShouldReturnFalseBecauseNotAvailable() throws Exception {
         MapPoint mapPoint = new MapPoint(0, 0);
         mapPoint.setAvailable(false);
-        assertThat(SingleMethods.placeSingleMutableOnMap(mapPoint)).isFalse();
+        assertThat(SingleMethods.placeSingleMutableObstacleOnMap(mapPoint)).isFalse();
         assertThat(mapPoint.getImage()).isNull();
     }
 
     @Test
-    public void placeSingleMutableOnMapShouldReturnTrueBecauseAvailableAndPutAStaticMutable() throws Exception {
+    public void placeSingleMutableObstacleOnMapShouldReturnTrueBecauseAvailableAndPutAMutableObstacle() throws Exception {
         MapPoint mapPoint = new MapPoint(0, 0);
-        assertThat(SingleMethods.placeSingleMutableOnMap(mapPoint)).isTrue();
+        assertThat(SingleMethods.placeSingleMutableObstacleOnMap(mapPoint)).isTrue();
         assertThat(mapPoint.getImage()).isNotNull();
     }
 
     @Test
-    public void placeSingleObstacleOnMapShouldReturnFalseBecauseNotAvailable() throws Exception {
+    public void placeSingleImmutableObstacleOnMapShouldReturnFalseBecauseNotAvailable() throws Exception {
         MapPoint mapPoint = new MapPoint(0, 0);
         mapPoint.setAvailable(false);
-        assertThat(SingleMethods.placeSingleObstacleOnMap(mapPoint)).isFalse();
+        assertThat(SingleMethods.placeSingleImmutableObstacleOnMap(mapPoint)).isFalse();
         assertThat(mapPoint.getImage()).isNull();
     }
 
     @Test
-    public void placeSingleObstacleOnMapShouldReturnTrueBecauseAvailableAndPutAStaticObstacle() throws Exception {
+    public void placeSingleImmutableObstacleOnMapShouldReturnTrueBecauseAvailableAndPutAnImmutableObstacle() throws Exception {
         MapPoint mapPoint = new MapPoint(0, 0);
-        assertThat(SingleMethods.placeSingleObstacleOnMap(mapPoint)).isTrue();
+        assertThat(SingleMethods.placeSingleImmutableObstacleOnMap(mapPoint)).isTrue();
         assertThat(mapPoint.getImage()).isNotNull();
     }
 }
