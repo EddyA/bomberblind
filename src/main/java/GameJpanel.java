@@ -168,7 +168,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 });
 
                 repaint();
-                Thread.sleep(1);
+                Thread.sleep(4);
             } catch (InterruptedException e) {
                 System.err.println("Unexpected exception: " + Arrays.toString(e.getStackTrace()));
             }
