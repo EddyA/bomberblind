@@ -7,15 +7,29 @@ import static images.ImagesLoader.IMAGE_SIZE;
 public class Tools {
 
     /**
-     * Check if a string can be converted to an int.
-     *
-     * @param value the string to check
-     * @return true if the string can be converted to int, otherwise, return false
+     * @return true if:
+     * - the string is not null,
+     * - AND the string can be converted to an int
+     * false otherwise.
      */
-    public static boolean isValidInteger(String value) {
-        boolean res = true;
-        if (value == null || Ints.tryParse(value) == null) {
-            res = false;
+    public static boolean isNotNullAndValidInteger(String value) {
+        boolean res = false;
+        if (value != null && Ints.tryParse(value) != null) {
+            res = true;
+        }
+        return res;
+    }
+
+    /**
+     * @return true if:
+     * - the string is null,
+     * - OR the string can be converted to an int
+     * false otherwise.
+     */
+    public static boolean isNullOrValidInteger(String value) {
+        boolean res = false;
+        if (value == null || Ints.tryParse(value) != null) {
+            res = true;
         }
         return res;
     }

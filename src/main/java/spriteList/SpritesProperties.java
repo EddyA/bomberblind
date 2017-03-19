@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import static utils.Tools.isValidInteger;
+import static utils.Tools.isNotNullAndValidInteger;
 
 /**
  * Open, read and check a sprites map properties file.
@@ -83,11 +83,11 @@ public class SpritesProperties {
      * @throws InvalidConfigurationException as soon as a propertie is badly set
      */
     public SpritesProperties checkProperties() throws InvalidConfigurationException {
-        if (!isValidInteger(properties.getProperty(SPRITES_ENEMY_CLOAKED_SKELETON)) ||
-                !isValidInteger(properties.getProperty(SPRITES_ENEMY_MECA_ANGEL)) ||
-                !isValidInteger(properties.getProperty(SPRITES_ENEMY_MUMMY)) ||
-                !isValidInteger(properties.getProperty(SPRITES_ENEMY_MINOTOR)) ||
-                !isValidInteger(properties.getProperty(SPRITES_BIRDS_ARRIVAL_TIME_INTERVAL))) {
+        if (!isNotNullAndValidInteger(properties.getProperty(SPRITES_ENEMY_CLOAKED_SKELETON)) ||
+                !isNotNullAndValidInteger(properties.getProperty(SPRITES_ENEMY_MECA_ANGEL)) ||
+                !isNotNullAndValidInteger(properties.getProperty(SPRITES_ENEMY_MUMMY)) ||
+                !isNotNullAndValidInteger(properties.getProperty(SPRITES_ENEMY_MINOTOR)) ||
+                !isNotNullAndValidInteger(properties.getProperty(SPRITES_BIRDS_ARRIVAL_TIME_INTERVAL))) {
             throw new InvalidConfigurationException("'" + propertiesFile + "' is not a valid properties file: "
                     + "some field are missing or not integer convertible.");
         }

@@ -35,30 +35,38 @@ public class ZeldaMap extends Map {
         int maxNbTry = 10;
 
         // place north and south edges.
-        placeNorthEdgeOnMap(mapPointMatrix, zeldaMapSetting.getMapWidth(), zeldaMapSetting.getMapHeight(), tree1);
+        placeNorthEdgeOnMap(mapPointMatrix, zeldaMapSetting.getMapWidth(), zeldaMapSetting.getMapHeight(), greenTree);
         placeSouthEdgeOnMap(mapPointMatrix, zeldaMapSetting.getMapWidth(), zeldaMapSetting.getMapHeight(), edge);
 
         // place castles.
-        Tuple2<MapPattern, MapPattern> castlePatterns = new Tuple2<>(castle1, castle2);
-        Tuple2<MapPoint, MapPoint> spCastles = GenerationMethods.randomlyPlaceCastles(mapPointMatrix,
-                zeldaMapSetting.getMapWidth(), zeldaMapSetting.getMapHeight(), zeldaMapSetting.getHorizontalMargin(),
-                tree1.getHeight(), edge.getHeight(), zeldaMapSetting.getVerticalMargin(), castlePatterns,
-                zeldaMapSetting.getPerSingleDynamicPathway());
+        Tuple2<MapPattern, MapPattern> castlePatterns = new Tuple2<>(castle, trunk);
+        Tuple2<MapPoint, MapPoint> spCastles =
+                GenerationMethods.randomlyPlaceCastles(mapPointMatrix,
+                        zeldaMapSetting.getMapWidth(),
+                        zeldaMapSetting.getMapHeight(),
+                        zeldaMapSetting.getHorizontalMargin(),
+                        greenTree.getHeight(),
+                        edge.getHeight(),
+                        zeldaMapSetting.getVerticalMargin(),
+                        castlePatterns,
+                        zeldaMapSetting.getPerDecoratedSinglePathway(),
+                        zeldaMapSetting.getPerDynamicSinglePathway());
         castleStartPoint = spCastles.getFirst();
 
         // place complex elements.
         try {
             java.util.Map<MapPattern, Integer> complexEltPatterns = new HashMap<>();
-            complexEltPatterns.put(wood1, zeldaMapSetting.getNbWood1());
-            complexEltPatterns.put(wood2, zeldaMapSetting.getNbWood2());
-            complexEltPatterns.put(tree1, zeldaMapSetting.getNbTree1());
-            complexEltPatterns.put(tree2, zeldaMapSetting.getNbTree2());
-            complexEltPatterns.put(puddle1, zeldaMapSetting.getNbPuddle1());
-            complexEltPatterns.put(puddle2, zeldaMapSetting.getNbPuddle2());
+            complexEltPatterns.put(orchad, zeldaMapSetting.getNbOrchard());
+            complexEltPatterns.put(trough, zeldaMapSetting.getNbTrough());
+            complexEltPatterns.put(greenTree, zeldaMapSetting.getNbGreenTree());
+            complexEltPatterns.put(redTree, zeldaMapSetting.getNbRedTree());
+            complexEltPatterns.put(yellowTree, zeldaMapSetting.getNbYellowTree());
+            complexEltPatterns.put(pathway, zeldaMapSetting.getNbPathway());
+            complexEltPatterns.put(statue, zeldaMapSetting.getNbStatue());
             GenerationMethods.randomlyPlaceComplexElements(mapPointMatrix,
                     zeldaMapSetting.getMapWidth(),
                     zeldaMapSetting.getMapHeight(),
-                    tree1.getHeight(),
+                    greenTree.getHeight(),
                     edge.getHeight(),
                     complexEltPatterns,
                     maxNbTry);
@@ -70,9 +78,10 @@ public class ZeldaMap extends Map {
         GenerationMethods.randomlyPlaceSingleElements(mapPointMatrix,
                 zeldaMapSetting.getMapWidth(),
                 zeldaMapSetting.getMapHeight(),
-                zeldaMapSetting.getPerSingleMutableObstacle(),
                 zeldaMapSetting.getPerSingleImmutableObstacle(),
-                zeldaMapSetting.getPerSingleDynamicPathway());
+                zeldaMapSetting.getPerSingleMutableObstacle(),
+                zeldaMapSetting.getPerDecoratedSinglePathway(),
+                zeldaMapSetting.getPerDynamicSinglePathway());
 
         // place bonus.
         try {
@@ -91,11 +100,11 @@ public class ZeldaMap extends Map {
     @Override
     public Tuple2<Integer, Integer> computeInitialBbManPosition() {
 
-        // compute the initial Bomber position in order to be in front of the 1st castle door.
+        // compute the initial bomber position in order to be in front of the entrance door.
         int xBbManOnMap = castleStartPoint.getColIdx() * IMAGE_SIZE +
-                (castle1.getWidth() * IMAGE_SIZE / 2);
+                (castle.getWidth() * IMAGE_SIZE / 2);
         int yBbManOnMap = castleStartPoint.getRowIdx() * IMAGE_SIZE +
-                (castle1.getHeight() * IMAGE_SIZE) + (IMAGE_SIZE / 2);
+                (castle.getHeight() * IMAGE_SIZE) + (IMAGE_SIZE / 2);
         return new Tuple2<>(xBbManOnMap, yBbManOnMap);
     }
 }

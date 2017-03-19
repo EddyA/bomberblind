@@ -9,29 +9,27 @@ import map.MapPattern;
  */
 public class ZeldaMapPatterns {
 
-    // castles.
-    public final static MapPattern castle1 = new MapPattern(
-            ImagesLoader.imagesMatrix[ImagesLoader.castleT1MatrixRowIdx],
-            ImagesLoader.CASTLE_WIDTH, ImagesLoader.CASTLE_HEIGHT, false, false, "castle1");
-    public final static MapPattern castle2 = new MapPattern(
-            ImagesLoader.imagesMatrix[ImagesLoader.castleT2MatrixRowIdx],
-            ImagesLoader.CASTLE_WIDTH, ImagesLoader.CASTLE_HEIGHT, false, false, "castle2");
-
-    // obstacles.
+    // immutable obstacles.
+    public final static MapPattern castle = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.castleMatrixRowIdx],
+            ImagesLoader.CASTLE_WIDTH, ImagesLoader.CASTLE_HEIGHT, false, false, "castle");
     public final static MapPattern edge = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.edgeMatrixRowIdx],
             ImagesLoader.EDGE_WIDTH, ImagesLoader.EDGE_HEIGHT, false, false, "edge");
-    public final static MapPattern tree1 = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.tree1MatrixRowIdx],
-            ImagesLoader.TREE_WIDTH, ImagesLoader.TREE_HEIGHT, false, false, "tree1");
-    public final static MapPattern tree2 = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.tree2MatrixRowIdx],
-            ImagesLoader.TREE_WIDTH, ImagesLoader.TREE_HEIGHT, false, false, "tree2");
-    public final static MapPattern wood1 = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.wood1MatrixRowIdx],
-            ImagesLoader.WOOD_WIDTH, ImagesLoader.WOOD_HEIGHT, false, false, "wood1");
-    public final static MapPattern wood2 = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.wood2MatrixRowIdx],
-            ImagesLoader.WOOD_WIDTH, ImagesLoader.WOOD_HEIGHT, false, false, "wood2");
+    public final static MapPattern greenTree = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.greenTreeMatrixRowIdx],
+            ImagesLoader.GREEN_TREE_WIDTH, ImagesLoader.GREEN_TREE_HEIGHT, false, false, "green_tree");
+    public final static MapPattern orchad = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.orchardMatrixRowIdx],
+            ImagesLoader.ORCHARD_WIDTH, ImagesLoader.ORCHARD_HEIGHT, false, false, "orchad");
+    public final static MapPattern redTree = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.redTreeMatrixRowIdx],
+            ImagesLoader.RED_TREE_WIDTH, ImagesLoader.RED_TREE_HEIGHT, false, false, "red_tree");
+    public final static MapPattern statue = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.statueMatrixRowIdx],
+            ImagesLoader.STATUE_WIDTH, ImagesLoader.STATUE_HEIGHT, false, false, "statue");
+    public final static MapPattern trough = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.troughMatrixRowIdx],
+            ImagesLoader.TROUGH_WIDTH, ImagesLoader.TROUGH_HEIGHT, false, false, "trough");
+    public final static MapPattern trunk = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.trunkMatrixRowIdx],
+            ImagesLoader.TRUNK_WIDTH, ImagesLoader.TRUNK_HEIGHT, false, false, "trunk");
+    public final static MapPattern yellowTree = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.yellowTreeMatrixRowIdx],
+            ImagesLoader.YELLOW_TREE_WIDTH, ImagesLoader.YELLOW_TREE_HEIGHT, false, false, "yellow");
 
     // pathways.
-    public final static MapPattern puddle1 = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.puddle1MatrixRowIdx],
-            ImagesLoader.PUDDLE_WIDTH, ImagesLoader.PUDDLE_HEIGHT, true, false, "puddle1");
-    public final static MapPattern puddle2 = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.puddle2MatrixRowIdx],
-            ImagesLoader.PUDDLE_WIDTH, ImagesLoader.PUDDLE_HEIGHT, true, false, "puddle2");
+    public final static MapPattern pathway = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.pathwayMatrixRowIdx],
+            ImagesLoader.PATHWAY_WIDTH, ImagesLoader.PATHWAY_HEIGHT, true, false, "pathway");
 }

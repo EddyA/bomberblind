@@ -19,19 +19,21 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
         assertThat(zeldaMapProperties.getMapSizeHeight()).isEqualTo(2);
         assertThat(zeldaMapProperties.getMapMarginVertical()).isEqualTo(3);
         assertThat(zeldaMapProperties.getMapMarginHorizontal()).isEqualTo(4);
-        assertThat(zeldaMapProperties.getMapElementNbWood1()).isEqualTo(5);
-        assertThat(zeldaMapProperties.getMapElementNbWood2()).isEqualTo(6);
-        assertThat(zeldaMapProperties.getMapElementNbTree1()).isEqualTo(7);
-        assertThat(zeldaMapProperties.getMapElementNbTree2()).isEqualTo(8);
-        assertThat(zeldaMapProperties.getMapElementNbPuddle1()).isEqualTo(9);
-        assertThat(zeldaMapProperties.getMapElementNbPuddle2()).isEqualTo(10);
-        assertThat(zeldaMapProperties.getMapElementPerSingleMutableObstacle()).isEqualTo(11);
+        assertThat(zeldaMapProperties.getMapElementNbOrchard()).isEqualTo(5);
+        assertThat(zeldaMapProperties.getMapElementNbTrough()).isEqualTo(6);
+        assertThat(zeldaMapProperties.getMapElementNbGreenWood()).isEqualTo(7);
+        assertThat(zeldaMapProperties.getMapElementNbRedTree()).isEqualTo(8);
+        assertThat(zeldaMapProperties.getMapElementNbYellowTree()).isEqualTo(9);
+        assertThat(zeldaMapProperties.getMapElementNbPathway()).isEqualTo(10);
+        assertThat(zeldaMapProperties.getMapElementNbStatue()).isEqualTo(11);
         assertThat(zeldaMapProperties.getMapElementPerSingleImmutableObstacle()).isEqualTo(12);
-        assertThat(zeldaMapProperties.getMapElementPerSingleDynamicPathway()).isEqualTo(13);
-        assertThat(zeldaMapProperties.getMapBonusNbBomb()).isEqualTo(14);
-        assertThat(zeldaMapProperties.getMapBonusNbFlame()).isEqualTo(15);
-        assertThat(zeldaMapProperties.getMapBonusNbHeart()).isEqualTo(16);
-        assertThat(zeldaMapProperties.getMapBonusNbRoller()).isEqualTo(17);
+        assertThat(zeldaMapProperties.getMapElementPerSingleMutableObstacle()).isEqualTo(13);
+        assertThat(zeldaMapProperties.getMapElementPerDecoratedSinglePathway()).isEqualTo(14);
+        assertThat(zeldaMapProperties.getMapElementPerDynamicSinglePathway()).isEqualTo(15);
+        assertThat(zeldaMapProperties.getMapBonusNbBomb()).isEqualTo(16);
+        assertThat(zeldaMapProperties.getMapBonusNbFlame()).isEqualTo(17);
+        assertThat(zeldaMapProperties.getMapBonusNbHeart()).isEqualTo(18);
+        assertThat(zeldaMapProperties.getMapBonusNbRoller()).isEqualTo(19);
     }
 
     @Test
@@ -51,26 +53,11 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
     }
 
     @Test
-    public void loadPropertiesWithUnknownParameterShouldThrowExpectedException() throws Exception {
+    public void loadPropertiesWithBadPropertiesFilePathShouldThrowExpectedException() throws Exception {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties("badFilePath");
         assertThatThrownBy(zeldaMapProperties::loadProperties)
                 .isInstanceOf(InvalidConfigurationException.class)
                 .hasMessage("'badFilePath' file not found.");
-    }
-
-    @Test
-    public void checkPropertiesWithNotIntegerPropertiesShouldThrowExpectedException() throws Exception {
-        ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties(TEST_MAP_PROPERTIES_FILE);
-        zeldaMapProperties.loadProperties();
-
-        // set a field with a bad value.
-        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_DYNAMIC_PATHWAY,
-                "notAnIntegerConvertibleString");
-
-        assertThatThrownBy(zeldaMapProperties::checkProperties)
-                .isInstanceOf(InvalidConfigurationException.class)
-                .hasMessage("'/test.zelda.map.properties' is not a valid properties file: "
-                        + "some field are missing or not integer convertible.");
     }
 
     @Test
@@ -79,7 +66,22 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
         zeldaMapProperties.loadProperties();
 
         // remove a mandatory field.
-        zeldaMapProperties.getProperties().remove(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_DYNAMIC_PATHWAY);
+        zeldaMapProperties.getProperties().remove(ZeldaMapProperties.MAP_SIZE_HEIGHT);
+
+        assertThatThrownBy(zeldaMapProperties::checkProperties)
+                .isInstanceOf(InvalidConfigurationException.class)
+                .hasMessage("'/test.zelda.map.properties' is not a valid properties file: "
+                        + "some field are missing or not integer convertible.");
+    }
+
+    @Test
+    public void checkPropertiesWithNotIntegerPropertiesShouldThrowExpectedException() throws Exception {
+        ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties(TEST_MAP_PROPERTIES_FILE);
+        zeldaMapProperties.loadProperties();
+
+        // set a field with a bad value.
+        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_NB_GREEN_TREE,
+                "notAnIntegerConvertibleString");
 
         assertThatThrownBy(zeldaMapProperties::checkProperties)
                 .isInstanceOf(InvalidConfigurationException.class)
@@ -94,8 +96,7 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
 
         // set percentage fields too high values (i.e. sum(percentage) > 100).
         zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_MUTABLE_OBSTACLE, "50");
-        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_IMMUTABLE_OBSTACLE, "40");
-        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_DYNAMIC_PATHWAY, "30");
+        zeldaMapProperties.getProperties().setProperty(ZeldaMapProperties.MAP_ELEMENT_PER_SINGLE_IMMUTABLE_OBSTACLE, "60");
 
         assertThatThrownBy(zeldaMapProperties::checkProperties)
                 .isInstanceOf(InvalidConfigurationException.class)

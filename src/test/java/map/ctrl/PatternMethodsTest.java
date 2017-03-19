@@ -2,8 +2,8 @@ package map.ctrl;
 
 import exceptions.CannotCreateMapElementException;
 import images.ImagesLoader;
-import map.MapPoint;
 import map.MapPattern;
+import map.MapPoint;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -46,7 +46,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void placeCastleOnMapShouldThrowExpectedException() throws Exception {
+    public void placePatternOnMapAndSecurePerimeterShouldThrowExpectedException() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -54,10 +54,10 @@ public class PatternMethodsTest implements WithAssertions {
             }
         }
         MapPattern mapPattern = new MapPattern(new Image[15], 3, 2, false, false, "castle");
-        assertThatThrownBy(() -> placeCastleOnMap(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, mapPattern,
-                MAP_HEIGHT - mapPattern.getHeight() + 1, 0, 0))
+        assertThatThrownBy(() -> placePatternOnMapAndSecurePerimeter(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, mapPattern,
+                MAP_HEIGHT - mapPattern.getHeight() + 1, 0, 0, 0))
                 .isInstanceOf(CannotCreateMapElementException.class)
-                .hasMessage("not able to create a castle at rowIdx=9, colIdx=0.");
+                .hasMessage("not able to create an element at rowIdx=9, colIdx=0.");
     }
 
     @Test
@@ -152,7 +152,7 @@ public class PatternMethodsTest implements WithAssertions {
         mapPointMatrix[notAvCaseRowIdx][notAvCaseColIdx].setAvailable(false);
 
         // secure perimeter.
-        PatternMethods.securePerimeter(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, mapPattern, startRowIdx, startColIdx, 0);
+        PatternMethods.securePerimeter(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, mapPattern, startRowIdx, startColIdx, 0, 0);
 
         // test.
         for (int colIdx = 0; colIdx < MAP_WIDTH - mapPattern.getWidth(); colIdx++) {

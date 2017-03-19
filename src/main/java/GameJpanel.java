@@ -13,9 +13,9 @@ import sprite.settled.BonusType;
 import spriteList.SpriteList;
 import spriteList.SpritesProperties;
 import spriteList.SpritesSetting;
-import utils.TopBar;
 import utils.SkinnedText;
 import utils.Timer;
+import utils.TopBar;
 import utils.Tuple2;
 
 import javax.swing.*;
@@ -24,7 +24,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static images.ImagesLoader.IMAGE_SIZE;
@@ -119,7 +118,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 SkinnedText.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedText.TEXT_WIN);
             }
         } catch (Exception e) {
-            System.err.println("GameJPanel.paintComponent(): " + e);
+            e.printStackTrace(System.out);
         }
     }
 
@@ -166,11 +165,10 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         return 0;
                     }
                 });
-
                 repaint();
-                Thread.sleep(4);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
-                System.err.println("Unexpected exception: " + Arrays.toString(e.getStackTrace()));
+                e.printStackTrace(System.out);
             }
         }
     }

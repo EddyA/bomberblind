@@ -33,7 +33,7 @@ public class App extends JFrame {
             System.out.println("- set screen mode ...");
             this.setTitle("Bomberblind (dev. in progress)");
             this.setIconImage(ImageIO.read(App.class.getResource("/images/icon.gif")));
-            if (!fullscreenResolution.isPresent() || // is the screen format supported by the software?
+            if (fullscreenResolution.isPresent() || // is the screen format supported by the software?
                     !ScreenMode.setFullscreenMode(graphicsDevice, // is the screen format supported by the hardware?
                             this,
                             screenWidth,
@@ -51,7 +51,7 @@ public class App extends JFrame {
             this.setVisible(true);
             gameJpanel.requestFocusInWindow();
         } catch (Exception e) {
-            System.err.println("App: " + e);
+            e.printStackTrace(System.out);
             System.exit(1);
         }
     }

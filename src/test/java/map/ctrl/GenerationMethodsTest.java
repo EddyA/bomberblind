@@ -48,13 +48,13 @@ public class GenerationMethodsTest {
             try {
                 // call the function with the current hMargin value.
                 randomlyPlaceCastles(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, hMargin, 0, 0, 0,
-                        new Tuple2<>(mapPattern, mapPattern), 0);
+                        new Tuple2<>(mapPattern, mapPattern), 0, 0);
             } catch (CannotCreateMapElementException e) {
                 if (hMargin < MAP_WIDTH / 2 - patternWidth) {
                     Assert.fail(); // should not throw an exception with the current value of hMargin.
                 } else {
-                    assertThat(e.getMessage()).isEqualTo("not able to generate random colIdx when placing castles: "
-                            + "the map width is too small or the horizontal margin too high according to the castles "
+                    assertThat(e.getMessage()).isEqualTo("not able to generate random colIdx when placing the entrance/exit: "
+                            + "the map width is too small or the horizontal margin too high according to the entrance/exit "
                             + "width.");
                 }
             }
@@ -82,13 +82,13 @@ public class GenerationMethodsTest {
             try {
                 // call the function with the current vMargin value.
                 randomlyPlaceCastles(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, vMargin, northEdgeHeight, southEdgeHeight,
-                        new Tuple2<>(mapPattern, mapPattern), 0);
+                        new Tuple2<>(mapPattern, mapPattern), 0, 0);
             } catch (CannotCreateMapElementException e) {
                 if (vMargin <= (MAP_HEIGHT - patternHeight - (northEdgeHeight + southEdgeHeight)) / 2) {
                     Assert.fail(); // should not throw an exception with the current value of vMargin.
                 } else {
-                    assertThat(e.getMessage()).isEqualTo("not able to generate random rowIdx when placing castles: "
-                            + "the map height is too small or the vertical margin is too high according to the castle "
+                    assertThat(e.getMessage()).isEqualTo("not able to generate random rowIdx when placing the entrance/exit: "
+                            + "the map height is too small or the vertical margin is too high according to the entrance/exit "
                             + "height and the north/south edge heights.");
                 }
             }
@@ -125,30 +125,12 @@ public class GenerationMethodsTest {
         int maxNbTry = 10;
         int nbPattern1ToPlace = 2;
         Map<MapPattern, Integer> myMap = new HashMap<>();
-        myMap.put(new MapPattern(new Image[MAP_WIDTH*MAP_HEIGHT], MAP_WIDTH, MAP_HEIGHT, false, false, "pattern1"),
+        myMap.put(new MapPattern(new Image[MAP_WIDTH * MAP_HEIGHT], MAP_WIDTH, MAP_HEIGHT, false, false, "pattern1"),
                 nbPattern1ToPlace); // the 2 complex elements to place has the size of the map :)!
         assertThatThrownBy(() -> randomlyPlaceComplexElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 0, myMap, maxNbTry)).
                 isInstanceOf(CannotCreateMapElementException.class)
                 .hasMessage("not able to place a complex element based on pattern 'pattern1', despite a certain "
                         + "number of tries (10): no more room on the map to place it.");
-    }
-
-    @Test
-    public void randomlyPlaceSingleElementsShouldFillAvailableCasesWithSingleMutableObstacles() throws Exception {
-        MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
-        for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
-            for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
-                mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
-            }
-        }
-        randomlyPlaceSingleElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 100, 0, 0);
-        for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
-            for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
-                assertThat(mapPointMatrix[rowIdx][colIdx].isAvailable()).isFalse();
-                assertThat(mapPointMatrix[rowIdx][colIdx].isMutable()).isTrue();
-                assertThat(mapPointMatrix[rowIdx][colIdx].isPathway()).isFalse();
-            }
-        }
     }
 
     @Test
@@ -159,7 +141,7 @@ public class GenerationMethodsTest {
                 mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
             }
         }
-        randomlyPlaceSingleElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 100, 0);
+        randomlyPlaceSingleElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 100, 0, 0, 0);
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
                 assertThat(mapPointMatrix[rowIdx][colIdx].isAvailable()).isFalse();
@@ -170,14 +152,52 @@ public class GenerationMethodsTest {
     }
 
     @Test
-    public void randomlyPlaceSingleElementsShouldFillAvailableCasesWithSingleStaticPathways() throws Exception {
+    public void randomlyPlaceSingleElementsShouldFillAvailableCasesWithSingleMutableObstacles() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
                 mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
             }
         }
-        randomlyPlaceSingleElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 0, 0);
+        randomlyPlaceSingleElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 100, 0, 0);
+        for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
+            for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
+                assertThat(mapPointMatrix[rowIdx][colIdx].isAvailable()).isFalse();
+                assertThat(mapPointMatrix[rowIdx][colIdx].isMutable()).isTrue();
+                assertThat(mapPointMatrix[rowIdx][colIdx].isPathway()).isFalse();
+            }
+        }
+    }
+
+    @Test
+    public void randomlyPlaceSingleElementsShouldFillAvailableCasesWithVirginSinglePathways() throws Exception {
+        MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
+        for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
+            for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
+                mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
+            }
+        }
+        randomlyPlaceSingleElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 0, 0, 0);
+        for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
+            for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
+                assertThat(mapPointMatrix[rowIdx][colIdx].isAvailable()).isFalse();
+                assertThat(mapPointMatrix[rowIdx][colIdx].isMutable()).isFalse();
+                assertThat(mapPointMatrix[rowIdx][colIdx].isPathway()).isTrue();
+                assertThat(mapPointMatrix[rowIdx][colIdx].getImage()).isEqualTo(ImagesLoader.getVirginSinglePathway());
+                assertThat(mapPointMatrix[rowIdx][colIdx].getImages()).isNull();
+            }
+        }
+    }
+
+    @Test
+    public void randomlyPlaceSingleElementsShouldFillAvailableCasesWithDecoratedSinglePathways() throws Exception {
+        MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
+        for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
+            for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
+                mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
+            }
+        }
+        randomlyPlaceSingleElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 0, 100, 0);
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
                 assertThat(mapPointMatrix[rowIdx][colIdx].isAvailable()).isFalse();
@@ -190,14 +210,14 @@ public class GenerationMethodsTest {
     }
 
     @Test
-    public void randomlyPlaceSingleElementsShouldFillAvailableCasesWithSingleDynamicPathways() throws Exception {
+    public void randomlyPlaceSingleElementsShouldFillAvailableCasesWithDynamicSinglePathways() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
                 mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
             }
         }
-        randomlyPlaceSingleElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 0, 100);
+        randomlyPlaceSingleElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 0, 100, 100);
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
                 assertThat(mapPointMatrix[rowIdx][colIdx].isAvailable()).isFalse();

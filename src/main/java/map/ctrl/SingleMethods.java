@@ -7,26 +7,33 @@ import utils.Tuple3;
 import java.awt.*;
 import java.util.Random;
 
-
 public class SingleMethods {
 
     /**
      * Try to place a single pathway on map.
      * If the case is available, place the pathway and return true, otherwise return false.
      *
-     * @param mapPoint     the MapPoint to place the pathway
-     * @param perDynamicElt the percentage of dynamic elements to place
+     * @param mapPoint                  the MapPoint to place the pathway
+     * @param perDecoratedSinglePathway the percentage of decorated elements to place among single pathway
+     * @param perDynamicSinglePathway   the percentage of dynamic elements to place among decorated single pathway
      * @return true if the pathway has been placed, false otherwise
      */
-    public static boolean placeSinglePathwayOnMap(MapPoint mapPoint, int perDynamicElt) {
+    public static boolean placeSinglePathwayOnMap(MapPoint mapPoint,
+                                                  int perDecoratedSinglePathway,
+                                                  int perDynamicSinglePathway) {
         if (mapPoint.isAvailable()) {
-            int randomPercent = Math.abs(new Random().nextInt(100)); // randomly choose a single element.
-            if (randomPercent < perDynamicElt) { // animated elements.
-                Tuple3 dynamicElt = ImagesLoader.getRandomSingleDynamicPathway();
-                mapPoint.setImages((Image[]) dynamicElt.getFirst(), (Integer) dynamicElt.getSecond());
-                mapPoint.setRefreshTime((Integer) dynamicElt.getThird());
-            } else { // static elements.
-                mapPoint.setImage(ImagesLoader.getRandomSingleStaticPathway());
+            int randomPercent = Math.abs(new Random().nextInt(100)); // randomly get a % value.
+            if (randomPercent < perDecoratedSinglePathway) {
+                randomPercent = Math.abs(new Random().nextInt(100)); // randomly get a % value.
+                if (randomPercent < perDynamicSinglePathway) {
+                    Tuple3 dynamicElt = ImagesLoader.getRandomDynamicSinglePathway(); // animated.
+                    mapPoint.setImages((Image[]) dynamicElt.getFirst(), (Integer) dynamicElt.getSecond());
+                    mapPoint.setRefreshTime((Integer) dynamicElt.getThird());
+                } else {
+                    mapPoint.setImage(ImagesLoader.getRandomDecoratedSinglePathway()); // decorated pathway.
+                }
+            } else {
+                mapPoint.setImage(ImagesLoader.getVirginSinglePathway());  // virgin.
             }
             mapPoint.setMutable(false);
             mapPoint.setPathway(true);
