@@ -9,7 +9,6 @@ import utils.Tuple2;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import static map.ctrl.PatternMethods.*;
@@ -18,8 +17,8 @@ import static map.ctrl.SingleMethods.*;
 public class GenerationMethods {
 
     /**
-     * Randomly place the entrance/exit.
-     * The entrance/exit perimeter is secured with single pathways.
+     * Randomly place the entrance and exit elements on map.
+     * The entrance/exit perimeters are secured with single pathways.
      *
      * @param mapPointMatrix            the map (represented by its matrix of MapPoint)
      * @param mapWidth                  the map width
@@ -31,19 +30,19 @@ public class GenerationMethods {
      * @param patterns                  the tuple of entrance/exit patterns to place (2 elements)
      * @param perDecoratedSinglePathway the percentage of decorated elements to place among single pathway
      * @param perDynamicSinglePathway   the percentage of dynamic elements to place among decorated single pathway
-     * @return the MapPoint of the placed entrance/exit
+     * @return the tuple of entrance/exit start points (i.e. corner north/west of the elements) (2 elements)
      * @throws CannotCreateMapElementException as soon as a pattern cannot be placed
      */
-    public static Tuple2<MapPoint, MapPoint> randomlyPlaceCastles(MapPoint[][] mapPointMatrix,
-                                                                  int mapWidth,
-                                                                  int mapHeight,
-                                                                  int hMargin,
-                                                                  int vMargin,
-                                                                  int northEdgeHeight,
-                                                                  int southEdgeHeight,
-                                                                  Tuple2<MapPattern, MapPattern> patterns,
-                                                                  int perDecoratedSinglePathway,
-                                                                  int perDynamicSinglePathway)
+    public static Tuple2<MapPoint, MapPoint> randomlyPlaceEntranceAndExit(MapPoint[][] mapPointMatrix,
+                                                                          int mapWidth,
+                                                                          int mapHeight,
+                                                                          int hMargin,
+                                                                          int vMargin,
+                                                                          int northEdgeHeight,
+                                                                          int southEdgeHeight,
+                                                                          Tuple2<MapPattern, MapPattern> patterns,
+                                                                          int perDecoratedSinglePathway,
+                                                                          int perDynamicSinglePathway)
             throws CannotCreateMapElementException {
 
         // check zelda.map.properties values (mapWidth and hMargin).
@@ -106,24 +105,24 @@ public class GenerationMethods {
                                                     int mapHeight,
                                                     int northEdgeHeight,
                                                     int southEdgeHeight,
-                                                    Map<MapPattern, Integer> patterns,
+                                                    ArrayList<Tuple2<MapPattern, Integer>> patterns,
                                                     int maxNbTry)
             throws CannotCreateMapElementException {
-        for (Map.Entry<MapPattern, Integer> eltConf : patterns.entrySet()) {
+        for (Tuple2<MapPattern, Integer> pattern : patterns) {
             try {
-                for (int eltIdx = 0; eltIdx < eltConf.getValue(); eltIdx++) {
+                for (int eltIdx = 0; eltIdx < pattern.getSecond(); eltIdx++) {
                     int nbTry = 0;
                     while (true) {
-                        int xSpElt = generateRandomColIdx(mapWidth, 0, 0, eltConf.getKey().getWidth(), 0);
+                        int xSpElt = generateRandomColIdx(mapWidth, 0, 0, pattern.getFirst().getWidth(), 0);
                         int ySpElt = generateRandomRowIdx(mapHeight, northEdgeHeight, southEdgeHeight,
-                                eltConf.getKey().getHeight(), 0);
-                        if (!placePatternOnMap(mapPointMatrix, mapWidth, mapHeight, eltConf.getKey(), ySpElt, xSpElt)) {
+                                pattern.getFirst().getHeight(), 0);
+                        if (!placePatternOnMap(mapPointMatrix, mapWidth, mapHeight, pattern.getFirst(), ySpElt, xSpElt)) {
                             if (nbTry < maxNbTry) {
                                 nbTry++;
                             } else {
                                 throw new CannotCreateMapElementException("not able to place a complex element based on pattern '" +
-                                        eltConf.getKey().getName() + "', despite a certain number of tries (" + String.valueOf(maxNbTry) +
-                                        "): no more room on the map to place it.");
+                                        pattern.getFirst().getName() + "', despite a certain number of tries (" +
+                                        String.valueOf(maxNbTry) + "): no more room on the map to place it.");
                             }
                         } else {
                             break;
@@ -132,7 +131,7 @@ public class GenerationMethods {
                 }
             } catch (IllegalArgumentException e) {
                 throw new CannotCreateMapElementException("not able to place a complex element based on pattern '"
-                        + eltConf.getKey().getName() + "': the map size can be too small or the margins " +
+                        + pattern.getFirst().getName() + "': the map size can be too small or the margins " +
                         "too high according to the relative pattern size and the north/south edge heights.");
             }
         }

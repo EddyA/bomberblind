@@ -8,7 +8,7 @@ import map.MapPoint;
 import map.ctrl.GenerationMethods;
 import utils.Tuple2;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import static images.ImagesLoader.IMAGE_SIZE;
 import static map.ctrl.PatternMethods.placeNorthEdgeOnMap;
@@ -39,30 +39,31 @@ public class ZeldaMap extends Map {
         placeSouthEdgeOnMap(mapPointMatrix, zeldaMapSetting.getMapWidth(), zeldaMapSetting.getMapHeight(), edge);
 
         // place castles.
-        Tuple2<MapPattern, MapPattern> castlePatterns = new Tuple2<>(castle, trunk);
-        Tuple2<MapPoint, MapPoint> spCastles =
-                GenerationMethods.randomlyPlaceCastles(mapPointMatrix,
+        Tuple2<MapPattern, MapPattern> entranceAndExitPatterns = new Tuple2<>(castle, trunk);
+        Tuple2<MapPoint, MapPoint> spEntranceAndExit =
+                GenerationMethods.randomlyPlaceEntranceAndExit(mapPointMatrix,
                         zeldaMapSetting.getMapWidth(),
                         zeldaMapSetting.getMapHeight(),
                         zeldaMapSetting.getHorizontalMargin(),
                         greenTree.getHeight(),
                         edge.getHeight(),
                         zeldaMapSetting.getVerticalMargin(),
-                        castlePatterns,
+                        entranceAndExitPatterns,
                         zeldaMapSetting.getPerDecoratedSinglePathway(),
                         zeldaMapSetting.getPerDynamicSinglePathway());
-        castleStartPoint = spCastles.getFirst();
+        castleStartPoint = spEntranceAndExit.getFirst();
 
         // place complex elements.
         try {
-            java.util.Map<MapPattern, Integer> complexEltPatterns = new HashMap<>();
-            complexEltPatterns.put(orchad, zeldaMapSetting.getNbOrchard());
-            complexEltPatterns.put(trough, zeldaMapSetting.getNbTrough());
-            complexEltPatterns.put(greenTree, zeldaMapSetting.getNbGreenTree());
-            complexEltPatterns.put(redTree, zeldaMapSetting.getNbRedTree());
-            complexEltPatterns.put(yellowTree, zeldaMapSetting.getNbYellowTree());
-            complexEltPatterns.put(pathway, zeldaMapSetting.getNbPathway());
-            complexEltPatterns.put(statue, zeldaMapSetting.getNbStatue());
+            ArrayList<Tuple2<MapPattern, Integer>> complexEltPatterns = new ArrayList<Tuple2<MapPattern, Integer>>() {{
+                add(new Tuple2<>(orchad, zeldaMapSetting.getNbOrchard()));
+                add(new Tuple2<>(trough, zeldaMapSetting.getNbTrough()));
+                add(new Tuple2<>(greenTree, zeldaMapSetting.getNbGreenTree()));
+                add(new Tuple2<>(redTree, zeldaMapSetting.getNbRedTree()));
+                add(new Tuple2<>(yellowTree, zeldaMapSetting.getNbYellowTree()));
+                add(new Tuple2<>(pathway, zeldaMapSetting.getNbPathway()));
+                add(new Tuple2<>(statue, zeldaMapSetting.getNbStatue()));
+            }};
             GenerationMethods.randomlyPlaceComplexElements(mapPointMatrix,
                     zeldaMapSetting.getMapWidth(),
                     zeldaMapSetting.getMapHeight(),

@@ -12,6 +12,7 @@ import utils.Tuple2;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +48,7 @@ public class GenerationMethodsTest {
 
             try {
                 // call the function with the current hMargin value.
-                randomlyPlaceCastles(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, hMargin, 0, 0, 0,
+                randomlyPlaceEntranceAndExit(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, hMargin, 0, 0, 0,
                         new Tuple2<>(mapPattern, mapPattern), 0, 0);
             } catch (CannotCreateMapElementException e) {
                 if (hMargin < MAP_WIDTH / 2 - patternWidth) {
@@ -81,7 +82,7 @@ public class GenerationMethodsTest {
 
             try {
                 // call the function with the current vMargin value.
-                randomlyPlaceCastles(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, vMargin, northEdgeHeight, southEdgeHeight,
+                randomlyPlaceEntranceAndExit(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, vMargin, northEdgeHeight, southEdgeHeight,
                         new Tuple2<>(mapPattern, mapPattern), 0, 0);
             } catch (CannotCreateMapElementException e) {
                 if (vMargin <= (MAP_HEIGHT - patternHeight - (northEdgeHeight + southEdgeHeight)) / 2) {
@@ -103,9 +104,10 @@ public class GenerationMethodsTest {
                 mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
             }
         }
-        Map<MapPattern, Integer> myMap = new HashMap<>();
-        myMap.put(new MapPattern(new Image[6], MAP_WIDTH + 1, MAP_HEIGHT + 1, false, false, "pattern1"), 1);
-        assertThatThrownBy(() -> randomlyPlaceComplexElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 0, myMap, 1))
+        ArrayList<Tuple2<MapPattern, Integer>> complexEltPatterns = new ArrayList<Tuple2<MapPattern, Integer>>() {{
+            add(new Tuple2<>(new MapPattern(new Image[6], MAP_WIDTH + 1, MAP_HEIGHT + 1, false, false, "pattern1"), 1));
+        }};
+        assertThatThrownBy(() -> randomlyPlaceComplexElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 0, complexEltPatterns, 1))
                 .isInstanceOf(CannotCreateMapElementException.class)
                 .hasMessage("not able to place a complex element based on pattern 'pattern1': the map size can be too "
                         + "small or the margins too high according to the relative pattern size and the north/south "
@@ -124,10 +126,12 @@ public class GenerationMethodsTest {
 
         int maxNbTry = 10;
         int nbPattern1ToPlace = 2;
-        Map<MapPattern, Integer> myMap = new HashMap<>();
-        myMap.put(new MapPattern(new Image[MAP_WIDTH * MAP_HEIGHT], MAP_WIDTH, MAP_HEIGHT, false, false, "pattern1"),
-                nbPattern1ToPlace); // the 2 complex elements to place has the size of the map :)!
-        assertThatThrownBy(() -> randomlyPlaceComplexElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 0, myMap, maxNbTry)).
+        ArrayList<Tuple2<MapPattern, Integer>> complexEltPatterns = new ArrayList<Tuple2<MapPattern, Integer>>() {{
+            // the 2 complex elements to place has the size of the map :)!
+            add(new Tuple2<>(new MapPattern(new Image[MAP_WIDTH * MAP_HEIGHT], MAP_WIDTH, MAP_HEIGHT, false, false, "pattern1"),
+                    nbPattern1ToPlace));
+        }};
+        assertThatThrownBy(() -> randomlyPlaceComplexElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 0, complexEltPatterns, maxNbTry)).
                 isInstanceOf(CannotCreateMapElementException.class)
                 .hasMessage("not able to place a complex element based on pattern 'pattern1', despite a certain "
                         + "number of tries (10): no more room on the map to place it.");
