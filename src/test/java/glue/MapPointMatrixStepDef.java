@@ -23,14 +23,14 @@ public class MapPointMatrixStepDef implements WithAssertions {
         mapPointMatrixState.getMapPoint(rowIdx, colIdx).addFlame();
     }
 
-    @Given("^an obstacle case at rowIdx (\\d+) and coldIdx (\\d+)$")
-    public void an_obstacle_case_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
+    @Given("^an immutable obstacle at rowIdx (\\d+) and coldIdx (\\d+)$")
+    public void an_immutable_obstacle_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
         mapPointMatrixState.getMapPoint(rowIdx, colIdx).setPathway(false);
         mapPointMatrixState.getMapPoint(rowIdx, colIdx).setMutable(false);
     }
 
-    @Given("^a mutable case at rowIdx (\\d+) and coldIdx (\\d+)$")
-    public void a_mutable_case_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
+    @Given("^a mutable obstacle at rowIdx (\\d+) and coldIdx (\\d+)$")
+    public void a_mutable_obstacle_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
         mapPointMatrixState.getMapPoint(rowIdx, colIdx).setPathway(false);
         mapPointMatrixState.getMapPoint(rowIdx, colIdx).setMutable(true);
     }

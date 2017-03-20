@@ -19,14 +19,22 @@ public class SingleMethodsTest implements WithAssertions {
     public void placeSinglePathwayOnMapShouldReturnFalseBecauseNotAvailable() throws Exception {
         MapPoint mapPoint = new MapPoint(0, 0);
         mapPoint.setAvailable(false);
-        assertThat(SingleMethods.placeSinglePathwayOnMap(mapPoint, 0)).isFalse();
+        assertThat(SingleMethods.placeSinglePathwayOnMap(mapPoint, 0, 0)).isFalse();
         assertThat(mapPoint.getImage()).isNull();
     }
 
     @Test
-    public void placeSinglePathwayOnMapShouldReturnTrueBecauseAvailableAndPutAStaticPathway() throws Exception {
+    public void placeSinglePathwayOnMapShouldReturnTrueBecauseAvailableAndPutAVirginSinglePathway() throws Exception {
         MapPoint mapPoint = new MapPoint(0, 0);
-        assertThat(SingleMethods.placeSinglePathwayOnMap(mapPoint, 0)).isTrue();
+        assertThat(SingleMethods.placeSinglePathwayOnMap(mapPoint, 0, 0)).isTrue();
+        assertThat(mapPoint.getImage()).isEqualTo(ImagesLoader.getVirginSinglePathway());
+        assertThat(mapPoint.getImages()).isNull();
+    }
+
+    @Test
+    public void placeSinglePathwayOnMapShouldReturnTrueBecauseAvailableAndPutADecoratedSinglePathway() throws Exception {
+        MapPoint mapPoint = new MapPoint(0, 0);
+        assertThat(SingleMethods.placeSinglePathwayOnMap(mapPoint, 100, 0)).isTrue();
         assertThat(mapPoint.getImage()).isNotNull();
         assertThat(mapPoint.getImages()).isNull();
     }
@@ -34,38 +42,38 @@ public class SingleMethodsTest implements WithAssertions {
     @Test
     public void placeSinglePathwayOnMapShouldReturnTrueBecauseAvailableAndPutADynamicPathway() throws Exception {
         MapPoint mapPoint = new MapPoint(0, 0);
-        assertThat(SingleMethods.placeSinglePathwayOnMap(mapPoint, 100)).isTrue();
+        assertThat(SingleMethods.placeSinglePathwayOnMap(mapPoint, 100, 100)).isTrue();
         assertThat(mapPoint.getImage()).isNull();
         assertThat(mapPoint.getImages()).isNotNull();
     }
 
     @Test
-    public void placeSingleMutableOnMapShouldReturnFalseBecauseNotAvailable() throws Exception {
+    public void placeSingleMutableObstacleOnMapShouldReturnFalseBecauseNotAvailable() throws Exception {
         MapPoint mapPoint = new MapPoint(0, 0);
         mapPoint.setAvailable(false);
-        assertThat(SingleMethods.placeSingleMutableOnMap(mapPoint)).isFalse();
+        assertThat(SingleMethods.placeSingleMutableObstacleOnMap(mapPoint)).isFalse();
         assertThat(mapPoint.getImage()).isNull();
     }
 
     @Test
-    public void placeSingleMutableOnMapShouldReturnTrueBecauseAvailableAndPutAStaticMutable() throws Exception {
+    public void placeSingleMutableObstacleOnMapShouldReturnTrueBecauseAvailableAndPutAMutableObstacle() throws Exception {
         MapPoint mapPoint = new MapPoint(0, 0);
-        assertThat(SingleMethods.placeSingleMutableOnMap(mapPoint)).isTrue();
+        assertThat(SingleMethods.placeSingleMutableObstacleOnMap(mapPoint)).isTrue();
         assertThat(mapPoint.getImage()).isNotNull();
     }
 
     @Test
-    public void placeSingleObstacleOnMapShouldReturnFalseBecauseNotAvailable() throws Exception {
+    public void placeSingleImmutableObstacleOnMapShouldReturnFalseBecauseNotAvailable() throws Exception {
         MapPoint mapPoint = new MapPoint(0, 0);
         mapPoint.setAvailable(false);
-        assertThat(SingleMethods.placeSingleObstacleOnMap(mapPoint)).isFalse();
+        assertThat(SingleMethods.placeSingleImmutableObstacleOnMap(mapPoint)).isFalse();
         assertThat(mapPoint.getImage()).isNull();
     }
 
     @Test
-    public void placeSingleObstacleOnMapShouldReturnTrueBecauseAvailableAndPutAStaticObstacle() throws Exception {
+    public void placeSingleImmutableObstacleOnMapShouldReturnTrueBecauseAvailableAndPutAnImmutableObstacle() throws Exception {
         MapPoint mapPoint = new MapPoint(0, 0);
-        assertThat(SingleMethods.placeSingleObstacleOnMap(mapPoint)).isTrue();
+        assertThat(SingleMethods.placeSingleImmutableObstacleOnMap(mapPoint)).isTrue();
         assertThat(mapPoint.getImage()).isNotNull();
     }
 }

@@ -124,7 +124,7 @@ public class AddingMethods {
      * Add a flame to a list.
      * The flame is adding if:
      * - it is a pathway, in this case the function returns true as the flame can be propagated,
-     * - OR it is a mutable or a bomb, in this case the function returns false as the flame cannot be propagated.
+     * - OR it is a mutable obstacle or a bomb, in this case the function returns false as the flame cannot be propagated.
      *
      * @param list           the list into which adding the flame
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
