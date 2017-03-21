@@ -5,10 +5,6 @@ import cucumber.api.java.en.Then;
 import map.MapPoint;
 import org.assertj.core.api.WithAssertions;
 import sprite.SpriteType;
-import sprite.settled.BonusBomb;
-import sprite.settled.BonusHeart;
-import sprite.settled.BonusRoller;
-import sprite.settled.BonusType;
 import spriteList.ctrl.AddingMethods;
 import utils.Tools;
 

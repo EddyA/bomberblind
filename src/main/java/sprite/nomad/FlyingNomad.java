@@ -21,7 +21,7 @@ public abstract class FlyingNomad extends Nomad {
     private final Image[] flyRightImages;
     private final int nbFlyFrame;
 
-    private int deviation; // the number of iterations before shifting to the orthogonal direction.
+    private final int deviation; // the number of iterations before shifting to the orthogonal direction.
     private int moveIdx; // number of times the sprite has moved.
 
     /**

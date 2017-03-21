@@ -1,27 +1,20 @@
 package sprite.nomad;
 
-import static org.mockito.Mockito.mock;
-import static sprite.SpriteAction.ACTION_BREAKING;
-import static sprite.SpriteAction.ACTION_DYING;
-import static sprite.SpriteAction.ACTION_FLYING;
-import static sprite.SpriteAction.ACTION_WAITING;
-import static sprite.SpriteAction.ACTION_WALKING;
-import static sprite.SpriteAction.ACTION_WINING;
-
-import java.io.IOException;
-import java.time.Instant;
-
+import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import images.ImagesLoader;
 import sprite.SpriteType;
 import sprite.settled.Bomb;
-import sprite.settled.LoopedSettled;
 import utils.CurrentTimeSupplier;
 import utils.Direction;
+
+import java.io.IOException;
+import java.time.Instant;
+
+import static org.mockito.Mockito.mock;
+import static sprite.SpriteAction.*;
 
 public class BomberTest implements WithAssertions {
 
