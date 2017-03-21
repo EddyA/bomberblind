@@ -51,7 +51,7 @@ public class App extends JFrame {
             this.setVisible(true);
             gameJpanel.requestFocusInWindow();
         } catch (Exception e) {
-            System.err.println("App: " + e);
+            e.printStackTrace(System.out);
             System.exit(1);
         }
     }

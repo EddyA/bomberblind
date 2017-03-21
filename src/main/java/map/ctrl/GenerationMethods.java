@@ -9,7 +9,6 @@ import utils.Tuple2;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import static map.ctrl.PatternMethods.*;
@@ -18,54 +17,69 @@ import static map.ctrl.SingleMethods.*;
 public class GenerationMethods {
 
     /**
-     * Randomly place castles.
+     * Randomly place the entrance and exit elements on map.
+     * The entrance/exit perimeters are secured with single pathways.
      *
-     * @param mapPointMatrix      the map (represented by its matrix of MapPoint)
-     * @param mapWidth             the map width
-     * @param mapHeight            the map height
-     * @param hMargin              the vertical margin (to put castles at x cases from the left/right sides of the map)
-     * @param vMargin              the horizontal margin (to put castles a minimum of y cases from the top/bottom of the map)
-     * @param northEdgeHeight      the height of the north edge
-     * @param southEdgeHeight      the height of the south edge
-     * @param patterns             the tuple of castle patterns to place (2 elements)
-     * @param perDynamicPathwayElt the percentage of dynamic pathway elements to place arround the castles
-     * @return the MapPoint of the two placed castles
-     * @throws CannotCreateMapElementException as soon as a castle cannot be placed
+     * @param mapPointMatrix            the map (represented by its matrix of MapPoint)
+     * @param mapWidth                  the map width
+     * @param mapHeight                 the map height
+     * @param hMargin                   the vertical margin (to put the entrance/exit at x cases from the left/right sides of the map)
+     * @param vMargin                   the horizontal margin (to put the entrance/exit at a minimum of y cases from the top/bottom of the map)
+     * @param northEdgeHeight           the height of the north edge
+     * @param southEdgeHeight           the height of the south edge
+     * @param patterns                  the tuple of entrance/exit patterns to place (2 elements)
+     * @param perDecoratedSinglePathway the percentage of decorated elements to place among single pathway
+     * @param perDynamicSinglePathway   the percentage of dynamic elements to place among decorated single pathway
+     * @return the tuple of entrance/exit start points (i.e. corner north/west of the elements) (2 elements)
+     * @throws CannotCreateMapElementException as soon as a pattern cannot be placed
      */
-    public static Tuple2<MapPoint, MapPoint> randomlyPlaceCastles(MapPoint[][] mapPointMatrix,
-                                                                  int mapWidth,
-                                                                  int mapHeight,
-                                                                  int hMargin,
-                                                                  int vMargin,
-                                                                  int northEdgeHeight,
-                                                                  int southEdgeHeight,
-                                                                  Tuple2<MapPattern, MapPattern> patterns,
-                                                                  int perDynamicPathwayElt)
+    public static Tuple2<MapPoint, MapPoint> randomlyPlaceEntranceAndExit(MapPoint[][] mapPointMatrix,
+                                                                          int mapWidth,
+                                                                          int mapHeight,
+                                                                          int hMargin,
+                                                                          int vMargin,
+                                                                          int northEdgeHeight,
+                                                                          int southEdgeHeight,
+                                                                          Tuple2<MapPattern, MapPattern> patterns,
+                                                                          int perDecoratedSinglePathway,
+                                                                          int perDynamicSinglePathway)
             throws CannotCreateMapElementException {
 
         // check zelda.map.properties values (mapWidth and hMargin).
         if (mapWidth / 2 - patterns.getFirst().getWidth() - hMargin <= 0) {
-            throw new CannotCreateMapElementException("not able to generate random colIdx when placing castles: "
-                    + "the map width is too small or the horizontal margin too high according to the castles width.");
+            throw new CannotCreateMapElementException("not able to generate random colIdx when placing the entrance/exit: "
+                    + "the map width is too small or the horizontal margin too high according to the entrance/exit width.");
         }
         try {
-            // 1st castle.
-            int ySpCastleT1 = generateRandomRowIdx(mapHeight, northEdgeHeight, southEdgeHeight,
+            // entrance.
+            int ySpEntrance = generateRandomRowIdx(mapHeight, northEdgeHeight, southEdgeHeight,
                     patterns.getFirst().getHeight(), vMargin);
-            placeCastleOnMap(mapPointMatrix, mapWidth, mapHeight, patterns.getFirst(), ySpCastleT1, hMargin,
-                    perDynamicPathwayElt);
+            placePatternOnMapAndSecurePerimeter(mapPointMatrix,
+                    mapWidth,
+                    mapHeight,
+                    patterns.getFirst(),
+                    ySpEntrance,
+                    hMargin,
+                    perDecoratedSinglePathway,
+                    perDynamicSinglePathway);
 
-            // 2nd castle.
-            int xSpCastleT2 = mapWidth - hMargin - patterns.getSecond().getWidth();
-            int ySpCastleT2 = generateRandomRowIdx(mapHeight, northEdgeHeight, southEdgeHeight,
+            // exit.
+            int xSpExit = mapWidth - hMargin - patterns.getSecond().getWidth();
+            int ySpExit = generateRandomRowIdx(mapHeight, northEdgeHeight, southEdgeHeight,
                     patterns.getSecond().getHeight(), vMargin);
-            placeCastleOnMap(mapPointMatrix, mapWidth, mapHeight, patterns.getSecond(), ySpCastleT2, xSpCastleT2,
-                    perDynamicPathwayElt);
+            placePatternOnMapAndSecurePerimeter(mapPointMatrix,
+                    mapWidth,
+                    mapHeight,
+                    patterns.getSecond(),
+                    ySpExit,
+                    xSpExit,
+                    perDecoratedSinglePathway,
+                    perDynamicSinglePathway);
 
-            return new Tuple2<>(mapPointMatrix[ySpCastleT1][hMargin], mapPointMatrix[ySpCastleT2][xSpCastleT2]);
+            return new Tuple2<>(mapPointMatrix[ySpEntrance][hMargin], mapPointMatrix[ySpExit][xSpExit]);
         } catch (IllegalArgumentException e) {
-            throw new CannotCreateMapElementException("not able to generate random rowIdx when placing castles: "
-                    + "the map height is too small or the vertical margin is too high according to the castle height "
+            throw new CannotCreateMapElementException("not able to generate random rowIdx when placing the entrance/exit: "
+                    + "the map height is too small or the vertical margin is too high according to the entrance/exit height "
                     + "and the north/south edge heights.");
         }
     }
@@ -74,7 +88,7 @@ public class GenerationMethods {
      * Randomly place complex elements.
      * If an element cannot be placed after a certain number of try, it is ignoring.
      *
-     * @param mapPointMatrix the map (represented by its matrix of MapPoint)
+     * @param mapPointMatrix  the map (represented by its matrix of MapPoint)
      * @param mapWidth        the map width
      * @param mapHeight       the map height
      * @param northEdgeHeight the height of the north edge
@@ -91,24 +105,24 @@ public class GenerationMethods {
                                                     int mapHeight,
                                                     int northEdgeHeight,
                                                     int southEdgeHeight,
-                                                    Map<MapPattern, Integer> patterns,
+                                                    ArrayList<Tuple2<MapPattern, Integer>> patterns,
                                                     int maxNbTry)
             throws CannotCreateMapElementException {
-        for (Map.Entry<MapPattern, Integer> eltConf : patterns.entrySet()) {
+        for (Tuple2<MapPattern, Integer> pattern : patterns) {
             try {
-                for (int eltIdx = 0; eltIdx < eltConf.getValue(); eltIdx++) {
+                for (int eltIdx = 0; eltIdx < pattern.getSecond(); eltIdx++) {
                     int nbTry = 0;
                     while (true) {
-                        int xSpElt = generateRandomColIdx(mapWidth, 0, 0, eltConf.getKey().getWidth(), 0);
+                        int xSpElt = generateRandomColIdx(mapWidth, 0, 0, pattern.getFirst().getWidth(), 0);
                         int ySpElt = generateRandomRowIdx(mapHeight, northEdgeHeight, southEdgeHeight,
-                                eltConf.getKey().getHeight(), 0);
-                        if (!placePatternOnMap(mapPointMatrix, mapWidth, mapHeight, eltConf.getKey(), ySpElt, xSpElt)) {
+                                pattern.getFirst().getHeight(), 0);
+                        if (!placePatternOnMap(mapPointMatrix, mapWidth, mapHeight, pattern.getFirst(), ySpElt, xSpElt)) {
                             if (nbTry < maxNbTry) {
                                 nbTry++;
                             } else {
                                 throw new CannotCreateMapElementException("not able to place a complex element based on pattern '" +
-                                        eltConf.getKey().getName() + "', despite a certain number of tries (" + String.valueOf(maxNbTry) +
-                                        "): no more room on the map to place it.");
+                                        pattern.getFirst().getName() + "', despite a certain number of tries (" +
+                                        String.valueOf(maxNbTry) + "): no more room on the map to place it.");
                             }
                         } else {
                             break;
@@ -117,7 +131,7 @@ public class GenerationMethods {
                 }
             } catch (IllegalArgumentException e) {
                 throw new CannotCreateMapElementException("not able to place a complex element based on pattern '"
-                        + eltConf.getKey().getName() + "': the map size can be too small or the margins " +
+                        + pattern.getFirst().getName() + "': the map size can be too small or the margins " +
                         "too high according to the relative pattern size and the north/south edge heights.");
             }
         }
@@ -126,20 +140,22 @@ public class GenerationMethods {
     /**
      * Randomly place single elements.
      *
-     * @param mapPointMatrix   the map (represented by its matrix of MapPoint)
-     * @param mapWidth          the map width
-     * @param mapHeight         the map height
-     * @param perSingleMutable  the percentage of single mutable to place among available cases
-     * @param perSingleObstacle the percentage of single obstacle to place among available cases
-     * @param perDynPathwayElt  the percentage of dynamic pathway elements to place among available cases
-     * @throws CannotCreateMapElementException as soon as a castle cannot be placed
+     * @param mapPointMatrix             the map (represented by its matrix of MapPoint)
+     * @param mapWidth                   the map width
+     * @param mapHeight                  the map height
+     * @param perSingleImmutableObstacle the percentage of single immutable obstacle to place among available cases
+     * @param perSingleMutableObstacle   the percentage of single mutable obstacle to place among available cases
+     * @param perDecoratedSinglePathway  the percentage of decorated elements to place among single pathway
+     * @param perDynamicSinglePathway    the percentage of dynamic elements to place among decorated single pathway
+     * @throws CannotCreateMapElementException as soon as an element cannot be placed
      */
     public static void randomlyPlaceSingleElements(MapPoint[][] mapPointMatrix,
                                                    int mapWidth,
                                                    int mapHeight,
-                                                   int perSingleMutable,
-                                                   int perSingleObstacle,
-                                                   int perDynPathwayElt)
+                                                   int perSingleImmutableObstacle,
+                                                   int perSingleMutableObstacle,
+                                                   int perDecoratedSinglePathway,
+                                                   int perDynamicSinglePathway)
             throws CannotCreateMapElementException {
 
         // create list of empty cases.
@@ -160,16 +176,16 @@ public class GenerationMethods {
             int randomPercent = Math.abs(R.nextInt(100)); // randomly choose a single element.
             int ptIdx = Math.abs(R.nextInt(emptyPtList.size())); // randomly choose an empty case.
             MapPoint mapPoint = emptyPtList.get(ptIdx);
-            if (randomPercent < perSingleObstacle) {
-                if (!placeSingleObstacleOnMap(mapPoint)) {
-                    throw new CannotCreateMapElementException("not able to create a single obstacle.");
+            if (randomPercent < perSingleImmutableObstacle) {
+                if (!placeSingleImmutableObstacleOnMap(mapPoint)) {
+                    throw new CannotCreateMapElementException("not able to create a single immutable obstacle.");
                 }
-            } else if (randomPercent < perSingleObstacle + perSingleMutable) {
-                if (!placeSingleMutableOnMap(mapPoint)) {
-                    throw new CannotCreateMapElementException("not able to create a single mutable.");
+            } else if (randomPercent < perSingleImmutableObstacle + perSingleMutableObstacle) {
+                if (!placeSingleMutableObstacleOnMap(mapPoint)) {
+                    throw new CannotCreateMapElementException("not able to create a single mutable obstacle.");
                 }
             } else {
-                if (!placeSinglePathwayOnMap(mapPoint, perDynPathwayElt)) {
+                if (!placeSinglePathwayOnMap(mapPoint, perDecoratedSinglePathway, perDynamicSinglePathway)) {
                     throw new CannotCreateMapElementException("not able to create a single pathway.");
                 }
             }
@@ -196,7 +212,7 @@ public class GenerationMethods {
                                           int nbBonusHeart,
                                           int nbBonusRoller) throws CannotPlaceBonusOnMapException {
 
-        // create list of mutable cases.
+        // create list of single mutable obstacle.
         List<MapPoint> mutableCases = new ArrayList<>();
         for (int rowIdx = 0; rowIdx < mapHeight; rowIdx++) {
             for (int colIdx = 0; colIdx < mapWidth; colIdx++) {
@@ -228,7 +244,7 @@ public class GenerationMethods {
                         BonusType.getlabel(bonusToPlace).orElse("no_name")
                         + "' on map, no more available mutable.");
             }
-            int ptIdx = Math.abs(R.nextInt(mutableCases.size())); // randomly choose a mutable case.
+            int ptIdx = Math.abs(R.nextInt(mutableCases.size())); // randomly choose a single mutable obstacle.
             MapPoint mapPoint = mutableCases.get(ptIdx);
             mapPoint.setAttachedBonus(bonusToPlace);
             mutableCases.remove(ptIdx);
