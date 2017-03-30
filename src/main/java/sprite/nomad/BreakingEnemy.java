@@ -1,14 +1,12 @@
 package sprite.nomad;
 
-import static sprite.SpriteAction.ACTION_BREAKING;
-import static sprite.SpriteAction.ACTION_DYING;
-import static sprite.SpriteAction.ACTION_WALKING;
-
-import java.awt.Image;
-
 import map.MapPoint;
 import sprite.SpriteAction;
 import sprite.SpriteType;
+
+import java.awt.*;
+
+import static sprite.SpriteAction.*;
 
 /**
  * Abstract class of a breaking enemy.
@@ -20,6 +18,7 @@ public class BreakingEnemy extends WalkingEnemy {
     private final Image[] breakLeftImages;
     private final Image[] breakRightImages;
     private final int nbBreakFrame;
+    private final int breakRefreshTime;
 
     private MapPoint breakingMapPoint = null; // the current MapPoint the enemy is breaking.
 
@@ -33,14 +32,13 @@ public class BreakingEnemy extends WalkingEnemy {
      * @param breakLeftImages  the array of images for the "break left" action
      * @param breakRightImages the array of images for the "break right" action
      * @param nbBreakFrame     the number of images of the "break" arrays
-     * @param deathImages      the array of image for the "death" action
-     * @param nbDeathFrame     the number of images of the "death" array
+     * @param breakRefreshTime the sprite refresh time when breaking (i.e. defining the sprite speed in term of image/sec)
      * @param walkBackImages   the array of images for the "walk back" action
      * @param walkFrontImages  the array of images for the "walk front" action
      * @param walkLeftImages   the array of images for the "walk left" action
      * @param walkRightImages  the array of images for the "walk right" action
      * @param nbWalkFrame      the number of images of the "walk" arrays
-     * @param refreshTime      the sprite refresh time (i.e. defining the sprite speed in term of image/sec)
+     * @param walkRefreshTime  the sprite refresh time when walking (i.e. defining the sprite speed in term of image/sec)
      * @param actingTime       the sprite acting time (i.e. defining the sprite speed in term of action/sec)
      */
     public BreakingEnemy(int xMap,
@@ -50,25 +48,22 @@ public class BreakingEnemy extends WalkingEnemy {
                          Image[] breakLeftImages,
                          Image[] breakRightImages,
                          int nbBreakFrame,
-                         Image[] deathImages,
-                         int nbDeathFrame,
+                         int breakRefreshTime,
                          Image[] walkBackImages,
                          Image[] walkFrontImages,
                          Image[] walkLeftImages,
                          Image[] walkRightImages,
                          int nbWalkFrame,
-                         int refreshTime,
+                         int walkRefreshTime,
                          int actingTime) {
         super(xMap,
                 yMap,
-                deathImages,
-                nbDeathFrame,
                 walkBackImages,
                 walkFrontImages,
                 walkLeftImages,
                 walkRightImages,
                 nbWalkFrame,
-                refreshTime,
+                walkRefreshTime,
                 actingTime);
         this.setSpriteType(SpriteType.TYPE_BREAKING_ENEMY); // override the type of sprite.
         this.breakBackImages = breakBackImages;
@@ -76,6 +71,7 @@ public class BreakingEnemy extends WalkingEnemy {
         this.breakLeftImages = breakLeftImages;
         this.breakRightImages = breakRightImages;
         this.nbBreakFrame = nbBreakFrame;
+        this.breakRefreshTime = breakRefreshTime;
     }
 
     public Image[] getBreakBackImages() {
@@ -96,6 +92,10 @@ public class BreakingEnemy extends WalkingEnemy {
 
     public int getNbBreakFrame() {
         return nbBreakFrame;
+    }
+
+    public int getBreakRefreshTime() {
+        return breakRefreshTime;
     }
 
     public MapPoint getBreakingMapPoint() {
@@ -139,29 +139,28 @@ public class BreakingEnemy extends WalkingEnemy {
                     case DIRECTION_NORTH: {
                         images = breakBackImages;
                         nbImages = nbBreakFrame;
+                        refreshTime = breakRefreshTime;
                         break;
                     }
                     case DIRECTION_SOUTH: {
                         images = breakFrontImages;
                         nbImages = nbBreakFrame;
+                        refreshTime = breakRefreshTime;
                         break;
                     }
                     case DIRECTION_WEST: {
                         images = breakLeftImages;
                         nbImages = nbBreakFrame;
+                        refreshTime = breakRefreshTime;
                         break;
                     }
                     case DIRECTION_EAST: {
                         images = breakRightImages;
                         nbImages = nbBreakFrame;
+                        refreshTime = breakRefreshTime;
                         break;
                     }
                 }
-                break;
-            }
-            case ACTION_DYING: {
-                images = deathImages;
-                nbImages = nbDeathFrame;
                 break;
             }
             case ACTION_WALKING: {
@@ -169,21 +168,25 @@ public class BreakingEnemy extends WalkingEnemy {
                     case DIRECTION_NORTH: {
                         images = walkBackImages;
                         nbImages = nbWalkFrame;
+                        refreshTime = walkRefreshTime;
                         break;
                     }
                     case DIRECTION_SOUTH: {
                         images = walkFrontImages;
                         nbImages = nbWalkFrame;
+                        refreshTime = walkRefreshTime;
                         break;
                     }
                     case DIRECTION_WEST: {
                         images = walkLeftImages;
                         nbImages = nbWalkFrame;
+                        refreshTime = walkRefreshTime;
                         break;
                     }
                     case DIRECTION_EAST: {
                         images = walkRightImages;
                         nbImages = nbWalkFrame;
+                        refreshTime = walkRefreshTime;
                         break;
                     }
                 }

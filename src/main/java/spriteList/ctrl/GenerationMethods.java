@@ -53,20 +53,12 @@ public class GenerationMethods {
 
             // create the enemy.
             switch (enemyType) {
-                case TYPE_ENEMY_CLOAKED_SKELETON: {
-                    addWalkingEnemy(spriteList, new CloakedSkeleton(xMap, yMap));
+                case TYPE_ENEMY_ZORA: {
+                    addWalkingEnemy(spriteList, new Zora(xMap, yMap));
                     break;
                 }
-                case TYPE_ENEMY_MECA_ANGEL: {
-                    addWalkingEnemy(spriteList, new MecaAngel(xMap, yMap));
-                    break;
-                }
-                case TYPE_ENEMY_MUMMY: {
-                    addWalkingEnemy(spriteList, new Mummy(xMap, yMap));
-                    break;
-                }
-                case TYPE_ENEMY_MINOTOR: {
-                    addBreakingEnemy(spriteList, new Minotor(xMap, yMap));
+                case TYPE_ENEMY_RED_SPEAR_SOLDIER: {
+                    addBreakingEnemy(spriteList, new RedSpearSoldier(xMap, yMap));
                     break;
                 }
             }
@@ -146,25 +138,25 @@ public class GenerationMethods {
                 case DIRECTION_NORTH: {
                     int xChar = fstXChar - ((eltIdx + 1) / 2 * IMAGE_SIZE * (eltIdx % 2 == 0 ? 1 : -1));
                     int yChar = fstYChar + ((eltIdx + 1) / 2) * 50;
-                    AddingMethods.addFlyingNomad(spriteList, new Bird(xChar, yChar, direction, deviation));
+                    AddingMethods.addFlyingNomad(spriteList, new WhiteBird(xChar, yChar, direction, deviation));
                     break;
                 }
                 case DIRECTION_SOUTH: {
                     int xChar = fstXChar + ((eltIdx + 1) / 2 * IMAGE_SIZE * (eltIdx % 2 == 0 ? 1 : -1));
                     int yChar = fstYChar - ((eltIdx + 1) / 2) * 50;
-                    AddingMethods.addFlyingNomad(spriteList, new Bird(xChar, yChar, direction, deviation));
+                    AddingMethods.addFlyingNomad(spriteList, new WhiteBird(xChar, yChar, direction, deviation));
                     break;
                 }
                 case DIRECTION_WEST: {
                     int xChar = fstXChar + ((eltIdx + 1) / 2) * 50;
                     int yChar = fstYChar - ((eltIdx + 1) / 2 * IMAGE_SIZE * (eltIdx % 2 == 0 ? 1 : -1));
-                    AddingMethods.addFlyingNomad(spriteList, new Bird(xChar, yChar, direction, deviation));
+                    AddingMethods.addFlyingNomad(spriteList, new WhiteBird(xChar, yChar, direction, deviation));
                     break;
                 }
                 case DIRECTION_EAST: {
                     int xChar = fstXChar - ((eltIdx + 1) / 2) * 50;
                     int yChar = fstYChar + ((eltIdx + 1) / 2 * IMAGE_SIZE * (eltIdx % 2 == 0 ? 1 : -1));
-                    AddingMethods.addFlyingNomad(spriteList, new Bird(xChar, yChar, direction, deviation));
+                    AddingMethods.addFlyingNomad(spriteList, new WhiteBird(xChar, yChar, direction, deviation));
                     break;
                 }
             }

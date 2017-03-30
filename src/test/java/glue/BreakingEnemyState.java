@@ -1,29 +1,28 @@
 package glue;
 
-import java.io.IOException;
-
-import org.mockito.Mockito;
-
 import images.ImagesLoader;
+import org.mockito.Mockito;
 import sprite.nomad.BreakingEnemy;
-import sprite.nomad.Minotor;
+import sprite.nomad.RedSpearSoldier;
+
+import java.io.IOException;
 
 public class BreakingEnemyState {
 
-    private final Minotor spyedMinotor;
+    private final RedSpearSoldier spyedRedSpearSoldier;
     private boolean shouldBeRemoved;
 
     public BreakingEnemyState() throws IOException {
         ImagesLoader.fillImagesMatrix();
-        Minotor minotor = new Minotor(0, 0);
-        spyedMinotor = Mockito.spy(minotor);
+        RedSpearSoldier redSpearSoldier = new RedSpearSoldier(0, 0);
+        spyedRedSpearSoldier = Mockito.spy(redSpearSoldier);
 
         // avoid the time constraint to make action.
-        Mockito.when(spyedMinotor.isTimeToAct()).thenReturn(true);
+        Mockito.when(spyedRedSpearSoldier.isTimeToAct()).thenReturn(true);
     }
 
     public BreakingEnemy getEnemy() {
-        return spyedMinotor;
+        return spyedRedSpearSoldier;
     }
 
     boolean isShouldBeRemoved() {

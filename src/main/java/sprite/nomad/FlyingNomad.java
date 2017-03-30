@@ -3,6 +3,7 @@ package sprite.nomad;
 import sprite.SpriteAction;
 import sprite.SpriteType;
 import utils.Direction;
+import utils.Tuple2;
 
 import java.awt.*;
 import java.util.Random;
@@ -23,6 +24,8 @@ public abstract class FlyingNomad extends Nomad {
 
     private final int deviation; // the number of iterations before shifting to the orthogonal direction.
     private int moveIdx; // number of times the sprite has moved.
+
+    private Tuple2<Integer, Integer> lastCoordinatesOnMap; // test purpose.
 
     /**
      * Create a flying figure..
@@ -60,6 +63,7 @@ public abstract class FlyingNomad extends Nomad {
 
         moveIdx = 0;
         curImageIdx = new Random().nextInt(nbFlyFrame); // init the sprite with a random image index.
+        lastCoordinatesOnMap = new Tuple2<>(xMap, yMap);
 
         // update cur/last - action/direction to avoid re-init curImageIdx to 0.
         curSpriteAction = ACTION_FLYING;
@@ -96,10 +100,16 @@ public abstract class FlyingNomad extends Nomad {
         return moveIdx;
     }
 
+    public Tuple2<Integer, Integer> getLastCoordinatesOnMap() {
+        return lastCoordinatesOnMap;
+    }
+
     /**
      * Compute the next position of the sprite.
      */
     public void computeMove() {
+        lastCoordinatesOnMap.setFirst(xMap);
+        lastCoordinatesOnMap.setSecond(yMap);
         switch (curDirection) {
             case DIRECTION_NORTH: {
                 yMap--;

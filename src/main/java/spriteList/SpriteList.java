@@ -52,10 +52,8 @@ public class SpriteList extends LinkedList<Sprite> {
 
     /**
      * Randomly (create) and place sprites on the map.
-     *
-     * @throws CannotPlaceEnemyOnMapException if all the requested sprites cannot be placed on map
      */
-    public void generateSprites() throws CannotPlaceEnemyOnMapException {
+    public void generateSprites() {
         if (spritesSetting == null) {
             throw new RuntimeException("generateSprites() cannot be called without providing a spritesSetting.");
         }
@@ -70,29 +68,23 @@ public class SpriteList extends LinkedList<Sprite> {
             }
         }
 
-        // walking enemies:
-        // - cloaked skeleton
-        GenerationMethods.randomlyPlaceEnemies(this,
-                EnemyType.TYPE_ENEMY_CLOAKED_SKELETON,
-                spritesSetting.getNbCloakedSkeleton(),
-                emptyPtList);
-        // - meca angel
-        GenerationMethods.randomlyPlaceEnemies(this,
-                EnemyType.TYPE_ENEMY_MECA_ANGEL,
-                spritesSetting.getNbMecaAngel(),
-                emptyPtList);
-        // - mummy
-        GenerationMethods.randomlyPlaceEnemies(this,
-                EnemyType.TYPE_ENEMY_MUMMY,
-                spritesSetting.getNbMummy(),
-                emptyPtList);
+        // walking enemies.
+        // - zora.
+        try {
+            GenerationMethods.randomlyPlaceEnemies(this,
+                    EnemyType.TYPE_ENEMY_ZORA,
+                    spritesSetting.getNbZora(),
+                    emptyPtList);
 
-        // breaking enemies:
-        // - minotor
-        GenerationMethods.randomlyPlaceEnemies(this,
-                EnemyType.TYPE_ENEMY_MINOTOR,
-                spritesSetting.getNbMinotor(),
-                emptyPtList);
+            // breaking enemies.
+            // - red spear soldier.
+            GenerationMethods.randomlyPlaceEnemies(this,
+                    EnemyType.TYPE_ENEMY_RED_SPEAR_SOLDIER,
+                    spritesSetting.getNbRedSpearSoldier(),
+                    emptyPtList);
+        } catch (CannotPlaceEnemyOnMapException e) {
+            System.out.print(e.getMessage() + "\n"); // log only, not very important.
+        }
     }
 
     /**

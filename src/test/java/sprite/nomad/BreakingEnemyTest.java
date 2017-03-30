@@ -26,223 +26,211 @@ public class BreakingEnemyTest implements WithAssertions {
 
     @Test
     public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
-        Minotor minotor = new Minotor(15, 30);
+        RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
         // check members value.
-        assertThat(minotor.getxMap()).isEqualTo(15);
-        assertThat(minotor.getyMap()).isEqualTo(30);
-        assertThat(minotor.getSpriteType()).isEqualTo(SpriteType.TYPE_BREAKING_ENEMY);
-        assertThat(minotor.getDeathImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.minotorDeathMatrixRowIdx]);
-        assertThat(minotor.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_MINOTOR_DEATH_FRAME);
-        assertThat(minotor.getBreakBackImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.minotorBreakBackMatrixRowIdx]);
-        assertThat(minotor.getBreakFrontImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.minotorBreakFrontMatrixRowIdx]);
-        assertThat(minotor.getBreakLeftImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.minotorBreakLeftMatrixRowIdx]);
-        assertThat(minotor.getBreakRightImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.minotorBreakRightMatrixRowIdx]);
-        assertThat(minotor.getNbBreakFrame()).isEqualTo(ImagesLoader.NB_MINOTOR_BREAK_FRAME);
-        assertThat(minotor.getWalkBackImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.minotorWalkBackMatrixRowIdx]);
-        assertThat(minotor.getWalkFrontImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.minotorWalkFrontMatrixRowIdx]);
-        assertThat(minotor.getWalkLeftImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.minotorWalkLeftMatrixRowIdx]);
-        assertThat(minotor.getWalkRightImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.minotorWalkRightMatrixRowIdx]);
-        assertThat(minotor.getNbWalkFrame()).isEqualTo(ImagesLoader.NB_MINOTOR_WALK_FRAME);
-        assertThat(minotor.getRefreshTime()).isEqualTo(Minotor.REFRESH_TIME);
-        assertThat(minotor.getActingTime()).isEqualTo(Minotor.ACTING_TIME);
-        assertThat(minotor.getCurSpriteAction()).isEqualTo(ACTION_WALKING);
+        assertThat(redSpearSoldier.getxMap()).isEqualTo(15);
+        assertThat(redSpearSoldier.getyMap()).isEqualTo(30);
+        assertThat(redSpearSoldier.getSpriteType()).isEqualTo(SpriteType.TYPE_BREAKING_ENEMY);
+
+        // - walking values.
+        assertThat(redSpearSoldier.getWalkBackImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.redSpearSoldierWalkBackMatrixRowIdx]);
+        assertThat(redSpearSoldier.getWalkFrontImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.redSpearSoldierWalkFrontMatrixRowIdx]);
+        assertThat(redSpearSoldier.getWalkLeftImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.redSpearSoldierWalkLeftMatrixRowIdx]);
+        assertThat(redSpearSoldier.getWalkRightImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.redSpearSoldierWalkRightMatrixRowIdx]);
+        assertThat(redSpearSoldier.getNbWalkFrame()).isEqualTo(ImagesLoader.NB_RED_SPEAR_SOLDIER_WALK_FRAME);
+        assertThat(redSpearSoldier.getWalkRefreshTime()).isEqualTo(RedSpearSoldier.WALK_REFRESH_TIME);
+
+        // - breaking values.
+        assertThat(redSpearSoldier.getBreakBackImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.redSpearSoldierBreakBackMatrixRowIdx]);
+        assertThat(redSpearSoldier.getBreakFrontImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.redSpearSoldierBreakFrontMatrixRowIdx]);
+        assertThat(redSpearSoldier.getBreakLeftImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.redSpearSoldierBreakLeftMatrixRowIdx]);
+        assertThat(redSpearSoldier.getBreakRightImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.redSpearSoldierBreakRightMatrixRowIdx]);
+        assertThat(redSpearSoldier.getNbBreakFrame()).isEqualTo(ImagesLoader.NB_RED_SPEAR_SOLDIER_BREAK_FRAME);
+        assertThat(redSpearSoldier.getBreakRefreshTime()).isEqualTo(RedSpearSoldier.BREAK_REFRESH_TIME);
+
+        assertThat(redSpearSoldier.getActingTime()).isEqualTo(RedSpearSoldier.ACTING_TIME);
     }
 
     @Test
     public void isBreakingSpriteFinishedWithACurActionDifferentOfBreakingShouldReturnFalse() throws Exception {
-        Minotor minotor = new Minotor(15, 30);
-        minotor.setCurSpriteAction(ACTION_DYING);
-        assertThat(minotor.isBreakingSpriteFinished()).isFalse();
-        minotor.setCurSpriteAction(ACTION_WALKING);
-        assertThat(minotor.isBreakingSpriteFinished()).isFalse();
+        RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
+        redSpearSoldier.setCurSpriteAction(ACTION_DYING);
+        assertThat(redSpearSoldier.isBreakingSpriteFinished()).isFalse();
+        redSpearSoldier.setCurSpriteAction(ACTION_WALKING);
+        assertThat(redSpearSoldier.isBreakingSpriteFinished()).isFalse();
     }
 
     @Test
     public void isBreakingSpriteFinishedWithCurActionIsBreakingButNotFinishedShouldReturnFalse() throws Exception {
-        Minotor minotor = new Minotor(15, 30);
-        minotor.setCurSpriteAction(ACTION_BREAKING);
-        minotor.setPaintedAtLeastOneTime(false);
-        assertThat(minotor.isBreakingSpriteFinished()).isFalse();
+        RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
+        redSpearSoldier.setCurSpriteAction(ACTION_BREAKING);
+        redSpearSoldier.setPaintedAtLeastOneTime(false);
+        assertThat(redSpearSoldier.isBreakingSpriteFinished()).isFalse();
     }
 
     @Test
     public void isBreakingSpriteFinishedWithCurActionIsBreakingAndFinishedShouldReturnTrue() throws Exception {
-        Minotor minotor = new Minotor(15, 30);
-        minotor.setCurSpriteAction(ACTION_BREAKING);
-        minotor.setPaintedAtLeastOneTime(true);
-        assertThat(minotor.isBreakingSpriteFinished()).isTrue();
+        RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
+        redSpearSoldier.setCurSpriteAction(ACTION_BREAKING);
+        redSpearSoldier.setPaintedAtLeastOneTime(true);
+        assertThat(redSpearSoldier.isBreakingSpriteFinished()).isTrue();
     }
 
     @Test
     public void isActionAllowedShouldReturnTrue() throws Exception {
-        Minotor minotor = new Minotor(15, 30);
-        assertThat(minotor.isActionAllowed(ACTION_BREAKING)).isTrue();
-        assertThat(minotor.isActionAllowed(ACTION_DYING)).isTrue();
-        assertThat(minotor.isActionAllowed(ACTION_WALKING)).isTrue();
+        RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
+        assertThat(redSpearSoldier.isActionAllowed(ACTION_BREAKING)).isTrue();
+        assertThat(redSpearSoldier.isActionAllowed(ACTION_DYING)).isTrue();
+        assertThat(redSpearSoldier.isActionAllowed(ACTION_WALKING)).isTrue();
     }
 
     @Test
     public void isActionAllowedShouldReturnFalse() throws Exception {
-        Minotor minotor = new Minotor(15, 30);
-        assertThat(minotor.isActionAllowed(ACTION_FLYING)).isFalse();
-        assertThat(minotor.isActionAllowed(ACTION_WAITING)).isFalse();
-        assertThat(minotor.isActionAllowed(ACTION_WINING)).isFalse();
+        RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
+        assertThat(redSpearSoldier.isActionAllowed(ACTION_FLYING)).isFalse();
+        assertThat(redSpearSoldier.isActionAllowed(ACTION_WAITING)).isFalse();
+        assertThat(redSpearSoldier.isActionAllowed(ACTION_WINING)).isFalse();
     }
 
     @Test
     public void hasActionChangedWithTheSameActionShouldReturnFalse() {
-        Minotor minotor = new Minotor(15, 30);
+        RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
         // set test.
-        minotor.setCurSpriteAction(ACTION_DYING);
-        minotor.setLastSpriteAction(ACTION_DYING);
+        redSpearSoldier.setCurSpriteAction(ACTION_DYING);
+        redSpearSoldier.setLastSpriteAction(ACTION_DYING);
 
         // call & check.
-        assertThat(minotor.hasActionChanged()).isFalse();
+        assertThat(redSpearSoldier.hasActionChanged()).isFalse();
     }
 
     @Test
     public void hasActionChangedAndWalkingToTheSameDirectionShouldReturnFalse() {
-        Minotor minotor = new Minotor(15, 30);
+        RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
         // set test.
-        minotor.setCurSpriteAction(ACTION_WALKING);
-        minotor.setCurDirection(Direction.DIRECTION_NORTH);
-        minotor.setLastSpriteAction(ACTION_WALKING);
-        minotor.setLastDirection(Direction.DIRECTION_NORTH);
+        redSpearSoldier.setCurSpriteAction(ACTION_WALKING);
+        redSpearSoldier.setCurDirection(Direction.DIRECTION_NORTH);
+        redSpearSoldier.setLastSpriteAction(ACTION_WALKING);
+        redSpearSoldier.setLastDirection(Direction.DIRECTION_NORTH);
 
         // call & check.
-        assertThat(minotor.hasActionChanged()).isFalse();
+        assertThat(redSpearSoldier.hasActionChanged()).isFalse();
     }
 
     @Test
     public void hasActionChangedAndBreakingToTheSameDirectionShouldReturnFalse() {
-        Minotor minotor = new Minotor(15, 30);
+        RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
         // set test.
-        minotor.setCurSpriteAction(ACTION_BREAKING);
-        minotor.setCurDirection(Direction.DIRECTION_NORTH);
-        minotor.setLastSpriteAction(ACTION_BREAKING);
-        minotor.setLastDirection(Direction.DIRECTION_NORTH);
+        redSpearSoldier.setCurSpriteAction(ACTION_BREAKING);
+        redSpearSoldier.setCurDirection(Direction.DIRECTION_NORTH);
+        redSpearSoldier.setLastSpriteAction(ACTION_BREAKING);
+        redSpearSoldier.setLastDirection(Direction.DIRECTION_NORTH);
 
         // call & check.
-        assertThat(minotor.hasActionChanged()).isFalse();
+        assertThat(redSpearSoldier.hasActionChanged()).isFalse();
     }
 
     @Test
     public void hasActionChangedWithADifferentActionShouldReturnTrue() throws Exception {
-        Minotor minotor = new Minotor(15, 30);
+        RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
         // set test.
-        minotor.setCurSpriteAction(ACTION_WALKING);
-        minotor.setLastSpriteAction(ACTION_DYING);
+        redSpearSoldier.setCurSpriteAction(ACTION_WALKING);
+        redSpearSoldier.setLastSpriteAction(ACTION_DYING);
 
         // call & check.
-        assertThat(minotor.hasActionChanged()).isTrue();
+        assertThat(redSpearSoldier.hasActionChanged()).isTrue();
     }
 
     @Test
     public void hasActionChangedWalkingToADifferentDirectionShouldReturnTrue() throws Exception {
-        Minotor minotor = new Minotor(15, 30);
+        RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
         // set test.
-        minotor.setCurSpriteAction(ACTION_WALKING);
-        minotor.setCurDirection(Direction.DIRECTION_NORTH);
-        minotor.setLastSpriteAction(ACTION_WALKING);
-        minotor.setLastDirection(Direction.DIRECTION_SOUTH);
+        redSpearSoldier.setCurSpriteAction(ACTION_WALKING);
+        redSpearSoldier.setCurDirection(Direction.DIRECTION_NORTH);
+        redSpearSoldier.setLastSpriteAction(ACTION_WALKING);
+        redSpearSoldier.setLastDirection(Direction.DIRECTION_SOUTH);
 
         // call & check.
-        assertThat(minotor.hasActionChanged()).isTrue();
+        assertThat(redSpearSoldier.hasActionChanged()).isTrue();
     }
 
     @Test
     public void hasActionChangedBreakingToADifferentDirectionShouldReturnTrue() throws Exception {
-        Minotor minotor = new Minotor(15, 30);
+        RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
         // set test.
-        minotor.setCurSpriteAction(ACTION_BREAKING);
-        minotor.setCurDirection(Direction.DIRECTION_NORTH);
-        minotor.setLastSpriteAction(ACTION_BREAKING);
-        minotor.setLastDirection(Direction.DIRECTION_SOUTH);
+        redSpearSoldier.setCurSpriteAction(ACTION_BREAKING);
+        redSpearSoldier.setCurDirection(Direction.DIRECTION_NORTH);
+        redSpearSoldier.setLastSpriteAction(ACTION_BREAKING);
+        redSpearSoldier.setLastDirection(Direction.DIRECTION_SOUTH);
 
         // call & check.
-        assertThat(minotor.hasActionChanged()).isTrue();
+        assertThat(redSpearSoldier.hasActionChanged()).isTrue();
     }
 
     @Test
     public void updateSpriteShouldSetTheExpectedMember() throws Exception {
-        Minotor minotor = new Minotor(15, 30);
+        RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
         // breaking back.
-        minotor.setCurSpriteAction(ACTION_BREAKING);
-        minotor.setCurDirection(Direction.DIRECTION_NORTH);
-        minotor.updateSprite();
-        assertThat(minotor.getImages()).isEqualTo(minotor.getBreakBackImages());
-        assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbBreakFrame());
+        redSpearSoldier.setCurSpriteAction(ACTION_BREAKING);
+        redSpearSoldier.setCurDirection(Direction.DIRECTION_NORTH);
+        redSpearSoldier.updateSprite();
+        assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getBreakBackImages());
+        assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbBreakFrame());
 
         // breaking back.
-        minotor.setCurSpriteAction(ACTION_BREAKING);
-        minotor.setCurDirection(Direction.DIRECTION_SOUTH);
-        minotor.updateSprite();
-        assertThat(minotor.getImages()).isEqualTo(minotor.getBreakFrontImages());
-        assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbBreakFrame());
+        redSpearSoldier.setCurSpriteAction(ACTION_BREAKING);
+        redSpearSoldier.setCurDirection(Direction.DIRECTION_SOUTH);
+        redSpearSoldier.updateSprite();
+        assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getBreakFrontImages());
+        assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbBreakFrame());
 
         // breaking back.
-        minotor.setCurSpriteAction(ACTION_BREAKING);
-        minotor.setCurDirection(Direction.DIRECTION_WEST);
-        minotor.updateSprite();
-        assertThat(minotor.getImages()).isEqualTo(minotor.getBreakLeftImages());
-        assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbBreakFrame());
+        redSpearSoldier.setCurSpriteAction(ACTION_BREAKING);
+        redSpearSoldier.setCurDirection(Direction.DIRECTION_WEST);
+        redSpearSoldier.updateSprite();
+        assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getBreakLeftImages());
+        assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbBreakFrame());
 
         // breaking back.
-        minotor.setCurSpriteAction(ACTION_BREAKING);
-        minotor.setCurDirection(Direction.DIRECTION_EAST);
-        minotor.updateSprite();
-        assertThat(minotor.getImages()).isEqualTo(minotor.getBreakRightImages());
-        assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbBreakFrame());
-
-        // dying.
-        minotor.setCurSpriteAction(ACTION_DYING);
-        minotor.updateSprite();
-        assertThat(minotor.getImages()).isEqualTo(minotor.getDeathImages());
-        assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbDeathFrame());
+        redSpearSoldier.setCurSpriteAction(ACTION_BREAKING);
+        redSpearSoldier.setCurDirection(Direction.DIRECTION_EAST);
+        redSpearSoldier.updateSprite();
+        assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getBreakRightImages());
+        assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbBreakFrame());
 
         // walking back.
-        minotor.setCurSpriteAction(ACTION_WALKING);
-        minotor.setCurDirection(Direction.DIRECTION_NORTH);
-        minotor.updateSprite();
-        assertThat(minotor.getImages()).isEqualTo(minotor.getWalkBackImages());
-        assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbWalkFrame());
+        redSpearSoldier.setCurSpriteAction(ACTION_WALKING);
+        redSpearSoldier.setCurDirection(Direction.DIRECTION_NORTH);
+        redSpearSoldier.updateSprite();
+        assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getWalkBackImages());
+        assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbWalkFrame());
 
         // walking front.
-        minotor.setCurSpriteAction(ACTION_WALKING);
-        minotor.setCurDirection(Direction.DIRECTION_SOUTH);
-        minotor.updateSprite();
-        assertThat(minotor.getImages()).isEqualTo(minotor.getWalkFrontImages());
-        assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbWalkFrame());
+        redSpearSoldier.setCurSpriteAction(ACTION_WALKING);
+        redSpearSoldier.setCurDirection(Direction.DIRECTION_SOUTH);
+        redSpearSoldier.updateSprite();
+        assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getWalkFrontImages());
+        assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbWalkFrame());
 
         // walking left.
-        minotor.setCurSpriteAction(ACTION_WALKING);
-        minotor.setCurDirection(Direction.DIRECTION_WEST);
-        minotor.updateSprite();
-        assertThat(minotor.getImages()).isEqualTo(minotor.getWalkLeftImages());
-        assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbWalkFrame());
+        redSpearSoldier.setCurSpriteAction(ACTION_WALKING);
+        redSpearSoldier.setCurDirection(Direction.DIRECTION_WEST);
+        redSpearSoldier.updateSprite();
+        assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getWalkLeftImages());
+        assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbWalkFrame());
 
         // walking right.
-        minotor.setCurSpriteAction(ACTION_WALKING);
-        minotor.setCurDirection(Direction.DIRECTION_EAST);
-        minotor.updateSprite();
-        assertThat(minotor.getImages()).isEqualTo(minotor.getWalkRightImages());
-        assertThat(minotor.getNbImages()).isEqualTo(minotor.getNbWalkFrame());
+        redSpearSoldier.setCurSpriteAction(ACTION_WALKING);
+        redSpearSoldier.setCurDirection(Direction.DIRECTION_EAST);
+        redSpearSoldier.updateSprite();
+        assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getWalkRightImages());
+        assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbWalkFrame());
     }
 }

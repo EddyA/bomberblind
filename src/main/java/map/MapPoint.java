@@ -160,20 +160,16 @@ public class MapPoint {
      * @return the image to paint.
      */
     Image updateImage() {
-        Image imageToPaint = null;
-        try {
-            if (image != null) {
-                imageToPaint = image;
-            } else {
-                long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
-                if (curTs - lastRefreshTs > refreshTime) { // if it is time to refresh.
-                    lastRefreshTs = curTs;
-                    if (++curImageIdx == nbImages) curImageIdx = 0; // update the image to display.
-                }
-                imageToPaint = images[curImageIdx];
+        Image imageToPaint;
+        if (image != null) {
+            imageToPaint = image;
+        } else {
+            long curTs = currentTimeSupplier.get().toEpochMilli(); // get the current time.
+            if (curTs - lastRefreshTs > refreshTime) { // if it is time to refresh.
+                lastRefreshTs = curTs;
+                if (++curImageIdx == nbImages) curImageIdx = 0; // update the image to display.
             }
-        } catch (Exception e) {
-            System.out.print("");
+            imageToPaint = images[curImageIdx];
         }
         return imageToPaint;
     }

@@ -1,11 +1,11 @@
 package sprite.nomad;
 
-import static sprite.SpriteAction.ACTION_DYING;
-
 import sprite.Sprite;
 import sprite.SpriteAction;
 import sprite.SpriteType;
 import utils.Direction;
+
+import static sprite.SpriteAction.ACTION_DYING;
 
 /**
  * Abstract class of a nomad.
@@ -175,8 +175,7 @@ public abstract class Nomad extends Sprite {
                                 (paintedAtLeastOneTime = true)))) { // just to notice the sprite has been painted once.
             curImageIdx = 0;
         }
-        if (isInvincible() &&
-                invincibleFrameIdx++ % 240 > 120) {
+        if (isInvincible() && invincibleFrameIdx++ % 240 > 120) { // [quick and dirty] handle invincibility.
             curImage = null;
         } else {
             curImage = images[curImageIdx];

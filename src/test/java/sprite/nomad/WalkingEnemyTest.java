@@ -9,12 +9,7 @@ import utils.Direction;
 
 import java.io.IOException;
 
-import static sprite.SpriteAction.ACTION_BREAKING;
-import static sprite.SpriteAction.ACTION_DYING;
-import static sprite.SpriteAction.ACTION_FLYING;
-import static sprite.SpriteAction.ACTION_WAITING;
-import static sprite.SpriteAction.ACTION_WALKING;
-import static sprite.SpriteAction.ACTION_WINING;
+import static sprite.SpriteAction.*;
 
 public class WalkingEnemyTest implements WithAssertions {
 
@@ -25,133 +20,124 @@ public class WalkingEnemyTest implements WithAssertions {
 
     @Test
     public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
-        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
+        Zora zora = new Zora(15, 30);
 
         // check members value.
-        assertThat(cloakedSkeleton.getxMap()).isEqualTo(15);
-        assertThat(cloakedSkeleton.getyMap()).isEqualTo(30);
-        assertThat(cloakedSkeleton.getSpriteType()).isEqualTo(SpriteType.TYPE_WALKING_ENEMY);
-        assertThat(cloakedSkeleton.getDeathImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonDeathMatrixRowIdx]);
-        assertThat(cloakedSkeleton.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_DEATH_FRAME);
-        assertThat(cloakedSkeleton.getWalkBackImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkBackMatrixRowIdx]);
-        assertThat(cloakedSkeleton.getWalkFrontImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkFrontMatrixRowIdx]);
-        assertThat(cloakedSkeleton.getWalkLeftImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkLeftMatrixRowIdx]);
-        assertThat(cloakedSkeleton.getWalkRightImages())
-                .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.cloakedSkeletonWalkRightMatrixRowIdx]);
-        assertThat(cloakedSkeleton.getNbWalkFrame()).isEqualTo(ImagesLoader.NB_CLOAKED_SKELETON_WALK_FRAME);
-        assertThat(cloakedSkeleton.getRefreshTime()).isEqualTo(CloakedSkeleton.REFRESH_TIME);
-        assertThat(cloakedSkeleton.getActingTime()).isEqualTo(CloakedSkeleton.ACTING_TIME);
-        assertThat(cloakedSkeleton.getCurSpriteAction()).isEqualTo(ACTION_WALKING);
+        assertThat(zora.getxMap()).isEqualTo(15);
+        assertThat(zora.getyMap()).isEqualTo(30);
+        assertThat(zora.getSpriteType()).isEqualTo(SpriteType.TYPE_WALKING_ENEMY);
+
+        // - walking values.
+        assertThat(zora.getWalkBackImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.zoraWalkBackMatrixRowIdx]);
+        assertThat(zora.getWalkFrontImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.zoraWalkFrontMatrixRowIdx]);
+        assertThat(zora.getWalkLeftImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.zoraWalkLeftMatrixRowIdx]);
+        assertThat(zora.getWalkRightImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.zoraWalkRightMatrixRowIdx]);
+        assertThat(zora.getNbWalkFrame()).isEqualTo(ImagesLoader.NB_ZORA_WALK_FRAME);
+        assertThat(zora.getWalkRefreshTime()).isEqualTo(Zora.WALK_REFRESH_TIME);
+
+        assertThat(zora.getActingTime()).isEqualTo(Zora.ACTING_TIME);
+        assertThat(zora.getCurSpriteAction()).isEqualTo(ACTION_WALKING);
+        assertThat(zora.getRefreshTime()).isEqualTo(Zora.WALK_REFRESH_TIME);
     }
 
     @Test
     public void isActionAllowedShouldReturnTrue() throws Exception {
-        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
-        assertThat(cloakedSkeleton.isActionAllowed(ACTION_DYING)).isTrue();
-        assertThat(cloakedSkeleton.isActionAllowed(ACTION_WALKING)).isTrue();
+        Zora zora = new Zora(15, 30);
+        assertThat(zora.isActionAllowed(ACTION_DYING)).isTrue();
+        assertThat(zora.isActionAllowed(ACTION_WALKING)).isTrue();
     }
 
     @Test
     public void isActionAllowedShouldReturnFalse() throws Exception {
-        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
-        assertThat(cloakedSkeleton.isActionAllowed(ACTION_BREAKING)).isFalse();
-        assertThat(cloakedSkeleton.isActionAllowed(ACTION_FLYING)).isFalse();
-        assertThat(cloakedSkeleton.isActionAllowed(ACTION_WAITING)).isFalse();
-        assertThat(cloakedSkeleton.isActionAllowed(ACTION_WINING)).isFalse();
+        Zora zora = new Zora(15, 30);
+        assertThat(zora.isActionAllowed(ACTION_BREAKING)).isFalse();
+        assertThat(zora.isActionAllowed(ACTION_FLYING)).isFalse();
+        assertThat(zora.isActionAllowed(ACTION_WAITING)).isFalse();
+        assertThat(zora.isActionAllowed(ACTION_WINING)).isFalse();
     }
 
     @Test
     public void hasActionChangedWithTheSameActionShouldReturnFalse() {
-        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
+        Zora zora = new Zora(15, 30);
 
         // set test.
-        cloakedSkeleton.setCurSpriteAction(ACTION_DYING);
-        cloakedSkeleton.setLastSpriteAction(ACTION_DYING);
+        zora.setCurSpriteAction(ACTION_DYING);
+        zora.setLastSpriteAction(ACTION_DYING);
 
         // call & check.
-        assertThat(cloakedSkeleton.hasActionChanged()).isFalse();
+        assertThat(zora.hasActionChanged()).isFalse();
     }
 
     @Test
     public void hasActionChangedAndWalkingToTheSameDirectionShouldReturnFalse() {
-        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
+        Zora zora = new Zora(15, 30);
 
         // set test.
-        cloakedSkeleton.setCurSpriteAction(ACTION_WALKING);
-        cloakedSkeleton.setCurDirection(Direction.DIRECTION_NORTH);
-        cloakedSkeleton.setLastSpriteAction(ACTION_WALKING);
-        cloakedSkeleton.setLastDirection(Direction.DIRECTION_NORTH);
+        zora.setCurSpriteAction(ACTION_WALKING);
+        zora.setCurDirection(Direction.DIRECTION_NORTH);
+        zora.setLastSpriteAction(ACTION_WALKING);
+        zora.setLastDirection(Direction.DIRECTION_NORTH);
 
         // call & check.
-        assertThat(cloakedSkeleton.hasActionChanged()).isFalse();
+        assertThat(zora.hasActionChanged()).isFalse();
     }
 
     @Test
     public void hasActionChangedWithADifferentActionShouldReturnTrue() throws Exception {
-        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
+        Zora zora = new Zora(15, 30);
 
         // set test.
-        cloakedSkeleton.setCurSpriteAction(ACTION_WALKING);
-        cloakedSkeleton.setLastSpriteAction(ACTION_DYING);
+        zora.setCurSpriteAction(ACTION_WALKING);
+        zora.setLastSpriteAction(ACTION_DYING);
 
         // call & check.
-        assertThat(cloakedSkeleton.hasActionChanged()).isTrue();
+        assertThat(zora.hasActionChanged()).isTrue();
     }
 
     @Test
     public void hasActionChangedWalkingToADifferentDirectionShouldReturnTrue() throws Exception {
-        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
+        Zora zora = new Zora(15, 30);
 
         // set test.
-        cloakedSkeleton.setCurSpriteAction(ACTION_WALKING);
-        cloakedSkeleton.setCurDirection(Direction.DIRECTION_NORTH);
-        cloakedSkeleton.setLastSpriteAction(ACTION_WALKING);
-        cloakedSkeleton.setLastDirection(Direction.DIRECTION_SOUTH);
+        zora.setCurSpriteAction(ACTION_WALKING);
+        zora.setCurDirection(Direction.DIRECTION_NORTH);
+        zora.setLastSpriteAction(ACTION_WALKING);
+        zora.setLastDirection(Direction.DIRECTION_SOUTH);
 
         // call & check.
-        assertThat(cloakedSkeleton.hasActionChanged()).isTrue();
+        assertThat(zora.hasActionChanged()).isTrue();
     }
 
     @Test
     public void updateSpriteShouldSetTheExpectedMember() throws Exception {
-        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(15, 30);
-
-        // dying.
-        cloakedSkeleton.setCurSpriteAction(ACTION_DYING);
-        cloakedSkeleton.updateSprite();
-        assertThat(cloakedSkeleton.getImages()).isEqualTo(cloakedSkeleton.getDeathImages());
-        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(cloakedSkeleton.getNbDeathFrame());
+        Zora zora = new Zora(15, 30);
 
         // walking back.
-        cloakedSkeleton.setCurSpriteAction(ACTION_WALKING);
-        cloakedSkeleton.setCurDirection(Direction.DIRECTION_NORTH);
-        cloakedSkeleton.updateSprite();
-        assertThat(cloakedSkeleton.getImages()).isEqualTo(cloakedSkeleton.getWalkBackImages());
-        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(cloakedSkeleton.getNbWalkFrame());
+        zora.setCurSpriteAction(ACTION_WALKING);
+        zora.setCurDirection(Direction.DIRECTION_NORTH);
+        zora.updateSprite();
+        assertThat(zora.getImages()).isEqualTo(zora.getWalkBackImages());
+        assertThat(zora.getNbImages()).isEqualTo(zora.getNbWalkFrame());
 
         // walking front.
-        cloakedSkeleton.setCurSpriteAction(ACTION_WALKING);
-        cloakedSkeleton.setCurDirection(Direction.DIRECTION_SOUTH);
-        cloakedSkeleton.updateSprite();
-        assertThat(cloakedSkeleton.getImages()).isEqualTo(cloakedSkeleton.getWalkFrontImages());
-        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(cloakedSkeleton.getNbWalkFrame());
+        zora.setCurSpriteAction(ACTION_WALKING);
+        zora.setCurDirection(Direction.DIRECTION_SOUTH);
+        zora.updateSprite();
+        assertThat(zora.getImages()).isEqualTo(zora.getWalkFrontImages());
+        assertThat(zora.getNbImages()).isEqualTo(zora.getNbWalkFrame());
 
         // walking left.
-        cloakedSkeleton.setCurSpriteAction(ACTION_WALKING);
-        cloakedSkeleton.setCurDirection(Direction.DIRECTION_WEST);
-        cloakedSkeleton.updateSprite();
-        assertThat(cloakedSkeleton.getImages()).isEqualTo(cloakedSkeleton.getWalkLeftImages());
-        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(cloakedSkeleton.getNbWalkFrame());
+        zora.setCurSpriteAction(ACTION_WALKING);
+        zora.setCurDirection(Direction.DIRECTION_WEST);
+        zora.updateSprite();
+        assertThat(zora.getImages()).isEqualTo(zora.getWalkLeftImages());
+        assertThat(zora.getNbImages()).isEqualTo(zora.getNbWalkFrame());
 
         // walking right.
-        cloakedSkeleton.setCurSpriteAction(ACTION_WALKING);
-        cloakedSkeleton.setCurDirection(Direction.DIRECTION_EAST);
-        cloakedSkeleton.updateSprite();
-        assertThat(cloakedSkeleton.getImages()).isEqualTo(cloakedSkeleton.getWalkRightImages());
-        assertThat(cloakedSkeleton.getNbImages()).isEqualTo(cloakedSkeleton.getNbWalkFrame());
+        zora.setCurSpriteAction(ACTION_WALKING);
+        zora.setCurDirection(Direction.DIRECTION_EAST);
+        zora.updateSprite();
+        assertThat(zora.getImages()).isEqualTo(zora.getWalkRightImages());
+        assertThat(zora.getNbImages()).isEqualTo(zora.getNbWalkFrame());
     }
 }

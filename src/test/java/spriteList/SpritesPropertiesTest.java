@@ -16,11 +16,9 @@ public class SpritesPropertiesTest implements WithAssertions {
         spritesProperties.checkProperties();
 
         // check values.
-        assertThat(spritesProperties.getSpritesEnemyCloakedSkeleton()).isEqualTo(1);
-        assertThat(spritesProperties.getSpritesEnemyMecaAngel()).isEqualTo(2);
-        assertThat(spritesProperties.getSpritesEnemyMummy()).isEqualTo(3);
-        assertThat(spritesProperties.getSpritesEnemyMinotor()).isEqualTo(4);
-        assertThat(spritesProperties.getSpritesBirdsArrivalTimeInterval()).isEqualTo(5);
+        assertThat(spritesProperties.getSpritesEnemyzora()).isEqualTo(1);
+        assertThat(spritesProperties.getSpritesEnemyRedSpearSoldier()).isEqualTo(2);
+        assertThat(spritesProperties.getSpritesBirdsArrivalTimeInterval()).isEqualTo(3);
     }
 
     @Test
@@ -53,7 +51,7 @@ public class SpritesPropertiesTest implements WithAssertions {
         zeldaMapProperties.loadProperties();
 
         // set a field with a bad value.
-        zeldaMapProperties.getProperties().setProperty(SpritesProperties.SPRITES_ENEMY_CLOAKED_SKELETON,
+        zeldaMapProperties.getProperties().setProperty(SpritesProperties.SPRITES_ENEMY_ZORA,
                 "notAnIntegerConvertibleString");
 
         assertThatThrownBy(zeldaMapProperties::checkProperties)
@@ -68,7 +66,7 @@ public class SpritesPropertiesTest implements WithAssertions {
         zeldaMapProperties.loadProperties();
 
         // remove a mandatory field.
-        zeldaMapProperties.getProperties().remove(SpritesProperties.SPRITES_ENEMY_CLOAKED_SKELETON);
+        zeldaMapProperties.getProperties().remove(SpritesProperties.SPRITES_ENEMY_ZORA);
 
         assertThatThrownBy(zeldaMapProperties::checkProperties)
                 .isInstanceOf(InvalidConfigurationException.class)

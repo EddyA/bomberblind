@@ -5,25 +5,25 @@ import java.io.IOException;
 import org.mockito.Mockito;
 
 import images.ImagesLoader;
-import sprite.nomad.CloakedSkeleton;
+import sprite.nomad.Zora;
 import sprite.nomad.WalkingEnemy;
 
 public class WalkingEnemyState {
 
-    private final CloakedSkeleton spyedCloakedSkeleton;
+    private final Zora spyedzora;
     private boolean shouldBeRemoved;
 
     public WalkingEnemyState() throws IOException {
         ImagesLoader.fillImagesMatrix();
-        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(0, 0);
-        spyedCloakedSkeleton = Mockito.spy(cloakedSkeleton);
+        Zora zora = new Zora(0, 0);
+        spyedzora = Mockito.spy(zora);
 
         // avoid the time constraint to make action.
-        Mockito.when(spyedCloakedSkeleton.isTimeToAct()).thenReturn(true);
+        Mockito.when(spyedzora.isTimeToAct()).thenReturn(true);
     }
 
     public WalkingEnemy getEnemy() {
-        return spyedCloakedSkeleton;
+        return spyedzora;
     }
 
     boolean isShouldBeRemoved() {

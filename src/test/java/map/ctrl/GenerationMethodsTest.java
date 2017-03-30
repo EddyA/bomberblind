@@ -13,8 +13,6 @@ import utils.Tuple2;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import static map.ctrl.GenerationMethods.*;
 import static org.assertj.core.api.Assertions.assertThat;

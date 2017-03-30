@@ -7,6 +7,7 @@ public enum SpriteType {
     TYPE_BOMBER,
     TYPE_BONUS,
     TYPE_BREAKING_ENEMY,
+    TYPE_EXPLORING_ENEMY,
     TYPE_FLAME,
     TYPE_FLAME_END,
     TYPE_FLYING_NOMAD,
@@ -29,6 +30,10 @@ public enum SpriteType {
             }
             case TYPE_BREAKING_ENEMY: {
                 label = Optional.of("breaking_enemy");
+                break;
+            }
+            case TYPE_EXPLORING_ENEMY: {
+                label = Optional.of("exploring_enemy");
                 break;
             }
             case TYPE_FLAME: {
