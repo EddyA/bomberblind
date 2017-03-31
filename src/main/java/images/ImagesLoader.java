@@ -16,7 +16,7 @@ public class ImagesLoader {
     public final static int IMAGE_SIZE = 32; // size of an 'Image' in pixels (30*30).
 
     public static Image[][] imagesMatrix; // matrix of images (holding all the game images).+
-    public final static int NB_MATRIX_ROW = 54;
+    public final static int NB_MATRIX_ROW = 55;
     public final static int NB_MATRIX_COL = 128;
 
     // images location.
@@ -102,6 +102,10 @@ public class ImagesLoader {
     public static int blueBomberWinMatrixRowIdx;
 
     // - enemies.
+    // -- death.
+    public final static int NB_DEATH_FRAME = 7;
+    public static int deathMatrixRowIdx;
+
     // -- walking enemies.
     // --- zora.
     public final static int NB_ZORA_WALK_FRAME = 2;
@@ -385,7 +389,11 @@ public class ImagesLoader {
         fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/flame/flame-", NB_FLAME_FRAME);
         flameMatrixRowIdx = curMatrixRowIdx++;
         fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/flame_end/flame_end-", NB_FLAME_END_FRAME);
-        flameEndMatrixRowIdx = curMatrixRowIdx;
+        flameEndMatrixRowIdx = curMatrixRowIdx++;
+
+        // death.
+        fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/death/death-", NB_DEATH_FRAME);
+        deathMatrixRowIdx = curMatrixRowIdx;
 
         lastMatrixRowIdx = curMatrixRowIdx;
         imagesLoaded = true;

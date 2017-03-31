@@ -14,6 +14,9 @@ import static sprite.SpriteAction.ACTION_WALKING;
  */
 public abstract class WalkingEnemy extends Nomad {
 
+    protected final Image[] deathImages;
+    protected final int nbDeathFrame;
+    protected final int deathRefreshTime;
     protected final Image[] walkBackImages;
     protected final Image[] walkFrontImages;
     protected final Image[] walkLeftImages;
@@ -26,6 +29,9 @@ public abstract class WalkingEnemy extends Nomad {
      *
      * @param xMap the abscissa on the map
      * @param yMap the ordinate on the map
+     * @param deathImages the array of images for the "death" status (i.e. dying action)
+     * @param nbDeathFrame the number of images of the "death" arrays
+     * @param deathRefreshTime the sprite refresh time when dying (i.e. defining the sprite speed in term of image/sec)
      * @param walkBackImages the array of images for the "walk back" action
      * @param walkFrontImages the array of images for the "walk front" action
      * @param walkLeftImages the array of images for the "walk left" action
@@ -36,6 +42,9 @@ public abstract class WalkingEnemy extends Nomad {
      */
     public WalkingEnemy(int xMap,
                         int yMap,
+                        Image[] deathImages,
+                        int nbDeathFrame,
+                        int deathRefreshTime,
                         Image[] walkBackImages,
                         Image[] walkFrontImages,
                         Image[] walkLeftImages,
@@ -44,6 +53,9 @@ public abstract class WalkingEnemy extends Nomad {
                         int walkRefreshTime,
                         int actingTime) {
         super(xMap, yMap, SpriteType.TYPE_WALKING_ENEMY, walkRefreshTime, actingTime, 0);
+        this.deathImages = deathImages;
+        this.nbDeathFrame = nbDeathFrame;
+        this.deathRefreshTime = deathRefreshTime;
         this.walkBackImages = walkBackImages;
         this.walkFrontImages = walkFrontImages;
         this.walkLeftImages = walkLeftImages;
@@ -53,6 +65,18 @@ public abstract class WalkingEnemy extends Nomad {
 
         curSpriteAction = ACTION_WALKING;
         curDirection = Direction.getRandomDirection(); // init the sprite with a random direction.
+    }
+
+    public Image[] getDeathImages() {
+        return deathImages;
+    }
+
+    public int getNbDeathFrame() {
+        return nbDeathFrame;
+    }
+
+    public int getDeathRefreshTime() {
+        return deathRefreshTime;
     }
 
     public Image[] getWalkBackImages() {
@@ -101,26 +125,36 @@ public abstract class WalkingEnemy extends Nomad {
     @Override
     public void updateSprite() {
         switch (curSpriteAction) {
+            case ACTION_DYING: {
+                images = deathImages;
+                nbImages = nbDeathFrame;
+                refreshTime = deathRefreshTime;
+                break;
+            }
             case ACTION_WALKING: {
                 switch (curDirection) {
                     case DIRECTION_NORTH: {
                         images = walkBackImages;
                         nbImages = nbWalkFrame;
+                        refreshTime = walkRefreshTime;
                         break;
                     }
                     case DIRECTION_SOUTH: {
                         images = walkFrontImages;
                         nbImages = nbWalkFrame;
+                        refreshTime = walkRefreshTime;
                         break;
                     }
                     case DIRECTION_WEST: {
                         images = walkLeftImages;
                         nbImages = nbWalkFrame;
+                        refreshTime = walkRefreshTime;
                         break;
                     }
                     case DIRECTION_EAST: {
                         images = walkRightImages;
                         nbImages = nbWalkFrame;
+                        refreshTime = walkRefreshTime;
                         break;
                     }
                 }

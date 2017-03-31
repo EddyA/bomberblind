@@ -27,11 +27,14 @@ public class BreakingEnemyTest implements WithAssertions {
     @Test
     public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
-
-        // check members value.
         assertThat(redSpearSoldier.getxMap()).isEqualTo(15);
         assertThat(redSpearSoldier.getyMap()).isEqualTo(30);
         assertThat(redSpearSoldier.getSpriteType()).isEqualTo(SpriteType.TYPE_BREAKING_ENEMY);
+
+        // - dying values.
+        assertThat(redSpearSoldier.getDeathImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.deathMatrixRowIdx]);
+        assertThat(redSpearSoldier.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_DEATH_FRAME);
+        assertThat(redSpearSoldier.getDeathRefreshTime()).isEqualTo(RedSpearSoldier.DEATH_REFRESH_TIME);
 
         // - walking values.
         assertThat(redSpearSoldier.getWalkBackImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.redSpearSoldierWalkBackMatrixRowIdx]);
@@ -177,12 +180,21 @@ public class BreakingEnemyTest implements WithAssertions {
     public void updateSpriteShouldSetTheExpectedMember() throws Exception {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
+        // dying.
+        // dying.
+        redSpearSoldier.setCurSpriteAction(ACTION_DYING);
+        redSpearSoldier.updateSprite();
+        assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getDeathImages());
+        assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbDeathFrame());
+        assertThat(redSpearSoldier.getRefreshTime()).isEqualTo(RedSpearSoldier.DEATH_REFRESH_TIME);
+
         // breaking back.
         redSpearSoldier.setCurSpriteAction(ACTION_BREAKING);
         redSpearSoldier.setCurDirection(Direction.DIRECTION_NORTH);
         redSpearSoldier.updateSprite();
         assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getBreakBackImages());
         assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbBreakFrame());
+        assertThat(redSpearSoldier.getRefreshTime()).isEqualTo(RedSpearSoldier.BREAK_REFRESH_TIME);
 
         // breaking back.
         redSpearSoldier.setCurSpriteAction(ACTION_BREAKING);
@@ -190,6 +202,7 @@ public class BreakingEnemyTest implements WithAssertions {
         redSpearSoldier.updateSprite();
         assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getBreakFrontImages());
         assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbBreakFrame());
+        assertThat(redSpearSoldier.getRefreshTime()).isEqualTo(RedSpearSoldier.BREAK_REFRESH_TIME);
 
         // breaking back.
         redSpearSoldier.setCurSpriteAction(ACTION_BREAKING);
@@ -197,6 +210,7 @@ public class BreakingEnemyTest implements WithAssertions {
         redSpearSoldier.updateSprite();
         assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getBreakLeftImages());
         assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbBreakFrame());
+        assertThat(redSpearSoldier.getRefreshTime()).isEqualTo(RedSpearSoldier.BREAK_REFRESH_TIME);
 
         // breaking back.
         redSpearSoldier.setCurSpriteAction(ACTION_BREAKING);
@@ -204,6 +218,7 @@ public class BreakingEnemyTest implements WithAssertions {
         redSpearSoldier.updateSprite();
         assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getBreakRightImages());
         assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbBreakFrame());
+        assertThat(redSpearSoldier.getRefreshTime()).isEqualTo(RedSpearSoldier.BREAK_REFRESH_TIME);
 
         // walking back.
         redSpearSoldier.setCurSpriteAction(ACTION_WALKING);
@@ -211,6 +226,7 @@ public class BreakingEnemyTest implements WithAssertions {
         redSpearSoldier.updateSprite();
         assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getWalkBackImages());
         assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbWalkFrame());
+        assertThat(redSpearSoldier.getRefreshTime()).isEqualTo(RedSpearSoldier.WALK_REFRESH_TIME);
 
         // walking front.
         redSpearSoldier.setCurSpriteAction(ACTION_WALKING);
@@ -218,6 +234,7 @@ public class BreakingEnemyTest implements WithAssertions {
         redSpearSoldier.updateSprite();
         assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getWalkFrontImages());
         assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbWalkFrame());
+        assertThat(redSpearSoldier.getRefreshTime()).isEqualTo(RedSpearSoldier.WALK_REFRESH_TIME);
 
         // walking left.
         redSpearSoldier.setCurSpriteAction(ACTION_WALKING);
@@ -225,6 +242,7 @@ public class BreakingEnemyTest implements WithAssertions {
         redSpearSoldier.updateSprite();
         assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getWalkLeftImages());
         assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbWalkFrame());
+        assertThat(redSpearSoldier.getRefreshTime()).isEqualTo(RedSpearSoldier.WALK_REFRESH_TIME);
 
         // walking right.
         redSpearSoldier.setCurSpriteAction(ACTION_WALKING);
@@ -232,5 +250,6 @@ public class BreakingEnemyTest implements WithAssertions {
         redSpearSoldier.updateSprite();
         assertThat(redSpearSoldier.getImages()).isEqualTo(redSpearSoldier.getWalkRightImages());
         assertThat(redSpearSoldier.getNbImages()).isEqualTo(redSpearSoldier.getNbWalkFrame());
+        assertThat(redSpearSoldier.getRefreshTime()).isEqualTo(RedSpearSoldier.WALK_REFRESH_TIME);
     }
 }

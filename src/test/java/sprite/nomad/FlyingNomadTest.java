@@ -436,6 +436,12 @@ public class FlyingNomadTest implements WithAssertions {
     public void updateSpriteShouldSetTheExpectedMember() throws Exception {
         WhiteBird whiteBird = new WhiteBird(15, 30, Direction.DIRECTION_EAST, -10);
 
+        // dying.
+        whiteBird.setCurSpriteAction(ACTION_DYING);
+        whiteBird.updateSprite();
+        assertThat(whiteBird.getImages()).isNull();
+        assertThat(whiteBird.getNbImages()).isEqualTo(0);
+
         // walking back.
         whiteBird.setCurSpriteAction(ACTION_FLYING);
         whiteBird.setCurDirection(Direction.DIRECTION_NORTH);

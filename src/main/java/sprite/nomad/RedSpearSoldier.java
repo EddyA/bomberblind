@@ -6,6 +6,7 @@ public class RedSpearSoldier extends BreakingEnemy {
 
     public final static int ACTING_TIME = 30;
 
+    public final static int DEATH_REFRESH_TIME = 100;
     public final static int WALK_REFRESH_TIME = 150;
     public final static int BREAK_REFRESH_TIME = 50;
 
@@ -19,6 +20,9 @@ public class RedSpearSoldier extends BreakingEnemy {
                            int yMap) {
         super(xMap,
                 yMap,
+                ImagesLoader.imagesMatrix[ImagesLoader.deathMatrixRowIdx],
+                ImagesLoader.NB_DEATH_FRAME,
+                DEATH_REFRESH_TIME,
                 ImagesLoader.imagesMatrix[ImagesLoader.redSpearSoldierBreakBackMatrixRowIdx],
                 ImagesLoader.imagesMatrix[ImagesLoader.redSpearSoldierBreakFrontMatrixRowIdx],
                 ImagesLoader.imagesMatrix[ImagesLoader.redSpearSoldierBreakLeftMatrixRowIdx],

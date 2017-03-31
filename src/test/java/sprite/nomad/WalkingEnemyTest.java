@@ -21,11 +21,14 @@ public class WalkingEnemyTest implements WithAssertions {
     @Test
     public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
         Zora zora = new Zora(15, 30);
-
-        // check members value.
         assertThat(zora.getxMap()).isEqualTo(15);
         assertThat(zora.getyMap()).isEqualTo(30);
         assertThat(zora.getSpriteType()).isEqualTo(SpriteType.TYPE_WALKING_ENEMY);
+
+        // - dying values.
+        assertThat(zora.getDeathImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.deathMatrixRowIdx]);
+        assertThat(zora.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_DEATH_FRAME);
+        assertThat(zora.getDeathRefreshTime()).isEqualTo(Zora.DEATH_REFRESH_TIME);
 
         // - walking values.
         assertThat(zora.getWalkBackImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.zoraWalkBackMatrixRowIdx]);
@@ -112,12 +115,20 @@ public class WalkingEnemyTest implements WithAssertions {
     public void updateSpriteShouldSetTheExpectedMember() throws Exception {
         Zora zora = new Zora(15, 30);
 
+        // dying.
+        zora.setCurSpriteAction(ACTION_DYING);
+        zora.updateSprite();
+        assertThat(zora.getImages()).isEqualTo(zora.getDeathImages());
+        assertThat(zora.getNbImages()).isEqualTo(zora.getNbDeathFrame());
+        assertThat(zora.getRefreshTime()).isEqualTo(Zora.DEATH_REFRESH_TIME);
+
         // walking back.
         zora.setCurSpriteAction(ACTION_WALKING);
         zora.setCurDirection(Direction.DIRECTION_NORTH);
         zora.updateSprite();
         assertThat(zora.getImages()).isEqualTo(zora.getWalkBackImages());
         assertThat(zora.getNbImages()).isEqualTo(zora.getNbWalkFrame());
+        assertThat(zora.getRefreshTime()).isEqualTo(Zora.WALK_REFRESH_TIME);
 
         // walking front.
         zora.setCurSpriteAction(ACTION_WALKING);
@@ -125,6 +136,7 @@ public class WalkingEnemyTest implements WithAssertions {
         zora.updateSprite();
         assertThat(zora.getImages()).isEqualTo(zora.getWalkFrontImages());
         assertThat(zora.getNbImages()).isEqualTo(zora.getNbWalkFrame());
+        assertThat(zora.getRefreshTime()).isEqualTo(Zora.WALK_REFRESH_TIME);
 
         // walking left.
         zora.setCurSpriteAction(ACTION_WALKING);
@@ -132,6 +144,7 @@ public class WalkingEnemyTest implements WithAssertions {
         zora.updateSprite();
         assertThat(zora.getImages()).isEqualTo(zora.getWalkLeftImages());
         assertThat(zora.getNbImages()).isEqualTo(zora.getNbWalkFrame());
+        assertThat(zora.getRefreshTime()).isEqualTo(Zora.WALK_REFRESH_TIME);
 
         // walking right.
         zora.setCurSpriteAction(ACTION_WALKING);
@@ -139,5 +152,6 @@ public class WalkingEnemyTest implements WithAssertions {
         zora.updateSprite();
         assertThat(zora.getImages()).isEqualTo(zora.getWalkRightImages());
         assertThat(zora.getNbImages()).isEqualTo(zora.getNbWalkFrame());
+        assertThat(zora.getRefreshTime()).isEqualTo(Zora.WALK_REFRESH_TIME);
     }
 }

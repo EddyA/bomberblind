@@ -71,7 +71,7 @@ public class GenerationMethods {
      * The random conditions:
      * - a random number of birds between [3; 6],
      * - a random direction,
-     * - a random deviation between [-15; 15],
+     * - a random deviation between [-8; 8],
      * - a random ordinate.
      *
      * @param spriteList   the list into which adding the birds
@@ -87,7 +87,7 @@ public class GenerationMethods {
                                                  int mapHeight) {
         int nbElts = 3 + random.nextInt(3);
         Direction direction = Direction.getRandomDirection();
-        int deviation = random.nextInt(15) * (random.nextInt(1) == 0 ? -1 : 1);
+        int deviation = random.nextInt(8) * (random.nextInt(1) == 0 ? -1 : 1);
 
         switch (direction) {
             case DIRECTION_NORTH: {

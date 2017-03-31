@@ -27,6 +27,9 @@ public class BreakingEnemy extends WalkingEnemy {
      *
      * @param xMap             the abscissa on the map
      * @param yMap             the ordinate on the map
+     * @param deathImages      the array of images for the "death" status (i.e. dying action)
+     * @param nbDeathFrame     the number of images of the "death" arrays
+     * @param deathRefreshTime the sprite refresh time when dying (i.e. defining the sprite speed in term of image/sec)
      * @param breakBackImages  the array of images for the "break back" action
      * @param breakFrontImages the array of images for the "break front" action
      * @param breakLeftImages  the array of images for the "break left" action
@@ -43,6 +46,9 @@ public class BreakingEnemy extends WalkingEnemy {
      */
     public BreakingEnemy(int xMap,
                          int yMap,
+                         Image[] deathImages,
+                         int nbDeathFrame,
+                         int deathRefreshTime,
                          Image[] breakBackImages,
                          Image[] breakFrontImages,
                          Image[] breakLeftImages,
@@ -58,6 +64,9 @@ public class BreakingEnemy extends WalkingEnemy {
                          int actingTime) {
         super(xMap,
                 yMap,
+                deathImages,
+                nbDeathFrame,
+                deathRefreshTime,
                 walkBackImages,
                 walkFrontImages,
                 walkLeftImages,
@@ -134,6 +143,12 @@ public class BreakingEnemy extends WalkingEnemy {
     @Override
     public void updateSprite() {
         switch (curSpriteAction) {
+            case ACTION_DYING: {
+                images = deathImages;
+                nbImages = nbDeathFrame;
+                refreshTime = deathRefreshTime;
+                break;
+            }
             case ACTION_BREAKING: {
                 switch (curDirection) {
                     case DIRECTION_NORTH: {

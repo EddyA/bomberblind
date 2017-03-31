@@ -169,13 +169,16 @@ public abstract class Nomad extends Sprite {
     public void updateImage() {
         updateSprite();
         if ((hasActionChanged() && // the action has changed
-                !(paintedAtLeastOneTime = false)) || // just to re-init this variable when the action has changed.
+                !(paintedAtLeastOneTime = false)) || // (just to re-init this variable when the action has changed).
                 (isTimeToRefresh() && // OR (it is time to refresh
                         (++curImageIdx == nbImages && // AND it is the end of the sprite - the image index is ++ here).
-                                (paintedAtLeastOneTime = true)))) { // just to notice the sprite has been painted once.
+                                (paintedAtLeastOneTime = true)))) { // (just to notice the sprite has been painted once).
             curImageIdx = 0;
         }
-        if (isInvincible() && invincibleFrameIdx++ % 240 > 120) { // [quick and dirty] handle invincibility.
+        if (curSpriteAction == ACTION_DYING && // the current action is dying
+                images == null && nbImages == 0) { // AND there is no related sprite.
+            curImage = null;
+        } else if (isInvincible() && invincibleFrameIdx++ % 240 > 120) { // (quick and dirty) handle invincibility.
             curImage = null;
         } else {
             curImage = images[curImageIdx];

@@ -180,31 +180,36 @@ public abstract class FlyingNomad extends Nomad {
     @Override
     public void updateSprite() {
         switch (curSpriteAction) {
-        case ACTION_FLYING: {
-            switch (curDirection) {
-                case DIRECTION_NORTH: {
-                images = flyBackImages;
-                nbImages = nbFlyFrame;
+            case ACTION_DYING: {
+                images = null;
+                nbImages = 0;
                 break;
             }
-                case DIRECTION_SOUTH: {
-                images = flyFrontImages;
-                nbImages = nbFlyFrame;
+            case ACTION_FLYING: {
+                switch (curDirection) {
+                    case DIRECTION_NORTH: {
+                        images = flyBackImages;
+                        nbImages = nbFlyFrame;
+                        break;
+                    }
+                    case DIRECTION_SOUTH: {
+                        images = flyFrontImages;
+                        nbImages = nbFlyFrame;
+                        break;
+                    }
+                    case DIRECTION_WEST: {
+                        images = flyLeftImages;
+                        nbImages = nbFlyFrame;
+                        break;
+                    }
+                    case DIRECTION_EAST: {
+                        images = flyRightImages;
+                        nbImages = nbFlyFrame;
+                        break;
+                    }
+                }
                 break;
             }
-                case DIRECTION_WEST: {
-                images = flyLeftImages;
-                nbImages = nbFlyFrame;
-                break;
-            }
-                case DIRECTION_EAST: {
-                images = flyRightImages;
-                nbImages = nbFlyFrame;
-                break;
-            }
-            }
-            break;
-        }
         }
     }
 

@@ -18,11 +18,14 @@ public class RedSpearSoldierTest implements WithAssertions {
     @Test
     public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
-
-        // check members value.
         assertThat(redSpearSoldier.getxMap()).isEqualTo(15);
         assertThat(redSpearSoldier.getyMap()).isEqualTo(30);
         assertThat(redSpearSoldier.getSpriteType()).isEqualTo(SpriteType.TYPE_BREAKING_ENEMY);
+
+        // - dying values.
+        assertThat(redSpearSoldier.getDeathImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.deathMatrixRowIdx]);
+        assertThat(redSpearSoldier.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_DEATH_FRAME);
+        assertThat(redSpearSoldier.getDeathRefreshTime()).isEqualTo(RedSpearSoldier.DEATH_REFRESH_TIME);
 
         // - walking values.
         assertThat(redSpearSoldier.getWalkBackImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.redSpearSoldierWalkBackMatrixRowIdx]);

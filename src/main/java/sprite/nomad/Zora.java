@@ -7,8 +7,10 @@ import images.ImagesLoader;
  */
 public class Zora extends WalkingEnemy {
 
-    public final static int WALK_REFRESH_TIME = 100;
     public final static int ACTING_TIME = 15;
+
+    public final static int DEATH_REFRESH_TIME = 100;
+    public final static int WALK_REFRESH_TIME = 100;
 
     /**
      * Create a zora.
@@ -20,6 +22,9 @@ public class Zora extends WalkingEnemy {
                 int yMap) {
         super(xMap,
                 yMap,
+                ImagesLoader.imagesMatrix[ImagesLoader.deathMatrixRowIdx],
+                ImagesLoader.NB_DEATH_FRAME,
+                DEATH_REFRESH_TIME,
                 ImagesLoader.imagesMatrix[ImagesLoader.zoraWalkBackMatrixRowIdx],
                 ImagesLoader.imagesMatrix[ImagesLoader.zoraWalkFrontMatrixRowIdx],
                 ImagesLoader.imagesMatrix[ImagesLoader.zoraWalkLeftMatrixRowIdx],
