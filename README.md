@@ -8,9 +8,9 @@ A Bomberman-like game.
 
 ## Crédits
 - Game by **Eddy ALBERT** (eddy.albert@gmail.com). 
-- Map sprites from *The Legend of Zelda: A link to the Past (Nintendo), ripped by Eddy ALBERT.
+- Map sprites from *The Legend of Zelda: A link to the Past (Nintendo)*, ripped & updated by Eddy ALBERT.
 - Bomber sprites from *Saturn Bomberman (Hudson Soft)*, ripped by Ragey on www.spriters-resource.com.
-- Enemies sprites from *Bomberman Jetters: Densetsu no Bomberman (Hudson Soft)*, ripped by Mighty Jetters on www.spriters-resource.com.
+- Enemies sprites from *The Legend of Zelda: A link to the Past (Nintendo)*, ripped & updated by Eddy ALBERT.
 - Ascii sprites from *Metal Slug Mobile 3 (SNK/Playmore)*, ripped by Maneko on www.spritedatabase.net.
 
 ## In a nutshell
