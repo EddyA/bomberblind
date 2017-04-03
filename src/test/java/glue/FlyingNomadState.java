@@ -2,7 +2,7 @@ package glue;
 
 import images.ImagesLoader;
 import org.mockito.Mockito;
-import sprite.nomad.Bird;
+import sprite.nomad.WhiteBird;
 import sprite.nomad.FlyingNomad;
 import utils.Direction;
 
@@ -10,20 +10,20 @@ import java.io.IOException;
 
 public class FlyingNomadState {
 
-    private final Bird spyedBird;
+    private final WhiteBird spyedWhiteBird;
     private boolean shouldBeRemoved;
 
     public FlyingNomadState() throws IOException {
         ImagesLoader.fillImagesMatrix();
-        Bird bird = new Bird(0, 0, Direction.DIRECTION_NORTH, 0);
-        spyedBird = Mockito.spy(bird);
+        WhiteBird whiteBird = new WhiteBird(0, 0, Direction.DIRECTION_NORTH, 0);
+        spyedWhiteBird = Mockito.spy(whiteBird);
 
         // avoid the time constraint to make action.
-        Mockito.when(spyedBird.isTimeToAct()).thenReturn(true);
+        Mockito.when(spyedWhiteBird.isTimeToAct()).thenReturn(true);
     }
 
     public FlyingNomad getFlyingNomad() {
-        return spyedBird;
+        return spyedWhiteBird;
     }
 
     public int getFlyingNomadWidth() {

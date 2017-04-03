@@ -13,6 +13,7 @@ public class SpriteTypeTest implements WithAssertions {
         assertThat(getlabel(TYPE_BOMBER).orElse("no_name")).isEqualTo("bomber");
         assertThat(getlabel(TYPE_BONUS).orElse("no_name")).isEqualTo("bonus");
         assertThat(getlabel(TYPE_BREAKING_ENEMY).orElse("no_name")).isEqualTo("breaking_enemy");
+        assertThat(getlabel(TYPE_EXPLORING_ENEMY).orElse("no_name")).isEqualTo("exploring_enemy");
         assertThat(getlabel(TYPE_FLAME).orElse("no_name")).isEqualTo("flame");
         assertThat(getlabel(TYPE_FLAME_END).orElse("no_name")).isEqualTo("flame_end");
         assertThat(getlabel(TYPE_FLYING_NOMAD).orElse("no_name")).isEqualTo("flying_nomad");

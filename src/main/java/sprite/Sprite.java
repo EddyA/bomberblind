@@ -20,9 +20,8 @@ public abstract class Sprite {
     protected int curImageIdx; // current image index of the sprite.
     protected Image curImage; // current image of the sprite.
 
-    private int refreshTime; // refresh time (in ms).
+    protected int refreshTime; // refresh time (in ms).
     protected long lastRefreshTs; // last refresh timestamp.
-    public final static int REFRESH_TIME_WHEN_DYING = 140;
 
     /**
      * Create a settled sprite.

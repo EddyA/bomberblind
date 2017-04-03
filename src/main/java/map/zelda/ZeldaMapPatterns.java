@@ -27,7 +27,7 @@ public class ZeldaMapPatterns {
     public final static MapPattern trunk = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.trunkMatrixRowIdx],
             ImagesLoader.TRUNK_WIDTH, ImagesLoader.TRUNK_HEIGHT, false, false, "trunk");
     public final static MapPattern yellowTree = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.yellowTreeMatrixRowIdx],
-            ImagesLoader.YELLOW_TREE_WIDTH, ImagesLoader.YELLOW_TREE_HEIGHT, false, false, "yellow");
+            ImagesLoader.YELLOW_TREE_WIDTH, ImagesLoader.YELLOW_TREE_HEIGHT, false, false, "yellow_tree");
 
     // pathways.
     public final static MapPattern pathway = new MapPattern(ImagesLoader.imagesMatrix[ImagesLoader.pathwayMatrixRowIdx],
