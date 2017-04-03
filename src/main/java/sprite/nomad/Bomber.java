@@ -18,7 +18,7 @@ import static sprite.SpriteAction.*;
  */
 public abstract class Bomber extends Nomad {
 
-    public final static int DEFAULT_ACTING_TIME = 7;
+    public final static int DEFAULT_ACTING_TIME = 10;
 
     private final Image[] deathImages;
     private final int nbDeathFrame;
@@ -76,8 +76,8 @@ public abstract class Bomber extends Nomad {
         super(xMap,
                 yMap,
                 SpriteType.TYPE_BOMBER,
-                refreshTime,
                 DEFAULT_ACTING_TIME,
+                refreshTime,
                 invincibilityTime);
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
@@ -90,6 +90,7 @@ public abstract class Bomber extends Nomad {
         this.nbWalkFrame = nbWalkFrame;
         this.winImages = winImages;
         this.nbWinFrame = nbWinFrame;
+        this.refreshTime = refreshTime;
         initialXMap = xMap;
         initialYMap = yMap;
         droppedBombs = new LinkedList<>();

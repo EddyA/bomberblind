@@ -45,7 +45,7 @@ public class GenerationMethods {
                                                                           int perDynamicSinglePathway)
             throws CannotCreateMapElementException {
 
-        // check zelda.map.properties values (mapWidth and hMargin).
+        // check map properties (mapWidth and hMargin).
         if (mapWidth / 2 - patterns.getFirst().getWidth() - hMargin <= 0) {
             throw new CannotCreateMapElementException("not able to generate random colIdx when placing the entrance/exit: "
                     + "the map width is too small or the horizontal margin too high according to the entrance/exit width.");

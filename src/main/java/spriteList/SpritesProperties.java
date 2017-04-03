@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import static utils.Tools.isNotNullAndValidInteger;
+import static utils.Tools.isNullOrValidInteger;
 
 /**
  * Open, read and check a sprites map properties file.
@@ -16,11 +16,9 @@ import static utils.Tools.isNotNullAndValidInteger;
 
 public class SpritesProperties {
 
-    public final static String SPRITES_ENEMY_CLOAKED_SKELETON = "sprite.enemy.cloaked.skeleton";
-    public final static String SPRITES_ENEMY_MECA_ANGEL = "sprite.enemy.meca.angel";
-    public final static String SPRITES_ENEMY_MUMMY = "sprite.enemy.mummy";
-
-    public final static String SPRITES_ENEMY_MINOTOR = "sprite.enemy.minotor";
+    public final static String SPRITES_ENEMY_ZORA = "sprite.enemy.zora";
+    public final static String SPRITES_ENEMY_GREEN_SOLDIER = "sprite.enemy.green.soldier";
+    public final static String SPRITES_ENEMY_RED_SPEAR_SOLDIER = "sprite.enemy.red.spear.soldier";
 
     public final static String SPRITES_BIRDS_ARRIVAL_TIME_INTERVAL = "sprite.birds.arrival.time.interval";
 
@@ -31,24 +29,40 @@ public class SpritesProperties {
         this.propertiesFile = propertiesFile;
     }
 
-    public int getSpritesEnemyCloakedSkeleton() {
-        return Integer.parseInt(properties.getProperty(SPRITES_ENEMY_CLOAKED_SKELETON));
+    public int getSpritesEnemyzora() {
+        String property_value = properties.getProperty(SPRITES_ENEMY_ZORA);
+        if (property_value != null) {
+            return Integer.parseInt(property_value);
+        } else {
+            return 0;
+        }
     }
 
-    public int getSpritesEnemyMecaAngel() {
-        return Integer.parseInt(properties.getProperty(SPRITES_ENEMY_MECA_ANGEL));
+    public int getSpritesEnemyGreenSoldier() {
+        String property_value = properties.getProperty(SPRITES_ENEMY_GREEN_SOLDIER);
+        if (property_value != null) {
+            return Integer.parseInt(property_value);
+        } else {
+            return 0;
+        }
     }
 
-    public int getSpritesEnemyMummy() {
-        return Integer.parseInt(properties.getProperty(SPRITES_ENEMY_MUMMY));
-    }
-
-    public int getSpritesEnemyMinotor() {
-        return Integer.parseInt(properties.getProperty(SPRITES_ENEMY_MINOTOR));
+    public int getSpritesEnemyRedSpearSoldier() {
+        String property_value = properties.getProperty(SPRITES_ENEMY_RED_SPEAR_SOLDIER);
+        if (property_value != null) {
+            return Integer.parseInt(property_value);
+        } else {
+            return 0;
+        }
     }
 
     public int getSpritesBirdsArrivalTimeInterval() {
-        return Integer.parseInt(properties.getProperty(SPRITES_BIRDS_ARRIVAL_TIME_INTERVAL));
+        String property_value = properties.getProperty(SPRITES_BIRDS_ARRIVAL_TIME_INTERVAL);
+        if (property_value != null) {
+            return Integer.parseInt(property_value);
+        } else {
+            return 0;
+        }
     }
 
     public Properties getProperties() {
@@ -83,11 +97,10 @@ public class SpritesProperties {
      * @throws InvalidConfigurationException as soon as a propertie is badly set
      */
     public SpritesProperties checkProperties() throws InvalidConfigurationException {
-        if (!isNotNullAndValidInteger(properties.getProperty(SPRITES_ENEMY_CLOAKED_SKELETON)) ||
-                !isNotNullAndValidInteger(properties.getProperty(SPRITES_ENEMY_MECA_ANGEL)) ||
-                !isNotNullAndValidInteger(properties.getProperty(SPRITES_ENEMY_MUMMY)) ||
-                !isNotNullAndValidInteger(properties.getProperty(SPRITES_ENEMY_MINOTOR)) ||
-                !isNotNullAndValidInteger(properties.getProperty(SPRITES_BIRDS_ARRIVAL_TIME_INTERVAL))) {
+        if (!isNullOrValidInteger(properties.getProperty(SPRITES_ENEMY_ZORA)) ||
+                !isNullOrValidInteger(properties.getProperty(SPRITES_ENEMY_GREEN_SOLDIER)) ||
+                !isNullOrValidInteger(properties.getProperty(SPRITES_ENEMY_RED_SPEAR_SOLDIER)) ||
+                !isNullOrValidInteger(properties.getProperty(SPRITES_BIRDS_ARRIVAL_TIME_INTERVAL))) {
             throw new InvalidConfigurationException("'" + propertiesFile + "' is not a valid properties file: "
                     + "some field are missing or not integer convertible.");
         }

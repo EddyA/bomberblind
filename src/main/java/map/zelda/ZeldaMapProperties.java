@@ -229,9 +229,7 @@ public class ZeldaMapProperties extends MapProperties {
             throw new InvalidConfigurationException("'" + propertiesFile + "' is not a valid properties file: "
                     + "some field are missing or not integer convertible.");
         }
-        int perSingleMutableObstacle = Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_MUTABLE_OBSTACLE));
-        int perSingleImmutableObstacle = Integer.parseInt(properties.getProperty(MAP_ELEMENT_PER_SINGLE_IMMUTABLE_OBSTACLE));
-        if (perSingleMutableObstacle + perSingleImmutableObstacle > 100) {
+        if (getMapElementPerSingleMutableObstacle() + getMapElementPerSingleImmutableObstacle() > 100) {
             throw new InvalidConfigurationException("'" + propertiesFile + "' is not a valid properties file: "
                     + "sum of the percentage cannot exceed 100.");
         }

@@ -71,6 +71,30 @@ public class FlyingNomadStepDef implements WithAssertions {
         Mockito.when(flyingNomadState.getFlyingNomad().isFinished()).thenReturn(true);
     }
 
+    @Then("^the flying nomad should move north$")
+    public void the_flying_nomad_should_move_north() {
+        assertThat(flyingNomadState.getFlyingNomad().getLastCoordinatesOnMap().getSecond())
+                .isEqualTo(flyingNomadState.getFlyingNomad().getyMap() + 1);
+    }
+
+    @Then("^the flying nomad should move south$")
+    public void the_flying_nomad_should_move_south() {
+        assertThat(flyingNomadState.getFlyingNomad().getLastCoordinatesOnMap().getSecond())
+                .isEqualTo(flyingNomadState.getFlyingNomad().getyMap() - 1);
+    }
+
+    @Then("^the flying nomad should move west$")
+    public void the_flying_nomad_should_move_west() {
+        assertThat(flyingNomadState.getFlyingNomad().getLastCoordinatesOnMap().getFirst())
+                .isEqualTo(flyingNomadState.getFlyingNomad().getxMap() + 1);
+    }
+
+    @Then("^the flying nomad should move east$")
+    public void the_flying_nomad_should_move_east() {
+        assertThat(flyingNomadState.getFlyingNomad().getLastCoordinatesOnMap().getFirst())
+                .isEqualTo(flyingNomadState.getFlyingNomad().getxMap() - 1);
+    }
+
     @Then("^the flying nomad should die$")
     public void the_flying_nomad_should_die() {
         assertThat(flyingNomadState.getFlyingNomad().getCurSpriteAction()).isEqualTo(ACTION_DYING);

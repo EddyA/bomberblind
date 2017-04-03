@@ -4,10 +4,7 @@ import ai.EnemyAi;
 import map.MapPoint;
 import map.ctrl.NomadMethods;
 import sprite.Sprite;
-import sprite.nomad.Bomber;
-import sprite.nomad.BreakingEnemy;
-import sprite.nomad.FlyingNomad;
-import sprite.nomad.WalkingEnemy;
+import sprite.nomad.*;
 import sprite.settled.*;
 import utils.Direction;
 
@@ -329,7 +326,6 @@ public class ActionMethods {
             // should the enemy die?
             if (isNomadBurning(mapPointMatrix, breakingEnemy.getxMap(), breakingEnemy.getyMap())) {
                 breakingEnemy.setCurSpriteAction(ACTION_DYING);
-                breakingEnemy.setRefreshTime(Sprite.REFRESH_TIME_WHEN_DYING); // normalize the frame rate for the dead sprite.
 
             } else if (breakingEnemy.isTimeToAct()) { // it is time to act.
                 if (breakingEnemy.getCurSpriteAction() != ACTION_BREAKING) { // -> the enemy is not breaking.
@@ -536,7 +532,6 @@ public class ActionMethods {
             // should the enemy die?
             if (isNomadBurning(mapPointMatrix, walkingEnemy.getxMap(), walkingEnemy.getyMap())) {
                 walkingEnemy.setCurSpriteAction(ACTION_DYING);
-                walkingEnemy.setRefreshTime(Sprite.REFRESH_TIME_WHEN_DYING); // normalize the frame rate for the dead sprite.
 
             } else if (walkingEnemy.isTimeToAct()) { // it is time to act.
                 moveEnemyIfPossible(list, mapPointMatrix, mapWidth, mapHeight, walkingEnemy);

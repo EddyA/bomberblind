@@ -3,6 +3,7 @@ package sprite.nomad;
 import sprite.SpriteAction;
 import sprite.SpriteType;
 import utils.Direction;
+import utils.Tuple2;
 
 import java.awt.*;
 import java.util.Random;
@@ -23,6 +24,8 @@ public abstract class FlyingNomad extends Nomad {
 
     private final int deviation; // the number of iterations before shifting to the orthogonal direction.
     private int moveIdx; // number of times the sprite has moved.
+
+    private Tuple2<Integer, Integer> lastCoordinatesOnMap; // test purpose.
 
     /**
      * Create a flying figure..
@@ -60,6 +63,7 @@ public abstract class FlyingNomad extends Nomad {
 
         moveIdx = 0;
         curImageIdx = new Random().nextInt(nbFlyFrame); // init the sprite with a random image index.
+        lastCoordinatesOnMap = new Tuple2<>(xMap, yMap);
 
         // update cur/last - action/direction to avoid re-init curImageIdx to 0.
         curSpriteAction = ACTION_FLYING;
@@ -96,10 +100,16 @@ public abstract class FlyingNomad extends Nomad {
         return moveIdx;
     }
 
+    public Tuple2<Integer, Integer> getLastCoordinatesOnMap() {
+        return lastCoordinatesOnMap;
+    }
+
     /**
      * Compute the next position of the sprite.
      */
     public void computeMove() {
+        lastCoordinatesOnMap.setFirst(xMap);
+        lastCoordinatesOnMap.setSecond(yMap);
         switch (curDirection) {
             case DIRECTION_NORTH: {
                 yMap--;
@@ -170,31 +180,36 @@ public abstract class FlyingNomad extends Nomad {
     @Override
     public void updateSprite() {
         switch (curSpriteAction) {
-        case ACTION_FLYING: {
-            switch (curDirection) {
-                case DIRECTION_NORTH: {
-                images = flyBackImages;
-                nbImages = nbFlyFrame;
+            case ACTION_DYING: {
+                images = null;
+                nbImages = 0;
                 break;
             }
-                case DIRECTION_SOUTH: {
-                images = flyFrontImages;
-                nbImages = nbFlyFrame;
+            case ACTION_FLYING: {
+                switch (curDirection) {
+                    case DIRECTION_NORTH: {
+                        images = flyBackImages;
+                        nbImages = nbFlyFrame;
+                        break;
+                    }
+                    case DIRECTION_SOUTH: {
+                        images = flyFrontImages;
+                        nbImages = nbFlyFrame;
+                        break;
+                    }
+                    case DIRECTION_WEST: {
+                        images = flyLeftImages;
+                        nbImages = nbFlyFrame;
+                        break;
+                    }
+                    case DIRECTION_EAST: {
+                        images = flyRightImages;
+                        nbImages = nbFlyFrame;
+                        break;
+                    }
+                }
                 break;
             }
-                case DIRECTION_WEST: {
-                images = flyLeftImages;
-                nbImages = nbFlyFrame;
-                break;
-            }
-                case DIRECTION_EAST: {
-                images = flyRightImages;
-                nbImages = nbFlyFrame;
-                break;
-            }
-            }
-            break;
-        }
         }
     }
 

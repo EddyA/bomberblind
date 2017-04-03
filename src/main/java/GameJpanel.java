@@ -45,7 +45,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private int yMapStartPosOnScreen;
 
     public GameJpanel(int screenWidth, int screenHeight) throws IOException, InvalidPropertiesException,
-            InvalidConfigurationException, CannotCreateMapElementException, CannotPlaceEnemyOnMapException {
+            InvalidConfigurationException, CannotCreateMapElementException {
 
         // create the map.
         map = new ZeldaMap(

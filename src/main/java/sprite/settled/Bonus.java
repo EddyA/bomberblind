@@ -15,8 +15,7 @@ import static sprite.settled.Bonus.Status.STATUS_ENDED;
  */
 public abstract class Bonus extends Sprite {
 
-    public final static int REFRESH_TIME = 50;
-
+    public final static int BONUS_REFRESH_TIME = 50;
     private final BonusType bonusType;
 
     /**
@@ -48,12 +47,13 @@ public abstract class Bonus extends Sprite {
         super(Tools.getCaseCentreAbscissa(colIdx),
                 Tools.getCaseBottomOrdinate(rowIdx),
                 SpriteType.TYPE_BONUS,
-                REFRESH_TIME);
+                BONUS_REFRESH_TIME);
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
         this.bonusType = bonusType;
         this.images = images;
         this.nbImages = nbImages;
+        this.refreshTime = BONUS_REFRESH_TIME;
     }
 
     public BonusType getBonusType() {

@@ -151,11 +151,11 @@ public class AddingMethodsTest implements WithAssertions {
     @Test
     public void addBreakingEnemyShouldAddTheEnemyToTheListOfSprite() throws Exception {
         LinkedList<Sprite> spriteList = new LinkedList<>();
-        Minotor minotor = new Minotor(1, 2);
-        AddingMethods.addBreakingEnemy(spriteList, minotor);
+        RedSpearSoldier redSpearSoldier = new RedSpearSoldier(1, 2);
+        AddingMethods.addBreakingEnemy(spriteList, redSpearSoldier);
 
         // test.
-        assertThat(spriteList.contains(minotor)).isTrue();
+        assertThat(spriteList.contains(redSpearSoldier)).isTrue();
     }
 
     @Test
@@ -530,20 +530,20 @@ public class AddingMethodsTest implements WithAssertions {
         LinkedList<Sprite> spriteList = new LinkedList<>();
 
         // add sprite.
-        Bird bird = new Bird(1, 2, Direction.DIRECTION_EAST, -5);
-        AddingMethods.addFlyingNomad(spriteList, bird);
+        WhiteBird whiteBird = new WhiteBird(1, 2, Direction.DIRECTION_EAST, -5);
+        AddingMethods.addFlyingNomad(spriteList, whiteBird);
 
         // test.
-        assertThat(spriteList.contains(bird)).isTrue();
+        assertThat(spriteList.contains(whiteBird)).isTrue();
     }
 
     @Test
     public void addWalkingEnemyShouldAddTheEnemyToTheListOfSprite() throws Exception {
         LinkedList<Sprite> spriteList = new LinkedList<>();
-        CloakedSkeleton cloakedSkeleton = new CloakedSkeleton(1, 2);
-        AddingMethods.addWalkingEnemy(spriteList, cloakedSkeleton);
+        Zora zora = new Zora(1, 2);
+        AddingMethods.addWalkingEnemy(spriteList, zora);
 
         // test.
-        assertThat(spriteList.contains(cloakedSkeleton)).isTrue();
+        assertThat(spriteList.contains(zora)).isTrue();
     }
 }

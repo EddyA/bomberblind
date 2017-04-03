@@ -37,6 +37,28 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
     }
 
     @Test
+    public void valueOfOptionnalPropertiesShouldBeZeroWhenNotSet() throws Exception {
+        ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties(null);
+
+        // check values of optionnal properties.
+        assertThat(zeldaMapProperties.getMapElementNbOrchard()).isEqualTo(0);
+        assertThat(zeldaMapProperties.getMapElementNbTrough()).isEqualTo(0);
+        assertThat(zeldaMapProperties.getMapElementNbGreenWood()).isEqualTo(0);
+        assertThat(zeldaMapProperties.getMapElementNbRedTree()).isEqualTo(0);
+        assertThat(zeldaMapProperties.getMapElementNbYellowTree()).isEqualTo(0);
+        assertThat(zeldaMapProperties.getMapElementNbPathway()).isEqualTo(0);
+        assertThat(zeldaMapProperties.getMapElementNbStatue()).isEqualTo(0);
+        assertThat(zeldaMapProperties.getMapElementPerSingleImmutableObstacle()).isEqualTo(0);
+        assertThat(zeldaMapProperties.getMapElementPerSingleMutableObstacle()).isEqualTo(0);
+        assertThat(zeldaMapProperties.getMapElementPerDecoratedSinglePathway()).isEqualTo(0);
+        assertThat(zeldaMapProperties.getMapElementPerDynamicSinglePathway()).isEqualTo(0);
+        assertThat(zeldaMapProperties.getMapBonusNbBomb()).isEqualTo(0);
+        assertThat(zeldaMapProperties.getMapBonusNbFlame()).isEqualTo(0);
+        assertThat(zeldaMapProperties.getMapBonusNbHeart()).isEqualTo(0);
+        assertThat(zeldaMapProperties.getMapBonusNbRoller()).isEqualTo(0);
+    }
+
+    @Test
     public void loadPropertiesWithNullFileShouldThrowExpectedException() throws Exception {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties(null);
         assertThatThrownBy(zeldaMapProperties::loadProperties)

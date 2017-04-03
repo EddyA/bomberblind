@@ -52,10 +52,8 @@ public class SpriteList extends LinkedList<Sprite> {
 
     /**
      * Randomly (create) and place sprites on the map.
-     *
-     * @throws CannotPlaceEnemyOnMapException if all the requested sprites cannot be placed on map
      */
-    public void generateSprites() throws CannotPlaceEnemyOnMapException {
+    public void generateSprites() {
         if (spritesSetting == null) {
             throw new RuntimeException("generateSprites() cannot be called without providing a spritesSetting.");
         }
@@ -70,29 +68,27 @@ public class SpriteList extends LinkedList<Sprite> {
             }
         }
 
-        // walking enemies:
-        // - cloaked skeleton
-        GenerationMethods.randomlyPlaceEnemies(this,
-                EnemyType.TYPE_ENEMY_CLOAKED_SKELETON,
-                spritesSetting.getNbCloakedSkeleton(),
-                emptyPtList);
-        // - meca angel
-        GenerationMethods.randomlyPlaceEnemies(this,
-                EnemyType.TYPE_ENEMY_MECA_ANGEL,
-                spritesSetting.getNbMecaAngel(),
-                emptyPtList);
-        // - mummy
-        GenerationMethods.randomlyPlaceEnemies(this,
-                EnemyType.TYPE_ENEMY_MUMMY,
-                spritesSetting.getNbMummy(),
-                emptyPtList);
+        try {
+            // - zora.
+            GenerationMethods.randomlyPlaceEnemies(this,
+                    EnemyType.TYPE_ENEMY_ZORA,
+                    spritesSetting.getNbZora(),
+                    emptyPtList);
 
-        // breaking enemies:
-        // - minotor
-        GenerationMethods.randomlyPlaceEnemies(this,
-                EnemyType.TYPE_ENEMY_MINOTOR,
-                spritesSetting.getNbMinotor(),
-                emptyPtList);
+            // - green soldier.
+            GenerationMethods.randomlyPlaceEnemies(this,
+                    EnemyType.TYPE_ENEMY_GREEN_SOLDIER,
+                    spritesSetting.getNbGreenSoldier(),
+                    emptyPtList);
+
+            // - red spear soldier.
+            GenerationMethods.randomlyPlaceEnemies(this,
+                    EnemyType.TYPE_ENEMY_RED_SPEAR_SOLDIER,
+                    spritesSetting.getNbRedSpearSoldier(),
+                    emptyPtList);
+        } catch (CannotPlaceEnemyOnMapException e) {
+            System.out.print(e.getMessage() + "\n"); // log only, not very important.
+        }
     }
 
     /**
@@ -162,7 +158,8 @@ public class SpriteList extends LinkedList<Sprite> {
 
         // add birds (every X ms).
         long currentTs = currentTimeSupplier.get().toEpochMilli();
-        if (birdsArrivalLastTs + (spritesSetting.getBirdsArrivalTimeInterval()) <= currentTs) {
+        if (spritesSetting.getBirdsArrivalTimeInterval() != 0 && // birds arrival is set0
+                birdsArrivalLastTs + (spritesSetting.getBirdsArrivalTimeInterval()) <= currentTs) {
             GenerationMethods.randomlyPlaceAGroupOfBird(this, screenWidth, screenHeight,
                     map.getMapWidth() * IMAGE_SIZE, map.getMapHeight() * IMAGE_SIZE);
             birdsArrivalLastTs = currentTs;

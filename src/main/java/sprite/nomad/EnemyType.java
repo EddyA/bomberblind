@@ -6,28 +6,23 @@ import java.util.Optional;
  * Enum the different type of enemy.
  */
 public enum EnemyType {
-    TYPE_ENEMY_CLOAKED_SKELETON,
-    TYPE_ENEMY_MECA_ANGEL,
-    TYPE_ENEMY_MINOTOR,
-    TYPE_ENEMY_MUMMY;
+    TYPE_ENEMY_GREEN_SOLDIER,
+    TYPE_ENEMY_RED_SPEAR_SOLDIER,
+    TYPE_ENEMY_ZORA;
 
     public static Optional<String> getlabel(EnemyType enemyType) {
         Optional<String> label = Optional.empty();
         switch (enemyType) {
-            case TYPE_ENEMY_CLOAKED_SKELETON: {
-                label = Optional.of("cloaked_skeleton");
+            case TYPE_ENEMY_GREEN_SOLDIER: {
+                label = Optional.of("green_soldier");
                 break;
             }
-            case TYPE_ENEMY_MECA_ANGEL: {
-                label = Optional.of("meca_angel");
+            case TYPE_ENEMY_RED_SPEAR_SOLDIER: {
+                label = Optional.of("red_spear_soldier");
                 break;
             }
-            case TYPE_ENEMY_MINOTOR: {
-                label = Optional.of("minotor");
-                break;
-            }
-            case TYPE_ENEMY_MUMMY: {
-                label = Optional.of("mummy");
+            case TYPE_ENEMY_ZORA: {
+                label = Optional.of("zora");
                 break;
             }
         }
