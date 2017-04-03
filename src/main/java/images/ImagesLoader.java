@@ -16,7 +16,7 @@ public class ImagesLoader {
     public final static int IMAGE_SIZE = 32; // size of an 'Image' in pixels (30*30).
 
     public static Image[][] imagesMatrix; // matrix of images (holding all the game images).+
-    public final static int NB_MATRIX_ROW = 55;
+    public final static int NB_MATRIX_ROW = 51;
     public final static int NB_MATRIX_COL = 128;
 
     // images location.
@@ -102,10 +102,6 @@ public class ImagesLoader {
     public static int blueBomberWinMatrixRowIdx;
 
     // - enemies.
-    // -- death.
-    public final static int NB_DEATH_FRAME = 7;
-    public static int deathMatrixRowIdx;
-
     // -- walking enemies.
     // --- zora.
     public final static int NB_ZORA_WALK_FRAME = 2;
@@ -113,6 +109,13 @@ public class ImagesLoader {
     public static int zoraWalkFrontMatrixRowIdx;
     public static int zoraWalkLeftMatrixRowIdx;
     public static int zoraWalkRightMatrixRowIdx;
+
+    // --- green soldier.
+    public final static int NB_GREEN_SOLDIER_WALK_FRAME = 10;
+    public static int greenSoldierWalkBackMatrixRowIdx;
+    public static int greenSoldierWalkFrontMatrixRowIdx;
+    public static int greenSoldierWalkLeftMatrixRowIdx;
+    public static int greenSoldierWalkRightMatrixRowIdx;
 
     // -- breaking enemies.
     // --- red spear soldier.
@@ -126,19 +129,6 @@ public class ImagesLoader {
     public static int redSpearSoldierBreakFrontMatrixRowIdx;
     public static int redSpearSoldierBreakLeftMatrixRowIdx;
     public static int redSpearSoldierBreakRightMatrixRowIdx;
-
-    // -- exploring enemies.
-    // --- green soldier.
-    public final static int NB_GREEN_SOLDIER_WALK_FRAME = 2;
-    public static int greenSoldierWalkBackMatrixRowIdx;
-    public static int greenSoldierWalkFrontMatrixRowIdx;
-    public static int greenSoldierWalkLeftMatrixRowIdx;
-    public static int greenSoldierWalkRightMatrixRowIdx;
-    public final static int NB_GREEN_SOLDIER_EXPLORE_FRAME = 2;
-    public static int greenSoldierExploreBackMatrixRowIdx;
-    public static int greenSoldierExploreFrontMatrixRowIdx;
-    public static int greenSoldierExploreLeftMatrixRowIdx;
-    public static int greenSoldierExploreRightMatrixRowIdx;
 
     // - flying nomads.
     // -- bird.
@@ -155,6 +145,10 @@ public class ImagesLoader {
     public static int flameMatrixRowIdx;
     public final static int NB_FLAME_END_FRAME = 9;
     public static int flameEndMatrixRowIdx;
+
+    // - death.
+    public final static int NB_DEATH_FRAME = 7;
+    public static int deathMatrixRowIdx;
 
     public static int curMatrixRowIdx;
     public static int lastMatrixRowIdx; // for test purpose.
@@ -323,6 +317,16 @@ public class ImagesLoader {
         fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/zora/zora-walk-right-", NB_ZORA_WALK_FRAME);
         zoraWalkRightMatrixRowIdx = curMatrixRowIdx++;
 
+        // --- green soldier.
+        fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/green_soldier/green_soldier-walk-back-", NB_GREEN_SOLDIER_WALK_FRAME);
+        greenSoldierWalkBackMatrixRowIdx = curMatrixRowIdx++;
+        fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/green_soldier/green_soldier-walk-front-", NB_GREEN_SOLDIER_WALK_FRAME);
+        greenSoldierWalkFrontMatrixRowIdx = curMatrixRowIdx++;
+        fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/green_soldier/green_soldier-walk-left-", NB_GREEN_SOLDIER_WALK_FRAME);
+        greenSoldierWalkLeftMatrixRowIdx = curMatrixRowIdx++;
+        fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/green_soldier/green_soldier-walk-right-", NB_GREEN_SOLDIER_WALK_FRAME);
+        greenSoldierWalkRightMatrixRowIdx = curMatrixRowIdx++;
+
         // -- breaking enemies.
         // --- red spear soldier.
         fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/red_spear_soldier/red_spear_soldier-walk-back-", NB_RED_SPEAR_SOLDIER_WALK_FRAME);
@@ -341,36 +345,6 @@ public class ImagesLoader {
         redSpearSoldierBreakLeftMatrixRowIdx = curMatrixRowIdx++;
         fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/red_spear_soldier/red_spear_soldier-break-right-", NB_RED_SPEAR_SOLDIER_BREAK_FRAME);
         redSpearSoldierBreakRightMatrixRowIdx = curMatrixRowIdx++;
-
-        // -- exploring enemies.
-        // --- green soldier.
-        // ---- walking.
-        fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/green_soldier/green_soldier-walk-back-",
-                NB_GREEN_SOLDIER_WALK_FRAME);
-        greenSoldierWalkBackMatrixRowIdx = curMatrixRowIdx++;
-        fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/green_soldier/green_soldier-walk-front-",
-                NB_GREEN_SOLDIER_WALK_FRAME);
-        greenSoldierWalkFrontMatrixRowIdx = curMatrixRowIdx++;
-        fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/green_soldier/green_soldier-walk-left-",
-                NB_GREEN_SOLDIER_WALK_FRAME);
-        greenSoldierWalkLeftMatrixRowIdx = curMatrixRowIdx++;
-        fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/green_soldier/green_soldier-walk-right-",
-                NB_GREEN_SOLDIER_WALK_FRAME);
-        greenSoldierWalkRightMatrixRowIdx = curMatrixRowIdx++;
-
-        // ---- exploring.
-        fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/green_soldier/green_soldier-explore-back-",
-                NB_GREEN_SOLDIER_EXPLORE_FRAME);
-        greenSoldierExploreBackMatrixRowIdx = curMatrixRowIdx++;
-        fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/green_soldier/green_soldier-explore-front-",
-                NB_GREEN_SOLDIER_EXPLORE_FRAME);
-        greenSoldierExploreFrontMatrixRowIdx = curMatrixRowIdx++;
-        fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/green_soldier/green_soldier-explore-left-",
-                NB_GREEN_SOLDIER_EXPLORE_FRAME);
-        greenSoldierExploreLeftMatrixRowIdx = curMatrixRowIdx++;
-        fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/green_soldier/green_soldier-explore-right-",
-                NB_GREEN_SOLDIER_EXPLORE_FRAME);
-        greenSoldierExploreRightMatrixRowIdx = curMatrixRowIdx++;
 
         // - flying nomads
         // -- bird.

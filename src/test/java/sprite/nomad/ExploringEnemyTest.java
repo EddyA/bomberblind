@@ -1,17 +1,23 @@
 package sprite.nomad;
 
-import images.ImagesLoader;
-import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
-import sprite.SpriteType;
-import utils.Direction;
+import static sprite.SpriteAction.ACTION_BREAKING;
+import static sprite.SpriteAction.ACTION_DYING;
+import static sprite.SpriteAction.ACTION_FLYING;
+import static sprite.SpriteAction.ACTION_WAITING;
+import static sprite.SpriteAction.ACTION_WALKING;
+import static sprite.SpriteAction.ACTION_WINING;
 
 import java.io.IOException;
 
-import static sprite.SpriteAction.*;
+import org.assertj.core.api.WithAssertions;
+import org.junit.Before;
+import org.junit.Test;
 
-public class BreakingEnemyTest implements WithAssertions {
+import images.ImagesLoader;
+import sprite.SpriteType;
+import utils.Direction;
+
+public class ExploringEnemyTest implements WithAssertions {
 
     @Before
     public void fillImagesMatrix() throws IOException {

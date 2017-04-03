@@ -16,7 +16,8 @@ public class SpritesSettingTest implements WithAssertions {
 
         SpritesSetting spritesSetting = new SpritesSetting(spritesProperties);
         assertThat(spritesSetting.getNbZora()).isEqualTo(1);
-        assertThat(spritesSetting.getNbRedSpearSoldier()).isEqualTo(2);
-        assertThat(spritesSetting.getBirdsArrivalTimeInterval()).isEqualTo(3);
+        assertThat(spritesSetting.getNbGreenSoldier()).isEqualTo(2);
+        assertThat(spritesSetting.getNbRedSpearSoldier()).isEqualTo(3);
+        assertThat(spritesSetting.getBirdsArrivalTimeInterval()).isEqualTo(4);
     }
 }

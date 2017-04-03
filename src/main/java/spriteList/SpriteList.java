@@ -68,15 +68,19 @@ public class SpriteList extends LinkedList<Sprite> {
             }
         }
 
-        // walking enemies.
-        // - zora.
         try {
+            // - zora.
             GenerationMethods.randomlyPlaceEnemies(this,
                     EnemyType.TYPE_ENEMY_ZORA,
                     spritesSetting.getNbZora(),
                     emptyPtList);
 
-            // breaking enemies.
+            // - green soldier.
+            GenerationMethods.randomlyPlaceEnemies(this,
+                    EnemyType.TYPE_ENEMY_GREEN_SOLDIER,
+                    spritesSetting.getNbGreenSoldier(),
+                    emptyPtList);
+
             // - red spear soldier.
             GenerationMethods.randomlyPlaceEnemies(this,
                     EnemyType.TYPE_ENEMY_RED_SPEAR_SOLDIER,
@@ -154,7 +158,8 @@ public class SpriteList extends LinkedList<Sprite> {
 
         // add birds (every X ms).
         long currentTs = currentTimeSupplier.get().toEpochMilli();
-        if (birdsArrivalLastTs + (spritesSetting.getBirdsArrivalTimeInterval()) <= currentTs) {
+        if (spritesSetting.getBirdsArrivalTimeInterval() != 0 && // birds arrival is set0
+                birdsArrivalLastTs + (spritesSetting.getBirdsArrivalTimeInterval()) <= currentTs) {
             GenerationMethods.randomlyPlaceAGroupOfBird(this, screenWidth, screenHeight,
                     map.getMapWidth() * IMAGE_SIZE, map.getMapHeight() * IMAGE_SIZE);
             birdsArrivalLastTs = currentTs;

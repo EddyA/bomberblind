@@ -57,6 +57,10 @@ public class GenerationMethods {
                     addWalkingEnemy(spriteList, new Zora(xMap, yMap));
                     break;
                 }
+                case TYPE_ENEMY_GREEN_SOLDIER: {
+                    addWalkingEnemy(spriteList, new GreenSoldier(xMap, yMap));
+                    break;
+                }
                 case TYPE_ENEMY_RED_SPEAR_SOLDIER: {
                     addBreakingEnemy(spriteList, new RedSpearSoldier(xMap, yMap));
                     break;
