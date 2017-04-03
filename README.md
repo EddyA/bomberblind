@@ -20,7 +20,7 @@ A Bomberman-like game.
   
 * Bomber.
   * The bomber dies when hitting by a flame or an enemy.
-  * When dying, all the collected bonus are randomly dropped arround its end point.
+  * When dying, all the collected bonus are randomly dropped on the map.
     
 * Bonus.
     * The bonus are randomly placed.

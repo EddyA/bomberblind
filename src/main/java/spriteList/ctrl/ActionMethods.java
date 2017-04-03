@@ -4,7 +4,10 @@ import ai.EnemyAi;
 import map.MapPoint;
 import map.ctrl.NomadMethods;
 import sprite.Sprite;
-import sprite.nomad.*;
+import sprite.nomad.Bomber;
+import sprite.nomad.BreakingEnemy;
+import sprite.nomad.FlyingNomad;
+import sprite.nomad.WalkingEnemy;
 import sprite.settled.*;
 import utils.Direction;
 
@@ -104,8 +107,6 @@ public class ActionMethods {
                     mapPointMatrix,
                     mapWidth,
                     mapHeight,
-                    getCharRowIdx(bomber.getyMap()),
-                    getCharColIdx(bomber.getxMap()),
                     bomber.getCollectedBonus());
 
             shouldBeRemoved = bomber.init(); // re-init the bomber if finished.
