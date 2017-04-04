@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import sprite.SpriteType;
 import sprite.settled.Bomb;
+import sprite.settled.BonusType;
 import utils.CurrentTimeSupplier;
 import utils.Direction;
 
@@ -15,6 +16,7 @@ import java.time.Instant;
 
 import static org.mockito.Mockito.mock;
 import static sprite.SpriteAction.*;
+import static sprite.nomad.Bomber.DEFAULT_ACTING_TIME;
 
 public class BomberTest implements WithAssertions {
 
@@ -43,7 +45,7 @@ public class BomberTest implements WithAssertions {
         assertThat(blueBomber.getWinImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWinMatrixRowIdx]);
         assertThat(blueBomber.getNbWinFrame()).isEqualTo(ImagesLoader.NB_BOMBER_WIN_FRAME);
         assertThat(blueBomber.getRefreshTime()).isEqualTo(BlueBomber.REFRESH_TIME);
-        assertThat(blueBomber.getActingTime()).isEqualTo(BlueBomber.DEFAULT_ACTING_TIME);
+        assertThat(blueBomber.getActingTime()).isEqualTo(DEFAULT_ACTING_TIME);
         assertThat(blueBomber.getInvincibilityTime()).isEqualTo(BlueBomber.INVINCIBILITY_TIME);
         assertThat(blueBomber.getInitialXMap()).isEqualTo(blueBomber.getxMap());
         assertThat(blueBomber.getInitialYMap()).isEqualTo(blueBomber.getyMap());
@@ -106,6 +108,34 @@ public class BomberTest implements WithAssertions {
         assertThat(blueBomber.getDroppedBombs().contains(bomb_1)).isFalse(); // no more in the list.
         assertThat(blueBomber.getDroppedBombs().contains(bomb_2)).isTrue();
         assertThat(blueBomber.getDroppedBombs().contains(bomb_3)).isFalse();// no more in the list.
+    }
+
+    @Test
+    public void getBonusShouldReturnTheExpectedNumber() throws Exception {
+        // set test.
+        BlueBomber blueBomber = new BlueBomber(10, 20);
+        blueBomber.setBonus(BonusType.TYPE_BONUS_BOMB, 5);
+        blueBomber.setBonus(BonusType.TYPE_BONUS_FLAME, 10);
+        blueBomber.setBonus(BonusType.TYPE_BONUS_HEART, 15);
+        blueBomber.setBonus(BonusType.TYPE_BONUS_ROLLER, 20);
+
+        //check.
+        assertThat(blueBomber.getBonus(BonusType.TYPE_BONUS_BOMB)).isEqualTo(5);
+        assertThat(blueBomber.getBonus(BonusType.TYPE_BONUS_FLAME)).isEqualTo(10);
+        assertThat(blueBomber.getBonus(BonusType.TYPE_BONUS_HEART)).isEqualTo(15);
+        assertThat(blueBomber.getBonus(BonusType.TYPE_BONUS_ROLLER)).isEqualTo(20);
+    }
+
+    @Test
+    public void setBonusRollerShouldUpdateActingTime() throws Exception {
+        // set test.
+        BlueBomber blueBomber = new BlueBomber(10, 20);
+
+        //check.
+        blueBomber.setBonus(BonusType.TYPE_BONUS_ROLLER, 1); // standard case.
+        assertThat(blueBomber.getActingTime()).isEqualTo(DEFAULT_ACTING_TIME - 1);
+        blueBomber.setBonus(BonusType.TYPE_BONUS_ROLLER, 20); // high value -> should reach the limit of 4ms.
+        assertThat(blueBomber.getActingTime()).isEqualTo(4);
     }
 
     @Test

@@ -1,22 +1,17 @@
 package map.ctrl;
 
-import static images.ImagesLoader.IMAGE_SIZE;
-import static map.ctrl.NomadMethods.isNomadBlockedOffByMutableObstacle;
-import static utils.Direction.DIRECTION_EAST;
-import static utils.Direction.DIRECTION_NORTH;
-import static utils.Direction.DIRECTION_SOUTH;
-import static utils.Direction.DIRECTION_WEST;
-import static utils.Direction.convertKeyEventToDirection;
+import map.MapPoint;
+import org.assertj.core.api.WithAssertions;
+import org.junit.Test;
+import utils.Direction;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
-
-import map.MapPoint;
-import utils.Direction;
+import static images.ImagesLoader.IMAGE_SIZE;
+import static map.ctrl.NomadMethods.isNomadBlockedOffByMutableObstacle;
+import static utils.Direction.*;
 
 public class NomadMethodsTest implements WithAssertions {
 
@@ -222,6 +217,47 @@ public class NomadMethodsTest implements WithAssertions {
         blockingMutable = isNomadBlockedOffByMutableObstacle(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT,
                 leftMutableLimit, mutableRowIdx * IMAGE_SIZE, DIRECTION_EAST);
         assertThat(blockingMutable).isEqualTo(mapPointMatrix[mutableRowIdx][mutableColIdx]);
+    }
+
+    @Test
+    public void isNomadCloseToExitShouldReturnExpectedValue() throws Exception {
+        MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
+        for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
+            for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
+                mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
+            }
+        }
+        int exitRowIdx = 5;
+        int exitColIdx = 4;
+        mapPointMatrix[exitRowIdx][exitColIdx].setExit(true);
+
+        /*
+         * A nomad is close to an exit if:
+         * - its own case is an exit
+         * - OR its direct north/south/west/east case is an exit.
+         */
+
+        for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
+            for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
+                if (((colIdx == exitColIdx) && (rowIdx >= exitRowIdx - 1) && (rowIdx <= exitRowIdx + 1)) ||
+                        ((rowIdx == exitRowIdx) && (colIdx >= exitColIdx - 1) && (colIdx <= exitColIdx + 1))) {
+
+                    // assert that the nomad is close to an exit.
+                    assertThat(NomadMethods.isNomadCloseToExit(mapPointMatrix,
+                            MAP_WIDTH,
+                            MAP_HEIGHT,
+                            colIdx * IMAGE_SIZE,
+                            rowIdx * IMAGE_SIZE)).isTrue();
+                } else {
+                    // assert that the nomad is not close to an exit.
+                    assertThat(NomadMethods.isNomadCloseToExit(mapPointMatrix,
+                            MAP_WIDTH,
+                            MAP_HEIGHT,
+                            colIdx * IMAGE_SIZE,
+                            rowIdx * IMAGE_SIZE)).isFalse();
+                }
+            }
+        }
     }
 
     @Test

@@ -201,7 +201,11 @@ public abstract class Bomber extends Nomad {
     public void setBonus(BonusType bonusType, int nbBonus) {
         bundleBonus.setBonus(bonusType, nbBonus);
         if (bonusType == BonusType.TYPE_BONUS_ROLLER) {
-            setActingTime(DEFAULT_ACTING_TIME - BonusBundle.DEFAULT_NB_BONUS_ROLLER - nbBonus);
+            if (DEFAULT_ACTING_TIME - bundleBonus.getBonus(BonusType.TYPE_BONUS_ROLLER) < 4) { // put a limit to 4ms.
+                setActingTime(4);
+            } else {
+                setActingTime(DEFAULT_ACTING_TIME - bundleBonus.getBonus(BonusType.TYPE_BONUS_ROLLER));
+            }
         }
     }
 

@@ -105,10 +105,6 @@ public abstract class Sprite {
         return refreshTime;
     }
 
-    public void setRefreshTime(int refreshTime) {
-        this.refreshTime = refreshTime;
-    }
-
     public void setLastRefreshTs(long lastRefreshTs) {
         this.lastRefreshTs = lastRefreshTs;
     }
