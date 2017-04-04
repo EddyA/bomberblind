@@ -26,7 +26,7 @@ public class WhiteBirdTest implements WithAssertions {
         // check members value.
         assertThat(whiteBird.getxMap()).isEqualTo(15);
         assertThat(whiteBird.getyMap()).isEqualTo(30);
-        assertThat(whiteBird.getSpriteType()).isEqualTo(SpriteType.TYPE_FLYING_NOMAD);
+        assertThat(whiteBird.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_FLYING_NOMAD);
         assertThat(whiteBird.getFlyBackImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.birdFlyBackMatrixRowIdx]);
         assertThat(whiteBird.getFlyFrontImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.birdFlyFrontMatrixRowIdx]);
         assertThat(whiteBird.getFlyLeftImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.birdFlyLeftMatrixRowIdx]);

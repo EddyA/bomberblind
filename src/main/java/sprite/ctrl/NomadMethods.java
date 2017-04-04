@@ -23,8 +23,8 @@ public class NomadMethods {
     public static boolean isNomadCrossingEnemy(List<Sprite> spriteList, int xChar, int yChar, Nomad nomad) {
         for (Sprite curSprite : spriteList) {
             if (curSprite != nomad && // the checked nomad is not the provided one
-                    (curSprite.getSpriteType().equals(SpriteType.TYPE_WALKING_ENEMY) || // AND is a walking enemy
-                            curSprite.getSpriteType().equals(SpriteType.TYPE_BREAKING_ENEMY))) { // OR is a breaking enemy.
+                    (curSprite.getSpriteType().equals(SpriteType.TYPE_SPRITE_WALKING_ENEMY) || // AND is a walking enemy
+                            curSprite.getSpriteType().equals(SpriteType.TYPE_SPRITE_BREAKING_ENEMY))) { // OR is a breaking enemy.
 
                 // the right bound of the provided abstracts is between the left & the right side of the checked one.
                 if (((getCharRightAbscissa(xChar) >= getCharLeftAbscissa(curSprite.getxMap()) &&
@@ -52,7 +52,7 @@ public class NomadMethods {
 
     public static Bonus isNomadCrossingBonus(List<Sprite> spriteList, int xChar, int yChar) {
         for (Sprite curSprite : spriteList) {
-            if (curSprite.getSpriteType().equals(SpriteType.TYPE_BONUS)) { // it is a bonus.
+            if (curSprite.getSpriteType().equals(SpriteType.TYPE_SPRITE_BONUS)) { // it is a bonus.
 
                 // the right bound of the provided nomad is between the left & the right side of the checked one.
                 if (((getCharRightAbscissa(xChar) >= getCharLeftAbscissa(curSprite.getxMap()) &&

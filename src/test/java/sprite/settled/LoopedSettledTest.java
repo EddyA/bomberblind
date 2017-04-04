@@ -30,7 +30,7 @@ public class LoopedSettledTest implements WithAssertions {
         assertThat(flameEnd.getColIdx()).isEqualTo(4);
         assertThat(flameEnd.getxMap()).isEqualTo(Tools.getCaseCentreAbscissa(4));
         assertThat(flameEnd.getyMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
-        assertThat(flameEnd.getSpriteType()).isEqualTo(SpriteType.TYPE_FLAME_END);
+        assertThat(flameEnd.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_FLAME_END);
         assertThat(flameEnd.getRefreshTime()).isEqualTo(FlameEnd.REFRESH_TIME);
         assertThat(flameEnd.getImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx]);
         assertThat(flameEnd.getNbImages()).isEqualTo(NB_FLAME_END_FRAME);

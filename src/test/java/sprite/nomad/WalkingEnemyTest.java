@@ -23,7 +23,7 @@ public class WalkingEnemyTest implements WithAssertions {
         Zora zora = new Zora(15, 30);
         assertThat(zora.getxMap()).isEqualTo(15);
         assertThat(zora.getyMap()).isEqualTo(30);
-        assertThat(zora.getSpriteType()).isEqualTo(SpriteType.TYPE_WALKING_ENEMY);
+        assertThat(zora.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_WALKING_ENEMY);
 
         // - dying values.
         assertThat(zora.getDeathImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.deathMatrixRowIdx]);

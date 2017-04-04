@@ -31,7 +31,7 @@ public class GenerationMethodsTest {
     @Test
     public void randomlyPlaceCastlesWithDifferentHMarginShouldHaveExpectedBehavior() throws Exception {
         int patternWidth = 3;
-        MapPattern mapPattern = new MapPattern(new Image[patternWidth * 2], patternWidth, 2, false, false, "castle");
+        MapPattern mapPattern = new MapPattern(new Image[patternWidth * 2], patternWidth, 2, false, false, false, false, "castle");
 
         // for each hMargin values from 0 to MAP_WIDTH.
         for (int hMargin = 0; hMargin <= MAP_WIDTH; hMargin++) {
@@ -65,7 +65,7 @@ public class GenerationMethodsTest {
         int northEdgeHeight = 1;
         int southEdgeHeight = 1;
         int patternHeight = 2;
-        MapPattern mapPattern = new MapPattern(new Image[3 * patternHeight], 3, patternHeight, false, false, "castle");
+        MapPattern mapPattern = new MapPattern(new Image[3 * patternHeight], 3, patternHeight, false, false, false, false, "castle");
 
         // for each vMargin values from 0 to MAP_HEIGHT.
         for (int vMargin = 0; vMargin <= MAP_HEIGHT; vMargin++) {
@@ -103,7 +103,7 @@ public class GenerationMethodsTest {
             }
         }
         ArrayList<Tuple2<MapPattern, Integer>> complexEltPatterns = new ArrayList<Tuple2<MapPattern, Integer>>() {{
-            add(new Tuple2<>(new MapPattern(new Image[6], MAP_WIDTH + 1, MAP_HEIGHT + 1, false, false, "pattern1"), 1));
+            add(new Tuple2<>(new MapPattern(new Image[6], MAP_WIDTH + 1, MAP_HEIGHT + 1, false, false, false, false, "pattern1"), 1));
         }};
         assertThatThrownBy(() -> randomlyPlaceComplexElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 0, complexEltPatterns, 1))
                 .isInstanceOf(CannotCreateMapElementException.class)
@@ -126,7 +126,7 @@ public class GenerationMethodsTest {
         int nbPattern1ToPlace = 2;
         ArrayList<Tuple2<MapPattern, Integer>> complexEltPatterns = new ArrayList<Tuple2<MapPattern, Integer>>() {{
             // the 2 complex elements to place has the size of the map :)!
-            add(new Tuple2<>(new MapPattern(new Image[MAP_WIDTH * MAP_HEIGHT], MAP_WIDTH, MAP_HEIGHT, false, false, "pattern1"),
+            add(new Tuple2<>(new MapPattern(new Image[MAP_WIDTH * MAP_HEIGHT], MAP_WIDTH, MAP_HEIGHT, false, false, false, false, "pattern1"),
                     nbPattern1ToPlace));
         }};
         assertThatThrownBy(() -> randomlyPlaceComplexElements(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, 0, 0, complexEltPatterns, maxNbTry)).

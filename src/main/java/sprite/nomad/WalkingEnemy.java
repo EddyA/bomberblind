@@ -52,7 +52,7 @@ public abstract class WalkingEnemy extends Nomad {
                         int nbWalkFrame,
                         int walkRefreshTime,
                         int actingTime) {
-        super(xMap, yMap, SpriteType.TYPE_WALKING_ENEMY, walkRefreshTime, actingTime, 0);
+        super(xMap, yMap, SpriteType.TYPE_SPRITE_WALKING_ENEMY, walkRefreshTime, actingTime, 0);
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
         this.deathRefreshTime = deathRefreshTime;

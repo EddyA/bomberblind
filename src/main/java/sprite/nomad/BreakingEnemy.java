@@ -74,7 +74,7 @@ public class BreakingEnemy extends WalkingEnemy {
                 nbWalkFrame,
                 walkRefreshTime,
                 actingTime);
-        this.setSpriteType(SpriteType.TYPE_BREAKING_ENEMY); // override the type of sprite.
+        this.setSpriteType(SpriteType.TYPE_SPRITE_BREAKING_ENEMY); // override the type of sprite.
         this.breakBackImages = breakBackImages;
         this.breakFrontImages = breakFrontImages;
         this.breakLeftImages = breakLeftImages;

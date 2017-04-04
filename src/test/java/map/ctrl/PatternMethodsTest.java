@@ -25,7 +25,7 @@ public class PatternMethodsTest implements WithAssertions {
                 mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
             }
         }
-        MapPattern mapPattern = new MapPattern(new Image[15], 3, 2, false, false, "northEdge");
+        MapPattern mapPattern = new MapPattern(new Image[15], 3, 2, false, false, false, false, "northEdge");
         assertThatThrownBy(() -> placeNorthEdgeOnMap(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, mapPattern))
                 .isInstanceOf(CannotCreateMapElementException.class)
                 .hasMessage("not able to create the north edge: mapWidth(=20) % patternWidth(=3) != 0).");
@@ -39,7 +39,7 @@ public class PatternMethodsTest implements WithAssertions {
                 mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
             }
         }
-        MapPattern mapPattern = new MapPattern(new Image[15], 3, 2, false, false, "southEdge");
+        MapPattern mapPattern = new MapPattern(new Image[15], 3, 2, false, false, false, false, "southEdge");
         assertThatThrownBy(() -> placeSouthEdgeOnMap(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, mapPattern))
                 .isInstanceOf(CannotCreateMapElementException.class)
                 .hasMessage("not able to create the south edge: mapWidth(=20) % patternWidth(=3) != 0).");
@@ -53,7 +53,7 @@ public class PatternMethodsTest implements WithAssertions {
                 mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
             }
         }
-        MapPattern mapPattern = new MapPattern(new Image[15], 3, 2, false, false, "castle");
+        MapPattern mapPattern = new MapPattern(new Image[15], 3, 2, false, false, false, false, "castle");
         assertThatThrownBy(() -> placePatternOnMapAndSecurePerimeter(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, mapPattern,
                 MAP_HEIGHT - mapPattern.getHeight() + 1, 0, 0, 0))
                 .isInstanceOf(CannotCreateMapElementException.class)
@@ -62,7 +62,7 @@ public class PatternMethodsTest implements WithAssertions {
 
     @Test
     public void isPatternCrossingMapLimitShouldReturnExpectedValue() {
-        MapPattern mapPattern = new MapPattern(new Image[6], 2, 3, true, true, "myPattern");
+        MapPattern mapPattern = new MapPattern(new Image[6], 2, 3, false, false, false, false, "myPattern");
 
         // tests.
         for (int colIdx = -1; colIdx <= MAP_WIDTH + 1; colIdx++) {
@@ -90,7 +90,7 @@ public class PatternMethodsTest implements WithAssertions {
         int notAvCaseRowIdx = 4;
         int notAvCaseColIdx = 5;
         mapPointMatrix[notAvCaseRowIdx][notAvCaseColIdx].setAvailable(false);
-        MapPattern mapPattern = new MapPattern(new Image[6], 2, 3, true, true, "myPattern");
+        MapPattern mapPattern = new MapPattern(new Image[6], 2, 3, false, false, false, false, "myPattern");
 
         // tests.
         for (int colIdx = 0; colIdx < MAP_WIDTH - mapPattern.getWidth(); colIdx++) {
@@ -117,7 +117,7 @@ public class PatternMethodsTest implements WithAssertions {
         }
         int startRowIdx = 1;
         int startColIdx = 6;
-        MapPattern mapPattern = new MapPattern(new Image[6], 2, 3, true, true, "myPattern");
+        MapPattern mapPattern = new MapPattern(new Image[6], 2, 3, false, false, false, false, "myPattern");
 
         // test.
         assertThat(PatternMethods.placePatternOnMap(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, mapPattern, startRowIdx,
@@ -146,7 +146,7 @@ public class PatternMethodsTest implements WithAssertions {
         }
         int startRowIdx = 0;
         int startColIdx = 6;
-        MapPattern mapPattern = new MapPattern(new Image[6], 2, 3, true, true, "myPattern");
+        MapPattern mapPattern = new MapPattern(new Image[6], 2, 3, false, false, false, false, "myPattern");
         int notAvCaseRowIdx = 0;
         int notAvCaseColIdx = 5;
         mapPointMatrix[notAvCaseRowIdx][notAvCaseColIdx].setAvailable(false);

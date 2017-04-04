@@ -332,7 +332,7 @@ public class AddingMethodsTest implements WithAssertions {
 
             // check if the expected flame has been added to the sprite list.
             for (Sprite aSpriteList : spriteList) {
-                assertThat(aSpriteList.getSpriteType()).isEqualTo(SpriteType.TYPE_FLAME);
+                assertThat(aSpriteList.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_FLAME);
                 if (expectedFlamesCoordinate.getFirst() == ((Flame) aSpriteList).getRowIdx() &&
                         expectedFlamesCoordinate.getSecond() == ((Flame) aSpriteList).getColIdx()) {
                     found = true;
@@ -413,7 +413,7 @@ public class AddingMethodsTest implements WithAssertions {
 
             // check if the expected flame has been added to the sprite list.
             for (Sprite aSpriteList : spriteList) {
-                assertThat(aSpriteList.getSpriteType()).isEqualTo(SpriteType.TYPE_FLAME);
+                assertThat(aSpriteList.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_FLAME);
                 if (expectedFlamesCoordinate.getFirst() == ((Flame) aSpriteList).getRowIdx() &&
                         expectedFlamesCoordinate.getSecond() == ((Flame) aSpriteList).getColIdx()) {
                     found = true;
@@ -490,7 +490,7 @@ public class AddingMethodsTest implements WithAssertions {
 
             // check if the expected flame has been added to the sprite list.
             for (Sprite aSpriteList : spriteList) {
-                assertThat(aSpriteList.getSpriteType()).isEqualTo(SpriteType.TYPE_FLAME);
+                assertThat(aSpriteList.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_FLAME);
                 if (expectedFlamesCoordinate.getFirst() == ((Flame) aSpriteList).getRowIdx() &&
                         expectedFlamesCoordinate.getSecond() == ((Flame) aSpriteList).getColIdx()) {
                     found = true;

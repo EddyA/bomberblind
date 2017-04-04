@@ -1,5 +1,4 @@
 import exceptions.CannotCreateMapElementException;
-import exceptions.CannotPlaceEnemyOnMapException;
 import exceptions.InvalidConfigurationException;
 import exceptions.InvalidPropertiesException;
 import map.Map;
@@ -27,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static images.ImagesLoader.IMAGE_SIZE;
+import static map.ctrl.NomadMethods.isNomadCloseToExit;
 import static spriteList.ctrl.AddingMethods.addBomber;
 import static spriteList.ctrl.GenerationMethods.placeAGroupOfBird;
 import static utils.Direction.DIRECTION_EAST;
@@ -39,6 +39,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private List<Long> pressedKeyList;
 
     private final Timer timer = new Timer();
+    private GameStatus gameStatus;
 
     // this members allow printing map from a certain point.
     private int xMapStartPosOnScreen;
@@ -110,11 +111,10 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
             map.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             spriteList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             TopBar.paintBuffer(g2d, map.getScreenWidth(), bomber, timer.getElapsedTime());
-            if (bomber.getBonus(BonusType.TYPE_BONUS_HEART) == 0) {
-                timer.stop();
+
+            if (gameStatus == GameStatus.STATUS_GAME_OVER) {
                 SkinnedText.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedText.TEXT_GAME_OVER);
-            } else if (spriteList.isEnemiesAreDead()) {
-                timer.stop();
+            } else if (gameStatus == GameStatus.STATUS_GAME_WIN) {
                 SkinnedText.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedText.TEXT_WIN);
             }
         } catch (Exception e) {
@@ -142,29 +142,47 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void run() {
+        gameStatus = GameStatus.STATUS_GAME_PLAY;
         timer.start(); // start the timer.
 
         while (true) {
             try {
                 int pressedKey = pressedKeyList.get(pressedKeyList.size() - 1).intValue();
-                if (pressedKey == KeyEvent.VK_ESCAPE) {
+                if (pressedKey == KeyEvent.VK_ESCAPE) { // quit the game.
                     System.exit(0);
-                }
-                updateMapStartPosOnScreen();
-                spriteList.update(pressedKey);
 
-                // update the list order to handle sprites superposition.
-                spriteList.sort((o1, o2) -> {
-                    if (o1.getSpriteType() != o2.getSpriteType() &&
-                            (o1.getSpriteType() == SpriteType.TYPE_FLYING_NOMAD ||
-                                    o2.getSpriteType() == SpriteType.TYPE_FLYING_NOMAD)) {
-                        return o1.getSpriteType() == SpriteType.TYPE_FLYING_NOMAD ? 1 : -1;
-                    } else if (o1.getyMap() != o2.getyMap()) {
-                        return o1.getyMap() > o2.getyMap() ? 1 : -1;
+                } else if (gameStatus == GameStatus.STATUS_GAME_PLAY) {
+                    if (bomber.getBonus(BonusType.TYPE_BONUS_HEART) == 0) { // the bomber is dead.
+                        timer.stop();
+                        gameStatus = GameStatus.STATUS_GAME_OVER;
+
+                    } else if (pressedKey == KeyEvent.VK_Q && // the bomber try to exit.
+                            isNomadCloseToExit(map.getMapPointMatrix(),
+                                    map.getMapWidth(),
+                                    map.getMapHeight(),
+                                    bomber.getxMap(),
+                                    bomber.getyMap())) {
+                        timer.stop();
+                        gameStatus = GameStatus.STATUS_GAME_WIN;
+
                     } else {
-                        return 0;
+                        updateMapStartPosOnScreen();
+                        spriteList.update(pressedKey);
+
+                        // update the list order to handle sprites superposition.
+                        spriteList.sort((o1, o2) -> {
+                            if (o1.getSpriteType() != o2.getSpriteType() &&
+                                    (o1.getSpriteType() == SpriteType.TYPE_SPRITE_FLYING_NOMAD ||
+                                            o2.getSpriteType() == SpriteType.TYPE_SPRITE_FLYING_NOMAD)) {
+                                return o1.getSpriteType() == SpriteType.TYPE_SPRITE_FLYING_NOMAD ? 1 : -1;
+                            } else if (o1.getyMap() != o2.getyMap()) {
+                                return o1.getyMap() > o2.getyMap() ? 1 : -1;
+                            } else {
+                                return 0;
+                            }
+                        });
                     }
-                });
+                }
                 repaint();
                 Thread.sleep(1);
             } catch (InterruptedException e) {

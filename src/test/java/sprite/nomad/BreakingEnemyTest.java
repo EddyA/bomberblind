@@ -23,7 +23,7 @@ public class BreakingEnemyTest implements WithAssertions {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
         assertThat(redSpearSoldier.getxMap()).isEqualTo(15);
         assertThat(redSpearSoldier.getyMap()).isEqualTo(30);
-        assertThat(redSpearSoldier.getSpriteType()).isEqualTo(SpriteType.TYPE_BREAKING_ENEMY);
+        assertThat(redSpearSoldier.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_BREAKING_ENEMY);
 
         // - dying values.
         assertThat(redSpearSoldier.getDeathImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.deathMatrixRowIdx]);

@@ -19,6 +19,8 @@ public class MapPoint {
     private boolean isAvailable; // is available (empty case)?
     private boolean isPathway; // is a pathway?
     private boolean isMutable; // is a mutable?
+    private boolean isEntrance; // is an entrance?
+    private boolean isExit; // is an exit?
 
     private Image image;
 
@@ -71,6 +73,22 @@ public class MapPoint {
 
     public void setMutable(boolean mutable) {
         isMutable = mutable;
+    }
+
+    public boolean isEntrance() {
+        return isEntrance;
+    }
+
+    public void setEntrance(boolean entrance) {
+        isEntrance = entrance;
+    }
+
+    public boolean isExit() {
+        return isExit;
+    }
+
+    public void setExit(boolean exit) {
+        isExit = exit;
     }
 
     public Image getImage() {

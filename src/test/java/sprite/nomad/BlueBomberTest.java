@@ -24,7 +24,7 @@ public class BlueBomberTest implements WithAssertions {
         // check members value.
         assertThat(blueBomber.getxMap()).isEqualTo(15);
         assertThat(blueBomber.getyMap()).isEqualTo(30);
-        assertThat(blueBomber.getSpriteType()).isEqualTo(SpriteType.TYPE_BOMBER);
+        assertThat(blueBomber.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_BOMBER);
         assertThat(blueBomber.getDeathImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberDeathMatrixRowIdx]);
         assertThat(blueBomber.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_BOMBER_DEATH_FRAME);
         assertThat(blueBomber.getWaitImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);

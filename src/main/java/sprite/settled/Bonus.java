@@ -46,7 +46,7 @@ public abstract class Bonus extends Sprite {
                  int nbImages) {
         super(Tools.getCaseCentreAbscissa(colIdx),
                 Tools.getCaseBottomOrdinate(rowIdx),
-                SpriteType.TYPE_BONUS,
+                SpriteType.TYPE_SPRITE_BONUS,
                 BONUS_REFRESH_TIME);
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;

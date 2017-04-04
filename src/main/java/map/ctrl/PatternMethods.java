@@ -119,6 +119,8 @@ public class PatternMethods {
                         .setImage(mapPattern.getImageArray()[(rowIdx * mapPattern.getWidth()) + colIdx]);
                 mapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setPathway(mapPattern.isPathway());
                 mapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setMutable(mapPattern.isMutable());
+                mapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setEntrance(mapPattern.isEntrance());
+                mapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setExit(mapPattern.isExit());
                 mapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setAvailable(false);
             }
         }

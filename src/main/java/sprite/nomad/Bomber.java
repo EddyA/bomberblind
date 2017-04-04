@@ -75,7 +75,7 @@ public abstract class Bomber extends Nomad {
                   int invincibilityTime) {
         super(xMap,
                 yMap,
-                SpriteType.TYPE_BOMBER,
+                SpriteType.TYPE_SPRITE_BOMBER,
                 DEFAULT_ACTING_TIME,
                 refreshTime,
                 invincibilityTime);

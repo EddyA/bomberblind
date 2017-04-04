@@ -48,6 +48,20 @@ public class MapPointTest implements WithAssertions {
     }
 
     @Test
+    public void setEntranceShouldSetTheMemberWithExpectedValue() throws Exception {
+        MapPoint MapPoint = new MapPoint(5, 10);
+        MapPoint.setEntrance(true);
+        assertThat(MapPoint.isEntrance()).isTrue();
+    }
+
+    @Test
+    public void setExitShouldSetTheMemberWithExpectedValue() throws Exception {
+        MapPoint MapPoint = new MapPoint(5, 10);
+        MapPoint.setExit(true);
+        assertThat(MapPoint.isExit()).isTrue();
+    }
+
+    @Test
     public void setBombingShouldSetTheMemberWithExpectedValue() throws Exception {
         MapPoint MapPoint = new MapPoint(5, 10);
         MapPoint.setBombing(true);

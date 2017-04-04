@@ -134,6 +134,35 @@ public class NomadMethods {
     }
 
     /**
+     * Is the nomad close to an exit.
+     *
+     * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
+     * @param mapWidth       the map width
+     * @param mapHeight      the map height
+     * @param xChar          the nomad abscissa
+     * @param yChar          the nomad ordinate
+     * @return true if the nomad is close to an exit, false otherwise
+     */
+    public static boolean isNomadCloseToExit(MapPoint[][] mapPointMatrix,
+                                             int mapWidth,
+                                             int mapHeight,
+                                             int xChar,
+                                             int yChar) {
+        int charRowIdx = getCharRowIdx(yChar);
+        int charColIdx = getCharColIdx(xChar);
+
+        boolean isCrossing = false;
+        if (mapPointMatrix[charRowIdx][charColIdx].isExit() ||
+                (charColIdx - 1 >= 0 && mapPointMatrix[charRowIdx][charColIdx - 1].isExit()) ||
+                (charColIdx + 1 < mapWidth && mapPointMatrix[charRowIdx][charColIdx + 1].isExit()) ||
+                (charRowIdx - 1 >= 0 && mapPointMatrix[charRowIdx - 1][charColIdx].isExit()) ||
+                (charRowIdx + 1 < mapHeight && mapPointMatrix[charRowIdx + 1][charColIdx].isExit())) {
+            isCrossing = true;
+        }
+        return isCrossing;
+    }
+
+    /**
      * Is the nomad burning?
      * i.e. is there a burning case adjoining the nomad?
      *
