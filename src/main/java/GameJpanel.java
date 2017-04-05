@@ -9,6 +9,7 @@ import sprite.SpriteType;
 import sprite.nomad.BlueBomber;
 import sprite.nomad.Bomber;
 import sprite.settled.BonusType;
+import sprite.settled.Sparkle;
 import spriteList.SpriteList;
 import spriteList.SpritesProperties;
 import spriteList.SpritesSetting;
@@ -26,8 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static images.ImagesLoader.IMAGE_SIZE;
-import static map.ctrl.NomadMethods.isNomadCloseToExit;
+import static map.ctrl.NomadMethods.isNomadCrossingExit;
 import static spriteList.ctrl.AddingMethods.addBomber;
+import static spriteList.ctrl.AddingMethods.addSparkle;
 import static spriteList.ctrl.GenerationMethods.placeAGroupOfBird;
 import static utils.Direction.DIRECTION_EAST;
 
@@ -69,6 +71,10 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         Tuple2<Integer, Integer> bbManInitialPosition = map.computeInitialBbManPosition();
         bomber = new BlueBomber(bbManInitialPosition.getFirst(), bbManInitialPosition.getSecond());
         addBomber(spriteList, bomber);
+
+        // create an exit sign to help the player finding the exit.
+        Tuple2<Integer, Integer> exitSignPosition = map.computeExitSignPosition();
+        addSparkle(spriteList, new Sparkle(exitSignPosition.getFirst() ,(exitSignPosition.getSecond())));
 
         // create the 3 first birds :)
         placeAGroupOfBird(spriteList, 3, -100, bbManInitialPosition.getSecond() + 225, DIRECTION_EAST, -8);
@@ -157,7 +163,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         gameStatus = GameStatus.STATUS_GAME_OVER;
 
                     } else if (pressedKey == KeyEvent.VK_Q && // the bomber try to exit.
-                            isNomadCloseToExit(map.getMapPointMatrix(),
+                            isNomadCrossingExit(map.getMapPointMatrix(),
                                     map.getMapWidth(),
                                     map.getMapHeight(),
                                     bomber.getxMap(),

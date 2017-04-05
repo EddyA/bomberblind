@@ -220,41 +220,44 @@ public class NomadMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void isNomadCloseToExitShouldReturnExpectedValue() throws Exception {
+    public void isNomadCrossingExitShouldReturnExpectedValue() throws Exception {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
                 mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
+                mapPointMatrix[rowIdx][colIdx].setPathway(true);
             }
         }
-        int exitRowIdx = 5;
-        int exitColIdx = 4;
+        int exitRowIdx = 1;
+        int exitColIdx = 2;
         mapPointMatrix[exitRowIdx][exitColIdx].setExit(true);
 
         /*
-         * A nomad is close to an exit if:
-         * - its own case is an exit
-         * - OR its direct north/south/west/east case is an exit.
-         */
+        compute the nomad limits according to the exit position.
+        ex: Exit(1, 2) -> x=60px, y=30px.
+        - yChar > 29px &&
+        - yChar < 75px &&
+        - xChar > 45px &&
+        - xChar < 105px should fail
+        */
 
-        for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
-            for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
-                if (((colIdx == exitColIdx) && (rowIdx >= exitRowIdx - 1) && (rowIdx <= exitRowIdx + 1)) ||
-                        ((rowIdx == exitRowIdx) && (colIdx >= exitColIdx - 1) && (colIdx <= exitColIdx + 1))) {
+        int topExitLimit = exitRowIdx * IMAGE_SIZE - 1; // 29px.
+        int bottomExitLimit = (exitRowIdx + 1) * IMAGE_SIZE + IMAGE_SIZE / 2; // 75px.
+        int leftExitLimit = exitColIdx * IMAGE_SIZE - IMAGE_SIZE / 2; // 45px.
+        int rightExitLimit = (exitColIdx + 1) * IMAGE_SIZE + IMAGE_SIZE / 2; // 105px.
 
-                    // assert that the nomad is close to an exit.
-                    assertThat(NomadMethods.isNomadCloseToExit(mapPointMatrix,
-                            MAP_WIDTH,
-                            MAP_HEIGHT,
-                            colIdx * IMAGE_SIZE,
-                            rowIdx * IMAGE_SIZE)).isTrue();
+        // test.
+        for (int xChar = 0; xChar < MAP_WIDTH * IMAGE_SIZE; xChar++) {
+            for (int yChar = 0; yChar < MAP_HEIGHT * IMAGE_SIZE; yChar++) {
+                if ((xChar > leftExitLimit) && (xChar < rightExitLimit) &&
+                        (yChar > topExitLimit) && (yChar < bottomExitLimit)) {
+
+                    // assert that the nomad is crossing an exit point.
+                    assertThat(NomadMethods.isNomadCrossingExit(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isTrue();
                 } else {
-                    // assert that the nomad is not close to an exit.
-                    assertThat(NomadMethods.isNomadCloseToExit(mapPointMatrix,
-                            MAP_WIDTH,
-                            MAP_HEIGHT,
-                            colIdx * IMAGE_SIZE,
-                            rowIdx * IMAGE_SIZE)).isFalse();
+
+                    // assert that the nomad is not crossing an exit point.
+                    assertThat(NomadMethods.isNomadCrossingExit(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, xChar, yChar)).isFalse();
                 }
             }
         }

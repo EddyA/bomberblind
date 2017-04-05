@@ -134,29 +134,30 @@ public class NomadMethods {
     }
 
     /**
-     * Is the nomad close to an exit.
+     * Is the nomad crossing an exit point.
      *
      * @param mapPointMatrix mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth       the map width
      * @param mapHeight      the map height
      * @param xChar          the nomad abscissa
      * @param yChar          the nomad ordinate
-     * @return true if the nomad is close to an exit, false otherwise
+     * @return true if the nomad is crossing an exit point, false otherwise
      */
-    public static boolean isNomadCloseToExit(MapPoint[][] mapPointMatrix,
-                                             int mapWidth,
-                                             int mapHeight,
-                                             int xChar,
-                                             int yChar) {
-        int charRowIdx = getCharRowIdx(yChar);
-        int charColIdx = getCharColIdx(xChar);
+    public static boolean isNomadCrossingExit(MapPoint[][] mapPointMatrix,
+                                              int mapWidth,
+                                              int mapHeight,
+                                              int xChar,
+                                              int yChar) {
+        int topRowIdx = getCharTopRowIdx(yChar);
+        int bottomRowIdx = getCharBottomRowIdx(yChar);
+        int mostLeftColIdx = getCharLeftColIdx(xChar);
+        int mostRightColIdx = getCharRightColIdx(xChar);
 
         boolean isCrossing = false;
-        if (mapPointMatrix[charRowIdx][charColIdx].isExit() ||
-                (charColIdx - 1 >= 0 && mapPointMatrix[charRowIdx][charColIdx - 1].isExit()) ||
-                (charColIdx + 1 < mapWidth && mapPointMatrix[charRowIdx][charColIdx + 1].isExit()) ||
-                (charRowIdx - 1 >= 0 && mapPointMatrix[charRowIdx - 1][charColIdx].isExit()) ||
-                (charRowIdx + 1 < mapHeight && mapPointMatrix[charRowIdx + 1][charColIdx].isExit())) {
+        if (topRowIdx >= 0 && mostLeftColIdx >= 0 && mapPointMatrix[topRowIdx][mostLeftColIdx].isExit() ||
+                topRowIdx >= 0 && mostRightColIdx < mapWidth && mapPointMatrix[topRowIdx][mostRightColIdx].isExit() ||
+                bottomRowIdx < mapHeight && mostLeftColIdx >= 0 && mapPointMatrix[bottomRowIdx][mostLeftColIdx].isExit() ||
+                bottomRowIdx < mapHeight && mostRightColIdx < mapWidth && mapPointMatrix[bottomRowIdx][mostRightColIdx].isExit()) {
             isCrossing = true;
         }
         return isCrossing;

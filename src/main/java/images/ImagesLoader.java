@@ -16,7 +16,7 @@ public class ImagesLoader {
     public final static int IMAGE_SIZE = 32; // size of an 'Image' in pixels (30*30).
 
     public static Image[][] imagesMatrix; // matrix of images (holding all the game images).+
-    public final static int NB_MATRIX_ROW = 51;
+    public final static int NB_MATRIX_ROW = 52;
     public final static int NB_MATRIX_COL = 128;
 
     // images location.
@@ -145,6 +145,8 @@ public class ImagesLoader {
     public static int flameMatrixRowIdx;
     public final static int NB_FLAME_END_FRAME = 9;
     public static int flameEndMatrixRowIdx;
+    public final static int NB_SPARKLE_FRAME = 5;
+    public static int sparkleMatrixRowIdx;
 
     // - death.
     public final static int NB_DEATH_FRAME = 7;
@@ -364,6 +366,8 @@ public class ImagesLoader {
         flameMatrixRowIdx = curMatrixRowIdx++;
         fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/flame_end/flame_end-", NB_FLAME_END_FRAME);
         flameEndMatrixRowIdx = curMatrixRowIdx++;
+        fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/sparkle/sparkle-", NB_SPARKLE_FRAME);
+        sparkleMatrixRowIdx = curMatrixRowIdx++;
 
         // death.
         fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/death/death-", NB_DEATH_FRAME);

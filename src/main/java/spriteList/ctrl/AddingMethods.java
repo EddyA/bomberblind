@@ -211,6 +211,16 @@ public class AddingMethods {
     }
 
     /**
+     * Add a sparkle to a list.
+     *
+     * @param list    the list into which adding the sparkle
+     * @param sparkle the sparkle to add
+     */
+    public static void addSparkle(LinkedList<Sprite> list, Sparkle sparkle) {
+        list.add(sparkle);
+    }
+
+    /**
      * Add a walking enemy to the list.
      *
      * @param list         the list into which adding the sprite

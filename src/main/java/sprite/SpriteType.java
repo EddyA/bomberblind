@@ -11,6 +11,7 @@ public enum SpriteType {
     TYPE_SPRITE_FLAME,
     TYPE_SPRITE_FLAME_END,
     TYPE_SPRITE_FLYING_NOMAD,
+    TYPE_SPRITE_SPARKLE,
     TYPE_SPRITE_WALKING_ENEMY;
 
     public static Optional<String> getlabel(SpriteType spriteType) {
@@ -46,6 +47,10 @@ public enum SpriteType {
             }
             case TYPE_SPRITE_FLYING_NOMAD: {
                 label = Optional.of("flying_nomad");
+                break;
+            }
+            case TYPE_SPRITE_SPARKLE: {
+                label = Optional.of("sparkle");
                 break;
             }
             case TYPE_SPRITE_WALKING_ENEMY: {

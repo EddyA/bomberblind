@@ -131,9 +131,10 @@ public class SpriteList extends LinkedList<Sprite> {
                     break;
                 }
                 default: {
-                    throw new RuntimeException("the SpriteType \""
+                    shouldBeRemoved = false;
+                    /*throw new RuntimeException("the SpriteType \""
                             + SpriteType.getlabel(sprite.getSpriteType()).orElse("n/a")
-                            + "\" is not handled by the switch.");
+                            + "\" is not handled by the switch.");*/
                 }
             }
             if (shouldBeRemoved) { // should the sprite be removed from the list?

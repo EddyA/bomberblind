@@ -60,6 +60,14 @@ public abstract class Map {
     public abstract Tuple2<Integer, Integer> computeInitialBbManPosition();
 
     /**
+     * Compute the exit sign (e.g. sparkle) position on map.
+     * This function must be called after generateMap().
+     *
+     * @return the exit sign position on map (in pixel)
+     */
+    public abstract Tuple2<Integer, Integer> computeExitSignPosition();
+
+    /**
      * Paint visible elements of the map.
      *
      * @param g    the graphics context

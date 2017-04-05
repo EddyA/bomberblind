@@ -59,6 +59,7 @@ public class PatternMethods {
      * @param mapPattern                the pattern of the element
      * @param startRowIdx               the row index of the north/west pattern corner
      * @param startColIdx               the column index of the north/west pattern corner
+     * @param isExit                    is the pattern to secure is an exit?
      * @param perDecoratedSinglePathway the percentage of decorated elements to place among single pathway
      * @param perDynamicSinglePathway   the percentage of dynamic elements to place among decorated single pathway
      * @throws CannotCreateMapElementException if the element has not been placed
@@ -69,6 +70,7 @@ public class PatternMethods {
                                                            MapPattern mapPattern,
                                                            int startRowIdx,
                                                            int startColIdx,
+                                                           boolean isExit,
                                                            int perDecoratedSinglePathway,
                                                            int perDynamicSinglePathway)
             throws CannotCreateMapElementException {
@@ -82,6 +84,7 @@ public class PatternMethods {
                 mapPattern,
                 startRowIdx,
                 startColIdx,
+                isExit,
                 perDecoratedSinglePathway,
                 perDynamicSinglePathway);
     }
@@ -186,6 +189,7 @@ public class PatternMethods {
      * @param mapPattern                the pattern of the element
      * @param startRowIdx               the row index of the north/west pattern corner
      * @param startColIdx               the column index of the north/west pattern corner
+     * @param isExit                    is the pattern to secure is an exit?
      * @param perDecoratedSinglePathway the percentage of decorated elements to place among single pathway
      * @param perDynamicSinglePathway   the percentage of dynamic elements to place among decorated single pathway
      */
@@ -195,6 +199,7 @@ public class PatternMethods {
                                        MapPattern mapPattern,
                                        int startRowIdx,
                                        int startColIdx,
+                                       boolean isExit,
                                        int perDecoratedSinglePathway,
                                        int perDynamicSinglePathway) {
         for (int rowIdx = Math.max(0, startRowIdx - 1); rowIdx <= Math.min(mapHeight - 1,
@@ -202,7 +207,11 @@ public class PatternMethods {
             for (int colIdx = Math.max(0, startColIdx - 1); colIdx <= Math.min(mapWidth - 1,
                     startColIdx + mapPattern.getWidth()); colIdx++) {
                 if (mapPointMatrix[rowIdx][colIdx].isAvailable()) {
-                    placeSinglePathwayOnMap(mapPointMatrix[rowIdx][colIdx], perDecoratedSinglePathway, perDynamicSinglePathway);
+                    if (placeSinglePathwayOnMap(mapPointMatrix[rowIdx][colIdx],
+                            perDecoratedSinglePathway,
+                            perDynamicSinglePathway) && isExit) {
+                        mapPointMatrix[rowIdx][colIdx].setExit(true);
+                    }
                 }
             }
         }

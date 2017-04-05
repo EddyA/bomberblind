@@ -17,7 +17,8 @@ import static map.zelda.ZeldaMapPatterns.*;
 
 public class ZeldaMap extends Map {
     private final ZeldaMapSetting zeldaMapSetting;
-    private MapPoint castleStartPoint; // castle start point (north/west MapPoint).
+    private MapPoint entranceStartPoint; // entrance start point (north/west MapPoint).
+    private MapPoint exitStartPoint; // castle start point (north/west MapPoint).
 
     public ZeldaMap(ZeldaMapSetting zeldaMapSetting, int screenWidth, int screenHeight) {
         super(zeldaMapSetting, screenWidth, screenHeight);
@@ -51,7 +52,8 @@ public class ZeldaMap extends Map {
                         entranceAndExitPatterns,
                         zeldaMapSetting.getPerDecoratedSinglePathway(),
                         zeldaMapSetting.getPerDynamicSinglePathway());
-        castleStartPoint = spEntranceAndExit.getFirst();
+        entranceStartPoint = spEntranceAndExit.getFirst();
+        exitStartPoint = spEntranceAndExit.getSecond();
 
         try {
             // place complex elements.
@@ -99,10 +101,21 @@ public class ZeldaMap extends Map {
     public Tuple2<Integer, Integer> computeInitialBbManPosition() {
 
         // compute the initial bomber position in order to be in front of the entrance door.
-        int xBbManOnMap = castleStartPoint.getColIdx() * IMAGE_SIZE +
+        int xBbManOnMap = entranceStartPoint.getColIdx() * IMAGE_SIZE +
                 (castle.getWidth() * IMAGE_SIZE / 2);
-        int yBbManOnMap = castleStartPoint.getRowIdx() * IMAGE_SIZE +
+        int yBbManOnMap = entranceStartPoint.getRowIdx() * IMAGE_SIZE +
                 (castle.getHeight() * IMAGE_SIZE) + (IMAGE_SIZE / 2);
+        return new Tuple2<>(xBbManOnMap, yBbManOnMap);
+    }
+
+    @Override
+    public Tuple2<Integer, Integer> computeExitSignPosition() {
+
+        // compute the best position to print exit sign (e.g. sparkle).
+        int xBbManOnMap = exitStartPoint.getColIdx() * IMAGE_SIZE +
+                (trunk.getWidth() * IMAGE_SIZE / 2);
+        int yBbManOnMap = exitStartPoint.getRowIdx() * IMAGE_SIZE +
+                (trunk.getHeight() * IMAGE_SIZE) / 2;
         return new Tuple2<>(xBbManOnMap, yBbManOnMap);
     }
 }

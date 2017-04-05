@@ -60,6 +60,7 @@ public class GenerationMethods {
                     patterns.getFirst(),
                     ySpEntrance,
                     hMargin,
+                    false,
                     perDecoratedSinglePathway,
                     perDynamicSinglePathway);
 
@@ -73,6 +74,7 @@ public class GenerationMethods {
                     patterns.getSecond(),
                     ySpExit,
                     xSpExit,
+                    true,
                     perDecoratedSinglePathway,
                     perDynamicSinglePathway);
 

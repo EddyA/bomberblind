@@ -55,7 +55,7 @@ public class PatternMethodsTest implements WithAssertions {
         }
         MapPattern mapPattern = new MapPattern(new Image[15], 3, 2, false, false, false, false, "castle");
         assertThatThrownBy(() -> placePatternOnMapAndSecurePerimeter(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, mapPattern,
-                MAP_HEIGHT - mapPattern.getHeight() + 1, 0, 0, 0))
+                MAP_HEIGHT - mapPattern.getHeight() + 1, 0, false, 0, 0))
                 .isInstanceOf(CannotCreateMapElementException.class)
                 .hasMessage("not able to create an element at rowIdx=9, colIdx=0.");
     }
@@ -152,7 +152,7 @@ public class PatternMethodsTest implements WithAssertions {
         mapPointMatrix[notAvCaseRowIdx][notAvCaseColIdx].setAvailable(false);
 
         // secure perimeter.
-        PatternMethods.securePerimeter(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, mapPattern, startRowIdx, startColIdx, 0, 0);
+        PatternMethods.securePerimeter(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, mapPattern, startRowIdx, startColIdx, false, 0, 0);
 
         // test.
         for (int colIdx = 0; colIdx < MAP_WIDTH - mapPattern.getWidth(); colIdx++) {
