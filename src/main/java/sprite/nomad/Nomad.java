@@ -148,6 +148,13 @@ public abstract class Nomad extends Sprite {
     }
 
     /**
+     * Set the noamd as invincible.
+     */
+    public void setInvincible() {
+        lastInvincibilityTs = currentTimeSupplier.get().toEpochMilli();
+    }
+
+    /**
      * Is an action allowed in the class.
      *
      * @param spriteAction the relative action

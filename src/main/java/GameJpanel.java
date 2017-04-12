@@ -13,10 +13,10 @@ import sprite.settled.Sparkle;
 import spriteList.SpriteList;
 import spriteList.SpritesProperties;
 import spriteList.SpritesSetting;
-import utils.SkinnedText;
 import utils.Timer;
-import utils.TopBar;
 import utils.Tuple2;
+import utils.text.SkinnedTextWithBG;
+import utils.text.TopBar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -118,10 +118,12 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
             spriteList.paintBuffer(g2d, xMapStartPosOnScreen, yMapStartPosOnScreen);
             TopBar.paintBuffer(g2d, map.getScreenWidth(), bomber, timer.getElapsedTime());
 
-            if (gameStatus == GameStatus.STATUS_GAME_OVER) {
-                SkinnedText.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedText.TEXT_GAME_OVER);
+            if (gameStatus == GameStatus.STATUS_GAME_NEW) {
+                SkinnedTextWithBG.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedTextWithBG.TEXT_NEW);
+            } else if (gameStatus == GameStatus.STATUS_GAME_OVER) {
+                SkinnedTextWithBG.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedTextWithBG.TEXT_GAME_OVER);
             } else if (gameStatus == GameStatus.STATUS_GAME_WIN) {
-                SkinnedText.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedText.TEXT_WIN);
+                SkinnedTextWithBG.paintBuffer(g2d, map.getScreenWidth(), map.getScreenHeight(), SkinnedTextWithBG.TEXT_WIN);
             }
         } catch (Exception e) {
             e.printStackTrace(System.out);
@@ -148,14 +150,19 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void run() {
-        gameStatus = GameStatus.STATUS_GAME_PLAY;
-        timer.start(); // start the timer.
-
+        gameStatus = GameStatus.STATUS_GAME_NEW;
         while (true) {
             try {
                 int pressedKey = pressedKeyList.get(pressedKeyList.size() - 1).intValue();
                 if (pressedKey == KeyEvent.VK_ESCAPE) { // quit the game.
                     System.exit(0);
+
+                } else if (gameStatus == GameStatus.STATUS_GAME_NEW) {
+                    if (pressedKey == KeyEvent.VK_ENTER) {
+                        gameStatus = GameStatus.STATUS_GAME_PLAY;
+                        bomber.setInvincible();
+                        timer.start();
+                    }
 
                 } else if (gameStatus == GameStatus.STATUS_GAME_PLAY) {
                     if (bomber.getBonus(BonusType.TYPE_BONUS_HEART) == 0) { // the bomber is dead.
@@ -172,23 +179,23 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         gameStatus = GameStatus.STATUS_GAME_WIN;
 
                     } else {
-                        updateMapStartPosOnScreen();
                         spriteList.update(pressedKey);
-
-                        // update the list order to handle sprites superposition.
-                        spriteList.sort((o1, o2) -> {
-                            if (o1.getSpriteType() != o2.getSpriteType() &&
-                                    (o1.getSpriteType() == SpriteType.TYPE_SPRITE_FLYING_NOMAD ||
-                                            o2.getSpriteType() == SpriteType.TYPE_SPRITE_FLYING_NOMAD)) {
-                                return o1.getSpriteType() == SpriteType.TYPE_SPRITE_FLYING_NOMAD ? 1 : -1;
-                            } else if (o1.getyMap() != o2.getyMap()) {
-                                return o1.getyMap() > o2.getyMap() ? 1 : -1;
-                            } else {
-                                return 0;
-                            }
-                        });
                     }
                 }
+                updateMapStartPosOnScreen();
+
+                // update the list order to handle sprites superposition.
+                spriteList.sort((o1, o2) -> {
+                    if (o1.getSpriteType() != o2.getSpriteType() &&
+                            (o1.getSpriteType() == SpriteType.TYPE_SPRITE_FLYING_NOMAD ||
+                                    o2.getSpriteType() == SpriteType.TYPE_SPRITE_FLYING_NOMAD)) {
+                        return o1.getSpriteType() == SpriteType.TYPE_SPRITE_FLYING_NOMAD ? 1 : -1;
+                    } else if (o1.getyMap() != o2.getyMap()) {
+                        return o1.getyMap() > o2.getyMap() ? 1 : -1;
+                    } else {
+                        return 0;
+                    }
+                });
                 repaint();
                 Thread.sleep(1);
             } catch (InterruptedException e) {

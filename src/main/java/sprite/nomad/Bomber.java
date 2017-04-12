@@ -232,7 +232,7 @@ public abstract class Bomber extends Nomad {
             curSpriteAction = ACTION_WAITING;
             bundleBonus.resetBonus();
             setActingTime(DEFAULT_ACTING_TIME);
-            lastInvincibilityTs = currentTimeSupplier.get().toEpochMilli(); // activate invincibility.
+            setInvincible(); // activate invincibility.
             return false;
         } else {
             return true;

@@ -16,11 +16,7 @@ public class MapPoint {
     private final int rowIdx;
     private final int colIdx;
 
-    private boolean isAvailable; // is available (empty case)?
-    private boolean isPathway; // is a pathway?
-    private boolean isMutable; // is a mutable?
-    private boolean isEntrance; // is an entrance?
-    private boolean isExit; // is an exit?
+    private MapPointStatus mapPointStatus = new MapPointStatus();
 
     private Image image;
 
@@ -39,7 +35,7 @@ public class MapPoint {
     public MapPoint(int rowIdx, int colIdx) {
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
-        this.isAvailable = true;
+        this.mapPointStatus.setAvailable(true);
         this.attachedBonus = null;
     }
 
@@ -52,43 +48,43 @@ public class MapPoint {
     }
 
     public boolean isAvailable() {
-        return isAvailable;
+        return mapPointStatus.isAvailable();
     }
 
     public void setAvailable(boolean available) {
-        isAvailable = available;
+        mapPointStatus.setAvailable(available);
     }
 
     public boolean isPathway() {
-        return isPathway;
+        return mapPointStatus.isPathway();
     }
 
     public void setPathway(boolean pathway) {
-        isPathway = pathway;
+        mapPointStatus.setPathway(pathway);
     }
 
     public boolean isMutable() {
-        return isMutable;
+        return mapPointStatus.isMutable();
     }
 
     public void setMutable(boolean mutable) {
-        isMutable = mutable;
+        mapPointStatus.setMutable(mutable);
     }
 
     public boolean isEntrance() {
-        return isEntrance;
+        return mapPointStatus.isEntrance();
     }
 
     public void setEntrance(boolean entrance) {
-        isEntrance = entrance;
+        mapPointStatus.setEntrance(entrance);
     }
 
     public boolean isExit() {
-        return isExit;
+        return mapPointStatus.isExit();
     }
 
     public void setExit(boolean exit) {
-        isExit = exit;
+        mapPointStatus.setExit(exit);
     }
 
     public Image getImage() {

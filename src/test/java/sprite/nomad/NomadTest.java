@@ -122,6 +122,13 @@ public class NomadTest implements WithAssertions {
     }
 
     @Test
+    public void setInvincibleShouldSetTheNomadinvincible() throws Exception {
+        BlueBomber blueBomber = new BlueBomber(10, 20);
+        blueBomber.setInvincible();
+        assertThat(blueBomber.isInvincible()).isTrue();
+    }
+
+    @Test
     public void updateImageShouldDoNothing() throws Exception {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);

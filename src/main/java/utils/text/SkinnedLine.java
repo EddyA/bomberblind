@@ -1,9 +1,12 @@
-package utils;
+package utils.text;
 
 import images.ImagesLoader;
 
 import java.awt.*;
 
+/**
+ * This class allows painting a line using skinned ascii.
+ */
 public class SkinnedLine {
 
     private final static Image[] skinnedAscii = ImagesLoader.imagesMatrix[ImagesLoader.asciiMatrixRowIdx];
@@ -29,6 +32,17 @@ public class SkinnedLine {
             lineWidth += (skinnedAscii[asciiCode].getWidth(null) + 1);
         }
         return lineWidth;
+    }
+
+    /**
+     * Compute the abscissa (in px) from which painting a skinned line to horizontally center it on screen.
+     *
+     * @param lineWidth   the line width
+     * @param screenWidth the screen width
+     * @return the abscissa from which painting the line to horizontally center it on screen.
+     */
+    public static int computeLineAbscissaToCenterItOnScreen(int lineWidth, int screenWidth) {
+        return (screenWidth - lineWidth) / 2;
     }
 
     /**

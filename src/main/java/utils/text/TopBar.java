@@ -1,4 +1,4 @@
-package utils;
+package utils.text;
 
 import images.ImagesLoader;
 import sprite.nomad.Bomber;
@@ -9,6 +9,9 @@ import java.awt.geom.RoundRectangle2D;
 
 import static utils.Configuration.*;
 
+/**
+ * This class allows painting the top bar.
+ */
 public class TopBar {
     private final static Image bombImage = ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx][0];
     private final static Image flameImage = ImagesLoader.imagesMatrix[ImagesLoader.bonusFlameMatrixRowIdx][0];

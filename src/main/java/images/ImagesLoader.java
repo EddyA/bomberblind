@@ -359,7 +359,7 @@ public class ImagesLoader {
         fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/white_bird/white_bird-fly-right-", NB_BIRD_FLY_FRAME);
         birdFlyRightMatrixRowIdx = curMatrixRowIdx++;
 
-        // settled.
+        // - settled.
         fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/bomb/bomb-", NB_BOMB_FRAME);
         bombMatrixRowIdx = curMatrixRowIdx++;
         fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/flame/flame-", NB_FLAME_FRAME);
@@ -369,7 +369,7 @@ public class ImagesLoader {
         fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/sparkle/sparkle-", NB_SPARKLE_FRAME);
         sparkleMatrixRowIdx = curMatrixRowIdx++;
 
-        // death.
+        // - death.
         fillMatrixWithSpriteImages(SPRITE_SKIN_DIR + "/death/death-", NB_DEATH_FRAME);
         deathMatrixRowIdx = curMatrixRowIdx;
 
