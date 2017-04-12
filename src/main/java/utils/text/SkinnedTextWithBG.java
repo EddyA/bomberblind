@@ -13,20 +13,20 @@ import static utils.text.SkinnedText.*;
  */
 public class SkinnedTextWithBG {
 
-    public final static String TEXT_GAME_OVER = "GAME OVER\n" +
-            "Thank you for playing!\n\n" +
-            "(Press ESC to exit)";
-
-    public final static String TEXT_WIN = "YOU WIN!\n" +
-            "Thank you for playing!\n\n" +
-            "(Press ESC to exit)";
-
     public final static String TEXT_NEW = "WELCOME!\n\n" +
             "Reach the exit an press (Q) to complete the stage.\n\n" +
             "Press (B) to put bombs\n" +
             "Press (ENTER) to start the stage\n" +
             "Press (ESC) to exit the game\n\n" +
             "GOOD LUCK!";
+
+    public final static String TEXT_WIN = "STAGE COMPLETE\n\n" +
+            "Thank you for playing!\n\n" +
+            "(Press ESC to exit)";
+
+    public final static String TEXT_GAME_OVER = "GAME OVER\n\n" +
+            "Thank you for playing!\n\n" +
+            "(Press ESC to exit)";
 
     /**
      * Paint a centered text using skinned ascii, with an ornament.

@@ -1,8 +1,9 @@
-package utils.text;
+package utils;
 
 import images.ImagesLoader;
 import sprite.nomad.Bomber;
 import sprite.settled.BonusType;
+import utils.text.SkinnedLine;
 
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;

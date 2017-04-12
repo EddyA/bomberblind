@@ -16,7 +16,7 @@ public class MapPoint {
     private final int rowIdx;
     private final int colIdx;
 
-    private MapPointStatus mapPointStatus = new MapPointStatus();
+    private final MapPointStatus mapPointStatus = new MapPointStatus();
 
     private Image image;
 

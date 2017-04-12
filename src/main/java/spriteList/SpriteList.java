@@ -4,7 +4,6 @@ import exceptions.CannotPlaceEnemyOnMapException;
 import map.Map;
 import map.MapPoint;
 import sprite.Sprite;
-import sprite.SpriteType;
 import sprite.nomad.*;
 import sprite.settled.Bomb;
 import sprite.settled.Bonus;

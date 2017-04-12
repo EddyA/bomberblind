@@ -73,17 +73,21 @@ public class ZeldaMap extends Map {
                     edge.getHeight(),
                     complexEltPatterns,
                     maxNbTry);
+        } catch (CannotCreateMapElementException e) {
+            System.out.print(e.getMessage() + "\n"); // log only, not very important.
+        }
 
-            // place single elements.
-            GenerationMethods.randomlyPlaceSingleElements(mapPointMatrix,
-                    zeldaMapSetting.getMapWidth(),
-                    zeldaMapSetting.getMapHeight(),
-                    zeldaMapSetting.getPerSingleImmutableObstacle(),
-                    zeldaMapSetting.getPerSingleMutableObstacle(),
-                    zeldaMapSetting.getPerDecoratedSinglePathway(),
-                    zeldaMapSetting.getPerDynamicSinglePathway());
+        // complete with single elements.
+        GenerationMethods.randomlyPlaceSingleElements(mapPointMatrix,
+                zeldaMapSetting.getMapWidth(),
+                zeldaMapSetting.getMapHeight(),
+                zeldaMapSetting.getPerSingleImmutableObstacle(),
+                zeldaMapSetting.getPerSingleMutableObstacle(),
+                zeldaMapSetting.getPerDecoratedSinglePathway(),
+                zeldaMapSetting.getPerDynamicSinglePathway());
 
-            // place bonus.
+        // place bonus.
+        try {
             GenerationMethods.randomlyPlaceBonus(mapPointMatrix,
                     zeldaMapSetting.getMapWidth(),
                     zeldaMapSetting.getMapHeight(),
@@ -91,8 +95,7 @@ public class ZeldaMap extends Map {
                     zeldaMapSetting.getNbBonusFlame(),
                     zeldaMapSetting.getNbBonusHeart(),
                     zeldaMapSetting.getNbBonusRoller());
-
-        } catch (CannotCreateMapElementException | CannotPlaceBonusOnMapException e) {
+        } catch (CannotPlaceBonusOnMapException e) {
             System.out.print(e.getMessage() + "\n"); // log only, not very important.
         }
     }

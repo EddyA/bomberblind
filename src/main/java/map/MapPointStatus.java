@@ -14,7 +14,7 @@ public class MapPointStatus {
     private final int INDEX_STATUS_IS_ENTRANCE = 3;
     private final int INDEX_STATUS_IS_EXIT = 4;
 
-    private BitSet bitSet = new BitSet(5); // status as bitset.
+    private final BitSet bitSet = new BitSet(5); // status as bitset.
 
     public void setAvailable(boolean isAvailable) {
         bitSet.set(INDEX_STATUS_IS_AVAILABLE, isAvailable);

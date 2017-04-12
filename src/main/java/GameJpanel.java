@@ -16,7 +16,7 @@ import spriteList.SpritesSetting;
 import utils.Timer;
 import utils.Tuple2;
 import utils.text.SkinnedTextWithBG;
-import utils.text.TopBar;
+import utils.TopBar;
 
 import javax.swing.*;
 import java.awt.*;
