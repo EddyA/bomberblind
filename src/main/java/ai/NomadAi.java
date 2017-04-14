@@ -13,7 +13,7 @@ import static map.ctrl.NomadMethods.*;
 import static sprite.ctrl.NomadMethods.isNomadCrossingEnemy;
 import static utils.Direction.*;
 
-public class EnemyAi {
+public class NomadAi {
 
     /**
      * Compute the next direction of an nomad.

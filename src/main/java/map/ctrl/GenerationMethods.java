@@ -88,7 +88,6 @@ public class GenerationMethods {
 
     /**
      * Randomly place complex elements.
-     * If an element cannot be placed after a certain number of try, it is ignoring.
      *
      * @param mapPointMatrix  the map (represented by its matrix of MapPoint)
      * @param mapWidth        the map width
@@ -98,9 +97,9 @@ public class GenerationMethods {
      * @param patterns        the map of patterns with the relative number of occurences to place
      * @param maxNbTry        the max nummber of try to place each complex element on map
      *                        (give up if the number of try id reached)
-     * @throws CannotCreateMapElementException if an element cannot be placed because of the map configuration
-     *                                         (e.g. the map size can be too small or the margins too high according
-     *                                         to the relative pattern size and the north/south edge heights).
+     * @throws CannotCreateMapElementException if an element cannot be placed after a certain number  of try because
+     * of the map configuration (e.g. the map size can be too small or the margins too high according to the relative
+     * pattern size and the north/south edge heights).
      */
     public static void randomlyPlaceComplexElements(MapPoint[][] mapPointMatrix,
                                                     int mapWidth,

@@ -30,11 +30,23 @@ public class Tuple3<U, V, W> {
         return first;
     }
 
+    public void setFirst(U first) {
+        this.first = first;
+    }
+
     public V getSecond() {
         return second;
     }
 
+    public void setSecond(V second) {
+        this.second = second;
+    }
+
     public W getThird() {
         return third;
+    }
+
+    public void setThird(W third) {
+        this.third = third;
     }
 }

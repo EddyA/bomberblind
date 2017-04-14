@@ -1,5 +1,6 @@
 package map.zelda;
 
+import ai.PathFinding;
 import exceptions.CannotCreateMapElementException;
 import exceptions.CannotPlaceBonusOnMapException;
 import map.Map;
@@ -97,6 +98,15 @@ public class ZeldaMap extends Map {
                     zeldaMapSetting.getNbBonusRoller());
         } catch (CannotPlaceBonusOnMapException e) {
             System.out.print(e.getMessage() + "\n"); // log only, not very important.
+        }
+
+        // check if there exit a path between entrance and exit.
+        if (!PathFinding.isThereAPathBetweenTwoPoints(mapPointMatrix,
+                zeldaMapSetting.getMapWidth(),
+                zeldaMapSetting.getMapHeight(),
+                new PathFinding.Point(entranceStartPoint.getColIdx(), entranceStartPoint.getRowIdx()),
+                new PathFinding.Point(exitStartPoint.getColIdx(), exitStartPoint.getRowIdx() - 1))) {
+            System.out.print("NO PATH FOUND!\n");
         }
     }
 

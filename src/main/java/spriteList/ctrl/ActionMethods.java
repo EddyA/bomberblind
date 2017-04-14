@@ -1,6 +1,6 @@
 package spriteList.ctrl;
 
-import ai.EnemyAi;
+import ai.NomadAi;
 import map.MapPoint;
 import map.ctrl.NomadMethods;
 import sprite.Sprite;
@@ -380,7 +380,7 @@ public class ActionMethods {
                                            int mapHeight,
                                            WalkingEnemy walkingEnemy) {
         // compute the next direction.
-        Direction newDirection = EnemyAi.computeNextDirection(
+        Direction newDirection = NomadAi.computeNextDirection(
                 mapPointMatrix,
                 mapWidth,
                 mapHeight,
