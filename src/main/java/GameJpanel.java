@@ -1,4 +1,5 @@
 import exceptions.CannotCreateMapElementException;
+import exceptions.CannotFindPathFromEntranceToExitException;
 import exceptions.InvalidConfigurationException;
 import exceptions.InvalidPropertiesException;
 import map.Map;
@@ -14,9 +15,9 @@ import spriteList.SpriteList;
 import spriteList.SpritesProperties;
 import spriteList.SpritesSetting;
 import utils.Timer;
+import utils.TopBar;
 import utils.Tuple2;
 import utils.text.SkinnedTextWithBG;
-import utils.TopBar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,6 +35,8 @@ import static spriteList.ctrl.GenerationMethods.placeAGroupOfBird;
 import static utils.Direction.DIRECTION_EAST;
 
 public class GameJpanel extends JPanel implements Runnable, KeyListener {
+
+    private final static int MAX_NB_MAP_GENERATION = 10; // max number of try to generate the map.
 
     private Map map;
     private Bomber bomber;
@@ -56,7 +59,18 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                         new ZeldaMapProperties("/zelda.map.properties").loadProperties().checkProperties()),
                 screenWidth,
                 screenHeight);
-        map.generateMap();
+        int nbTry = 0;
+        boolean isMapGenerated = false;
+        while (!isMapGenerated) {
+            try {
+                map.generateMap();
+                isMapGenerated = true;
+            } catch (CannotFindPathFromEntranceToExitException e) {
+                if (nbTry++ >= MAX_NB_MAP_GENERATION) {
+                    throw new RuntimeException("not able to generate the map, please check the map.properties.");
+                }
+            }
+        }
 
         // create the list of sprites.
         spriteList = new SpriteList(
@@ -74,7 +88,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
         // create an exit sign to help the player finding the exit.
         Tuple2<Integer, Integer> exitSignPosition = map.computeExitSignPosition();
-        addSparkle(spriteList, new Sparkle(exitSignPosition.getFirst() ,(exitSignPosition.getSecond())));
+        addSparkle(spriteList, new Sparkle(exitSignPosition.getFirst(), (exitSignPosition.getSecond())));
 
         // create the 3 first birds :)
         placeAGroupOfBird(spriteList, 3, -100, bbManInitialPosition.getSecond() + 225, DIRECTION_EAST, -8);

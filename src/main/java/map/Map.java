@@ -1,6 +1,7 @@
 package map;
 
 import exceptions.CannotCreateMapElementException;
+import exceptions.CannotFindPathFromEntranceToExitException;
 import images.ImagesLoader;
 import utils.Tuple2;
 
@@ -47,9 +48,11 @@ public abstract class Map {
     /**
      * Randomly generate a map.
      *
-     * @throws CannotCreateMapElementException if the map cannot be created
+     * @throws CannotCreateMapElementException           if mandatory map element (e.g. entrance) cannot be placed
+     * @throws CannotFindPathFromEntranceToExitException if there is no path between entrance and exit
      */
-    public abstract void generateMap() throws CannotCreateMapElementException;
+    public abstract void generateMap()
+            throws CannotCreateMapElementException, CannotFindPathFromEntranceToExitException;
 
     /**
      * Compute the initial Bomber position on map.

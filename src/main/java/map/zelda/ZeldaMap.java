@@ -2,6 +2,7 @@ package map.zelda;
 
 import ai.PathFinding;
 import exceptions.CannotCreateMapElementException;
+import exceptions.CannotFindPathFromEntranceToExitException;
 import exceptions.CannotPlaceBonusOnMapException;
 import map.Map;
 import map.MapPattern;
@@ -33,7 +34,7 @@ public class ZeldaMap extends Map {
     }
 
     @Override
-    public void generateMap() throws CannotCreateMapElementException {
+    public void generateMap() throws CannotCreateMapElementException, CannotFindPathFromEntranceToExitException {
         int maxNbTry = 10;
 
         // place north/south edges.
@@ -106,7 +107,7 @@ public class ZeldaMap extends Map {
                 zeldaMapSetting.getMapHeight(),
                 new PathFinding.Point(entranceStartPoint.getColIdx(), entranceStartPoint.getRowIdx()),
                 new PathFinding.Point(exitStartPoint.getColIdx(), exitStartPoint.getRowIdx() - 1))) {
-            System.out.print("NO PATH FOUND!\n");
+            throw new CannotFindPathFromEntranceToExitException("not able to find a path between entrance and exit.");
         }
     }
 
