@@ -15,12 +15,18 @@ public abstract class Map {
     private final int mapHeight; // height of the map (expressed in MapPoint).
 
     // screen information.
-    private final int screenWidth; // widht of the screen (expressed in pixel).
+    private final int screenWidth; // width of the screen (expressed in pixel).
     private final int screenHeight; // height of the screen (expressed in pixel).
 
     public Map(MapSettings mapSettings, int screenWidth, int screenHeight) {
         this.mapWidth = mapSettings.getMapWidth();
         this.mapHeight = mapSettings.getMapHeight();
+        this.mapPointMatrix = new MapPoint[mapHeight][mapWidth];
+        for (int rowIdx = 0; rowIdx < mapHeight; rowIdx++) {
+            for (int colIdx = 0; colIdx < mapWidth; colIdx++) {
+                this.mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
+            }
+        }
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
     }
@@ -53,6 +59,17 @@ public abstract class Map {
      */
     public abstract void generateMap()
             throws CannotCreateMapElementException, CannotFindPathFromEntranceToExitException;
+
+    /**
+     * Reset all MapPoint status.
+     */
+    public void resetMap() {
+        for (int rowIdx = 0; rowIdx < mapHeight; rowIdx++) {
+            for (int colIdx = 0; colIdx < mapWidth; colIdx++) {
+                this.mapPointMatrix[rowIdx][colIdx].reset();
+            }
+        }
+    }
 
     /**
      * Compute the initial Bomber position on map.

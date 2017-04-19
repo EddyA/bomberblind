@@ -169,6 +169,23 @@ public class MapPoint {
     }
 
     /**
+     * Rest the point.
+     */
+    public void reset() {
+        mapPointStatus.init();
+        image = null;
+        images = null;
+        nbImages = 0;
+        curImageIdx = 0;
+        refreshTime = 0;
+        lastRefreshTs = 0;
+        isBombing = false;
+        nbFlames = 0;
+        attachedBonus = null;
+        isBonusing = false;
+    }
+
+    /**
      * Update the image.
      *
      * @return the image to paint.

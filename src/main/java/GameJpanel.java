@@ -51,7 +51,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private int yMapStartPosOnScreen;
 
     public GameJpanel(int screenWidth, int screenHeight) throws IOException, InvalidPropertiesException,
-            InvalidConfigurationException, CannotCreateMapElementException {
+            InvalidConfigurationException, CannotCreateMapElementException, CannotFindPathFromEntranceToExitException {
 
         // create the map.
         map = new ZeldaMap(
@@ -67,7 +67,11 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 isMapGenerated = true;
             } catch (CannotFindPathFromEntranceToExitException e) {
                 if (nbTry++ >= MAX_NB_MAP_GENERATION) {
-                    throw new RuntimeException("not able to generate the map, please check the map.properties.");
+                    throw new CannotFindPathFromEntranceToExitException("not able to find a path between entrance and "
+                            + "exit: the proportion of immutable patterns/obstacles must be to high, please check "
+                            + "zelda.map.properties.");
+                } else {
+                    map.resetMap();
                 }
             }
         }

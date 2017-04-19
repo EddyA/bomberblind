@@ -55,4 +55,9 @@ public class MapPointStatus {
     public boolean isExit() {
         return bitSet.get(INDEX_STATUS_IS_EXIT);
     }
+
+    public void init() {
+        bitSet.clear();
+        bitSet.set(INDEX_STATUS_IS_AVAILABLE, true);
+    }
 }
