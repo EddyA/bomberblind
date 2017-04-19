@@ -37,8 +37,7 @@ public class PathFinding {
 
             Point point = (Point) o;
 
-            if (x != point.x) return false;
-            return y == point.y;
+            return x == point.x && y == point.y;
         }
 
         @Override
@@ -50,13 +49,13 @@ public class PathFinding {
     }
 
     /**
-     * This function returns a set containing the direct neighbors (pathway & mutable points only) of a point.
+     * This function returns a set of points including the direct neighbors of a point (pathways & mutable obstacles only).
      *
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth       the map width
      * @param mapHeight      the map height
      * @param point          the point
-     * @return a set containing the direct neighbors (pathway & mutable points only)
+     * @return a set of points including the direct neighbors of the point (pathways & mutable obstacles only)
      */
     public static Set<Point> getNeighbors(MapPoint[][] mapPointMatrix,
                                           int mapWidth,
@@ -91,7 +90,7 @@ public class PathFinding {
      *
      * @param firstPoint  the 1st point
      * @param secondPoint the 2nd point
-     * @return the square of the euclidean distance between the two points.
+     * @return the square of the euclidean distance between the two points
      */
     public static int computeDistance(Point firstPoint, Point secondPoint) {
         return (firstPoint.getY() - secondPoint.getY()) * (firstPoint.getY() - secondPoint.getY()) +
@@ -103,7 +102,7 @@ public class PathFinding {
      *
      * @param list   the list of point
      * @param scores the map of point costs
-     * @return the less cost fScore point of a list.
+     * @return the less cost fScore point of a list
      */
     public static Point getTheLessCostFScorePoint(LinkedList<Point> list,
                                                   Map<Point, Tuple3<Integer, Integer, Point>> scores) {
@@ -120,13 +119,13 @@ public class PathFinding {
 
     /**
      * Look for a path between two points.
-     * The used algorithm is A* (https://en.wikipedia.org/wiki/A*_search_algorithm)
+     * The algorithm used is A* (https://en.wikipedia.org/wiki/A*_search_algorithm)
      *
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth       the map width
      * @param mapHeight      the map height
-     * @param origin         the origin point
-     * @param destination    the destination point
+     * @param origin         the 1st point
+     * @param destination    the 2nd point
      * @return true if there exit a path between the two points, false otherwise.
      */
     public static boolean isThereAPathBetweenTwoPoints(MapPoint[][] mapPointMatrix,

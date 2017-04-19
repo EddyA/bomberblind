@@ -2,6 +2,7 @@ package map.zelda;
 
 import ai.PathFinding;
 import exceptions.CannotCreateMapElementException;
+import exceptions.CannotFindPathFromEntranceToExitException;
 import exceptions.CannotPlaceBonusOnMapException;
 import map.Map;
 import map.MapPattern;
@@ -24,16 +25,10 @@ public class ZeldaMap extends Map {
     public ZeldaMap(ZeldaMapSetting zeldaMapSetting, int screenWidth, int screenHeight) {
         super(zeldaMapSetting, screenWidth, screenHeight);
         this.zeldaMapSetting = zeldaMapSetting;
-        this.mapPointMatrix = new MapPoint[zeldaMapSetting.getMapHeight()][zeldaMapSetting.getMapWidth()];
-        for (int rowIdx = 0; rowIdx < zeldaMapSetting.getMapHeight(); rowIdx++) {
-            for (int colIdx = 0; colIdx < zeldaMapSetting.getMapWidth(); colIdx++) {
-                this.mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
-            }
-        }
     }
 
     @Override
-    public void generateMap() throws CannotCreateMapElementException {
+    public void generateMap() throws CannotCreateMapElementException, CannotFindPathFromEntranceToExitException {
         int maxNbTry = 10;
 
         // place north/south edges.
@@ -106,7 +101,9 @@ public class ZeldaMap extends Map {
                 zeldaMapSetting.getMapHeight(),
                 new PathFinding.Point(entranceStartPoint.getColIdx(), entranceStartPoint.getRowIdx()),
                 new PathFinding.Point(exitStartPoint.getColIdx(), exitStartPoint.getRowIdx() - 1))) {
-            System.out.print("NO PATH FOUND!\n");
+            throw new CannotFindPathFromEntranceToExitException("not able to find a path between entrance and exit: "
+                    + "the proportion of immutable patterns/obstacles must be to high, please check the relative "
+                    + "properties file.");
         }
     }
 

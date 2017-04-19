@@ -18,6 +18,10 @@ A Bomberman-like game.
 * Map.
   * The map is randomly created.
   * The map size & the number/proportion of map elements is fully settable (.properties).
+  * **Finding path algorithm**:
+    * A finding path algorithm (A*) is applied to assert that there does exist a path between the entrance and the exit.
+    * The map is regenerated (with a maximum number of 10 tries) until a viable map is generated.
+    * If no viable could be generated, the program does exit throwing an exception. 
   
 * Bomber.
   * The bomber dies when hitting by a flame or an enemy.
@@ -53,7 +57,7 @@ A Bomberman-like game.
         * Flying nomads are dynamically & randomly created during the game.
         * The creation frequency is fully settable (.properties).
 
-* Other.
+* GUI.
     * **Scrolling**.
         * The bomber is centered to the screen and the map is scrolled until a border is reached.
         * When a border is reached, scrolling of the map is stopped and the bomber starts moving.
