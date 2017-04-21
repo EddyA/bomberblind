@@ -11,6 +11,7 @@ import map.ctrl.GenerationMethods;
 import utils.Tuple2;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import static images.ImagesLoader.IMAGE_SIZE;
 import static map.ctrl.PatternMethods.placeNorthEdgeOnMap;
@@ -95,12 +96,14 @@ public class ZeldaMap extends Map {
             System.out.print(e.getMessage() + "\n"); // log only, not very important.
         }
 
-        // check if there exit a path between entrance and exit.
-        if (!PathFinding.isThereAPathBetweenTwoPoints(mapPointMatrix,
-                zeldaMapSetting.getMapWidth(),
-                zeldaMapSetting.getMapHeight(),
-                new PathFinding.Point(entranceStartPoint.getColIdx(), entranceStartPoint.getRowIdx()),
-                new PathFinding.Point(exitStartPoint.getColIdx(), exitStartPoint.getRowIdx() - 1))) {
+        // check if there does exit a path between entrance and exit.
+        Tuple2<Boolean, Set<PathFinding.Point>> res =
+                PathFinding.isThereAPathBetweenTwoPoints(mapPointMatrix,
+                        zeldaMapSetting.getMapWidth(),
+                        zeldaMapSetting.getMapHeight(),
+                        new PathFinding.Point(entranceStartPoint.getColIdx(), entranceStartPoint.getRowIdx()),
+                        new PathFinding.Point(exitStartPoint.getColIdx(), exitStartPoint.getRowIdx() - 1));
+        if (!res.getFirst()) {
             throw new CannotFindPathFromEntranceToExitException("not able to find a path between entrance and exit: "
                     + "the proportion of immutable patterns/obstacles must be to high, please check the relative "
                     + "properties file.");

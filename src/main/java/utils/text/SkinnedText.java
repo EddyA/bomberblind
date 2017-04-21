@@ -32,21 +32,21 @@ public class SkinnedText {
      * @return the width of the text (in px)
      */
     public static int computeTextWidth(String text) {
-        String curLine = "";
+        StringBuilder curLine = new StringBuilder();
         int textWidth = 0;
         for (int charIdx = 0; charIdx < text.length(); charIdx++) {
             int asciiCode = (int) text.charAt(charIdx);
             if (asciiCode == 10) { // new line.
-                int curLineWidth = computeLineWidth(curLine);
+                int curLineWidth = computeLineWidth(curLine.toString());
                 if (curLineWidth > textWidth) {
                     textWidth = curLineWidth;
                 }
-                curLine = "";
+                curLine.setLength(0);
             } else {
-                curLine += text.charAt(charIdx);
+                curLine.append(text.charAt(charIdx));
             }
         }
-        int curLineWidth = computeLineWidth(curLine); // last line.
+        int curLineWidth = computeLineWidth(curLine.toString()); // last line.
         if (curLineWidth > textWidth) {
             textWidth = curLineWidth;
         }

@@ -10,7 +10,7 @@ import java.awt.*;
 public abstract class Map {
 
     // map information.
-    protected MapPoint[][] mapPointMatrix;
+    protected final MapPoint[][] mapPointMatrix;
     private final int mapWidth; // width of the map (expressed in MapPoint).
     private final int mapHeight; // height of the map (expressed in MapPoint).
 

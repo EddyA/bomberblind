@@ -7,7 +7,7 @@ A Bomberman-like game.
 - Press 'Q' to complete stages when reaching the exit.
 - Press 'ESC' to quit.
 
-## Crédits
+## Credits
 - Game by **Eddy ALBERT** (eddy.albert@gmail.com). 
 - Map sprites from *The Legend of Zelda: A link to the Past (Nintendo)*, ripped & updated by Eddy ALBERT.
 - Bomber sprites from *Saturn Bomberman (Hudson Soft)*, ripped by Ragey on www.spriters-resource.com.
@@ -20,8 +20,8 @@ A Bomberman-like game.
   * The map size & the number/proportion of map elements is fully settable (.properties).
   * **Finding path algorithm**:
     * A finding path algorithm (A*) is applied to assert that there does exist a path between the entrance and the exit.
-    * The map is regenerated (with a maximum number of 10 tries) until a viable map is generated.
-    * If no viable could be generated, the program does exit throwing an exception. 
+    * The map is regenerated (with a maximum number of 20 tries) until a viable map is generated.
+    * If no viable map has been generated, the program does exit throwing an exception. 
   
 * Bomber.
   * The bomber dies when hitting by a flame or an enemy.

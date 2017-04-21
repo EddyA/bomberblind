@@ -1,12 +1,13 @@
 package ai;
 
 import map.MapPoint;
-import utils.Tuple3;
+import utils.Tuple2;
 
 import java.util.*;
 
 /**
  * A class to find a path between two points.
+ * The algorithm used is A* (https://en.wikipedia.org/wiki/A*_search_algorithm)
  */
 public class PathFinding {
 
@@ -14,8 +15,8 @@ public class PathFinding {
      * A simple point.
      */
     public static class Point {
-        private int x; // abscissa.
-        private int y; // ordinate.
+        private final int x; // abscissa.
+        private final int y; // ordinate.
 
         public Point(int x, int y) {
             this.x = x;
@@ -98,20 +99,41 @@ public class PathFinding {
     }
 
     /**
-     * The function returns the less cost fScore point of a list.
+     * The function returns the point of a list having the lowest fScore.
      *
      * @param list   the list of point
-     * @param scores the map of point costs
-     * @return the less cost fScore point of a list
+     * @param scores the map of point scores
+     * @return the point of a list having the lowest fScore
      */
-    public static Point getTheLessCostFScorePoint(LinkedList<Point> list,
-                                                  Map<Point, Tuple3<Integer, Integer, Point>> scores) {
+    public static Point getPointWithLowestFScore(LinkedList<Point> list,
+                                                 Map<Point, Tuple2<Integer, Integer>> scores) {
         Point res = list.getFirst();
         int lowestFScore = scores.get(res).getSecond();
         for (Point point : list) {
             if (scores.get(point).getSecond() < lowestFScore) {
                 lowestFScore = scores.get(point).getSecond();
                 res = point;
+            }
+        }
+        return res;
+    }
+
+    /**
+     * This function reconstructs the found path (as a set of points).
+     *
+     * @param destination the destination point
+     * @param parents     the map of point parents
+     * @return the path is found (as a set of points), false otherwise
+     */
+    public static Set<Point> reconstructFoundPath(Point destination,
+                                                  Map<Point, Point> parents) {
+        Set<Point> res = new HashSet<>();
+        Point curPoint = destination;
+        res.add(curPoint);
+        while (curPoint != null) {
+            curPoint = parents.get(curPoint);
+            if (curPoint != null) {
+                res.add(curPoint);
             }
         }
         return res;
@@ -126,54 +148,47 @@ public class PathFinding {
      * @param mapHeight      the map height
      * @param origin         the 1st point
      * @param destination    the 2nd point
-     * @return true if there exit a path between the two points, false otherwise.
+     * @return a Tuple2(true, set of points) if there exit a path between the two points, a tuple2(false, null) otherwise.
      */
-    public static boolean isThereAPathBetweenTwoPoints(MapPoint[][] mapPointMatrix,
-                                                       int mapWidth,
-                                                       int mapHeight,
-                                                       Point origin,
-                                                       Point destination) {
+    public static Tuple2<Boolean, Set<Point>> isThereAPathBetweenTwoPoints(MapPoint[][] mapPointMatrix,
+                                                                           int mapWidth,
+                                                                           int mapHeight,
+                                                                           Point origin,
+                                                                           Point destination) {
         LinkedList<Point> closedSet = new LinkedList<>();
         LinkedList<Point> openedSet = new LinkedList<>();
 
-        /*
-          Map with:
-          - key as a Point
-          - value as:
-            - gScore (Integer)
-            - fScore (Integer)
-            - parent's Point
-         */
-        Map<Point, Tuple3<Integer, Integer, Point>> scores = new HashMap<>();
+        Map<Point, Tuple2<Integer, Integer>> scores = new HashMap<>(); // Map<point, Tuple2<gScore, fScore>>
+        Map<Point, Point> parents = new HashMap<>(); // Map<point, parent>
 
         openedSet.add(origin);
-        scores.put(origin, new Tuple3<>(0, computeDistance(origin, destination), null));
+        scores.put(origin, new Tuple2<>(0, computeDistance(origin, destination)));
         while (!openedSet.isEmpty()) {
-            Point curNode = getTheLessCostFScorePoint(openedSet, scores);
-            if (curNode.equals(destination)) { // it is the end.
-                return true;
+            Point curPoint = getPointWithLowestFScore(openedSet, scores);
+            if (curPoint.equals(destination)) { // it is the end.
+                return new Tuple2<>(true, PathFinding.reconstructFoundPath(destination, parents));
             }
-            openedSet.remove(curNode);
-            closedSet.add(curNode);
+            openedSet.remove(curPoint);
+            closedSet.add(curPoint);
 
-            for (Point neighbor : getNeighbors(mapPointMatrix, mapWidth, mapHeight, curNode)) {
+            for (Point neighbor : getNeighbors(mapPointMatrix, mapWidth, mapHeight, curPoint)) {
                 if (closedSet.contains(neighbor)) {
                     continue; // ignore already evaluated neighbor.
                 }
-                int newGScore = scores.get(curNode).getFirst() + computeDistance(curNode, neighbor);
+                int newGScore = scores.get(curPoint).getFirst() + computeDistance(curPoint, neighbor);
                 if (!openedSet.contains(neighbor)) {
                     openedSet.add(neighbor);
-                    scores.put(neighbor,
-                            new Tuple3<>(newGScore, newGScore + computeDistance(neighbor, destination), curNode));
+                    scores.put(neighbor, new Tuple2<>(newGScore, newGScore + computeDistance(neighbor, destination)));
+                    parents.put(neighbor, curPoint);
                 } else {
                     if (newGScore < scores.get(neighbor).getFirst()) {
                         scores.get(neighbor).setFirst(newGScore);
                         scores.get(neighbor).setSecond(newGScore + computeDistance(neighbor, destination));
-                        scores.get(neighbor).setThird(curNode);
+                        parents.put(neighbor, curPoint);
                     }
                 }
             }
         }
-        return false;
+        return new Tuple2<>(false, null);
     }
 }

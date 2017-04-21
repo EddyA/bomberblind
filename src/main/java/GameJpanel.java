@@ -36,7 +36,7 @@ import static utils.Direction.DIRECTION_EAST;
 
 public class GameJpanel extends JPanel implements Runnable, KeyListener {
 
-    private final static int MAX_NB_MAP_GENERATION = 10; // max number of try to generate the map.
+    private final static int MAX_NB_MAP_GENERATION = 20; // max number of try to generate the map.
 
     private Map map;
     private Bomber bomber;
@@ -67,9 +67,10 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 isMapGenerated = true;
             } catch (CannotFindPathFromEntranceToExitException e) {
                 if (nbTry++ >= MAX_NB_MAP_GENERATION) {
-                    throw new CannotFindPathFromEntranceToExitException("not able to find a path between entrance and "
-                            + "exit: the proportion of immutable patterns/obstacles must be to high, please check "
-                            + "zelda.map.properties.");
+                    throw new CannotFindPathFromEntranceToExitException("not able to generate a viable map (i.e. with a "
+                            + "passable path between the entrance and the exit) despite a certain number of generations ("
+                            + String.valueOf(MAX_NB_MAP_GENERATION) + "): the proportion of immutable patterns/obstacles "
+                            + "must be to high, please check the relative map.properties.");
                 } else {
                     map.resetMap();
                 }

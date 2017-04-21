@@ -7,6 +7,7 @@ import utils.CurrentTimeSupplier;
 import java.awt.*;
 import java.util.Random;
 
+
 /**
  * A point of the map.
  */
@@ -212,7 +213,7 @@ public class MapPoint {
      * @param xScreen the abscissa on screen
      * @param yScreen the ordinate on screen
      */
-    void paintBuffer(Graphics g, int xScreen, int yScreen) {
+    void paintBuffer(Graphics2D g, int xScreen, int yScreen) {
         g.drawImage(updateImage(), xScreen, yScreen, null);
     }
 }

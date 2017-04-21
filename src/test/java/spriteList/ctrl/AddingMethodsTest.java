@@ -506,16 +506,6 @@ public class AddingMethodsTest implements WithAssertions {
     @Test
     public void addFlameEndShouldAddAFlameEnd() throws Exception {
         LinkedList<Sprite> spriteList = new LinkedList<>();
-        int mapWidth = 10;
-        int mapHeight = 8;
-
-        // set map.
-        MapPoint[][] mapPointMatrix = new MapPoint[mapHeight][mapWidth];
-        for (int rowIdx = 0; rowIdx < mapHeight; rowIdx++) {
-            for (int colIdx = 0; colIdx < mapWidth; colIdx++) {
-                mapPointMatrix[rowIdx][colIdx] = new MapPoint(rowIdx, colIdx);
-            }
-        }
 
         // add sprite.
         FlameEnd flameEnd = new FlameEnd(1, 2);
