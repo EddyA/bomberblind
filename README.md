@@ -5,9 +5,9 @@ A Bomberman-like game.
 
 - Use the arrow keys to move the bomber.
 - Reach the exit an press (Q) to complete the stage.
-- Press (B) to put bombs
-- Press (ENTER) to start the stage
-- Press (ESC) to quit the game
+- Press (B) to put bombs.
+- Press (ENTER) to start the stage.
+- Press (ESC) to quit the game.
 
 ## Credits
 - Game by **Eddy ALBERT** (eddy.albert@gmail.com).

@@ -14,7 +14,7 @@ import static utils.text.SkinnedText.*;
 public class SkinnedTextWithBG {
 
     public final static String TEXT_NEW = "WELCOME!\n\n" +
-            "Reach the exit an press (Q) to complete the stage.\n\n" +
+            "Reach the exit an press (Q) to complete the stage\n\n" +
             "Press (B) to put bombs\n" +
             "Press (ENTER) to start the stage\n" +
             "Press (ESC) to quit the game\n\n" +
