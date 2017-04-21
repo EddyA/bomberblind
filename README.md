@@ -2,13 +2,15 @@
 A Bomberman-like game.
 
 ## Commands
+
 - Use the arrow keys to move the bomber.
-- Press 'B' to put bombs.
-- Press 'Q' to complete stages when reaching the exit.
-- Press 'ESC' to quit.
+- Reach the exit an press (Q) to complete the stage.
+- Press (B) to put bombs
+- Press (ENTER) to start the stage
+- Press (ESC) to quit the game
 
 ## Credits
-- Game by **Eddy ALBERT** (eddy.albert@gmail.com). 
+- Game by **Eddy ALBERT** (eddy.albert@gmail.com).
 - Map sprites from *The Legend of Zelda: A link to the Past (Nintendo)*, ripped & updated by Eddy ALBERT.
 - Bomber sprites from *Saturn Bomberman (Hudson Soft)*, ripped by Ragey on www.spriters-resource.com.
 - Enemies sprites from *The Legend of Zelda: A link to the Past (Nintendo)*, ripped & updated by Eddy ALBERT.

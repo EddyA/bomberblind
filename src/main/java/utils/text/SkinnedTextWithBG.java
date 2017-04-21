@@ -17,7 +17,7 @@ public class SkinnedTextWithBG {
             "Reach the exit an press (Q) to complete the stage.\n\n" +
             "Press (B) to put bombs\n" +
             "Press (ENTER) to start the stage\n" +
-            "Press (ESC) to exit the game\n\n" +
+            "Press (ESC) to quit the game\n\n" +
             "GOOD LUCK!";
 
     public final static String TEXT_WIN = "STAGE COMPLETE\n\n" +
