@@ -23,7 +23,7 @@ public class ImagesLoader {
     public final static String IMAGES_DIR = "/images";
     public final static String ASCII_SKIN_DIR = IMAGES_DIR + "/ascii";
     public final static String SPRITE_SKIN_DIR = IMAGES_DIR + "/sprites";
-    public final static String SCENE_SKIN_DIR = IMAGES_DIR + "/scene/light_world_wood";
+    public final static String SCENE_SKIN_DIR = IMAGES_DIR + "/scene/light_world";
 
     // ascii.
     public static int asciiMatrixRowIdx;

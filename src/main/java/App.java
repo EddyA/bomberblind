@@ -31,7 +31,7 @@ public class App extends JFrame {
             ImagesLoader.fillImagesMatrix();
 
             System.out.println("- set screen mode ...");
-            this.setTitle("Bomberblind (dev. in progress)");
+            this.setTitle("Bomberblind (eddy.albert@gmail.com)");
             this.setIconImage(ImageIO.read(App.class.getResource("/images/icon.gif")));
             if (!fullscreenResolution.isPresent() || // is the screen format supported by the software?
                     !ScreenMode.setFullscreenMode(graphicsDevice, // is the screen format supported by the hardware?

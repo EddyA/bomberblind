@@ -1,6 +1,7 @@
 # bomberblind
 A Bomberman-like game.
 
+
 ## Commands
 
 - Use the arrow keys to move the bomber.
