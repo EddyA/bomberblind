@@ -2,8 +2,8 @@ package sprite;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import sprite.nomad.BlueBomber;
 import utils.CurrentTimeSupplier;
@@ -13,26 +13,26 @@ import java.time.Instant;
 
 import static org.mockito.Mockito.mock;
 
-public class SpriteTest implements WithAssertions {
+class SpriteTest implements WithAssertions {
 
-    @Before
-    public void fillImagesMatrix() throws IOException {
+    @BeforeEach
+    void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
     }
 
     @Test
-    public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
+    void constructorShouldSetMembersWithTheExpectedValues() {
         BlueBomber blueBomber = new BlueBomber(5, 4);
 
         // check members value.
-        assertThat(blueBomber.getxMap()).isEqualTo(5);
-        assertThat(blueBomber.getyMap()).isEqualTo(4);
+        assertThat(blueBomber.getXMap()).isEqualTo(5);
+        assertThat(blueBomber.getYMap()).isEqualTo(4);
         assertThat(blueBomber.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_BOMBER);
         assertThat(blueBomber.getRefreshTime()).isEqualTo(BlueBomber.REFRESH_TIME);
     }
 
     @Test
-    public void isTimeToRefreshShouldReturnFalse() throws Exception {
+    void isTimeToRefreshShouldReturnFalse() {
         BlueBomber blueBomber = new BlueBomber(5, 4);
 
         // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.
@@ -48,7 +48,7 @@ public class SpriteTest implements WithAssertions {
     }
 
     @Test
-    public void isTimeToRefreshShouldReturnTrue() throws Exception {
+    void isTimeToRefreshShouldReturnTrue() {
         BlueBomber blueBomber = new BlueBomber(5, 4);
 
         // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.

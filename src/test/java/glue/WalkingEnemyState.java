@@ -10,20 +10,20 @@ import sprite.nomad.WalkingEnemy;
 
 public class WalkingEnemyState {
 
-    private final Zora spyedzora;
+    private final Zora spiedzora;
     private boolean shouldBeRemoved;
 
     public WalkingEnemyState() throws IOException {
         ImagesLoader.fillImagesMatrix();
         Zora zora = new Zora(0, 0);
-        spyedzora = Mockito.spy(zora);
+        spiedzora = Mockito.spy(zora);
 
         // avoid the time constraint to make action.
-        Mockito.when(spyedzora.isTimeToAct()).thenReturn(true);
+        Mockito.when(spiedzora.isTimeToAct()).thenReturn(true);
     }
 
     public WalkingEnemy getEnemy() {
-        return spyedzora;
+        return spiedzora;
     }
 
     boolean isShouldBeRemoved() {

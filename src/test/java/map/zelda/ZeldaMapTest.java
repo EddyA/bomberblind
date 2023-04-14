@@ -1,10 +1,10 @@
 package map.zelda;
 
 import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public class ZeldaMapTest implements WithAssertions {
+class ZeldaMapTest implements WithAssertions {
 
     // use small values to avoid heap overflow using Mockito.
     @SuppressWarnings("FieldCanBeLocal")
@@ -17,7 +17,7 @@ public class ZeldaMapTest implements WithAssertions {
     private final int SCREEN_HEIGHT = 1;
 
     @Test
-    public void rMapShouldSetMembersWithTheExpectedValues() throws Exception {
+    void rMapShouldSetMembersWithTheExpectedValues() {
 
         // mock the ZeldaMapSetting class.
         ZeldaMapSetting zeldaMapSetting = Mockito.mock(ZeldaMapSetting.class);

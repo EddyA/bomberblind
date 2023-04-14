@@ -8,15 +8,15 @@ import java.io.IOException;
 
 public class BonusRollerState {
 
-    private final BonusRoller spyedBonusRoller;
+    private final BonusRoller spiedBonusRoller;
 
     public BonusRollerState() throws IOException {
         ImagesLoader.fillImagesMatrix();
         BonusRoller bonusRoller = new BonusRoller(0, 0);
-        spyedBonusRoller = Mockito.spy(bonusRoller);
+        spiedBonusRoller = Mockito.spy(bonusRoller);
     }
 
     BonusRoller getBonusRoller() {
-        return spyedBonusRoller;
+        return spiedBonusRoller;
     }
 }

@@ -1,25 +1,36 @@
 package sprite.nomad;
 
+import java.awt.Image;
+import exceptions.SpriteActionException;
+import lombok.Getter;
+import lombok.Setter;
 import map.MapPoint;
 import sprite.SpriteAction;
+import static sprite.SpriteAction.ACTION_BREAKING;
+import static sprite.SpriteAction.ACTION_DYING;
+import static sprite.SpriteAction.ACTION_WALKING;
 import sprite.SpriteType;
-
-import java.awt.*;
-
-import static sprite.SpriteAction.*;
 
 /**
  * Abstract class of a breaking enemy.
  */
 public class BreakingEnemy extends WalkingEnemy {
 
+    @Getter
     private final Image[] breakBackImages;
+    @Getter
     private final Image[] breakFrontImages;
+    @Getter
     private final Image[] breakLeftImages;
+    @Getter
     private final Image[] breakRightImages;
+    @Getter
     private final int nbBreakFrame;
+    @Getter
     private final int breakRefreshTime;
 
+    @Getter
+    @Setter
     private MapPoint breakingMapPoint = null; // the current MapPoint the enemy is breaking.
 
     /**
@@ -83,38 +94,6 @@ public class BreakingEnemy extends WalkingEnemy {
         this.breakRefreshTime = breakRefreshTime;
     }
 
-    public Image[] getBreakBackImages() {
-        return breakBackImages;
-    }
-
-    public Image[] getBreakFrontImages() {
-        return breakFrontImages;
-    }
-
-    public Image[] getBreakLeftImages() {
-        return breakLeftImages;
-    }
-
-    public Image[] getBreakRightImages() {
-        return breakRightImages;
-    }
-
-    public int getNbBreakFrame() {
-        return nbBreakFrame;
-    }
-
-    public int getBreakRefreshTime() {
-        return breakRefreshTime;
-    }
-
-    public MapPoint getBreakingMapPoint() {
-        return breakingMapPoint;
-    }
-
-    public void setBreakingMapPoint(MapPoint breakingMapPoint) {
-        this.breakingMapPoint = breakingMapPoint;
-    }
-
     public boolean isBreakingSpriteFinished() {
         return curSpriteAction.equals(ACTION_BREAKING) && paintedAtLeastOneTime;
     }
@@ -141,72 +120,62 @@ public class BreakingEnemy extends WalkingEnemy {
     }
 
     @Override
-    public void updateSprite() {
+    public void updateSprite() throws SpriteActionException {
         switch (curSpriteAction) {
-            case ACTION_DYING: {
+            case ACTION_DYING -> {
                 images = deathImages;
                 nbImages = nbDeathFrame;
                 refreshTime = deathRefreshTime;
-                break;
             }
-            case ACTION_BREAKING: {
+            case ACTION_BREAKING -> {
                 switch (curDirection) {
-                    case DIRECTION_NORTH: {
+                    case DIRECTION_NORTH -> {
                         images = breakBackImages;
                         nbImages = nbBreakFrame;
                         refreshTime = breakRefreshTime;
-                        break;
                     }
-                    case DIRECTION_SOUTH: {
+                    case DIRECTION_SOUTH -> {
                         images = breakFrontImages;
                         nbImages = nbBreakFrame;
                         refreshTime = breakRefreshTime;
-                        break;
                     }
-                    case DIRECTION_WEST: {
+                    case DIRECTION_WEST -> {
                         images = breakLeftImages;
                         nbImages = nbBreakFrame;
                         refreshTime = breakRefreshTime;
-                        break;
                     }
-                    case DIRECTION_EAST: {
+                    case DIRECTION_EAST -> {
                         images = breakRightImages;
                         nbImages = nbBreakFrame;
                         refreshTime = breakRefreshTime;
-                        break;
                     }
                 }
-                break;
             }
-            case ACTION_WALKING: {
+            case ACTION_WALKING -> {
                 switch (curDirection) {
-                    case DIRECTION_NORTH: {
+                    case DIRECTION_NORTH -> {
                         images = walkBackImages;
                         nbImages = nbWalkFrame;
                         refreshTime = walkRefreshTime;
-                        break;
                     }
-                    case DIRECTION_SOUTH: {
+                    case DIRECTION_SOUTH -> {
                         images = walkFrontImages;
                         nbImages = nbWalkFrame;
                         refreshTime = walkRefreshTime;
-                        break;
                     }
-                    case DIRECTION_WEST: {
+                    case DIRECTION_WEST -> {
                         images = walkLeftImages;
                         nbImages = nbWalkFrame;
                         refreshTime = walkRefreshTime;
-                        break;
                     }
-                    case DIRECTION_EAST: {
+                    case DIRECTION_EAST -> {
                         images = walkRightImages;
                         nbImages = nbWalkFrame;
                         refreshTime = walkRefreshTime;
-                        break;
                     }
                 }
-                break;
             }
+            default -> throw new SpriteActionException(curSpriteAction, this.getClass());
         }
     }
 }

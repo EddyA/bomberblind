@@ -2,28 +2,28 @@ package sprite.nomad;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sprite.SpriteType;
 
 import java.io.IOException;
 
 import static sprite.SpriteAction.ACTION_WAITING;
 
-public class BlueBomberTest implements WithAssertions {
+class BlueBomberTest implements WithAssertions {
 
-    @Before
-    public void fillImagesMatrix() throws IOException {
+    @BeforeEach
+    void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
     }
 
     @Test
-    public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
+    void constructorShouldSetMembersWithTheExpectedValues() {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // check members value.
-        assertThat(blueBomber.getxMap()).isEqualTo(15);
-        assertThat(blueBomber.getyMap()).isEqualTo(30);
+        assertThat(blueBomber.getXMap()).isEqualTo(15);
+        assertThat(blueBomber.getYMap()).isEqualTo(30);
         assertThat(blueBomber.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_BOMBER);
         assertThat(blueBomber.getDeathImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberDeathMatrixRowIdx]);
         assertThat(blueBomber.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_BOMBER_DEATH_FRAME);
@@ -39,8 +39,8 @@ public class BlueBomberTest implements WithAssertions {
         assertThat(blueBomber.getRefreshTime()).isEqualTo(BlueBomber.REFRESH_TIME);
         assertThat(blueBomber.getActingTime()).isEqualTo(BlueBomber.DEFAULT_ACTING_TIME);
         assertThat(blueBomber.getInvincibilityTime()).isEqualTo(BlueBomber.INVINCIBILITY_TIME);
-        assertThat(blueBomber.getInitialXMap()).isEqualTo(blueBomber.getxMap());
-        assertThat(blueBomber.getInitialYMap()).isEqualTo(blueBomber.getyMap());
+        assertThat(blueBomber.getInitialXMap()).isEqualTo(blueBomber.getXMap());
+        assertThat(blueBomber.getInitialYMap()).isEqualTo(blueBomber.getYMap());
         assertThat(blueBomber.getCurSpriteAction()).isEqualTo(ACTION_WAITING);
         assertThat(blueBomber.isInvincible()).isTrue();
     }

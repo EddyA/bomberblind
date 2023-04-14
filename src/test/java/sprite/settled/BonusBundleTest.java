@@ -1,14 +1,14 @@
 package sprite.settled;
 
 import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-public class BonusBundleTest implements WithAssertions {
+class BonusBundleTest implements WithAssertions {
 
     @Test
-    public void constructorShouldSetMemberWithDefaultValues() throws Exception {
+    void constructorShouldSetMemberWithDefaultValues() {
 
         // set test.
         BonusBundle bonusBundle = new BonusBundle();
@@ -21,7 +21,7 @@ public class BonusBundleTest implements WithAssertions {
     }
 
     @Test
-    public void getBonusWithAnUnpresentBonusShouldReturnZero() throws Exception {
+    void getBonusWithAnUnpresentBonusShouldReturnZero() {
 
         // set test.
         BonusBundle bonusBundle = new BonusBundle();
@@ -32,7 +32,7 @@ public class BonusBundleTest implements WithAssertions {
     }
 
     @Test
-    public void setBonusShouldSetTheRelativeBonus() throws Exception {
+    void setBonusShouldSetTheRelativeBonus() {
 
         // set test.
         BonusBundle bonusBundle = new BonusBundle();
@@ -50,7 +50,7 @@ public class BonusBundleTest implements WithAssertions {
     }
 
     @Test
-    public void getCollectedBonusShouldReturnAllCollectedBonusExceptHeartOne() throws Exception {
+    void getCollectedBonusShouldReturnAllCollectedBonusExceptHeartOne() {
 
         // set test.
         BonusBundle bonusBundle = new BonusBundle();
@@ -77,7 +77,7 @@ public class BonusBundleTest implements WithAssertions {
     }
 
     @Test
-    public void resetBonusShouldResultBonusExceptHeartOne() throws Exception {
+    void resetBonusShouldResultBonusExceptHeartOne() {
 
         // set test.
         BonusBundle bonusBundle = new BonusBundle();

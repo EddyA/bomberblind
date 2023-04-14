@@ -2,15 +2,17 @@ package utils.text;
 
 import java.awt.*;
 
+import lombok.experimental.UtilityClass;
 import static utils.text.SkinnedLine.computeLineAbscissaToCenterItOnScreen;
 import static utils.text.SkinnedLine.computeLineWidth;
 
 /**
  * This class allows painting a text using skinned ascii.
  */
+@UtilityClass
 public class SkinnedText {
 
-    private final static int lineSpacing = 25;
+    private static final int LINE_SPACING = 25;
 
     /**
      * Compute the height of a skinned text (in px).
@@ -21,7 +23,7 @@ public class SkinnedText {
      */
     public static int computeTextHeight(String text) {
         int nbLines = text.length() - text.replace("\n", "").length() + 1;
-        return nbLines * lineSpacing;
+        return nbLines * LINE_SPACING;
     }
 
     /**
@@ -35,7 +37,7 @@ public class SkinnedText {
         StringBuilder curLine = new StringBuilder();
         int textWidth = 0;
         for (int charIdx = 0; charIdx < text.length(); charIdx++) {
-            int asciiCode = (int) text.charAt(charIdx);
+            int asciiCode = text.charAt(charIdx);
             if (asciiCode == 10) { // new line.
                 int curLineWidth = computeLineWidth(curLine.toString());
                 if (curLineWidth > textWidth) {
@@ -76,11 +78,11 @@ public class SkinnedText {
         String curLine = "";
         int curY = computeTextOrdinateToCenterItOnScreen(computeTextHeight(text), screenHeight);
         for (int charIdx = 0; charIdx < text.length(); charIdx++) {
-            int asciiCode = (int) text.charAt(charIdx);
+            int asciiCode = text.charAt(charIdx);
             if (asciiCode == 10) { // new line.
                 int curX = computeLineAbscissaToCenterItOnScreen(computeLineWidth(curLine), screenWidth);
                 SkinnedLine.paintBuffer(g, curX, curY, curLine);
-                curY += lineSpacing;
+                curY += LINE_SPACING;
                 curLine = "";
             } else {
                 curLine += text.charAt(charIdx);

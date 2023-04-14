@@ -8,8 +8,8 @@ import utils.Direction;
  */
 public class WhiteBird extends FlyingNomad {
 
-    public final static int REFRESH_TIME = 150;
-    public final static int ACTING_TIME = 6;
+    public static final int REFRESH_TIME = 150;
+    public static final int ACTING_TIME = 6;
 
     /**
      * Create a bird.

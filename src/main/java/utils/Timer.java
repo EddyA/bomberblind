@@ -1,6 +1,10 @@
 package utils;
 
+import lombok.Setter;
+
 public class Timer {
+
+    @Setter
     protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
     private long startTs;
@@ -9,10 +13,6 @@ public class Timer {
     public Timer() {
         this.startTs = 0;
         this.stopTs = 0;
-    }
-
-    public void setCurrentTimeSupplier(CurrentTimeSupplier currentTimeSupplier) {
-        this.currentTimeSupplier = currentTimeSupplier;
     }
 
     /**
@@ -32,7 +32,7 @@ public class Timer {
     /**
      * This function returns:
      * - 0 if the timer has not been started,
-     * - the elasped time between the start time and now if the timer has not been stopped,
+     * - the elapsed time between the start time and now if the timer has not been stopped,
      * - the elapsed time between the start and stop times otherwise.
      */
     public long getElapsedTime() {

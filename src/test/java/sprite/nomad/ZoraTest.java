@@ -2,26 +2,26 @@ package sprite.nomad;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sprite.SpriteType;
 
 import java.io.IOException;
 
 import static sprite.SpriteAction.ACTION_WALKING;
 
-public class ZoraTest implements WithAssertions {
+class ZoraTest implements WithAssertions {
 
-    @Before
-    public void fillImagesMatrix() throws IOException {
+    @BeforeEach
+    void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
     }
 
     @Test
-    public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
+    void constructorShouldSetMembersWithTheExpectedValues() {
         Zora zora = new Zora(15, 30);
-        assertThat(zora.getxMap()).isEqualTo(15);
-        assertThat(zora.getyMap()).isEqualTo(30);
+        assertThat(zora.getXMap()).isEqualTo(15);
+        assertThat(zora.getYMap()).isEqualTo(30);
         assertThat(zora.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_WALKING_ENEMY);
 
         // - dying values.

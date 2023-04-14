@@ -2,8 +2,8 @@ package sprite.nomad;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import sprite.SpriteType;
 import sprite.settled.Bomb;
@@ -18,20 +18,20 @@ import static org.mockito.Mockito.mock;
 import static sprite.SpriteAction.*;
 import static sprite.nomad.Bomber.DEFAULT_ACTING_TIME;
 
-public class BomberTest implements WithAssertions {
+class BomberTest implements WithAssertions {
 
-    @Before
-    public void fillImagesMatrix() throws IOException {
+    @BeforeEach
+    void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
     }
 
     @Test
-    public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
+    void constructorShouldSetMembersWithTheExpectedValues() {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // check members value.
-        assertThat(blueBomber.getxMap()).isEqualTo(15);
-        assertThat(blueBomber.getyMap()).isEqualTo(30);
+        assertThat(blueBomber.getXMap()).isEqualTo(15);
+        assertThat(blueBomber.getYMap()).isEqualTo(30);
         assertThat(blueBomber.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_BOMBER);
         assertThat(blueBomber.getDeathImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberDeathMatrixRowIdx]);
         assertThat(blueBomber.getNbDeathFrame()).isEqualTo(ImagesLoader.NB_BOMBER_DEATH_FRAME);
@@ -47,14 +47,14 @@ public class BomberTest implements WithAssertions {
         assertThat(blueBomber.getRefreshTime()).isEqualTo(BlueBomber.REFRESH_TIME);
         assertThat(blueBomber.getActingTime()).isEqualTo(DEFAULT_ACTING_TIME);
         assertThat(blueBomber.getInvincibilityTime()).isEqualTo(BlueBomber.INVINCIBILITY_TIME);
-        assertThat(blueBomber.getInitialXMap()).isEqualTo(blueBomber.getxMap());
-        assertThat(blueBomber.getInitialYMap()).isEqualTo(blueBomber.getyMap());
+        assertThat(blueBomber.getInitialXMap()).isEqualTo(blueBomber.getXMap());
+        assertThat(blueBomber.getInitialYMap()).isEqualTo(blueBomber.getYMap());
         assertThat(blueBomber.getCurSpriteAction()).isEqualTo(ACTION_WAITING);
         assertThat(blueBomber.isInvincible()).isTrue();
     }
 
     @Test
-    public void dropBombShouldAddABombToTheDroppedBombsList() throws Exception {
+    void dropBombShouldAddABombToTheDroppedBombsList() {
 
         // set test.
         BlueBomber blueBomber = new BlueBomber(10, 20);
@@ -72,7 +72,7 @@ public class BomberTest implements WithAssertions {
     }
 
     @Test
-    public void getNbDroppedBombShouldReturnNbDroppedBombs() throws Exception {
+    void getNbDroppedBombShouldReturnNbDroppedBombs() {
 
         // set test.
         BlueBomber blueBomber = new BlueBomber(10, 20);
@@ -88,7 +88,7 @@ public class BomberTest implements WithAssertions {
     }
 
     @Test
-    public void getNbDroppedBombShouldRemoveFinishedBombsFromTheDroppedBombsList() throws Exception {
+    void getNbDroppedBombShouldRemoveFinishedBombsFromTheDroppedBombsList() {
 
         // set test.
         BlueBomber blueBomber = new BlueBomber(10, 20);
@@ -111,7 +111,7 @@ public class BomberTest implements WithAssertions {
     }
 
     @Test
-    public void getBonusShouldReturnTheExpectedNumber() throws Exception {
+    void getBonusShouldReturnTheExpectedNumber() {
         // set test.
         BlueBomber blueBomber = new BlueBomber(10, 20);
         blueBomber.setBonus(BonusType.TYPE_BONUS_BOMB, 5);
@@ -127,7 +127,7 @@ public class BomberTest implements WithAssertions {
     }
 
     @Test
-    public void setBonusRollerShouldUpdateActingTime() throws Exception {
+    void setBonusRollerShouldUpdateActingTime() {
         // set test.
         BlueBomber blueBomber = new BlueBomber(10, 20);
 
@@ -139,7 +139,7 @@ public class BomberTest implements WithAssertions {
     }
 
     @Test
-    public void initShouldSetMembersWithTheExpectedValues() throws Exception {
+    void initShouldSetMembersWithTheExpectedValues() {
         BlueBomber blueBomber = new BlueBomber(10, 20);
 
         // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.
@@ -149,22 +149,22 @@ public class BomberTest implements WithAssertions {
 
         // set test (update members with value != than the expected ones).
         blueBomber.setCurSpriteAction(ACTION_DYING);
-        blueBomber.setxMap(30);
-        blueBomber.setyMap(40);
+        blueBomber.setXMap(30);
+        blueBomber.setYMap(40);
         blueBomber.setLastInvincibilityTs(10000L - blueBomber.getInvincibilityTime() - 1); // deactivate invincible.
         assertThat(blueBomber.isInvincible()).isFalse();
 
         // init bomber and check values.
         blueBomber.init();
-        assertThat(blueBomber.getxMap()).isEqualTo(blueBomber.getInitialXMap());
-        assertThat(blueBomber.getyMap()).isEqualTo(blueBomber.getInitialYMap());
+        assertThat(blueBomber.getXMap()).isEqualTo(blueBomber.getInitialXMap());
+        assertThat(blueBomber.getYMap()).isEqualTo(blueBomber.getInitialYMap());
         assertThat(blueBomber.getCurSpriteAction()).isEqualTo(ACTION_WAITING);
         assertThat(blueBomber.isInvincible()).isTrue();
         assertThat(blueBomber.getLastInvincibilityTs()).isEqualTo(10000L);
     }
 
     @Test
-    public void isActionAllowedShouldReturnTrue() throws Exception {
+    void isActionAllowedShouldReturnTrue() {
         BlueBomber blueBomber = new BlueBomber(10, 20);
         assertThat(blueBomber.isActionAllowed(ACTION_DYING)).isTrue();
         assertThat(blueBomber.isActionAllowed(ACTION_WAITING)).isTrue();
@@ -173,14 +173,14 @@ public class BomberTest implements WithAssertions {
     }
 
     @Test
-    public void isActionAllowedShouldReturnFalse() throws Exception {
+    void isActionAllowedShouldReturnFalse() {
         BlueBomber blueBomber = new BlueBomber(10, 20);
         assertThat(blueBomber.isActionAllowed(ACTION_BREAKING)).isFalse();
         assertThat(blueBomber.isActionAllowed(ACTION_FLYING)).isFalse();
     }
 
     @Test
-    public void hasActionChangedWithTheSameActionShouldReturnFalse() {
+    void hasActionChangedWithTheSameActionShouldReturnFalse() {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
@@ -192,7 +192,7 @@ public class BomberTest implements WithAssertions {
     }
 
     @Test
-    public void hasActionChangedWithTheSameDirectionShouldReturnFalse() {
+    void hasActionChangedWithTheSameDirectionShouldReturnFalse() {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
@@ -206,7 +206,7 @@ public class BomberTest implements WithAssertions {
     }
 
     @Test
-    public void hasActionChangedWithADifferentActionShouldReturnTrue() throws Exception {
+    void hasActionChangedWithADifferentActionShouldReturnTrue() {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
@@ -218,7 +218,7 @@ public class BomberTest implements WithAssertions {
     }
 
     @Test
-    public void hasActionChangedWithADifferentDirectionShouldReturnTrue() throws Exception {
+    void hasActionChangedWithADifferentDirectionShouldReturnTrue() {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
@@ -232,7 +232,7 @@ public class BomberTest implements WithAssertions {
     }
 
     @Test
-    public void updateSpriteShouldSetTheExpectedMember() throws Exception {
+    void updateSpriteShouldSetTheExpectedMember() {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // dying.

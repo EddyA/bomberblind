@@ -1,6 +1,8 @@
 package sprite.settled;
 
 import images.ImagesLoader;
+import lombok.Getter;
+import lombok.Setter;
 import sprite.SpriteType;
 
 /**
@@ -8,10 +10,12 @@ import sprite.SpriteType;
  */
 public class Bomb extends TimedSettled {
 
-    public final static int REFRESH_TIME = 100;
-    public final static int DURATION_TIME = 2000;
+    public static final int REFRESH_TIME = 100;
+    public static final int DURATION_TIME = 2000;
 
-    private int flamesize;
+    @Getter
+    @Setter
+    private int flameSize;
 
     /**
      * Create a bomb.
@@ -22,20 +26,12 @@ public class Bomb extends TimedSettled {
      */
     public Bomb(int rowIdx, int colIdx, int flameSize) {
         super(rowIdx,
-                colIdx,
-                SpriteType.TYPE_SPRITE_BOMB,
-                REFRESH_TIME,
-                ImagesLoader.imagesMatrix[ImagesLoader.bombMatrixRowIdx],
-                ImagesLoader.NB_BOMB_FRAME,
-                DURATION_TIME);
-        this.flamesize = flameSize;
-    }
-
-    public void setFlamesize(int flamesize) {
-        this.flamesize = flamesize;
-    }
-
-    public int getFlameSize() {
-        return flamesize;
+            colIdx,
+            SpriteType.TYPE_SPRITE_BOMB,
+            REFRESH_TIME,
+            ImagesLoader.imagesMatrix[ImagesLoader.bombMatrixRowIdx],
+            ImagesLoader.NB_BOMB_FRAME,
+            DURATION_TIME);
+        this.flameSize = flameSize;
     }
 }

@@ -1,55 +1,56 @@
-package spriteList;
+package spritelist;
 
+import java.io.IOException;
 import exceptions.InvalidConfigurationException;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class SpritesPropertiesTest implements WithAssertions {
+class SpritesPropertiesTest implements WithAssertions {
 
     private final String TEST_SPRITES_PROPERTIES_FILE = "/test.zelda.sprites.properties";
 
     @Test
-    public void loadAndCheckPropertiesShouldLoadExpectedValues() throws Exception {
+    void loadAndCheckPropertiesShouldLoadExpectedValues() throws IOException, InvalidConfigurationException {
         SpritesProperties spritesProperties = new SpritesProperties(TEST_SPRITES_PROPERTIES_FILE);
         spritesProperties.loadProperties();
         spritesProperties.checkProperties();
 
         // check values.
-        assertThat(spritesProperties.getSpritesEnemyzora()).isEqualTo(1);
+        assertThat(spritesProperties.getSpritesEnemyZora()).isEqualTo(1);
         assertThat(spritesProperties.getSpritesEnemyGreenSoldier()).isEqualTo(2);
         assertThat(spritesProperties.getSpritesEnemyRedSpearSoldier()).isEqualTo(3);
         assertThat(spritesProperties.getSpritesBirdsArrivalTimeInterval()).isEqualTo(4);
     }
 
     @Test
-    public void valueOfOptionnalPropertiesShouldBeZeroWhenNotSet() throws Exception {
+    void valueOfOptionnalPropertiesShouldBeZeroWhenNotSet() {
         SpritesProperties spritesProperties = new SpritesProperties(null);
 
         // check values of optionnal properties.
-        assertThat(spritesProperties.getSpritesEnemyzora()).isEqualTo(0);
+        assertThat(spritesProperties.getSpritesEnemyZora()).isEqualTo(0);
         assertThat(spritesProperties.getSpritesEnemyGreenSoldier()).isEqualTo(0);
         assertThat(spritesProperties.getSpritesEnemyRedSpearSoldier()).isEqualTo(0);
         assertThat(spritesProperties.getSpritesBirdsArrivalTimeInterval()).isEqualTo(0);
     }
 
     @Test
-    public void loadPropertiesWithNullFileShouldThrowExpectedException() throws Exception {
+    void loadPropertiesWithNullFileShouldThrowExpectedException() {
         SpritesProperties zeldaMapProperties = new SpritesProperties(null);
         assertThatThrownBy(zeldaMapProperties::loadProperties)
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(AssertionError.class)
                 .hasMessage("sprites properties file not set.");
     }
 
     @Test
-    public void loadPropertiesWithEmptyFileShouldThrowExpectedException() throws Exception {
+    void loadPropertiesWithEmptyFileShouldThrowExpectedException() {
         SpritesProperties zeldaMapProperties = new SpritesProperties("");
         assertThatThrownBy(zeldaMapProperties::loadProperties)
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(AssertionError.class)
                 .hasMessage("sprites properties file not set.");
     }
 
     @Test
-    public void loadPropertiesWithUnknownParameterShouldThrowExpectedException() throws Exception {
+    void loadPropertiesWithUnknownParameterShouldThrowExpectedException() {
         SpritesProperties zeldaMapProperties = new SpritesProperties("badFilePath");
         assertThatThrownBy(zeldaMapProperties::loadProperties)
                 .isInstanceOf(InvalidConfigurationException.class)
@@ -57,7 +58,8 @@ public class SpritesPropertiesTest implements WithAssertions {
     }
 
     @Test
-    public void checkPropertiesWithNotIntegerPropertiesShouldThrowExpectedException() throws Exception {
+    void checkPropertiesWithNotIntegerPropertiesShouldThrowExpectedException()
+        throws IOException, InvalidConfigurationException {
         SpritesProperties zeldaMapProperties = new SpritesProperties(TEST_SPRITES_PROPERTIES_FILE);
         zeldaMapProperties.loadProperties();
 

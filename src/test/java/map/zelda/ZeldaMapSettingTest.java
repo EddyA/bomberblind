@@ -1,15 +1,19 @@
 package map.zelda;
 
+import java.io.IOException;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import exceptions.InvalidConfigurationException;
+import exceptions.InvalidPropertiesException;
 
-public class ZeldaMapSettingTest implements WithAssertions {
+class ZeldaMapSettingTest implements WithAssertions {
 
     @SuppressWarnings("FieldCanBeLocal")
     final private String TEST_MAP_PROPERTIES_FILE = "/test.zelda.map.properties";
 
     @Test
-    public void rMapSettingShouldLoadExpectedValues() throws Exception {
+    void rMapSettingShouldLoadExpectedValues()
+        throws IOException, InvalidConfigurationException, InvalidPropertiesException {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties(TEST_MAP_PROPERTIES_FILE);
         zeldaMapProperties.loadProperties();
         zeldaMapProperties.checkProperties();

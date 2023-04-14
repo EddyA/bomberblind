@@ -1,18 +1,23 @@
 package utils;
 
 import java.awt.event.KeyEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
 
 public enum Direction {
 
     DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, DIRECTION_EAST; // available directions.
-    private final static Random random = new Random(); // init once the random object.
+    private static final Random random = new Random();
 
     /**
      * Create a list of direction.
      */
-    private final static List<Direction> directionList =
-            new ArrayList<>(Arrays.asList(DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, DIRECTION_EAST));
+    private static final List<Direction> directionList =
+        new ArrayList<>(Arrays.asList(DIRECTION_NORTH, DIRECTION_SOUTH, DIRECTION_WEST, DIRECTION_EAST));
 
     /**
      * @return a random direction.
@@ -42,38 +47,22 @@ public enum Direction {
      * @return the relative direction if possible, null otherwise.
      */
     public static Direction convertKeyEventToDirection(Integer keyEvent) {
-        switch (keyEvent) {
-            case KeyEvent.VK_UP:
-                return DIRECTION_NORTH;
-            case KeyEvent.VK_DOWN:
-                return DIRECTION_SOUTH;
-            case KeyEvent.VK_LEFT:
-                return DIRECTION_WEST;
-            case KeyEvent.VK_RIGHT:
-                return DIRECTION_EAST;
-        }
-        throw new RuntimeException("cannot convert KeyEvent '" + keyEvent + "' to Direction.");
+        return switch (keyEvent) {
+            case KeyEvent.VK_UP -> DIRECTION_NORTH;
+            case KeyEvent.VK_DOWN -> DIRECTION_SOUTH;
+            case KeyEvent.VK_LEFT -> DIRECTION_WEST;
+            case KeyEvent.VK_RIGHT -> DIRECTION_EAST;
+            default -> throw new RuntimeException("cannot convert KeyEvent '" + keyEvent + "' to Direction.");
+        };
     }
 
-    public static Optional<String> getlabel(Direction direction) {
+    public static Optional<String> getLabel(Direction direction) {
         Optional<String> label = Optional.empty();
         switch (direction) {
-            case DIRECTION_NORTH: {
-                label = Optional.of("north");
-                break;
-            }
-            case DIRECTION_SOUTH: {
-                label = Optional.of("south");
-                break;
-            }
-            case DIRECTION_WEST: {
-                label = Optional.of("west");
-                break;
-            }
-            case DIRECTION_EAST: {
-                label = Optional.of("east");
-                break;
-            }
+            case DIRECTION_NORTH -> label = Optional.of("north");
+            case DIRECTION_SOUTH -> label = Optional.of("south");
+            case DIRECTION_WEST -> label = Optional.of("west");
+            case DIRECTION_EAST -> label = Optional.of("east");
         }
         return label;
     }

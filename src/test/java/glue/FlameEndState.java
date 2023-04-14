@@ -9,17 +9,17 @@ import sprite.settled.FlameEnd;
 
 public class FlameEndState {
 
-    private final FlameEnd spyedFlameEnd;
+    private final FlameEnd spiedFlameEnd;
     private boolean shouldBeRemoved;
 
     public FlameEndState() throws IOException {
         ImagesLoader.fillImagesMatrix();
         FlameEnd flameEnd = new FlameEnd(0, 0);
-        spyedFlameEnd = Mockito.spy(flameEnd);
+        spiedFlameEnd = Mockito.spy(flameEnd);
     }
 
     FlameEnd getFlameEnd() {
-        return spyedFlameEnd;
+        return spiedFlameEnd;
     }
 
     boolean isShouldBeRemoved() {

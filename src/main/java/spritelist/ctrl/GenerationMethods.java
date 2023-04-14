@@ -1,30 +1,33 @@
-package spriteList.ctrl;
+package spritelist.ctrl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import exceptions.CannotPlaceEnemyOnMapException;
+import static images.ImagesLoader.IMAGE_SIZE;
+import lombok.experimental.UtilityClass;
 import map.MapPoint;
 import sprite.Sprite;
-import sprite.nomad.*;
+import sprite.nomad.EnemyType;
+import sprite.nomad.GreenSoldier;
+import sprite.nomad.RedSpearSoldier;
+import sprite.nomad.WhiteBird;
+import sprite.nomad.Zora;
 import sprite.settled.BonusBomb;
 import sprite.settled.BonusFlame;
 import sprite.settled.BonusRoller;
 import sprite.settled.BonusType;
-import spriteList.SpriteList;
+import spritelist.SpriteList;
+import static spritelist.ctrl.AddingMethods.addBreakingEnemy;
+import static spritelist.ctrl.AddingMethods.addWalkingEnemy;
 import utils.Direction;
 
-import java.util.*;
-
-import static images.ImagesLoader.IMAGE_SIZE;
-import static spriteList.ctrl.AddingMethods.addBreakingEnemy;
-import static spriteList.ctrl.AddingMethods.addWalkingEnemy;
-
+@UtilityClass
 public class GenerationMethods {
 
     // init a Random for the whole process.
-    private final static Random random;
-
-    static {
-        random = new Random();
-    }
+    private static final Random random = new Random();
 
     /**
      * Place a certain number of elements of a certain type of enemy.
@@ -41,8 +44,8 @@ public class GenerationMethods {
                                             List<MapPoint> emptyPtList) throws CannotPlaceEnemyOnMapException {
         for (int i = 0; i < nbElt; i++) {
             if (emptyPtList.isEmpty()) {
-                String msg = "cannot (create) and place a '" + EnemyType.getlabel(enemyType).orElse("no_name") +
-                        "' on map, the list of empty point is empty.";
+                String msg = "cannot (create) and place a '" + EnemyType.getLabel(enemyType).orElse("no_name") +
+                    "' on map, the list of empty point is empty.";
                 throw new CannotPlaceEnemyOnMapException(msg);
             }
             int caseIdx = Math.abs(random.nextInt(emptyPtList.size()));
@@ -51,18 +54,9 @@ public class GenerationMethods {
 
             // create the enemy.
             switch (enemyType) {
-                case TYPE_ENEMY_ZORA: {
-                    addWalkingEnemy(spriteList, new Zora(xMap, yMap));
-                    break;
-                }
-                case TYPE_ENEMY_GREEN_SOLDIER: {
-                    addWalkingEnemy(spriteList, new GreenSoldier(xMap, yMap));
-                    break;
-                }
-                case TYPE_ENEMY_RED_SPEAR_SOLDIER: {
-                    addBreakingEnemy(spriteList, new RedSpearSoldier(xMap, yMap));
-                    break;
-                }
+                case TYPE_ENEMY_ZORA -> addWalkingEnemy(spriteList, new Zora(xMap, yMap));
+                case TYPE_ENEMY_GREEN_SOLDIER -> addWalkingEnemy(spriteList, new GreenSoldier(xMap, yMap));
+                case TYPE_ENEMY_RED_SPEAR_SOLDIER -> addBreakingEnemy(spriteList, new RedSpearSoldier(xMap, yMap));
             }
             emptyPtList.remove(caseIdx); // remove the current point from the list of empty points.
         }
@@ -77,7 +71,7 @@ public class GenerationMethods {
      * @param mapHeight      the map height
      * @param bonusBundle    the list of bonus to place
      */
-    public static void randomlyPlaceBonusFromAMapPoint(LinkedList<Sprite> list,
+    public static void randomlyPlaceBonusFromAMapPoint(List<Sprite> list,
                                                        MapPoint[][] mapPointMatrix,
                                                        int mapWidth,
                                                        int mapHeight,
@@ -88,7 +82,7 @@ public class GenerationMethods {
         for (int rowIdx = 0; rowIdx < mapHeight; rowIdx++) {
             for (int colIdx = 0; colIdx < mapWidth; colIdx++) {
                 if (mapPointMatrix[rowIdx][colIdx].isPathway() && // the checked point is a pathway
-                        !mapPointMatrix[rowIdx][colIdx].isBonusing()) { // AND is not bonusing.
+                    !mapPointMatrix[rowIdx][colIdx].isBonusing()) { // AND is not bonusing.
                     emptyPtList.add(mapPointMatrix[rowIdx][colIdx]);
                 }
             }
@@ -99,22 +93,16 @@ public class GenerationMethods {
             for (int bonusIdx = 0; bonusIdx < bonusEntry.getValue(); bonusIdx++) {
                 int caseIdx = Math.abs(random.nextInt(emptyPtList.size()));
                 switch (bonusEntry.getKey()) {
-                    case TYPE_BONUS_BOMB:
-                        AddingMethods.addBonus(list, mapPointMatrix,
-                                new BonusBomb(emptyPtList.get(caseIdx).getRowIdx(), emptyPtList.get(caseIdx).getColIdx()));
-                        break;
-                    case TYPE_BONUS_FLAME:
-                        AddingMethods.addBonus(list, mapPointMatrix,
-                                new BonusFlame(emptyPtList.get(caseIdx).getRowIdx(), emptyPtList.get(caseIdx).getColIdx()));
-                        break;
-                    case TYPE_BONUS_ROLLER:
-                        AddingMethods.addBonus(list, mapPointMatrix,
-                                new BonusRoller(emptyPtList.get(caseIdx).getRowIdx(), emptyPtList.get(caseIdx).getColIdx()));
-                        break;
-                    default: // should not happen.
+                    case TYPE_BONUS_BOMB -> AddingMethods.addBonus(list, mapPointMatrix,
+                        new BonusBomb(emptyPtList.get(caseIdx).getRowIdx(), emptyPtList.get(caseIdx).getColIdx()));
+                    case TYPE_BONUS_FLAME -> AddingMethods.addBonus(list, mapPointMatrix,
+                        new BonusFlame(emptyPtList.get(caseIdx).getRowIdx(), emptyPtList.get(caseIdx).getColIdx()));
+                    case TYPE_BONUS_ROLLER -> AddingMethods.addBonus(list, mapPointMatrix,
+                        new BonusRoller(emptyPtList.get(caseIdx).getRowIdx(), emptyPtList.get(caseIdx).getColIdx()));
+                    default -> // should not happen.
                         throw new RuntimeException("the BonusType \""
-                                + BonusType.getlabel(bonusEntry.getKey()).orElse("n/a")
-                                + "\" is not handled by the switch.");
+                            + BonusType.getLabel(bonusEntry.getKey()).orElse("n/a")
+                            + "\" is not handled by the switch.");
                 }
             }
         }
@@ -141,32 +129,28 @@ public class GenerationMethods {
                                                  int mapHeight) {
         int nbElts = 3 + random.nextInt(3);
         Direction direction = Direction.getRandomDirection();
-        int deviation = (8 + random.nextInt(8)) * (random.nextInt(1) == 0 ? -1 : 1);
+        int deviation = (8 + random.nextInt(8)) * (random.nextInt(2) == 0 ? -1 : 1);
 
         switch (direction) {
-            case DIRECTION_NORTH: {
+            case DIRECTION_NORTH -> {
                 int fstXChar = screenWidth + random.nextInt(mapWidth - screenWidth); // a random abscissa.
                 int fstYChar = mapHeight + (nbElts * IMAGE_SIZE);
                 placeAGroupOfBird(spriteList, nbElts, fstXChar, fstYChar, direction, deviation);
-                break;
             }
-            case DIRECTION_SOUTH: {
+            case DIRECTION_SOUTH -> {
                 int fstXChar = screenWidth + random.nextInt(mapWidth - screenWidth); // a random abscissa.
                 int fstYChar = -(nbElts * IMAGE_SIZE);
                 placeAGroupOfBird(spriteList, nbElts, fstXChar, fstYChar, direction, deviation);
-                break;
             }
-            case DIRECTION_WEST: {
+            case DIRECTION_WEST -> {
                 int fstXChar = mapWidth + (nbElts * IMAGE_SIZE);
                 int fstYChar = screenHeight + random.nextInt(mapHeight - screenHeight); // a random ordinate.
                 placeAGroupOfBird(spriteList, nbElts, fstXChar, fstYChar, direction, deviation);
-                break;
             }
-            case DIRECTION_EAST: {
+            case DIRECTION_EAST -> {
                 int fstXChar = -(nbElts * IMAGE_SIZE);
                 int fstYChar = screenHeight + random.nextInt(mapHeight - screenHeight); // a random ordinate.
                 placeAGroupOfBird(spriteList, nbElts, fstXChar, fstYChar, direction, deviation);
-                break;
             }
         }
     }
@@ -189,29 +173,25 @@ public class GenerationMethods {
                                          int deviation) {
         for (int eltIdx = 0; eltIdx < nbBirds; eltIdx++) {
             switch (direction) {
-                case DIRECTION_NORTH: {
+                case DIRECTION_NORTH -> {
                     int xChar = fstXChar - ((eltIdx + 1) / 2 * IMAGE_SIZE * (eltIdx % 2 == 0 ? 1 : -1));
                     int yChar = fstYChar + ((eltIdx + 1) / 2) * 50;
                     AddingMethods.addFlyingNomad(spriteList, new WhiteBird(xChar, yChar, direction, deviation));
-                    break;
                 }
-                case DIRECTION_SOUTH: {
+                case DIRECTION_SOUTH -> {
                     int xChar = fstXChar + ((eltIdx + 1) / 2 * IMAGE_SIZE * (eltIdx % 2 == 0 ? 1 : -1));
                     int yChar = fstYChar - ((eltIdx + 1) / 2) * 50;
                     AddingMethods.addFlyingNomad(spriteList, new WhiteBird(xChar, yChar, direction, deviation));
-                    break;
                 }
-                case DIRECTION_WEST: {
+                case DIRECTION_WEST -> {
                     int xChar = fstXChar + ((eltIdx + 1) / 2) * 50;
                     int yChar = fstYChar - ((eltIdx + 1) / 2 * IMAGE_SIZE * (eltIdx % 2 == 0 ? 1 : -1));
                     AddingMethods.addFlyingNomad(spriteList, new WhiteBird(xChar, yChar, direction, deviation));
-                    break;
                 }
-                case DIRECTION_EAST: {
+                case DIRECTION_EAST -> {
                     int xChar = fstXChar - ((eltIdx + 1) / 2) * 50;
                     int yChar = fstYChar + ((eltIdx + 1) / 2 * IMAGE_SIZE * (eltIdx % 2 == 0 ? 1 : -1));
                     AddingMethods.addFlyingNomad(spriteList, new WhiteBird(xChar, yChar, direction, deviation));
-                    break;
                 }
             }
         }

@@ -1,23 +1,18 @@
 package utils.text;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
 import images.ImagesLoader;
-
-import java.awt.*;
+import lombok.experimental.UtilityClass;
 
 /**
  * This class allows painting a line using skinned ascii.
  */
+@UtilityClass
 public class SkinnedLine {
 
-    private final static Image[] skinnedAscii = ImagesLoader.imagesMatrix[ImagesLoader.asciiMatrixRowIdx];
-    private final static int skinnedAsciiHeight = 24; // height of a skinned ascii (in px).
-
-    /**
-     * @return the height of the skinned ascii.
-     */
-    public static int getSkinnedAsciiHeight() {
-        return skinnedAsciiHeight;
-    }
+    private static final Image[] skinnedAscii = ImagesLoader.imagesMatrix[ImagesLoader.asciiMatrixRowIdx];
+    public static final int SKINNED_ASCII_HEIGHT = 24; // height of a skinned ascii (in px).
 
     /**
      * Compute the width of a skinned line (in px).
@@ -28,7 +23,7 @@ public class SkinnedLine {
     public static int computeLineWidth(String line) {
         int lineWidth = 0;
         for (int charIdx = 0; charIdx < line.length(); charIdx++) {
-            int asciiCode = (int) line.charAt(charIdx);
+            int asciiCode = line.charAt(charIdx);
             lineWidth += (skinnedAscii[asciiCode].getWidth(null) + 1);
         }
         return lineWidth;
@@ -56,7 +51,7 @@ public class SkinnedLine {
     public static void paintBuffer(Graphics2D g, int xScreen, int yScreen, String line) {
         int curX = xScreen;
         for (int charIdx = 0; charIdx < line.length(); charIdx++) {
-            int asciiCode = (int) line.charAt(charIdx);
+            int asciiCode = line.charAt(charIdx);
             g.drawImage(skinnedAscii[asciiCode], curX, yScreen, null);
             curX += skinnedAscii[asciiCode].getWidth(null) + 1;
         }

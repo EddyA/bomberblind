@@ -5,27 +5,27 @@ import static sprite.SpriteAction.ACTION_FLYING;
 import java.io.IOException;
 
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import images.ImagesLoader;
 import sprite.SpriteType;
 import utils.Direction;
 
-public class WhiteBirdTest implements WithAssertions {
+class WhiteBirdTest implements WithAssertions {
 
-    @Before
-    public void fillImagesMatrix() throws IOException {
+    @BeforeEach
+    void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
     }
 
     @Test
-    public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
+    void constructorShouldSetMembersWithTheExpectedValues() {
         WhiteBird whiteBird = new WhiteBird(15, 30, Direction.DIRECTION_EAST, 5);
 
         // check members value.
-        assertThat(whiteBird.getxMap()).isEqualTo(15);
-        assertThat(whiteBird.getyMap()).isEqualTo(30);
+        assertThat(whiteBird.getXMap()).isEqualTo(15);
+        assertThat(whiteBird.getYMap()).isEqualTo(30);
         assertThat(whiteBird.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_FLYING_NOMAD);
         assertThat(whiteBird.getFlyBackImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.birdFlyBackMatrixRowIdx]);
         assertThat(whiteBird.getFlyFrontImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.birdFlyFrontMatrixRowIdx]);

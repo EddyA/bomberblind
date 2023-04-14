@@ -2,8 +2,8 @@ package sprite.settled;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import utils.Tools;
 
@@ -11,22 +11,22 @@ import java.io.IOException;
 
 import static images.ImagesLoader.NB_BONUS_BOMB_FRAME;
 
-public class BonusTest implements WithAssertions {
+class BonusTest implements WithAssertions {
 
-    @Before
-    public void fillImagesMatrix() throws IOException {
+    @BeforeEach
+    void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
     }
 
     @Test
-    public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
+    void constructorShouldSetMembersWithTheExpectedValues() {
         BonusBomb bonusBomb = new BonusBomb(5, 10);
 
         // check members value.
         assertThat(bonusBomb.getRowIdx()).isEqualTo(5);
         assertThat(bonusBomb.getColIdx()).isEqualTo(10);
-        assertThat(bonusBomb.getxMap()).isEqualTo(Tools.getCaseCentreAbscissa(10));
-        assertThat(bonusBomb.getyMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
+        assertThat(bonusBomb.getXMap()).isEqualTo(Tools.getCaseCentreAbscissa(10));
+        assertThat(bonusBomb.getYMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
         assertThat(bonusBomb.getBonusType()).isEqualTo(BonusType.TYPE_BONUS_BOMB);
         assertThat(bonusBomb.getImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx]);
         assertThat(bonusBomb.getNbImages()).isEqualTo(NB_BONUS_BOMB_FRAME);
@@ -34,54 +34,54 @@ public class BonusTest implements WithAssertions {
     }
 
     @Test
-    public void updateImageWhenItIsNotTimeToRefreshShouldDoNothing() throws Exception {
+    void updateImageWhenItIsNotTimeToRefreshShouldDoNothing() {
         BonusBomb bonusBomb = new BonusBomb(5, 4);
-        BonusBomb spyedBonusBomb = Mockito.spy(bonusBomb);
-        Mockito.when(spyedBonusBomb.isTimeToRefresh()).thenReturn(false);
+        BonusBomb spiedBonusBomb = Mockito.spy(bonusBomb);
+        Mockito.when(spiedBonusBomb.isTimeToRefresh()).thenReturn(false);
 
         // set bonus.
-        spyedBonusBomb.setCurImageIdx(0);
-        spyedBonusBomb.setCurImage(ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx][0]);
+        spiedBonusBomb.setCurImageIdx(0);
+        spiedBonusBomb.setCurImage(ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx][0]);
 
         // call & check.
-        spyedBonusBomb.updateImage();
-        assertThat(spyedBonusBomb.getCurImageIdx()).isEqualTo(0);
-        assertThat(spyedBonusBomb.getCurImage()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx][0]);
+        spiedBonusBomb.updateImage();
+        assertThat(spiedBonusBomb.getCurImageIdx()).isEqualTo(0);
+        assertThat(spiedBonusBomb.getCurImage()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx][0]);
     }
 
     @Test
-    public void updateImageShouldIncreaseCurImageIdx() throws Exception {
+    void updateImageShouldIncreaseCurImageIdx() {
         BonusBomb bonusBomb = new BonusBomb(5, 4);
-        BonusBomb spyedBonusBomb = Mockito.spy(bonusBomb);
-        Mockito.when(spyedBonusBomb.isTimeToRefresh()).thenReturn(true);
+        BonusBomb spiedBonusBomb = Mockito.spy(bonusBomb);
+        Mockito.when(spiedBonusBomb.isTimeToRefresh()).thenReturn(true);
 
         // set bonus.
-        spyedBonusBomb.setCurImageIdx(0);
-        spyedBonusBomb.setCurImage(ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx][0]);
+        spiedBonusBomb.setCurImageIdx(0);
+        spiedBonusBomb.setCurImage(ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx][0]);
 
         // call & check.
-        spyedBonusBomb.updateImage();
-        assertThat(spyedBonusBomb.getCurImageIdx()).isEqualTo(1);
-        assertThat(spyedBonusBomb.getCurImage()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx][1]);
+        spiedBonusBomb.updateImage();
+        assertThat(spiedBonusBomb.getCurImageIdx()).isEqualTo(1);
+        assertThat(spiedBonusBomb.getCurImage()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx][1]);
     }
 
     @Test
-    public void updateImageWithTheLastImageShouldSetCurImageIdxTo0() throws Exception {
+    void updateImageWithTheLastImageShouldSetCurImageIdxTo0() {
         BonusBomb bonusBomb = new BonusBomb(5, 4);
-        BonusBomb spyedBonusBomb = Mockito.spy(bonusBomb);
-        Mockito.when(spyedBonusBomb.isTimeToRefresh()).thenReturn(true);
+        BonusBomb spiedBonusBomb = Mockito.spy(bonusBomb);
+        Mockito.when(spiedBonusBomb.isTimeToRefresh()).thenReturn(true);
 
         // set bonus.
-        spyedBonusBomb.setCurImageIdx(NB_BONUS_BOMB_FRAME - 1);
+        spiedBonusBomb.setCurImageIdx(NB_BONUS_BOMB_FRAME - 1);
 
         // call & check.
-        spyedBonusBomb.updateImage();
-        assertThat(spyedBonusBomb.getCurImageIdx()).isEqualTo(0);
-        assertThat(spyedBonusBomb.getCurImage()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx][0]);
+        spiedBonusBomb.updateImage();
+        assertThat(spiedBonusBomb.getCurImageIdx()).isEqualTo(0);
+        assertThat(spiedBonusBomb.getCurImage()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bonusBombMatrixRowIdx][0]);
     }
 
     @Test
-    public void isFinishedShouldReturnFalseWhenCurStatusIsAlive() throws Exception {
+    void isFinishedShouldReturnFalseWhenCurStatusIsAlive() {
         BonusBomb bonusBomb = new BonusBomb(5, 4);
 
         // set the status and check.
@@ -90,7 +90,7 @@ public class BonusTest implements WithAssertions {
     }
 
     @Test
-    public void isFinishedShouldReturnTrueWhenCurStatusIsFinished() throws Exception {
+    void isFinishedShouldReturnTrueWhenCurStatusIsFinished() {
         BonusBomb bonusBomb = new BonusBomb(5, 4);
 
         // set the status and check.

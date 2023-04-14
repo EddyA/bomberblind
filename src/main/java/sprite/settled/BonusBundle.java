@@ -1,19 +1,18 @@
 package sprite.settled;
 
-import utils.Tuple2;
-
 import java.util.HashMap;
 import java.util.Map;
+import utils.Tuple2;
 
 /**
  * Handle a collection of bonus.
  */
 public class BonusBundle {
 
-    public final static int DEFAULT_NB_BONUS_BOMB = 1;
-    public final static int DEFAULT_NB_BONUS_FLAME = 1;
-    public final static int DEFAULT_NB_BONUS_HEART = 5;
-    public final static int DEFAULT_NB_BONUS_ROLLER = 1;
+    public static final int DEFAULT_NB_BONUS_BOMB = 1;
+    public static final int DEFAULT_NB_BONUS_FLAME = 1;
+    public static final int DEFAULT_NB_BONUS_HEART = 5;
+    public static final int DEFAULT_NB_BONUS_ROLLER = 1;
 
     /**
      * Map of bonus with:

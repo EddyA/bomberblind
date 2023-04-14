@@ -1,13 +1,13 @@
 package glue;
 
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
 import static sprite.SpriteAction.ACTION_BREAKING;
 import static sprite.SpriteAction.ACTION_DYING;
 
 import org.assertj.core.api.WithAssertions;
 import org.mockito.Mockito;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Then;
 import utils.Direction;
 
 public class BreakingEnemyStepDef  implements WithAssertions {

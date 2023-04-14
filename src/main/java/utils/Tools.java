@@ -1,9 +1,10 @@
 package utils;
 
-import com.google.common.primitives.Ints;
-
+import org.apache.commons.lang3.StringUtils;
 import static images.ImagesLoader.IMAGE_SIZE;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class Tools {
 
     /**
@@ -13,11 +14,7 @@ public class Tools {
      * false otherwise.
      */
     public static boolean isNotNullAndValidInteger(String value) {
-        boolean res = false;
-        if (value != null && Ints.tryParse(value) != null) {
-            res = true;
-        }
-        return res;
+        return StringUtils.isNumeric(value);
     }
 
     /**
@@ -27,55 +24,51 @@ public class Tools {
      * false otherwise.
      */
     public static boolean isNullOrValidInteger(String value) {
-        boolean res = false;
-        if (value == null || Ints.tryParse(value) != null) {
-            res = true;
-        }
-        return res;
+        return value == null || StringUtils.isNumeric(value);
     }
 
     /*
       -------------------------------------------------------------------
-      The following functions allow having the gabarit of the characters.
-      The gabarit is defined as a square with a radius of "IMAGE" (30px).
+      The following functions allow having the patron of the characters.
+      The patron is defined as a square with a radius of "IMAGE" (30px).
       -------------------------------------------------------------------
      */
 
     /**
-     * Compute the top point of the gabarit.
+     * Compute the top point of the patron.
      *
      * @param yChar the ordinate of the character
-     * @return the top point of the gabarit
+     * @return the top point of the patron
      */
     public static int getCharTopOrdinate(int yChar) {
         return yChar - IMAGE_SIZE / 2;
     }
 
     /**
-     * Compute the bottom point of the gabarit.
+     * Compute the bottom point of the patron.
      *
      * @param yChar the ordinate of the character
-     * @return the bottom point of the gabarit
+     * @return the bottom point of the patron
      */
     public static int getCharBottomOrdinate(int yChar) {
         return yChar;
     }
 
     /**
-     * Compute the left point of the gabarit.
+     * Compute the left point of the patron.
      *
      * @param xChar the abscissa of the character
-     * @return the left point of the gabarit
+     * @return the left point of the patron
      */
     public static int getCharLeftAbscissa(int xChar) {
         return xChar - IMAGE_SIZE / 2;
     }
 
     /**
-     * Compute the right point of the gabarit.
+     * Compute the right point of the patron.
      *
      * @param xChar the abscissa of the character
-     * @return the right point of the gabarit
+     * @return the right point of the patron
      */
     public static int getCharRightAbscissa(int xChar) {
         return xChar + IMAGE_SIZE / 2 - 1;

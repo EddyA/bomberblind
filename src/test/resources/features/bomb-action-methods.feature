@@ -13,7 +13,7 @@ Given a bomb at rowIdx 4 and coldIdx 4 and a flame size of 3
 And the bomb is finished
 When processing the bomb
 Then the following flames should be added:
-| rowIdx | colIdx |
+#| rowIdx | colIdx |
 | 1      | 4      |
 | 2      | 4      |
 | 3      | 4      |

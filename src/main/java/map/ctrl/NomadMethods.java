@@ -1,11 +1,15 @@
 package map.ctrl;
 
+import lombok.experimental.UtilityClass;
 import map.MapPoint;
 import utils.Direction;
 import utils.Tools;
+import static utils.Tools.getCharBottomRowIdx;
+import static utils.Tools.getCharLeftColIdx;
+import static utils.Tools.getCharRightColIdx;
+import static utils.Tools.getCharTopRowIdx;
 
-import static utils.Tools.*;
-
+@UtilityClass
 public class NomadMethods {
 
     /**
@@ -23,12 +27,7 @@ public class NomadMethods {
         int mostLeftColIdx = getCharLeftColIdx(xChar);
         int mostRightColIdx = getCharRightColIdx(xChar);
 
-        boolean isCrossing = false;
-        if (topRowIdx < 0 || bottomRowIdx >= mapHeight ||
-                mostLeftColIdx < 0 || mostRightColIdx >= mapWidth) {
-            isCrossing = true;
-        }
-        return isCrossing;
+        return topRowIdx < 0 || bottomRowIdx >= mapHeight || mostLeftColIdx < 0 || mostRightColIdx >= mapWidth;
     }
 
     /**
@@ -46,14 +45,10 @@ public class NomadMethods {
         int mostLeftColIdx = getCharLeftColIdx(xChar);
         int mostRightColIdx = getCharRightColIdx(xChar);
 
-        boolean isCrossing = false;
-        if (!mapPointMatrix[topRowIdx][mostLeftColIdx].isPathway() ||
-                !mapPointMatrix[topRowIdx][mostRightColIdx].isPathway() ||
-                !mapPointMatrix[bottomRowIdx][mostLeftColIdx].isPathway() ||
-                !mapPointMatrix[bottomRowIdx][mostRightColIdx].isPathway()) {
-            isCrossing = true;
-        }
-        return isCrossing;
+        return !mapPointMatrix[topRowIdx][mostLeftColIdx].isPathway() ||
+            !mapPointMatrix[topRowIdx][mostRightColIdx].isPathway() ||
+            !mapPointMatrix[bottomRowIdx][mostLeftColIdx].isPathway() ||
+            !mapPointMatrix[bottomRowIdx][mostRightColIdx].isPathway();
     }
 
     /**
@@ -71,14 +66,10 @@ public class NomadMethods {
         int mostLeftColIdx = getCharLeftColIdx(xChar);
         int mostRightColIdx = getCharRightColIdx(xChar);
 
-        boolean isCrossing = false;
-        if (mapPointMatrix[topRowIdx][mostLeftColIdx].isMutable() ||
-                mapPointMatrix[topRowIdx][mostRightColIdx].isMutable() ||
-                mapPointMatrix[bottomRowIdx][mostLeftColIdx].isMutable() ||
-                mapPointMatrix[bottomRowIdx][mostRightColIdx].isMutable()) {
-            isCrossing = true;
-        }
-        return isCrossing;
+        return mapPointMatrix[topRowIdx][mostLeftColIdx].isMutable() ||
+            mapPointMatrix[topRowIdx][mostRightColIdx].isMutable() ||
+            mapPointMatrix[bottomRowIdx][mostLeftColIdx].isMutable() ||
+            mapPointMatrix[bottomRowIdx][mostRightColIdx].isMutable();
     }
 
     /**
@@ -100,34 +91,30 @@ public class NomadMethods {
                                                               Direction direction) {
         MapPoint blockingMutable = null;
         switch (direction) {
-            case DIRECTION_NORTH: {
+            case DIRECTION_NORTH -> {
                 if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar, yChar - 1) &&
-                        isNomadCrossingMutableObstacle(mapPointMatrix, xChar, yChar - 1)) {
+                    isNomadCrossingMutableObstacle(mapPointMatrix, xChar, yChar - 1)) {
                     blockingMutable = mapPointMatrix[getCharTopRowIdx(yChar - 1)][Tools.getCharColIdx(xChar)];
                 }
-                break;
             }
-            case DIRECTION_SOUTH: {
+            case DIRECTION_SOUTH -> {
                 if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar, yChar + 1) &&
-                        isNomadCrossingMutableObstacle(mapPointMatrix, xChar, yChar + 1)) {
+                    isNomadCrossingMutableObstacle(mapPointMatrix, xChar, yChar + 1)) {
                     blockingMutable = mapPointMatrix[getCharBottomRowIdx(yChar + 1)][Tools.getCharColIdx(xChar)];
 
                 }
-                break;
             }
-            case DIRECTION_WEST: {
+            case DIRECTION_WEST -> {
                 if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar - 1, yChar) &&
-                        isNomadCrossingMutableObstacle(mapPointMatrix, xChar - 1, yChar)) {
+                    isNomadCrossingMutableObstacle(mapPointMatrix, xChar - 1, yChar)) {
                     blockingMutable = mapPointMatrix[Tools.getCharRowIdx(yChar)][getCharLeftColIdx(xChar - 1)];
                 }
-                break;
             }
-            case DIRECTION_EAST: {
+            case DIRECTION_EAST -> {
                 if (!isNomadCrossingMapLimit(mapWidth, mapHeight, xChar + 1, yChar) &&
-                        isNomadCrossingMutableObstacle(mapPointMatrix, xChar + 1, yChar)) {
+                    isNomadCrossingMutableObstacle(mapPointMatrix, xChar + 1, yChar)) {
                     blockingMutable = mapPointMatrix[Tools.getCharRowIdx(yChar)][getCharRightColIdx(xChar + 1)];
                 }
-                break;
             }
         }
         return blockingMutable;
@@ -153,14 +140,11 @@ public class NomadMethods {
         int mostLeftColIdx = getCharLeftColIdx(xChar);
         int mostRightColIdx = getCharRightColIdx(xChar);
 
-        boolean isCrossing = false;
-        if (topRowIdx >= 0 && mostLeftColIdx >= 0 && mapPointMatrix[topRowIdx][mostLeftColIdx].isExit() ||
-                topRowIdx >= 0 && mostRightColIdx < mapWidth && mapPointMatrix[topRowIdx][mostRightColIdx].isExit() ||
-                bottomRowIdx < mapHeight && mostLeftColIdx >= 0 && mapPointMatrix[bottomRowIdx][mostLeftColIdx].isExit() ||
-                bottomRowIdx < mapHeight && mostRightColIdx < mapWidth && mapPointMatrix[bottomRowIdx][mostRightColIdx].isExit()) {
-            isCrossing = true;
-        }
-        return isCrossing;
+        return topRowIdx >= 0 && mostLeftColIdx >= 0 && mapPointMatrix[topRowIdx][mostLeftColIdx].isExit() ||
+            topRowIdx >= 0 && mostRightColIdx < mapWidth && mapPointMatrix[topRowIdx][mostRightColIdx].isExit() ||
+            bottomRowIdx < mapHeight && mostLeftColIdx >= 0 && mapPointMatrix[bottomRowIdx][mostLeftColIdx].isExit() ||
+            bottomRowIdx < mapHeight && mostRightColIdx < mapWidth
+                && mapPointMatrix[bottomRowIdx][mostRightColIdx].isExit();
     }
 
     /**
@@ -179,14 +163,10 @@ public class NomadMethods {
         int mostLeftColIdx = getCharLeftColIdx(xChar);
         int mostRightColIdx = getCharRightColIdx(xChar);
 
-        boolean isBurning = false;
-        if (mapPointMatrix[topRowIdx][mostLeftColIdx].isBurning() ||
-                mapPointMatrix[topRowIdx][mostRightColIdx].isBurning() ||
-                mapPointMatrix[bottomRowIdx][mostLeftColIdx].isBurning() ||
-                mapPointMatrix[bottomRowIdx][mostRightColIdx].isBurning()) {
-            isBurning = true;
-        }
-        return isBurning;
+        return mapPointMatrix[topRowIdx][mostLeftColIdx].isBurning() ||
+            mapPointMatrix[topRowIdx][mostRightColIdx].isBurning() ||
+            mapPointMatrix[bottomRowIdx][mostLeftColIdx].isBurning() ||
+            mapPointMatrix[bottomRowIdx][mostRightColIdx].isBurning();
     }
 
     /**
@@ -209,39 +189,34 @@ public class NomadMethods {
 
         boolean isCrossing = false;
         switch (direction) {
-            case DIRECTION_NORTH: {
+            case DIRECTION_NORTH -> {
                 if ((mapPointMatrix[topRowIdx][mostLeftColIdx].isBombing() ||
-                        mapPointMatrix[topRowIdx][mostRightColIdx].isBombing()) &&
-                        topRowIdx != getCharTopRowIdx(yChar + 1)) {
+                    mapPointMatrix[topRowIdx][mostRightColIdx].isBombing()) &&
+                    topRowIdx != getCharTopRowIdx(yChar + 1)) {
                     isCrossing = true;
                 }
-                break;
             }
-            case DIRECTION_SOUTH: {
+            case DIRECTION_SOUTH -> {
                 if ((mapPointMatrix[bottomRowIdx][mostLeftColIdx].isBombing() ||
-                        mapPointMatrix[bottomRowIdx][mostRightColIdx].isBombing()) &&
-                        bottomRowIdx != getCharBottomRowIdx(yChar - 1)) {
+                    mapPointMatrix[bottomRowIdx][mostRightColIdx].isBombing()) &&
+                    bottomRowIdx != getCharBottomRowIdx(yChar - 1)) {
                     isCrossing = true;
                 }
-                break;
             }
-            case DIRECTION_WEST: {
+            case DIRECTION_WEST -> {
                 if ((mapPointMatrix[topRowIdx][mostLeftColIdx].isBombing() ||
-                        mapPointMatrix[bottomRowIdx][mostLeftColIdx].isBombing()) &&
-                        mostLeftColIdx != getCharLeftColIdx(xChar + 1)) {
+                    mapPointMatrix[bottomRowIdx][mostLeftColIdx].isBombing()) &&
+                    mostLeftColIdx != getCharLeftColIdx(xChar + 1)) {
                     isCrossing = true;
                 }
-                break;
             }
-            case DIRECTION_EAST: {
+            case DIRECTION_EAST -> {
                 if ((mapPointMatrix[topRowIdx][mostRightColIdx].isBombing() ||
-                        mapPointMatrix[bottomRowIdx][mostRightColIdx].isBombing()) &&
-                        mostRightColIdx != getCharRightColIdx(xChar - 1)) {
+                    mapPointMatrix[bottomRowIdx][mostRightColIdx].isBombing()) &&
+                    mostRightColIdx != getCharRightColIdx(xChar - 1)) {
                     isCrossing = true;
                 }
-                break;
             }
-            default: // bad key, nothing to do.
         }
         return isCrossing;
     }

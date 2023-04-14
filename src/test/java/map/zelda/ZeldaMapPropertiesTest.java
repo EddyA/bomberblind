@@ -1,15 +1,16 @@
 package map.zelda;
 
+import java.io.IOException;
 import exceptions.InvalidConfigurationException;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ZeldaMapPropertiesTest implements WithAssertions {
+class ZeldaMapPropertiesTest implements WithAssertions {
 
     private final String TEST_MAP_PROPERTIES_FILE = "/test.zelda.map.properties";
 
     @Test
-    public void loadAndCheckPropertiesShouldLoadExpectedValues() throws Exception {
+    void loadAndCheckPropertiesShouldLoadExpectedValues() throws IOException, InvalidConfigurationException {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties(TEST_MAP_PROPERTIES_FILE);
         zeldaMapProperties.loadProperties();
         zeldaMapProperties.checkProperties();
@@ -37,10 +38,10 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
     }
 
     @Test
-    public void valueOfOptionnalPropertiesShouldBeZeroWhenNotSet() throws Exception {
+    void valueOfOptionalPropertiesShouldBeZeroWhenNotSet() {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties(null);
 
-        // check values of optionnal properties.
+        // check values of optional properties.
         assertThat(zeldaMapProperties.getMapElementNbOrchard()).isEqualTo(0);
         assertThat(zeldaMapProperties.getMapElementNbTrough()).isEqualTo(0);
         assertThat(zeldaMapProperties.getMapElementNbGreenWood()).isEqualTo(0);
@@ -59,23 +60,23 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
     }
 
     @Test
-    public void loadPropertiesWithNullFileShouldThrowExpectedException() throws Exception {
+    void loadPropertiesWithNullFileShouldThrowExpectedException() {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties(null);
         assertThatThrownBy(zeldaMapProperties::loadProperties)
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(AssertionError.class)
                 .hasMessage("map properties file not set.");
     }
 
     @Test
-    public void loadPropertiesWithEmptyFileShouldThrowExpectedException() throws Exception {
+    void loadPropertiesWithEmptyFileShouldThrowExpectedException() {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties("");
         assertThatThrownBy(zeldaMapProperties::loadProperties)
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(AssertionError.class)
                 .hasMessage("map properties file not set.");
     }
 
     @Test
-    public void loadPropertiesWithBadPropertiesFilePathShouldThrowExpectedException() throws Exception {
+    void loadPropertiesWithBadPropertiesFilePathShouldThrowExpectedException() {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties("badFilePath");
         assertThatThrownBy(zeldaMapProperties::loadProperties)
                 .isInstanceOf(InvalidConfigurationException.class)
@@ -83,7 +84,8 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
     }
 
     @Test
-    public void checkPropertiesWithMissingPropertiesShouldThrowExpectedException() throws Exception {
+    void checkPropertiesWithMissingPropertiesShouldThrowExpectedException()
+        throws IOException, InvalidConfigurationException {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties(TEST_MAP_PROPERTIES_FILE);
         zeldaMapProperties.loadProperties();
 
@@ -97,7 +99,8 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
     }
 
     @Test
-    public void checkPropertiesWithNotIntegerPropertiesShouldThrowExpectedException() throws Exception {
+    void checkPropertiesWithNotIntegerPropertiesShouldThrowExpectedException()
+        throws IOException, InvalidConfigurationException {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties(TEST_MAP_PROPERTIES_FILE);
         zeldaMapProperties.loadProperties();
 
@@ -112,7 +115,8 @@ public class ZeldaMapPropertiesTest implements WithAssertions {
     }
 
     @Test
-    public void checkPropertiesWithTooHighPerValuePropertiesShouldThrowExpectedException() throws Exception {
+    void checkPropertiesWithTooHighPerValuePropertiesShouldThrowExpectedException()
+        throws IOException, InvalidConfigurationException {
         ZeldaMapProperties zeldaMapProperties = new ZeldaMapProperties(TEST_MAP_PROPERTIES_FILE);
         zeldaMapProperties.loadProperties();
 

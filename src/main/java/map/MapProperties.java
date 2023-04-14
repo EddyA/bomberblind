@@ -1,9 +1,9 @@
 package map;
 
-import exceptions.InvalidConfigurationException;
-
 import java.io.IOException;
 import java.util.Properties;
+import exceptions.InvalidConfigurationException;
+import lombok.Getter;
 
 /**
  * Abstract class of map properties.
@@ -11,22 +11,24 @@ import java.util.Properties;
  */
 public abstract class MapProperties {
 
-    public final static String MAP_SIZE_WIDTH = "map.size.width";
-    public final static String MAP_SIZE_HEIGHT = "map.size.height";
+    public static final String MAP_SIZE_WIDTH = "map.size.width";
+    public static final String MAP_SIZE_HEIGHT = "map.size.height";
 
     protected final String propertiesFile;
+
+    @Getter
     protected final Properties properties = new Properties();
 
-    public MapProperties(String propertiesFile) {
+    protected MapProperties(String propertiesFile) {
         this.propertiesFile = propertiesFile;
     }
 
-    public int getMapSizeWidth() { return Integer.parseInt(properties.getProperty(MAP_SIZE_WIDTH)); }
+    public int getMapSizeWidth() {
+        return Integer.parseInt(properties.getProperty(MAP_SIZE_WIDTH));
+    }
 
-    public int getMapSizeHeight() { return Integer.parseInt(properties.getProperty(MAP_SIZE_HEIGHT)); }
-
-    public Properties getProperties() {
-        return properties;
+    public int getMapSizeHeight() {
+        return Integer.parseInt(properties.getProperty(MAP_SIZE_HEIGHT));
     }
 
     /**
@@ -47,5 +49,5 @@ public abstract class MapProperties {
      * @throws InvalidConfigurationException as soon as a propertie is badly set
      */
     public abstract MapProperties checkProperties()
-            throws InvalidConfigurationException;
+        throws InvalidConfigurationException;
 }

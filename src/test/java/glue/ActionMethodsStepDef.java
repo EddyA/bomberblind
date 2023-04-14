@@ -1,8 +1,8 @@
 package glue;
 
-import cucumber.api.java.en.When;
 import org.assertj.core.api.WithAssertions;
-import spriteList.ctrl.ActionMethods;
+import io.cucumber.java.en.When;
+import spritelist.ctrl.ActionMethods;
 
 public class ActionMethodsStepDef implements WithAssertions {
 

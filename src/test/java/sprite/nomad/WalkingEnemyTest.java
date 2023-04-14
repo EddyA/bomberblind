@@ -2,8 +2,8 @@ package sprite.nomad;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sprite.SpriteType;
 import utils.Direction;
 
@@ -11,18 +11,18 @@ import java.io.IOException;
 
 import static sprite.SpriteAction.*;
 
-public class WalkingEnemyTest implements WithAssertions {
+class WalkingEnemyTest implements WithAssertions {
 
-    @Before
-    public void fillImagesMatrix() throws IOException {
+    @BeforeEach
+    void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
     }
 
     @Test
-    public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
+    void constructorShouldSetMembersWithTheExpectedValues() {
         Zora zora = new Zora(15, 30);
-        assertThat(zora.getxMap()).isEqualTo(15);
-        assertThat(zora.getyMap()).isEqualTo(30);
+        assertThat(zora.getXMap()).isEqualTo(15);
+        assertThat(zora.getYMap()).isEqualTo(30);
         assertThat(zora.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_WALKING_ENEMY);
 
         // - dying values.
@@ -44,14 +44,14 @@ public class WalkingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void isActionAllowedShouldReturnTrue() throws Exception {
+    void isActionAllowedShouldReturnTrue() {
         Zora zora = new Zora(15, 30);
         assertThat(zora.isActionAllowed(ACTION_DYING)).isTrue();
         assertThat(zora.isActionAllowed(ACTION_WALKING)).isTrue();
     }
 
     @Test
-    public void isActionAllowedShouldReturnFalse() throws Exception {
+    void isActionAllowedShouldReturnFalse() {
         Zora zora = new Zora(15, 30);
         assertThat(zora.isActionAllowed(ACTION_BREAKING)).isFalse();
         assertThat(zora.isActionAllowed(ACTION_FLYING)).isFalse();
@@ -60,7 +60,7 @@ public class WalkingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void hasActionChangedWithTheSameActionShouldReturnFalse() {
+    void hasActionChangedWithTheSameActionShouldReturnFalse() {
         Zora zora = new Zora(15, 30);
 
         // set test.
@@ -72,7 +72,7 @@ public class WalkingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void hasActionChangedAndWalkingToTheSameDirectionShouldReturnFalse() {
+    void hasActionChangedAndWalkingToTheSameDirectionShouldReturnFalse() {
         Zora zora = new Zora(15, 30);
 
         // set test.
@@ -86,7 +86,7 @@ public class WalkingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void hasActionChangedWithADifferentActionShouldReturnTrue() throws Exception {
+    void hasActionChangedWithADifferentActionShouldReturnTrue() {
         Zora zora = new Zora(15, 30);
 
         // set test.
@@ -98,7 +98,7 @@ public class WalkingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void hasActionChangedWalkingToADifferentDirectionShouldReturnTrue() throws Exception {
+    void hasActionChangedWalkingToADifferentDirectionShouldReturnTrue() {
         Zora zora = new Zora(15, 30);
 
         // set test.
@@ -112,7 +112,7 @@ public class WalkingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void updateSpriteShouldSetTheExpectedMember() throws Exception {
+    void updateSpriteShouldSetTheExpectedMember() {
         Zora zora = new Zora(15, 30);
 
         // dying.

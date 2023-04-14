@@ -7,17 +7,17 @@ import sprite.settled.BonusFlame;
 import java.io.IOException;
 
 public class BonusFlameState {
-    private final BonusFlame spyedBonusFlame;
+    private final BonusFlame spiedBonusFlame;
     private boolean shouldBeRemoved;
 
     public BonusFlameState() throws IOException {
         ImagesLoader.fillImagesMatrix();
         BonusFlame bonusFlame = new BonusFlame(0, 0);
-        spyedBonusFlame = Mockito.spy(bonusFlame);
+        spiedBonusFlame = Mockito.spy(bonusFlame);
     }
 
     BonusFlame getBonusFlame() {
-        return spyedBonusFlame;
+        return spiedBonusFlame;
     }
 
     boolean isShouldBeRemoved() {

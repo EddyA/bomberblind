@@ -4,11 +4,11 @@ import images.ImagesLoader;
 
 public class RedSpearSoldier extends BreakingEnemy {
 
-    public final static int ACTING_TIME = 30;
+    public static final int ACTING_TIME = 30;
 
-    public final static int DEATH_REFRESH_TIME = 100;
-    public final static int WALK_REFRESH_TIME = 150;
-    public final static int BREAK_REFRESH_TIME = 50;
+    public static final int DEATH_REFRESH_TIME = 100;
+    public static final int WALK_REFRESH_TIME = 150;
+    public static final int BREAK_REFRESH_TIME = 50;
 
     /**
      * Create a red spear soldier.

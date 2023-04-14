@@ -9,20 +9,20 @@ import java.io.IOException;
 
 public class BreakingEnemyState {
 
-    private final RedSpearSoldier spyedRedSpearSoldier;
+    private final RedSpearSoldier spiedRedSpearSoldier;
     private boolean shouldBeRemoved;
 
     public BreakingEnemyState() throws IOException {
         ImagesLoader.fillImagesMatrix();
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(0, 0);
-        spyedRedSpearSoldier = Mockito.spy(redSpearSoldier);
+        spiedRedSpearSoldier = Mockito.spy(redSpearSoldier);
 
         // avoid the time constraint to make action.
-        Mockito.when(spyedRedSpearSoldier.isTimeToAct()).thenReturn(true);
+        Mockito.when(spiedRedSpearSoldier.isTimeToAct()).thenReturn(true);
     }
 
     public BreakingEnemy getEnemy() {
-        return spyedRedSpearSoldier;
+        return spiedRedSpearSoldier;
     }
 
     boolean isShouldBeRemoved() {

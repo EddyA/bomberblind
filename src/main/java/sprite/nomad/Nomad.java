@@ -1,28 +1,44 @@
 package sprite.nomad;
 
+import exceptions.SpriteActionException;
+import lombok.Getter;
+import lombok.Setter;
 import sprite.Sprite;
 import sprite.SpriteAction;
+import static sprite.SpriteAction.ACTION_DYING;
 import sprite.SpriteType;
 import utils.Direction;
-
-import static sprite.SpriteAction.ACTION_DYING;
 
 /**
  * Abstract class of a nomad.
  */
 public abstract class Nomad extends Sprite {
 
+    @Getter
     protected SpriteAction curSpriteAction; // current action.
+    @Getter
     protected SpriteAction lastSpriteAction; // last action.
+    @Getter
+    @Setter
     protected Direction curDirection; // current direction.
+    @Getter
+    @Setter
     protected Direction lastDirection; // last direction.
 
+    @Getter
+    @Setter
     private int actingTime; // acting time (in ms, defining the sprite's speed in term of action/sec).
+    @Setter
     protected long lastActionTs; // last action timestamp.
 
+    @Getter
+    @Setter
     protected boolean paintedAtLeastOneTime; // to notice the current action has been painted at least 1 time.
 
+    @Getter
     private final int invincibilityTime; // invincibility time (in ms).
+    @Getter
+    @Setter
     protected long lastInvincibilityTs; // last invincibility timestamp.
     private int invincibleFrameIdx; // current invincible frame index.
 
@@ -35,92 +51,32 @@ public abstract class Nomad extends Sprite {
      * @param refreshTime the sprite refresh time (i.e. defining the sprite's speed in term of image/sec)
      * @param actingTime  the sprite acting time (i.e. defining the sprite's speed in term of action/sec)
      */
-    public Nomad(int xMap,
-                 int yMap,
-                 SpriteType spriteType,
-                 int refreshTime,
-                 int actingTime,
-                 int invincibilityTime) {
+    protected Nomad(int xMap,
+        int yMap,
+        SpriteType spriteType,
+        int refreshTime,
+        int actingTime,
+        int invincibilityTime) {
         super(xMap,
-                yMap,
-                spriteType,
-                refreshTime);
+            yMap,
+            spriteType,
+            refreshTime);
         this.actingTime = actingTime;
         this.invincibilityTime = invincibilityTime;
     }
 
-    public SpriteAction getCurSpriteAction() {
-        return curSpriteAction;
-    }
-
     public void setCurSpriteAction(SpriteAction curSpriteAction) {
         if (!isActionAllowed(curSpriteAction)) {
-            String msg = "'" + SpriteAction.getlabel(curSpriteAction).orElse("no_name")
-                    + "' action is not allowed here.";
-            throw new RuntimeException(msg);
+            throw new SpriteActionException(curSpriteAction);
         }
         this.curSpriteAction = curSpriteAction;
     }
 
     public void setLastSpriteAction(SpriteAction lastSpriteAction) {
         if (!isActionAllowed(lastSpriteAction)) {
-            String msg = "'" + SpriteAction.getlabel(lastSpriteAction).orElse("no_name")
-                    + "' action is not allowed here.";
-            throw new RuntimeException(msg);
+            throw new SpriteActionException(lastSpriteAction);
         }
         this.lastSpriteAction = lastSpriteAction;
-    }
-
-    public Direction getCurDirection() {
-        return curDirection;
-    }
-
-    public void setCurDirection(Direction curDirection) {
-        this.curDirection = curDirection;
-    }
-
-    public Direction getLastDirection() {
-        return lastDirection;
-    }
-
-    public void setLastDirection(Direction lastDirection) {
-        this.lastDirection = lastDirection;
-    }
-
-    public int getActingTime() {
-        return actingTime;
-    }
-
-    public void setActingTime(int actingTime) {
-        this.actingTime = actingTime;
-    }
-
-    public SpriteAction getLastSpriteAction() {
-        return lastSpriteAction;
-    }
-
-    public void setLastActionTs(long lastActionTs) {
-        this.lastActionTs = lastActionTs;
-    }
-
-    public boolean isPaintedAtLeastOneTime() {
-        return paintedAtLeastOneTime;
-    }
-
-    public void setPaintedAtLeastOneTime(boolean paintedAtLeastOneTime) {
-        this.paintedAtLeastOneTime = paintedAtLeastOneTime;
-    }
-
-    public int getInvincibilityTime() {
-        return invincibilityTime;
-    }
-
-    public long getLastInvincibilityTs() {
-        return lastInvincibilityTs;
-    }
-
-    public void setLastInvincibilityTs(long lastInvincibilityTs) {
-        this.lastInvincibilityTs = lastInvincibilityTs;
     }
 
     /**
@@ -170,20 +126,20 @@ public abstract class Nomad extends Sprite {
     /**
      * Update the sprite's image according to the current sprite's action.
      */
-    public abstract void updateSprite();
+    public abstract void updateSprite() throws SpriteActionException;
 
     @Override
     public void updateImage() {
         updateSprite();
         if ((hasActionChanged() && // the action has changed
-                !(paintedAtLeastOneTime = false)) || // (just to re-init this variable when the action has changed).
-                (isTimeToRefresh() && // OR (it is time to refresh
-                        (++curImageIdx == nbImages && // AND it is the end of the sprite - the image index is ++ here).
-                                (paintedAtLeastOneTime = true)))) { // (just to notice the sprite has been painted once).
+            !(paintedAtLeastOneTime = false)) || // (just to re-init this variable when the action has changed).
+            (isTimeToRefresh() && // OR (it is time to refresh
+                (++curImageIdx == nbImages && // AND it is the end of the sprite - the image index is ++ here).
+                    (paintedAtLeastOneTime = true)))) { // (just to notice the sprite has been painted once).
             curImageIdx = 0;
         }
         if (curSpriteAction == ACTION_DYING && // the current action is dying
-                images == null && nbImages == 0) { // AND there is no related sprite.
+            images == null && nbImages == 0) { // AND there is no related sprite.
             curImage = null;
         } else if (isInvincible() && invincibleFrameIdx++ % 240 > 120) { // (quick and dirty) handle invincibility.
             curImage = null;

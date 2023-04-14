@@ -1,9 +1,8 @@
 package glue;
 
 import org.assertj.core.api.WithAssertions;
-
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 
 public class MapPointMatrixStepDef implements WithAssertions {
 

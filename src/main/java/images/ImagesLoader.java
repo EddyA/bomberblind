@@ -13,84 +13,84 @@ import java.util.Random;
  * The 'Image' are loaded in a 'MediaTracker' to speed up the displaying and avoid sparkling.
  */
 public class ImagesLoader {
-    public final static int IMAGE_SIZE = 32; // size of an 'Image' in pixels (30*30).
+    public static final int IMAGE_SIZE = 32; // size of an 'Image' in pixels (30*30).
 
-    public static Image[][] imagesMatrix; // matrix of images (holding all the game images).+
-    public final static int NB_MATRIX_ROW = 52;
-    public final static int NB_MATRIX_COL = 128;
+    public static Image[][] imagesMatrix; // matrix of images (holding all the game images).
+    public static final int NB_MATRIX_ROW = 52;
+    public static final int NB_MATRIX_COL = 128;
 
     // images location.
-    public final static String IMAGES_DIR = "/images";
-    public final static String ASCII_SKIN_DIR = IMAGES_DIR + "/ascii";
-    public final static String SPRITE_SKIN_DIR = IMAGES_DIR + "/sprites";
-    public final static String SCENE_SKIN_DIR = IMAGES_DIR + "/scene/light_world";
+    public static final String IMAGES_DIR = "/images";
+    public static final String ASCII_SKIN_DIR = IMAGES_DIR + "/ascii";
+    public static final String SPRITE_SKIN_DIR = IMAGES_DIR + "/sprites";
+    public static final String SCENE_SKIN_DIR = IMAGES_DIR + "/scene/light_world";
 
     // ascii.
     public static int asciiMatrixRowIdx;
 
     // bonus.
-    public final static int NB_BONUS_BOMB_FRAME = 28;
+    public static final int NB_BONUS_BOMB_FRAME = 28;
     public static int bonusBombMatrixRowIdx;
-    public final static int NB_BONUS_FLAME_FRAME = 28;
+    public static final int NB_BONUS_FLAME_FRAME = 28;
     public static int bonusFlameMatrixRowIdx;
-    public final static int NB_BONUS_HEART_FRAME = 32;
+    public static final int NB_BONUS_HEART_FRAME = 32;
     public static int bonusHeartMatrixRowIdx;
-    public final static int NB_BONUS_ROLLER_FRAME = 28;
+    public static final int NB_BONUS_ROLLER_FRAME = 28;
     public static int bonusRollerMatrixRowIdx;
 
     // scene.
     // - immutable obstacles.
-    public final static int CASTLE_WIDTH = 4;
-    public final static int CASTLE_HEIGHT = 6;
+    public static final int CASTLE_WIDTH = 4;
+    public static final int CASTLE_HEIGHT = 6;
     public static int castleMatrixRowIdx;
-    public final static int EDGE_WIDTH = 1;
-    public final static int EDGE_HEIGHT = 5;
+    public static final int EDGE_WIDTH = 1;
+    public static final int EDGE_HEIGHT = 5;
     public static int edgeMatrixRowIdx;
-    public final static int GREEN_TREE_WIDTH = 4;
-    public final static int GREEN_TREE_HEIGHT = 5;
+    public static final int GREEN_TREE_WIDTH = 4;
+    public static final int GREEN_TREE_HEIGHT = 5;
     public static int greenTreeMatrixRowIdx;
-    public final static int ORCHARD_WIDTH = 9;
-    public final static int ORCHARD_HEIGHT = 8;
+    public static final int ORCHARD_WIDTH = 9;
+    public static final int ORCHARD_HEIGHT = 8;
     public static int orchardMatrixRowIdx;
-    public final static int RED_TREE_WIDTH = 4;
-    public final static int RED_TREE_HEIGHT = 5;
+    public static final int RED_TREE_WIDTH = 4;
+    public static final int RED_TREE_HEIGHT = 5;
     public static int redTreeMatrixRowIdx;
-    public final static int STATUE_WIDTH = 2;
-    public final static int STATUE_HEIGHT = 3;
+    public static final int STATUE_WIDTH = 2;
+    public static final int STATUE_HEIGHT = 3;
     public static int statueMatrixRowIdx;
-    public final static int TROUGH_WIDTH = 7;
-    public final static int TROUGH_HEIGHT = 8;
+    public static final int TROUGH_WIDTH = 7;
+    public static final int TROUGH_HEIGHT = 8;
     public static int troughMatrixRowIdx;
-    public final static int TRUNK_WIDTH = 2;
-    public final static int TRUNK_HEIGHT = 3;
+    public static final int TRUNK_WIDTH = 2;
+    public static final int TRUNK_HEIGHT = 3;
     public static int trunkMatrixRowIdx;
-    public final static int YELLOW_TREE_WIDTH = 4;
-    public final static int YELLOW_TREE_HEIGHT = 5;
+    public static final int YELLOW_TREE_WIDTH = 4;
+    public static final int YELLOW_TREE_HEIGHT = 5;
     public static int yellowTreeMatrixRowIdx;
-    public final static int NB_SINGLE_IMMUTABLE_OBSTABLE = 3;
+    public static final int NB_SINGLE_IMMUTABLE_OBSTACLE = 3;
     public static int singleImmutableObstacleMatrixRowIdx;
 
     // - mutable obstacles.
-    public final static int NB_SINGLE_MUTABLE_OBSTACLE = 2;
+    public static final int NB_SINGLE_MUTABLE_OBSTACLE = 2;
     public static int singleMutableObstacleMatrixRowIdx;
 
     // - pathways.
-    public final static int NB_SINGLE_BOOM = 1;
+    public static final int NB_SINGLE_BOOM = 1;
     public static int singleBoomMatrixRowIdx;
-    public final static int NB_FLOWER_FRAME = 3;
+    public static final int NB_FLOWER_FRAME = 3;
     public static int flowerMatrixRowIdx;
-    public final static int PATHWAY_WIDTH = 5;
-    public final static int PATHWAY_HEIGHT = 4;
+    public static final int PATHWAY_WIDTH = 5;
+    public static final int PATHWAY_HEIGHT = 4;
     public static int pathwayMatrixRowIdx;
-    public final static int NB_SINGLE_PATHWAY = 7;
+    public static final int NB_SINGLE_PATHWAY = 7;
     public static int singlePathwayMatrixRowIdx;
 
     // sprites.
     // - bomber.
-    public final static int NB_BOMBER_DEATH_FRAME = 9;
-    public final static int NB_BOMBER_WAIT_FRAME = 4;
-    public final static int NB_BOMBER_WALK_FRAME = 4;
-    public final static int NB_BOMBER_WIN_FRAME = 8;
+    public static final int NB_BOMBER_DEATH_FRAME = 9;
+    public static final int NB_BOMBER_WAIT_FRAME = 4;
+    public static final int NB_BOMBER_WALK_FRAME = 4;
+    public static final int NB_BOMBER_WIN_FRAME = 8;
 
     // -- blue Bomber.
     public static int blueBomberDeathMatrixRowIdx;
@@ -104,14 +104,14 @@ public class ImagesLoader {
     // - enemies.
     // -- walking enemies.
     // --- zora.
-    public final static int NB_ZORA_WALK_FRAME = 2;
+    public static final int NB_ZORA_WALK_FRAME = 2;
     public static int zoraWalkBackMatrixRowIdx;
     public static int zoraWalkFrontMatrixRowIdx;
     public static int zoraWalkLeftMatrixRowIdx;
     public static int zoraWalkRightMatrixRowIdx;
 
     // --- green soldier.
-    public final static int NB_GREEN_SOLDIER_WALK_FRAME = 10;
+    public static final int NB_GREEN_SOLDIER_WALK_FRAME = 10;
     public static int greenSoldierWalkBackMatrixRowIdx;
     public static int greenSoldierWalkFrontMatrixRowIdx;
     public static int greenSoldierWalkLeftMatrixRowIdx;
@@ -119,12 +119,12 @@ public class ImagesLoader {
 
     // -- breaking enemies.
     // --- red spear soldier.
-    public final static int NB_RED_SPEAR_SOLDIER_WALK_FRAME = 2;
+    public static final int NB_RED_SPEAR_SOLDIER_WALK_FRAME = 2;
     public static int redSpearSoldierWalkBackMatrixRowIdx;
     public static int redSpearSoldierWalkFrontMatrixRowIdx;
     public static int redSpearSoldierWalkLeftMatrixRowIdx;
     public static int redSpearSoldierWalkRightMatrixRowIdx;
-    public final static int NB_RED_SPEAR_SOLDIER_BREAK_FRAME = 4;
+    public static final int NB_RED_SPEAR_SOLDIER_BREAK_FRAME = 4;
     public static int redSpearSoldierBreakBackMatrixRowIdx;
     public static int redSpearSoldierBreakFrontMatrixRowIdx;
     public static int redSpearSoldierBreakLeftMatrixRowIdx;
@@ -132,29 +132,31 @@ public class ImagesLoader {
 
     // - flying nomads.
     // -- bird.
-    public final static int NB_BIRD_FLY_FRAME = 3;
+    public static final int NB_BIRD_FLY_FRAME = 3;
     public static int birdFlyBackMatrixRowIdx;
     public static int birdFlyFrontMatrixRowIdx;
     public static int birdFlyLeftMatrixRowIdx;
     public static int birdFlyRightMatrixRowIdx;
 
     // - settled.
-    public final static int NB_BOMB_FRAME = 4;
+    public static final int NB_BOMB_FRAME = 4;
     public static int bombMatrixRowIdx;
-    public final static int NB_FLAME_FRAME = 3;
+    public static final int NB_FLAME_FRAME = 3;
     public static int flameMatrixRowIdx;
-    public final static int NB_FLAME_END_FRAME = 9;
+    public static final int NB_FLAME_END_FRAME = 9;
     public static int flameEndMatrixRowIdx;
-    public final static int NB_SPARKLE_FRAME = 5;
+    public static final int NB_SPARKLE_FRAME = 5;
     public static int sparkleMatrixRowIdx;
 
     // - death.
-    public final static int NB_DEATH_FRAME = 7;
+    public static final int NB_DEATH_FRAME = 7;
     public static int deathMatrixRowIdx;
 
     public static int curMatrixRowIdx;
     public static int lastMatrixRowIdx; // for test purpose.
     public static boolean imagesLoaded = false; // have images been loaded? (for test purpose).
+
+    public static final Random R = new Random(); // init the random function.
 
     /**
      * Create an 'Image' based to a relative path (from 'resources' folder).
@@ -261,7 +263,7 @@ public class ImagesLoader {
         yellowTreeMatrixRowIdx = curMatrixRowIdx++;
 
         // -- single immutable obstacle (1*1).
-        for (int i = 0; i < NB_SINGLE_IMMUTABLE_OBSTABLE; i++) {
+        for (int i = 0; i < NB_SINGLE_IMMUTABLE_OBSTACLE; i++) {
             imagesMatrix[curMatrixRowIdx][i] = createImage(SCENE_SKIN_DIR + "/immutable_obstacle/immutable-" + i + ".png");
         }
         singleImmutableObstacleMatrixRowIdx = curMatrixRowIdx++;
@@ -407,8 +409,7 @@ public class ImagesLoader {
      * @return a random single immutable obstacle image.
      */
     public static Image getRandomSingleImmutableObstacle() {
-        Random R = new Random(); // init the random function.
-        int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_IMMUTABLE_OBSTABLE);
+        int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_IMMUTABLE_OBSTACLE);
         return ImagesLoader.imagesMatrix[ImagesLoader.singleImmutableObstacleMatrixRowIdx][imageIdx];
     }
 
@@ -416,7 +417,6 @@ public class ImagesLoader {
      * @return a random single mutable obstacle image.
      */
     public static Image getRandomSingleMutableObstacle() {
-        Random R = new Random(); // init the random function.
         int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_MUTABLE_OBSTACLE);
         return ImagesLoader.imagesMatrix[ImagesLoader.singleMutableObstacleMatrixRowIdx][imageIdx];
     }
@@ -425,7 +425,6 @@ public class ImagesLoader {
      * @return a random decorated single pathway image.
      */
     public static Image getRandomDecoratedSinglePathway() {
-        Random R = new Random(); // init the random function.
         int imageIdx = R.nextInt(ImagesLoader.NB_SINGLE_PATHWAY - 1) + 1;
         return ImagesLoader.imagesMatrix[ImagesLoader.singlePathwayMatrixRowIdx][imageIdx];
     }
@@ -433,7 +432,7 @@ public class ImagesLoader {
     /**
      * @return a random dynamic single pathway image.
      */
-    @SuppressWarnings("unchecked")
+    //@SuppressWarnings("unchecked")
     public static Tuple3<Image[], Integer, Integer> getRandomDynamicSinglePathway() {
         return new Tuple3<>(ImagesLoader.imagesMatrix[ImagesLoader.flowerMatrixRowIdx],
                 ImagesLoader.NB_FLOWER_FRAME, 100);

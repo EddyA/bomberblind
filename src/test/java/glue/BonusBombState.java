@@ -7,15 +7,15 @@ import sprite.settled.BonusBomb;
 import java.io.IOException;
 
 public class BonusBombState {
-    private final BonusBomb spyedBonusBomb;
+    private final BonusBomb spiedBonusBomb;
 
     public BonusBombState() throws IOException {
         ImagesLoader.fillImagesMatrix();
         BonusBomb bonusBomb = new BonusBomb(0, 0);
-        spyedBonusBomb = Mockito.spy(bonusBomb);
+        spiedBonusBomb = Mockito.spy(bonusBomb);
     }
 
     BonusBomb getBonusBomb() {
-        return spyedBonusBomb;
+        return spiedBonusBomb;
     }
 }

@@ -25,7 +25,7 @@ Feature: Features of the action methods class for a breaking enemy object
     And the breaking sprite is done
     When processing the breaking enemy
     Then the following flames should be added:
-      | rowIdx | colIdx |
+#      | rowIdx | colIdx |
       | 4      | 5      |
     Then the breaking enemy should get another direction
 

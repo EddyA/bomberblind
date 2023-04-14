@@ -1,9 +1,9 @@
 package glue;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Then;
 import org.assertj.core.api.WithAssertions;
 import org.mockito.Mockito;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
 import sprite.settled.BonusBundle;
 import sprite.settled.BonusType;
 import utils.Tools;
@@ -21,8 +21,8 @@ public class BomberStepDef implements WithAssertions {
 
     @And("^the bomber move at rowIdx (\\d+) and coldIdx (\\d+)$")
     public void the_bomber_move_at_rowIdx_and_coldIdx(int rowIdx, int colIdx) {
-        bomberState.getBomber().setxMap(Tools.getCaseCentreAbscissa(colIdx));
-        bomberState.getBomber().setyMap(Tools.getCaseBottomOrdinate(rowIdx));
+        bomberState.getBomber().setXMap(Tools.getCaseCentreAbscissa(colIdx));
+        bomberState.getBomber().setYMap(Tools.getCaseBottomOrdinate(rowIdx));
     }
 
     @And("^the bomber has (\\d+) lifes$")
@@ -92,8 +92,8 @@ public class BomberStepDef implements WithAssertions {
 
     @Then("^the bomber is re-init$")
     public void the_bomber_is_reset() {
-        assertThat(bomberState.getBomber().getxMap()).isEqualTo(bomberState.getBomber().getInitialXMap());
-        assertThat(bomberState.getBomber().getyMap()).isEqualTo(bomberState.getBomber().getInitialYMap());
+        assertThat(bomberState.getBomber().getXMap()).isEqualTo(bomberState.getBomber().getInitialXMap());
+        assertThat(bomberState.getBomber().getYMap()).isEqualTo(bomberState.getBomber().getInitialYMap());
         assertThat(bomberState.getBomber().getCurSpriteAction()).isEqualTo(ACTION_WAITING);
         assertThat(bomberState.getBomber().isInvincible()).isTrue();
     }

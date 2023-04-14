@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import sprite.Sprite;
 import sprite.SpriteType;
-import spriteList.SpriteList;
+import spritelist.SpriteList;
 
 public class SpriteListState {
 
@@ -28,8 +28,8 @@ public class SpriteListState {
      */
     boolean isSpriteInSpriteList(int xMap, int yMap, SpriteType spriteType) {
         for (Sprite sprite : spriteList) {
-            if (sprite.getxMap() == xMap &&
-                    sprite.getyMap() == yMap &&
+            if (sprite.getXMap() == xMap &&
+                    sprite.getYMap() == yMap &&
                     sprite.getSpriteType().equals(spriteType)) {
                 return true;
             }

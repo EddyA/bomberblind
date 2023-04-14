@@ -2,8 +2,8 @@ package sprite.settled;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import sprite.SpriteType;
 import utils.Tools;
@@ -14,22 +14,22 @@ import static images.ImagesLoader.NB_FLAME_END_FRAME;
 import static sprite.settled.LoopedSettled.Status.STATUS_ALIVE;
 import static sprite.settled.LoopedSettled.Status.STATUS_ENDED;
 
-public class LoopedSettledTest implements WithAssertions {
+class LoopedSettledTest implements WithAssertions {
 
-    @Before
-    public void fillImagesMatrix() throws IOException {
+    @BeforeEach
+    void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
     }
 
     @Test
-    public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
+    void constructorShouldSetMembersWithTheExpectedValues() {
         FlameEnd flameEnd = new FlameEnd(5, 4);
 
         // check members value.
         assertThat(flameEnd.getRowIdx()).isEqualTo(5);
         assertThat(flameEnd.getColIdx()).isEqualTo(4);
-        assertThat(flameEnd.getxMap()).isEqualTo(Tools.getCaseCentreAbscissa(4));
-        assertThat(flameEnd.getyMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
+        assertThat(flameEnd.getXMap()).isEqualTo(Tools.getCaseCentreAbscissa(4));
+        assertThat(flameEnd.getYMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
         assertThat(flameEnd.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_FLAME_END);
         assertThat(flameEnd.getRefreshTime()).isEqualTo(FlameEnd.REFRESH_TIME);
         assertThat(flameEnd.getImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx]);
@@ -38,7 +38,7 @@ public class LoopedSettledTest implements WithAssertions {
     }
 
     @Test
-    public void updateStatusWithANotReachedNbTimeShouldReturnFalseAndStatusShouldBeAlive() throws Exception {
+    void updateStatusWithANotReachedNbTimeShouldReturnFalseAndStatusShouldBeAlive() {
         FlameEnd flameEnd = new FlameEnd(5, 4);
 
         // set the start time.
@@ -49,7 +49,7 @@ public class LoopedSettledTest implements WithAssertions {
     }
 
     @Test
-    public void updateStatusWithANotEndedSpriteShouldReturnFalseAndStatusShouldBeAlive() throws Exception {
+    void updateStatusWithANotEndedSpriteShouldReturnFalseAndStatusShouldBeAlive() {
         FlameEnd flameEnd = new FlameEnd(5, 4);
 
         // set the start time.
@@ -60,7 +60,7 @@ public class LoopedSettledTest implements WithAssertions {
     }
 
     @Test
-    public void updateStatusShouldReturnTrueAndStatusShouldBeFinished() throws Exception {
+    void updateStatusShouldReturnTrueAndStatusShouldBeFinished() {
         FlameEnd flameEnd = new FlameEnd(5, 4);
 
         // set the start time.
@@ -71,81 +71,81 @@ public class LoopedSettledTest implements WithAssertions {
     }
 
     @Test
-    public void updateImageWithAEndedSpriteShouldDoNothing() throws Exception {
+    void updateImageWithAEndedSpriteShouldDoNothing() {
         FlameEnd flameEnd = new FlameEnd(5, 4);
-        FlameEnd spyedFlameEnd = Mockito.spy(flameEnd);
-        Mockito.when(spyedFlameEnd.updateStatus()).thenReturn(true);
+        FlameEnd spiedFlameEnd = Mockito.spy(flameEnd);
+        Mockito.when(spiedFlameEnd.updateStatus()).thenReturn(true);
 
         // set settled.
-        spyedFlameEnd.setCurImageIdx(1);
-        spyedFlameEnd.setLoopIdx(3);
-        spyedFlameEnd.setCurImage(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][1]);
+        spiedFlameEnd.setCurImageIdx(1);
+        spiedFlameEnd.setLoopIdx(3);
+        spiedFlameEnd.setCurImage(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][1]);
 
         // call & check.
-        spyedFlameEnd.updateImage();
-        assertThat(spyedFlameEnd.getCurImageIdx()).isEqualTo(1);
-        assertThat(spyedFlameEnd.getLoopIdx()).isEqualTo(3);
-        assertThat(spyedFlameEnd.getCurImage()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][1]);
+        spiedFlameEnd.updateImage();
+        assertThat(spiedFlameEnd.getCurImageIdx()).isEqualTo(1);
+        assertThat(spiedFlameEnd.getLoopIdx()).isEqualTo(3);
+        assertThat(spiedFlameEnd.getCurImage()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][1]);
     }
 
     @Test
-    public void updateImageWhenItIsNotTimeToRefreshShouldDoNothing() throws Exception {
+    void updateImageWhenItIsNotTimeToRefreshShouldDoNothing() {
         FlameEnd flameEnd = new FlameEnd(5, 4);
-        FlameEnd spyedFlameEnd = Mockito.spy(flameEnd);
-        Mockito.when(spyedFlameEnd.isTimeToRefresh()).thenReturn(false);
+        FlameEnd spiedFlameEnd = Mockito.spy(flameEnd);
+        Mockito.when(spiedFlameEnd.isTimeToRefresh()).thenReturn(false);
 
         // set settled.
-        spyedFlameEnd.setCurImageIdx(1);
-        spyedFlameEnd.setLoopIdx(3);
-        spyedFlameEnd.setCurImage(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][1]);
+        spiedFlameEnd.setCurImageIdx(1);
+        spiedFlameEnd.setLoopIdx(3);
+        spiedFlameEnd.setCurImage(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][1]);
 
         // call & check.
-        spyedFlameEnd.updateImage();
-        assertThat(spyedFlameEnd.getCurImageIdx()).isEqualTo(1);
-        assertThat(spyedFlameEnd.getLoopIdx()).isEqualTo(3);
-        assertThat(spyedFlameEnd.getCurImage()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][1]);
+        spiedFlameEnd.updateImage();
+        assertThat(spiedFlameEnd.getCurImageIdx()).isEqualTo(1);
+        assertThat(spiedFlameEnd.getLoopIdx()).isEqualTo(3);
+        assertThat(spiedFlameEnd.getCurImage()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][1]);
     }
 
     @Test
-    public void updateImageShouldIncreaseCurImageIdx() throws Exception {
+    void updateImageShouldIncreaseCurImageIdx() {
         FlameEnd flameEnd = new FlameEnd(5, 4);
-        FlameEnd spyedFlameEnd = Mockito.spy(flameEnd);
-        Mockito.when(spyedFlameEnd.isTimeToRefresh()).thenReturn(true);
-        Mockito.when(spyedFlameEnd.updateStatus()).thenReturn(false);
+        FlameEnd spiedFlameEnd = Mockito.spy(flameEnd);
+        Mockito.when(spiedFlameEnd.isTimeToRefresh()).thenReturn(true);
+        Mockito.when(spiedFlameEnd.updateStatus()).thenReturn(false);
 
         // set settled.
-        spyedFlameEnd.setCurImageIdx(1);
-        spyedFlameEnd.setLoopIdx(3);
+        spiedFlameEnd.setCurImageIdx(1);
+        spiedFlameEnd.setLoopIdx(3);
 
         // call & check.
-        spyedFlameEnd.updateImage();
-        assertThat(spyedFlameEnd.getCurImageIdx()).isEqualTo(2);
-        assertThat(spyedFlameEnd.getLoopIdx()).isEqualTo(3); // stay the same.
-        assertThat(spyedFlameEnd.getCurImage())
+        spiedFlameEnd.updateImage();
+        assertThat(spiedFlameEnd.getCurImageIdx()).isEqualTo(2);
+        assertThat(spiedFlameEnd.getLoopIdx()).isEqualTo(3); // stay the same.
+        assertThat(spiedFlameEnd.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][2]);
     }
 
     @Test
-    public void updateImageWithTheLastImageShouldSetCurImageIdxTo0AndIncrementCurLoopIdx() throws Exception {
+    void updateImageWithTheLastImageShouldSetCurImageIdxTo0AndIncrementCurLoopIdx() {
         FlameEnd flameEnd = new FlameEnd(5, 4);
-        FlameEnd spyedFlameEnd = Mockito.spy(flameEnd);
-        Mockito.when(spyedFlameEnd.isTimeToRefresh()).thenReturn(true);
-        Mockito.when(spyedFlameEnd.updateStatus()).thenReturn(false);
+        FlameEnd spiedFlameEnd = Mockito.spy(flameEnd);
+        Mockito.when(spiedFlameEnd.isTimeToRefresh()).thenReturn(true);
+        Mockito.when(spiedFlameEnd.updateStatus()).thenReturn(false);
 
         // set settled.
-        spyedFlameEnd.setCurImageIdx(NB_FLAME_END_FRAME - 1); // last image of the sprite.
-        spyedFlameEnd.setLoopIdx(3);
+        spiedFlameEnd.setCurImageIdx(NB_FLAME_END_FRAME - 1); // last image of the sprite.
+        spiedFlameEnd.setLoopIdx(3);
 
         // call & check.
-        spyedFlameEnd.updateImage();
-        assertThat(spyedFlameEnd.getCurImageIdx()).isEqualTo(0);
-        assertThat(spyedFlameEnd.getLoopIdx()).isEqualTo(4);
-        assertThat(spyedFlameEnd.getCurImage())
+        spiedFlameEnd.updateImage();
+        assertThat(spiedFlameEnd.getCurImageIdx()).isEqualTo(0);
+        assertThat(spiedFlameEnd.getLoopIdx()).isEqualTo(4);
+        assertThat(spiedFlameEnd.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.flameEndMatrixRowIdx][0]);
     }
 
     @Test
-    public void isFinishedShouldReturnFalseWhenCurStatusIsAlive() throws Exception {
+    void isFinishedShouldReturnFalseWhenCurStatusIsAlive() {
         FlameEnd flameEnd = new FlameEnd(5, 4);
 
         // set the status and check.
@@ -154,7 +154,7 @@ public class LoopedSettledTest implements WithAssertions {
     }
 
     @Test
-    public void isFinishedShouldReturnTrueWhenCurStatusIsFinished() throws Exception {
+    void isFinishedShouldReturnTrueWhenCurStatusIsFinished() {
         FlameEnd flameEnd = new FlameEnd(5, 4);
 
         // set the status and check.

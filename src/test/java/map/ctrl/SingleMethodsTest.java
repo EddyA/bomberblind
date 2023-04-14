@@ -1,22 +1,23 @@
 package map.ctrl;
 
 import images.ImagesLoader;
+import io.cucumber.java.Before;
 import map.MapPoint;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class SingleMethodsTest implements WithAssertions {
+class SingleMethodsTest implements WithAssertions {
 
-    @Before
-    public void fillImagesMatrix() throws IOException {
+    @BeforeEach
+    void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
     }
 
     @Test
-    public void placeSinglePathwayOnMapShouldReturnFalseBecauseNotAvailable() throws Exception {
+    void placeSinglePathwayOnMapShouldReturnFalseBecauseNotAvailable() {
         MapPoint mapPoint = new MapPoint(0, 0);
         mapPoint.setAvailable(false);
         assertThat(SingleMethods.placeSinglePathwayOnMap(mapPoint, 0, 0)).isFalse();
@@ -24,7 +25,7 @@ public class SingleMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void placeSinglePathwayOnMapShouldReturnTrueBecauseAvailableAndPutAVirginSinglePathway() throws Exception {
+    void placeSinglePathwayOnMapShouldReturnTrueBecauseAvailableAndPutAVirginSinglePathway() {
         MapPoint mapPoint = new MapPoint(0, 0);
         assertThat(SingleMethods.placeSinglePathwayOnMap(mapPoint, 0, 0)).isTrue();
         assertThat(mapPoint.getImage()).isEqualTo(ImagesLoader.getVirginSinglePathway());
@@ -32,7 +33,7 @@ public class SingleMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void placeSinglePathwayOnMapShouldReturnTrueBecauseAvailableAndPutADecoratedSinglePathway() throws Exception {
+    void placeSinglePathwayOnMapShouldReturnTrueBecauseAvailableAndPutADecoratedSinglePathway() {
         MapPoint mapPoint = new MapPoint(0, 0);
         assertThat(SingleMethods.placeSinglePathwayOnMap(mapPoint, 100, 0)).isTrue();
         assertThat(mapPoint.getImage()).isNotNull();
@@ -40,7 +41,7 @@ public class SingleMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void placeSinglePathwayOnMapShouldReturnTrueBecauseAvailableAndPutADynamicPathway() throws Exception {
+    void placeSinglePathwayOnMapShouldReturnTrueBecauseAvailableAndPutADynamicPathway() {
         MapPoint mapPoint = new MapPoint(0, 0);
         assertThat(SingleMethods.placeSinglePathwayOnMap(mapPoint, 100, 100)).isTrue();
         assertThat(mapPoint.getImage()).isNull();
@@ -48,7 +49,7 @@ public class SingleMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void placeSingleMutableObstacleOnMapShouldReturnFalseBecauseNotAvailable() throws Exception {
+    void placeSingleMutableObstacleOnMapShouldReturnFalseBecauseNotAvailable() {
         MapPoint mapPoint = new MapPoint(0, 0);
         mapPoint.setAvailable(false);
         assertThat(SingleMethods.placeSingleMutableObstacleOnMap(mapPoint)).isFalse();
@@ -56,14 +57,14 @@ public class SingleMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void placeSingleMutableObstacleOnMapShouldReturnTrueBecauseAvailableAndPutAMutableObstacle() throws Exception {
+    void placeSingleMutableObstacleOnMapShouldReturnTrueBecauseAvailableAndPutAMutableObstacle() {
         MapPoint mapPoint = new MapPoint(0, 0);
         assertThat(SingleMethods.placeSingleMutableObstacleOnMap(mapPoint)).isTrue();
         assertThat(mapPoint.getImage()).isNotNull();
     }
 
     @Test
-    public void placeSingleImmutableObstacleOnMapShouldReturnFalseBecauseNotAvailable() throws Exception {
+    void placeSingleImmutableObstacleOnMapShouldReturnFalseBecauseNotAvailable() {
         MapPoint mapPoint = new MapPoint(0, 0);
         mapPoint.setAvailable(false);
         assertThat(SingleMethods.placeSingleImmutableObstacleOnMap(mapPoint)).isFalse();
@@ -71,7 +72,7 @@ public class SingleMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void placeSingleImmutableObstacleOnMapShouldReturnTrueBecauseAvailableAndPutAnImmutableObstacle() throws Exception {
+    void placeSingleImmutableObstacleOnMapShouldReturnTrueBecauseAvailableAndPutAnImmutableObstacle() {
         MapPoint mapPoint = new MapPoint(0, 0);
         assertThat(SingleMethods.placeSingleImmutableObstacleOnMap(mapPoint)).isTrue();
         assertThat(mapPoint.getImage()).isNotNull();

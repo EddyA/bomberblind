@@ -1,5 +1,7 @@
 package sprite.nomad;
 
+import exceptions.SpriteActionException;
+import lombok.Getter;
 import sprite.SpriteAction;
 import sprite.SpriteType;
 import utils.Direction;
@@ -14,14 +16,23 @@ import static sprite.SpriteAction.ACTION_WALKING;
  */
 public abstract class WalkingEnemy extends Nomad {
 
+    @Getter
     protected final Image[] deathImages;
+    @Getter
     protected final int nbDeathFrame;
+    @Getter
     protected final int deathRefreshTime;
+    @Getter
     protected final Image[] walkBackImages;
+    @Getter
     protected final Image[] walkFrontImages;
+    @Getter
     protected final Image[] walkLeftImages;
+    @Getter
     protected final Image[] walkRightImages;
+    @Getter
     protected final int nbWalkFrame;
+    @Getter
     protected final int walkRefreshTime;
 
     /**
@@ -40,7 +51,7 @@ public abstract class WalkingEnemy extends Nomad {
      * @param walkRefreshTime the sprite refresh time when walking (i.e. defining the sprite speed in term of image/sec)
      * @param actingTime the sprite acting time (i.e. defining the sprite speed in term of action/sec)
      */
-    public WalkingEnemy(int xMap,
+    protected WalkingEnemy(int xMap,
                         int yMap,
                         Image[] deathImages,
                         int nbDeathFrame,
@@ -67,42 +78,6 @@ public abstract class WalkingEnemy extends Nomad {
         curDirection = Direction.getRandomDirection(); // init the sprite with a random direction.
     }
 
-    public Image[] getDeathImages() {
-        return deathImages;
-    }
-
-    public int getNbDeathFrame() {
-        return nbDeathFrame;
-    }
-
-    public int getDeathRefreshTime() {
-        return deathRefreshTime;
-    }
-
-    public Image[] getWalkBackImages() {
-        return walkBackImages;
-    }
-
-    public Image[] getWalkFrontImages() {
-        return walkFrontImages;
-    }
-
-    public Image[] getWalkLeftImages() {
-        return walkLeftImages;
-    }
-
-    public Image[] getWalkRightImages() {
-        return walkRightImages;
-    }
-
-    public int getNbWalkFrame() {
-        return nbWalkFrame;
-    }
-
-    public int getWalkRefreshTime() {
-        return walkRefreshTime;
-    }
-
     @Override
     public boolean isActionAllowed(SpriteAction spriteAction) {
         return !(spriteAction != ACTION_WALKING &&
@@ -123,43 +98,38 @@ public abstract class WalkingEnemy extends Nomad {
     }
 
     @Override
-    public void updateSprite() {
+    public void updateSprite() throws SpriteActionException {
         switch (curSpriteAction) {
-            case ACTION_DYING: {
+            case ACTION_DYING -> {
                 images = deathImages;
                 nbImages = nbDeathFrame;
                 refreshTime = deathRefreshTime;
-                break;
             }
-            case ACTION_WALKING: {
+            case ACTION_WALKING -> {
                 switch (curDirection) {
-                    case DIRECTION_NORTH: {
+                    case DIRECTION_NORTH -> {
                         images = walkBackImages;
                         nbImages = nbWalkFrame;
                         refreshTime = walkRefreshTime;
-                        break;
                     }
-                    case DIRECTION_SOUTH: {
+                    case DIRECTION_SOUTH -> {
                         images = walkFrontImages;
                         nbImages = nbWalkFrame;
                         refreshTime = walkRefreshTime;
-                        break;
                     }
-                    case DIRECTION_WEST: {
+                    case DIRECTION_WEST -> {
                         images = walkLeftImages;
                         nbImages = nbWalkFrame;
                         refreshTime = walkRefreshTime;
-                        break;
                     }
-                    case DIRECTION_EAST: {
+                    case DIRECTION_EAST -> {
                         images = walkRightImages;
                         nbImages = nbWalkFrame;
                         refreshTime = walkRefreshTime;
-                        break;
                     }
                 }
-                break;
             }
+            default -> throw new SpriteActionException(curSpriteAction, this.getClass());
         }
     }
 }

@@ -2,26 +2,26 @@ package sprite.nomad;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sprite.SpriteType;
 
 import java.io.IOException;
 
 import static sprite.SpriteAction.ACTION_WALKING;
 
-
-public class GreenSoldierTest implements WithAssertions {
-    @Before
-    public void fillImagesMatrix() throws IOException {
+class GreenSoldierTest implements WithAssertions {
+    
+    @BeforeEach
+    void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
     }
 
     @Test
-    public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
+    void constructorShouldSetMembersWithTheExpectedValues() {
         GreenSoldier greenSoldier = new GreenSoldier(15, 30);
-        assertThat(greenSoldier.getxMap()).isEqualTo(15);
-        assertThat(greenSoldier.getyMap()).isEqualTo(30);
+        assertThat(greenSoldier.getXMap()).isEqualTo(15);
+        assertThat(greenSoldier.getYMap()).isEqualTo(30);
         assertThat(greenSoldier.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_WALKING_ENEMY);
 
         // - dying values.

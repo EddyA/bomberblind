@@ -1,14 +1,16 @@
 package map.ctrl;
 
+import java.util.Random;
 import exceptions.CannotCreateMapElementException;
+import lombok.experimental.UtilityClass;
 import map.MapPattern;
 import map.MapPoint;
-
-import java.util.Random;
-
 import static map.ctrl.SingleMethods.placeSinglePathwayOnMap;
 
+@UtilityClass
 public class PatternMethods {
+
+    private static final Random R = new Random();
 
     /**
      * Place a north edge on map.
@@ -21,10 +23,10 @@ public class PatternMethods {
      */
     public static void placeNorthEdgeOnMap(MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
                                            MapPattern mapPattern) throws CannotCreateMapElementException {
-        for (int colIdx = 0; colIdx < mapWidth; colIdx += mapPattern.getWidth()) {
+        for (int colIdx = 0; colIdx < mapWidth; colIdx += mapPattern.width()) {
             if (!placePatternOnMap(mapPointMatrix, mapWidth, mapHeight, mapPattern, 0, colIdx)) {
                 throw new CannotCreateMapElementException("not able to create the north edge: mapWidth(=" +
-                        mapWidth + ") % patternWidth(=" + mapPattern.getWidth() + ") != 0).");
+                    mapWidth + ") % patternWidth(=" + mapPattern.width() + ") != 0).");
             }
         }
     }
@@ -42,10 +44,11 @@ public class PatternMethods {
                                            int mapWidth,
                                            int mapHeight,
                                            MapPattern mapPattern) throws CannotCreateMapElementException {
-        for (int colIdx = 0; colIdx < mapWidth; colIdx += mapPattern.getWidth()) {
-            if (!placePatternOnMap(mapPointMatrix, mapWidth, mapHeight, mapPattern, mapHeight - mapPattern.getHeight(), colIdx)) {
+        for (int colIdx = 0; colIdx < mapWidth; colIdx += mapPattern.width()) {
+            if (!placePatternOnMap(mapPointMatrix, mapWidth, mapHeight, mapPattern, mapHeight - mapPattern.height(),
+                colIdx)) {
                 throw new CannotCreateMapElementException("not able to create the south edge: mapWidth(=" +
-                        mapWidth + ") % patternWidth(=" + mapPattern.getWidth() + ") != 0).");
+                    mapWidth + ") % patternWidth(=" + mapPattern.width() + ") != 0).");
             }
         }
     }
@@ -73,20 +76,20 @@ public class PatternMethods {
                                                            boolean isExit,
                                                            int perDecoratedSinglePathway,
                                                            int perDynamicSinglePathway)
-            throws CannotCreateMapElementException {
+        throws CannotCreateMapElementException {
         if (!placePatternOnMap(mapPointMatrix, mapWidth, mapHeight, mapPattern, startRowIdx, startColIdx)) {
             throw new CannotCreateMapElementException("not able to create an element at rowIdx=" +
-                    startRowIdx + ", colIdx=" + startColIdx + ".");
+                startRowIdx + ", colIdx=" + startColIdx + ".");
         }
         securePerimeter(mapPointMatrix,
-                mapWidth,
-                mapHeight,
-                mapPattern,
-                startRowIdx,
-                startColIdx,
-                isExit,
-                perDecoratedSinglePathway,
-                perDynamicSinglePathway);
+            mapWidth,
+            mapHeight,
+            mapPattern,
+            startRowIdx,
+            startColIdx,
+            isExit,
+            perDecoratedSinglePathway,
+            perDynamicSinglePathway);
     }
 
     /**
@@ -111,15 +114,15 @@ public class PatternMethods {
 
         // firstly check if the pattern is not crossing a map limit or a not available case.
         if (isPatternCrossingMapLimit(mapWidth, mapHeight, mapPattern, startRowIdx, startColIdx) ||
-                isPatternCrossingNotAvailableCase(mapPointMatrix, mapPattern, startRowIdx, startColIdx)) {
+            isPatternCrossingNotAvailableCase(mapPointMatrix, mapPattern, startRowIdx, startColIdx)) {
             return false;
         }
 
         // then, we create the element.
-        for (int rowIdx = 0; rowIdx < mapPattern.getHeight(); rowIdx++) {
-            for (int colIdx = 0; colIdx < mapPattern.getWidth(); colIdx++) {
+        for (int rowIdx = 0; rowIdx < mapPattern.height(); rowIdx++) {
+            for (int colIdx = 0; colIdx < mapPattern.width(); colIdx++) {
                 mapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx]
-                        .setImage(mapPattern.getImageArray()[(rowIdx * mapPattern.getWidth()) + colIdx]);
+                    .setImage(mapPattern.imageArray()[(rowIdx * mapPattern.width()) + colIdx]);
                 mapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setPathway(mapPattern.isPathway());
                 mapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setMutable(mapPattern.isMutable());
                 mapPointMatrix[startRowIdx + rowIdx][startColIdx + colIdx].setEntrance(mapPattern.isEntrance());
@@ -145,12 +148,8 @@ public class PatternMethods {
                                                     MapPattern mapPattern,
                                                     int startRowIdx,
                                                     int startColIdx) {
-        boolean isCrossing = false;
-        if (startRowIdx < 0 || startRowIdx + mapPattern.getHeight() > mapHeight ||
-                startColIdx < 0 || startColIdx + mapPattern.getWidth() > mapWidth) {
-            isCrossing = true;
-        }
-        return isCrossing;
+        return startRowIdx < 0 || startRowIdx + mapPattern.height() > mapHeight ||
+            startColIdx < 0 || startColIdx + mapPattern.width() > mapWidth;
     }
 
     /**
@@ -168,8 +167,8 @@ public class PatternMethods {
                                                             int startRowIdx,
                                                             int startColIdx) {
         boolean isCrossing = false;
-        for (int rowIdx = startRowIdx; rowIdx < startRowIdx + mapPattern.getHeight(); rowIdx++) {
-            for (int colIdx = startColIdx; colIdx < startColIdx + mapPattern.getWidth(); colIdx++) {
+        for (int rowIdx = startRowIdx; rowIdx < startRowIdx + mapPattern.height(); rowIdx++) {
+            for (int colIdx = startColIdx; colIdx < startColIdx + mapPattern.width(); colIdx++) {
                 if (!mapPointMatrix[rowIdx][colIdx].isAvailable()) {
                     isCrossing = true;
                 }
@@ -203,13 +202,13 @@ public class PatternMethods {
                                        int perDecoratedSinglePathway,
                                        int perDynamicSinglePathway) {
         for (int rowIdx = Math.max(0, startRowIdx - 1); rowIdx <= Math.min(mapHeight - 1,
-                startRowIdx + mapPattern.getHeight()); rowIdx++) {
+            startRowIdx + mapPattern.height()); rowIdx++) {
             for (int colIdx = Math.max(0, startColIdx - 1); colIdx <= Math.min(mapWidth - 1,
-                    startColIdx + mapPattern.getWidth()); colIdx++) {
+                startColIdx + mapPattern.width()); colIdx++) {
                 if (mapPointMatrix[rowIdx][colIdx].isAvailable()) {
                     if (placeSinglePathwayOnMap(mapPointMatrix[rowIdx][colIdx],
-                            perDecoratedSinglePathway,
-                            perDynamicSinglePathway) && isExit) {
+                        perDecoratedSinglePathway,
+                        perDynamicSinglePathway) && isExit) {
                         mapPointMatrix[rowIdx][colIdx].setExit(true);
                     }
                 }
@@ -235,13 +234,13 @@ public class PatternMethods {
                                            int patternHeight,
                                            int marginRange) throws IllegalArgumentException {
         int bound = mapHeight - 2 * marginRange - // north/south requiered margins.
-                patternHeight - // pattern height as we place its north/west point.
-                (northEdgeHeight + southEdgeHeight); // south egde height + north edge height.
+            patternHeight - // pattern height as we place its north/west point.
+            (northEdgeHeight + southEdgeHeight); // south egde height + north edge height.
         if (bound == 0) {
             return northEdgeHeight + marginRange;
         }
-        return Math.abs(new Random().nextInt(bound)) +
-                northEdgeHeight + marginRange; // re-add north edge height + margin to get the right range.
+        return Math.abs(R.nextInt(bound)) +
+            northEdgeHeight + marginRange; // re-add north edge height + margin to get the right range.
     }
 
     /**
@@ -262,12 +261,12 @@ public class PatternMethods {
                                            int patternWidth,
                                            int marginRange) throws IllegalArgumentException {
         int bound = mapWidth - 2 * marginRange - // east/west requiered margins.
-                patternWidth - // pattern width as we place its noth/west point.
-                (eastEdgeWidth + westEdgeWidth); // east egde width + west edge width.
+            patternWidth - // pattern width as we place its noth/west point.
+            (eastEdgeWidth + westEdgeWidth); // east egde width + west edge width.
         if (bound == 0) {
             return eastEdgeWidth + marginRange;
         }
-        return Math.abs(new Random().nextInt(bound)) +
-                eastEdgeWidth + marginRange; // re-add east edge width + margin to get the right range.
+        return Math.abs(R.nextInt(bound)) +
+            eastEdgeWidth + marginRange; // re-add east edge width + margin to get the right range.
     }
 }

@@ -1,18 +1,27 @@
-package spriteList.ctrl;
+package spritelist.ctrl;
 
+import java.util.List;
+import lombok.experimental.UtilityClass;
 import map.MapPoint;
 import sprite.Sprite;
 import sprite.nomad.Bomber;
 import sprite.nomad.BreakingEnemy;
 import sprite.nomad.FlyingNomad;
 import sprite.nomad.WalkingEnemy;
-import sprite.settled.*;
-
-import java.util.LinkedList;
+import sprite.settled.Bomb;
+import sprite.settled.Bonus;
+import sprite.settled.BonusBomb;
+import sprite.settled.BonusFlame;
+import sprite.settled.BonusHeart;
+import sprite.settled.BonusRoller;
+import sprite.settled.Flame;
+import sprite.settled.FlameEnd;
+import sprite.settled.Sparkle;
 
 /**
  * A collection of methods to add sprites to a list according to a map status.
  */
+@UtilityClass
 public class AddingMethods {
 
     /**
@@ -26,11 +35,11 @@ public class AddingMethods {
      * @param bomb           the bomb to add
      * @return true if the bomb has been added, false otherwise.
      */
-    public static boolean addBomb(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, Bomb bomb) {
+    public static boolean addBomb(List<Sprite> list, MapPoint[][] mapPointMatrix, Bomb bomb) {
         // to avoid adding several bombs when key is pressed.
         if (!mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBombing() &&
-                // to avoid adding a bomb on a burning case when the character is invicible.
-                !mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBurning()) {
+            // to avoid adding a bomb on a burning case when the character is invincible.
+            !mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].isBurning()) {
             mapPointMatrix[bomb.getRowIdx()][bomb.getColIdx()].setBombing(true);
             list.add(bomb);
             return true;
@@ -44,7 +53,7 @@ public class AddingMethods {
      * @param list   the list into which adding the sprite
      * @param bomber the bomber to add
      */
-    public static void addBomber(LinkedList<Sprite> list, Bomber bomber) {
+    public static void addBomber(List<Sprite> list, Bomber bomber) {
         list.add(bomber);
     }
 
@@ -59,9 +68,9 @@ public class AddingMethods {
      * @param bonus          the bonus to add
      * @return true if the bonus has been added, false otherwise.
      */
-    public static boolean addBonus(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, Bonus bonus) {
+    public static boolean addBonus(List<Sprite> list, MapPoint[][] mapPointMatrix, Bonus bonus) {
         if (mapPointMatrix[bonus.getRowIdx()][bonus.getColIdx()].isPathway() &&
-                !mapPointMatrix[bonus.getRowIdx()][bonus.getColIdx()].isBonusing()) {
+            !mapPointMatrix[bonus.getRowIdx()][bonus.getColIdx()].isBonusing()) {
             mapPointMatrix[bonus.getRowIdx()][bonus.getColIdx()].setBonusing(true);
             list.add(bonus);
             return true;
@@ -75,7 +84,7 @@ public class AddingMethods {
      * @param list          the list into which adding the sprite
      * @param breakingEnemy the walking enemy to add
      */
-    public static void addBreakingEnemy(LinkedList<Sprite> list, BreakingEnemy breakingEnemy) {
+    public static void addBreakingEnemy(List<Sprite> list, BreakingEnemy breakingEnemy) {
         list.add(breakingEnemy);
     }
 
@@ -85,7 +94,7 @@ public class AddingMethods {
      * @param list        the list into which adding the sprite
      * @param flyingNomad the flying nomad to add
      */
-    public static void addFlyingNomad(LinkedList<Sprite> list, FlyingNomad flyingNomad) {
+    public static void addFlyingNomad(List<Sprite> list, FlyingNomad flyingNomad) {
         list.add(flyingNomad);
     }
 
@@ -95,25 +104,13 @@ public class AddingMethods {
      * @param list     the list into which adding the bonus
      * @param mapPoint thz MapPoint to check
      */
-    public static void checkMapPointAndAddBonus(LinkedList<Sprite> list, MapPoint mapPoint) {
+    public static void checkMapPointAndAddBonus(List<Sprite> list, MapPoint mapPoint) {
         if (mapPoint.getAttachedBonus() != null) {
             switch (mapPoint.getAttachedBonus()) {
-                case TYPE_BONUS_BOMB: {
-                    list.add(new BonusBomb(mapPoint.getRowIdx(), mapPoint.getColIdx()));
-                    break;
-                }
-                case TYPE_BONUS_FLAME: {
-                    list.add(new BonusFlame(mapPoint.getRowIdx(), mapPoint.getColIdx()));
-                    break;
-                }
-                case TYPE_BONUS_HEART: {
-                    list.add(new BonusHeart(mapPoint.getRowIdx(), mapPoint.getColIdx()));
-                    break;
-                }
-                case TYPE_BONUS_ROLLER: {
-                    list.add(new BonusRoller(mapPoint.getRowIdx(), mapPoint.getColIdx()));
-                    break;
-                }
+                case TYPE_BONUS_BOMB -> list.add(new BonusBomb(mapPoint.getRowIdx(), mapPoint.getColIdx()));
+                case TYPE_BONUS_FLAME -> list.add(new BonusFlame(mapPoint.getRowIdx(), mapPoint.getColIdx()));
+                case TYPE_BONUS_HEART -> list.add(new BonusHeart(mapPoint.getRowIdx(), mapPoint.getColIdx()));
+                case TYPE_BONUS_ROLLER -> list.add(new BonusRoller(mapPoint.getRowIdx(), mapPoint.getColIdx()));
             }
             mapPoint.setBonusing(true); // note the case as bonusing (the bonus has been revealed).
             mapPoint.setAttachedBonus(null); // detached the bonus.
@@ -131,14 +128,14 @@ public class AddingMethods {
      * @param flame          the flame to add
      * @return true if the flame can be propagated, false it is stopped
      */
-    public static boolean addFlame(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, Flame flame) {
+    public static boolean addFlame(List<Sprite> list, MapPoint[][] mapPointMatrix, Flame flame) {
         if (mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].isPathway()) {
             mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].addFlame();
             mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].setImageAsBurned();
             list.add(flame);
             return true; // the next case should be tested.
         } else if (mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].isMutable() ||
-                mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].isBombing()) {
+            mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].isBombing()) {
             mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].setPathway(true);
             mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].setMutable(false);
             mapPointMatrix[flame.getRowIdx()][flame.getColIdx()].addFlame();
@@ -162,8 +159,13 @@ public class AddingMethods {
      * @param centralColIdx  the map column index of the central flame
      * @param flameSize      the flame size
      */
-    public static void addFlames(LinkedList<Sprite> list, MapPoint[][] mapPointMatrix, int mapWidth, int mapHeight,
-                                 int centralRowIdx, int centralColIdx, int flameSize) {
+    public static void addFlames(List<Sprite> list,
+                                 MapPoint[][] mapPointMatrix,
+                                 int mapWidth,
+                                 int mapHeight,
+                                 int centralRowIdx,
+                                 int centralColIdx,
+                                 int flameSize) {
         Flame flame;
 
         // place left flames.
@@ -206,7 +208,7 @@ public class AddingMethods {
      * @param list     the list into which adding the flame
      * @param flameEnd the flame end to add
      */
-    public static void addFlameEnd(LinkedList<Sprite> list, FlameEnd flameEnd) {
+    public static void addFlameEnd(List<Sprite> list, FlameEnd flameEnd) {
         list.add(flameEnd);
     }
 
@@ -216,7 +218,7 @@ public class AddingMethods {
      * @param list    the list into which adding the sparkle
      * @param sparkle the sparkle to add
      */
-    public static void addSparkle(LinkedList<Sprite> list, Sparkle sparkle) {
+    public static void addSparkle(List<Sprite> list, Sparkle sparkle) {
         list.add(sparkle);
     }
 
@@ -226,7 +228,7 @@ public class AddingMethods {
      * @param list         the list into which adding the sprite
      * @param walkingEnemy the walking enemy to add
      */
-    public static void addWalkingEnemy(LinkedList<Sprite> list, WalkingEnemy walkingEnemy) {
+    public static void addWalkingEnemy(List<Sprite> list, WalkingEnemy walkingEnemy) {
         list.add(walkingEnemy);
     }
 }

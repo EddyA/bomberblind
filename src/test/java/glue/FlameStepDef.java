@@ -3,8 +3,8 @@ package glue;
 import org.assertj.core.api.WithAssertions;
 import org.mockito.Mockito;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Then;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
 import sprite.SpriteType;
 import utils.Tools;
 

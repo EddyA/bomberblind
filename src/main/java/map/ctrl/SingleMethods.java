@@ -1,17 +1,20 @@
 package map.ctrl;
 
+import java.awt.Image;
+import java.util.Random;
 import images.ImagesLoader;
+import lombok.experimental.UtilityClass;
 import map.MapPoint;
 import utils.Tuple3;
 
-import java.awt.*;
-import java.util.Random;
-
+@UtilityClass
 public class SingleMethods {
 
+    private static final Random R = new Random();
+
     /**
-     * Try to place a single pathway on map.
-     * If the case is available, place the pathway and return true, otherwise return false.
+     * Try to place a single pathway on map. If the case is available, place the pathway and return true, otherwise
+     * return false.
      *
      * @param mapPoint                  the MapPoint to place the pathway
      * @param perDecoratedSinglePathway the percentage of decorated elements to place among single pathway
@@ -22,13 +25,13 @@ public class SingleMethods {
                                                   int perDecoratedSinglePathway,
                                                   int perDynamicSinglePathway) {
         if (mapPoint.isAvailable()) {
-            int randomPercent = Math.abs(new Random().nextInt(100)); // randomly get a % value.
+            int randomPercent = Math.abs(R.nextInt(100)); // randomly get a % value.
             if (randomPercent < perDecoratedSinglePathway) {
-                randomPercent = Math.abs(new Random().nextInt(100)); // randomly get a % value.
+                randomPercent = Math.abs(R.nextInt(100)); // randomly get a % value.
                 if (randomPercent < perDynamicSinglePathway) {
-                    Tuple3 dynamicElt = ImagesLoader.getRandomDynamicSinglePathway(); // animated.
-                    mapPoint.setImages((Image[]) dynamicElt.getFirst(), (Integer) dynamicElt.getSecond());
-                    mapPoint.setRefreshTime((Integer) dynamicElt.getThird());
+                    Tuple3<Image[], Integer, Integer> dynamicElt = ImagesLoader.getRandomDynamicSinglePathway(); // animated.
+                    mapPoint.setImages(dynamicElt.first(), dynamicElt.second());
+                    mapPoint.setRefreshTime(dynamicElt.third());
                 } else {
                     mapPoint.setImage(ImagesLoader.getRandomDecoratedSinglePathway()); // decorated pathway.
                 }

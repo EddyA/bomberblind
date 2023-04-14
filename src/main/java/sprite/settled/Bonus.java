@@ -1,5 +1,7 @@
 package sprite.settled;
 
+import lombok.Getter;
+import lombok.Setter;
 import sprite.Sprite;
 import sprite.SpriteType;
 import utils.Tools;
@@ -15,7 +17,8 @@ import static sprite.settled.Bonus.Status.STATUS_ENDED;
  */
 public abstract class Bonus extends Sprite {
 
-    public final static int BONUS_REFRESH_TIME = 50;
+    public static final int BONUS_REFRESH_TIME = 50;
+    @Getter
     private final BonusType bonusType;
 
     /**
@@ -25,9 +28,15 @@ public abstract class Bonus extends Sprite {
         STATUS_ALIVE, STATUS_ENDED
     }
 
+    @Getter
+    @Setter
     private Status status = STATUS_ALIVE; // current status of the sprite.
 
+    @Getter
+    @Setter
     protected int rowIdx; // map row index of the sprite.
+    @Getter
+    @Setter
     protected int colIdx; // map column index of the sprite.
 
     /**
@@ -39,7 +48,7 @@ public abstract class Bonus extends Sprite {
      * @param images     the sprite's array of images
      * @param nbImages   the number of images composing the sprite
      */
-    public Bonus(int rowIdx,
+    protected Bonus(int rowIdx,
                  int colIdx,
                  BonusType bonusType,
                  Image[] images,
@@ -54,34 +63,6 @@ public abstract class Bonus extends Sprite {
         this.images = images;
         this.nbImages = nbImages;
         this.refreshTime = BONUS_REFRESH_TIME;
-    }
-
-    public BonusType getBonusType() {
-        return bonusType;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public int getRowIdx() {
-        return rowIdx;
-    }
-
-    public void setRowIdx(int rowIdx) {
-        this.rowIdx = rowIdx;
-    }
-
-    public int getColIdx() {
-        return colIdx;
-    }
-
-    public void setColIdx(int colIdx) {
-        this.colIdx = colIdx;
     }
 
     @Override

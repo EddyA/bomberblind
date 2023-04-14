@@ -2,8 +2,8 @@ package sprite.nomad;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import sprite.SpriteAction;
 import sprite.SpriteType;
@@ -18,20 +18,20 @@ import static org.mockito.Mockito.mock;
 import static sprite.SpriteAction.*;
 import static sprite.nomad.BlueBomber.INVINCIBILITY_TIME;
 
-public class NomadTest implements WithAssertions {
+class NomadTest implements WithAssertions {
 
-    @Before
-    public void fillImagesMatrix() throws IOException {
+    @BeforeEach
+    void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
     }
 
     @Test
-    public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
+    void constructorShouldSetMembersWithTheExpectedValues() {
         BlueBomber blueBomber = new BlueBomber(5, 4);
 
         // check members value.
-        assertThat(blueBomber.getxMap()).isEqualTo(5);
-        assertThat(blueBomber.getyMap()).isEqualTo(4);
+        assertThat(blueBomber.getXMap()).isEqualTo(5);
+        assertThat(blueBomber.getYMap()).isEqualTo(4);
         assertThat(blueBomber.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_BOMBER);
         assertThat(blueBomber.getRefreshTime()).isEqualTo(BlueBomber.REFRESH_TIME);
         assertThat(blueBomber.getActingTime()).isEqualTo(BlueBomber.DEFAULT_ACTING_TIME);
@@ -39,14 +39,14 @@ public class NomadTest implements WithAssertions {
     }
 
     @Test
-    public void setCurSpriteActionWithAnAllowedActionShouldSetTheExpectedMember() throws Exception {
+    void setCurSpriteActionWithAnAllowedActionShouldSetTheExpectedMember() {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         blueBomber.setCurSpriteAction(SpriteAction.ACTION_WALKING);
         assertThat(blueBomber.getCurSpriteAction()).isEqualTo(SpriteAction.ACTION_WALKING);
     }
 
     @Test
-    public void setCurSpriteActionWithANotAllowedActionShouldThrowAnException() throws Exception {
+    void setCurSpriteActionWithANotAllowedActionShouldThrowAnException() {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         assertThatThrownBy(() -> blueBomber.setCurSpriteAction(SpriteAction.ACTION_BREAKING))
                 .isInstanceOf(RuntimeException.class)
@@ -54,14 +54,14 @@ public class NomadTest implements WithAssertions {
     }
 
     @Test
-    public void setLastSpriteActionWithAnAllowedActionShouldSetTheExpectedMember() throws Exception {
+    void setLastSpriteActionWithAnAllowedActionShouldSetTheExpectedMember() {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         blueBomber.setLastSpriteAction(SpriteAction.ACTION_WALKING);
         assertThat(blueBomber.getLastSpriteAction()).isEqualTo(SpriteAction.ACTION_WALKING);
     }
 
     @Test
-    public void setLastSpriteActionWithANotAllowedActionShouldThrowAnException() throws Exception {
+    void setLastSpriteActionWithANotAllowedActionShouldThrowAnException() {
         BlueBomber blueBomber = new BlueBomber(5, 4);
         assertThatThrownBy(() -> blueBomber.setLastSpriteAction(SpriteAction.ACTION_BREAKING))
                 .isInstanceOf(RuntimeException.class)
@@ -69,7 +69,7 @@ public class NomadTest implements WithAssertions {
     }
 
     @Test
-    public void isTimeToActShouldReturnFalse() throws Exception {
+    void isTimeToActShouldReturnFalse() {
         BlueBomber blueBomber = new BlueBomber(5, 4);
 
         // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.
@@ -85,7 +85,7 @@ public class NomadTest implements WithAssertions {
     }
 
     @Test
-    public void isTimeToActShouldReturnTrue() throws Exception {
+    void isTimeToActShouldReturnTrue() {
         BlueBomber blueBomber = new BlueBomber(5, 4);
 
         // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.
@@ -101,7 +101,7 @@ public class NomadTest implements WithAssertions {
     }
 
     @Test
-    public void isInvincibleShouldReturnTheExpectedValues() throws Exception {
+    void isInvincibleShouldReturnTheExpectedValues() {
         BlueBomber blueBomber = new BlueBomber(10, 20);
 
         // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.
@@ -122,110 +122,110 @@ public class NomadTest implements WithAssertions {
     }
 
     @Test
-    public void setInvincibleShouldSetTheNomadinvincible() throws Exception {
+    void setInvincibleShouldSetTheNomadinvincible() {
         BlueBomber blueBomber = new BlueBomber(10, 20);
         blueBomber.setInvincible();
         assertThat(blueBomber.isInvincible()).isTrue();
     }
 
     @Test
-    public void updateImageShouldDoNothing() throws Exception {
+    void updateImageShouldDoNothing() {
         BlueBomber blueBomber = new BlueBomber(5, 4);
-        BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
-        Mockito.when(spyedBlueBomber.hasActionChanged()).thenReturn(false);
-        Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(false);
+        BlueBomber spiedBlueBomber = Mockito.spy(blueBomber);
+        Mockito.when(spiedBlueBomber.hasActionChanged()).thenReturn(false);
+        Mockito.when(spiedBlueBomber.isTimeToRefresh()).thenReturn(false);
 
         // set nomad.
-        spyedBlueBomber.setImages(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
-        spyedBlueBomber.setNbImages(NB_BOMBER_WAIT_FRAME);
-        spyedBlueBomber.setCurImageIdx(1);
+        spiedBlueBomber.setImages(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
+        spiedBlueBomber.setNbImages(NB_BOMBER_WAIT_FRAME);
+        spiedBlueBomber.setCurImageIdx(1);
 
         // call & check.
-        spyedBlueBomber.updateImage();
-        assertThat(spyedBlueBomber.getCurImageIdx()).isEqualTo(1);
-        assertThat(spyedBlueBomber.getCurImage())
+        spiedBlueBomber.updateImage();
+        assertThat(spiedBlueBomber.getCurImageIdx()).isEqualTo(1);
+        assertThat(spiedBlueBomber.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx][1]);
     }
 
     @Test
-    public void updateImageShouldIncreaseCurImageIdx() throws Exception {
+    void updateImageShouldIncreaseCurImageIdx() {
         BlueBomber blueBomber = new BlueBomber(5, 4);
-        BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
-        Mockito.when(spyedBlueBomber.hasActionChanged()).thenReturn(false);
-        Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(true);
+        BlueBomber spiedBlueBomber = Mockito.spy(blueBomber);
+        Mockito.when(spiedBlueBomber.hasActionChanged()).thenReturn(false);
+        Mockito.when(spiedBlueBomber.isTimeToRefresh()).thenReturn(true);
 
         // set nomad.
-        spyedBlueBomber.setImages(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
-        spyedBlueBomber.setNbImages(NB_BOMBER_WAIT_FRAME);
-        spyedBlueBomber.setCurImageIdx(1);
+        spiedBlueBomber.setImages(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
+        spiedBlueBomber.setNbImages(NB_BOMBER_WAIT_FRAME);
+        spiedBlueBomber.setCurImageIdx(1);
 
         // call & check.
-        spyedBlueBomber.updateImage();
-        assertThat(spyedBlueBomber.getCurImageIdx()).isEqualTo(2);
-        assertThat(spyedBlueBomber.getCurImage())
+        spiedBlueBomber.updateImage();
+        assertThat(spiedBlueBomber.getCurImageIdx()).isEqualTo(2);
+        assertThat(spiedBlueBomber.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx][2]);
     }
 
     @Test
-    public void updateImageWithANewStatusShouldSetPaintedAtLeastOneTimeToFalseAndCurImageIdxTo0() throws Exception {
+    void updateImageWithANewStatusShouldSetPaintedAtLeastOneTimeToFalseAndCurImageIdxTo0() {
         BlueBomber blueBomber = new BlueBomber(5, 4);
-        BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
-        Mockito.when(spyedBlueBomber.hasActionChanged()).thenReturn(true);
-        Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(false);
+        BlueBomber spiedBlueBomber = Mockito.spy(blueBomber);
+        Mockito.when(spiedBlueBomber.hasActionChanged()).thenReturn(true);
+        Mockito.when(spiedBlueBomber.isTimeToRefresh()).thenReturn(false);
 
         // set nomad.
-        spyedBlueBomber.setImages(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
-        spyedBlueBomber.setNbImages(NB_BOMBER_WAIT_FRAME);
-        spyedBlueBomber.setPaintedAtLeastOneTime(true);
-        spyedBlueBomber.setCurImageIdx(1); // index != 0.
+        spiedBlueBomber.setImages(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
+        spiedBlueBomber.setNbImages(NB_BOMBER_WAIT_FRAME);
+        spiedBlueBomber.setPaintedAtLeastOneTime(true);
+        spiedBlueBomber.setCurImageIdx(1); // index != 0.
 
         // call & check.
-        spyedBlueBomber.updateImage();
-        assertThat(spyedBlueBomber.getCurImageIdx()).isEqualTo(0);
-        assertThat(spyedBlueBomber.isPaintedAtLeastOneTime()).isFalse();
-        assertThat(spyedBlueBomber.getCurImage())
+        spiedBlueBomber.updateImage();
+        assertThat(spiedBlueBomber.getCurImageIdx()).isEqualTo(0);
+        assertThat(spiedBlueBomber.isPaintedAtLeastOneTime()).isFalse();
+        assertThat(spiedBlueBomber.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx][0]);
     }
 
     @Test
-    public void updateImageWithTheLastImageShouldSetPaintedAtLeastOneTimeToTrueAndCurImageIdxTo0() throws Exception {
+    void updateImageWithTheLastImageShouldSetPaintedAtLeastOneTimeToTrueAndCurImageIdxTo0() {
         BlueBomber blueBomber = new BlueBomber(5, 4);
-        BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
-        Mockito.when(spyedBlueBomber.hasActionChanged()).thenReturn(false);
-        Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(true);
+        BlueBomber spiedBlueBomber = Mockito.spy(blueBomber);
+        Mockito.when(spiedBlueBomber.hasActionChanged()).thenReturn(false);
+        Mockito.when(spiedBlueBomber.isTimeToRefresh()).thenReturn(true);
 
         // set nomad.
-        spyedBlueBomber.setImages(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
-        spyedBlueBomber.setNbImages(NB_BOMBER_WAIT_FRAME);
-        spyedBlueBomber.setPaintedAtLeastOneTime(false);
-        spyedBlueBomber.setCurImageIdx(NB_BOMBER_WAIT_FRAME - 1); // last sprite's image.
+        spiedBlueBomber.setImages(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx]);
+        spiedBlueBomber.setNbImages(NB_BOMBER_WAIT_FRAME);
+        spiedBlueBomber.setPaintedAtLeastOneTime(false);
+        spiedBlueBomber.setCurImageIdx(NB_BOMBER_WAIT_FRAME - 1); // last sprite's image.
 
         // call & check.
-        spyedBlueBomber.updateImage();
-        assertThat(spyedBlueBomber.getCurImageIdx()).isEqualTo(0);
-        assertThat(spyedBlueBomber.isPaintedAtLeastOneTime()).isTrue();
-        assertThat(spyedBlueBomber.getCurImage())
+        spiedBlueBomber.updateImage();
+        assertThat(spiedBlueBomber.getCurImageIdx()).isEqualTo(0);
+        assertThat(spiedBlueBomber.isPaintedAtLeastOneTime()).isTrue();
+        assertThat(spiedBlueBomber.getCurImage())
                 .isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.blueBomberWaitMatrixRowIdx][0]);
     }
 
     @Test
-    public void isFinishedShouldReturnTrue() throws Exception {
+    void isFinishedShouldReturnTrue() {
         BlueBomber blueBomber = new BlueBomber(5, 4);
-        BlueBomber spyedBlueBomber = Mockito.spy(blueBomber);
-        Mockito.when(spyedBlueBomber.hasActionChanged()).thenReturn(false);
-        Mockito.when(spyedBlueBomber.isTimeToRefresh()).thenReturn(true);
+        BlueBomber spiedBlueBomber = Mockito.spy(blueBomber);
+        Mockito.when(spiedBlueBomber.hasActionChanged()).thenReturn(false);
+        Mockito.when(spiedBlueBomber.isTimeToRefresh()).thenReturn(true);
 
         // set test.
-        spyedBlueBomber.setCurSpriteAction(ACTION_DYING);
-        spyedBlueBomber.setCurImageIdx(ImagesLoader.NB_BOMBER_DEATH_FRAME - 1);
-        spyedBlueBomber.updateImage();
+        spiedBlueBomber.setCurSpriteAction(ACTION_DYING);
+        spiedBlueBomber.setCurImageIdx(ImagesLoader.NB_BOMBER_DEATH_FRAME - 1);
+        spiedBlueBomber.updateImage();
 
         // call & check.
-        assertThat(spyedBlueBomber.isFinished()).isTrue();
+        assertThat(spiedBlueBomber.isFinished()).isTrue();
     }
 
     @Test
-    public void isFinishedWithACurActionDifferentOfDyingShouldReturnFalse() throws Exception {
+    void isFinishedWithACurActionDifferentOfDyingShouldReturnFalse() {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.
@@ -239,7 +239,7 @@ public class NomadTest implements WithAssertions {
     }
 
     @Test
-    public void isFinishedWithACurImageIdxDifferentOfNbImagesMinus1ShouldReturnFalse() throws Exception {
+    void isFinishedWithACurImageIdxDifferentOfNbImagesMinus1ShouldReturnFalse() {
         BlueBomber blueBomber = new BlueBomber(15, 30);
 
         // set test.

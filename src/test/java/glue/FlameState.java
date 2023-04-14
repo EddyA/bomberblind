@@ -9,17 +9,17 @@ import sprite.settled.Flame;
 
 public class FlameState {
 
-    private final Flame spyedFlame;
+    private final Flame spiedFlame;
     private boolean shouldBeRemoved;
 
     public FlameState() throws IOException {
         ImagesLoader.fillImagesMatrix();
         Flame flame = new Flame(0, 0);
-        spyedFlame = Mockito.spy(flame);
+        spiedFlame = Mockito.spy(flame);
     }
 
     Flame getFlame() {
-        return spyedFlame;
+        return spiedFlame;
     }
 
     boolean isShouldBeRemoved() {

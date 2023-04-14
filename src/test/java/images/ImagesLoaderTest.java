@@ -1,22 +1,21 @@
 package images;
 
-import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
-
 import java.io.IOException;
+import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.Test;
 
-public class ImagesLoaderTest implements WithAssertions {
+class ImagesLoaderTest implements WithAssertions {
 
     @Test
-    public void createImageShouldThrowAnExceptionWithABadPath() throws Exception {
+    void createImageShouldThrowAnExceptionWithABadPath() {
         String path = "bad_path/img.png";
         assertThatThrownBy(() -> ImagesLoader.createImage(path))
-                .isInstanceOf(IOException.class)
-                .hasMessage("file not found: " + path);
+            .isInstanceOf(IOException.class)
+            .hasMessage("file not found: " + path);
     }
 
     @Test
-    public void createImageShouldSuccesWithAGoodPath() throws Exception {
+    void createImageShouldSuccessWithAGoodPath() {
         IOException myException = null;
         String path = "/images/icon.gif";
         try {
@@ -28,7 +27,7 @@ public class ImagesLoaderTest implements WithAssertions {
     }
 
     @Test
-    public void fillImagesMatrixShouldFillExpectedNumberOfRows() throws Exception {
+    void fillImagesMatrixShouldFillExpectedNumberOfRows() throws IOException {
         ImagesLoader.fillImagesMatrix();
         assertThat(ImagesLoader.NB_MATRIX_ROW).isEqualTo(ImagesLoader.lastMatrixRowIdx + 1);
     }

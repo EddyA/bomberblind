@@ -1,7 +1,7 @@
 package utils;
 
 import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
@@ -9,15 +9,15 @@ import java.util.Set;
 
 import static utils.Direction.*;
 
-public class DirectionTest implements WithAssertions {
+class DirectionTest implements WithAssertions {
 
     @Test
-    public void getRandomDirectionShouldReturnADirection() throws Exception {
+    void getRandomDirectionShouldReturnADirection() {
         assertThat(Direction.getRandomDirection()).isInstanceOf(Direction.class);
     }
 
     @Test
-    public void getRandomDirectionWithExclusionShouldReturnTheExpectedDirection() throws Exception {
+    void getRandomDirectionWithExclusionShouldReturnTheExpectedDirection() {
         Set<Direction> checkedDirections = new HashSet<>();
 
         // all direction are allowed.
@@ -62,14 +62,14 @@ public class DirectionTest implements WithAssertions {
     }
 
     @Test
-    public void convertKeyEventToDirectionWithABadKeyShouldThrownAnException() throws Exception {
+    void convertKeyEventToDirectionWithABadKeyShouldThrownAnException() {
         assertThatThrownBy(() -> Direction.convertKeyEventToDirection(KeyEvent.VK_B))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("cannot convert KeyEvent '66' to Direction.");
     }
 
     @Test
-    public void convertKeyEventToDirectionShouldReturnTheExpectedDirection() throws Exception {
+    void convertKeyEventToDirectionShouldReturnTheExpectedDirection() {
         assertThat(Direction.convertKeyEventToDirection(KeyEvent.VK_UP)).isEqualTo(DIRECTION_NORTH);
         assertThat(Direction.convertKeyEventToDirection(KeyEvent.VK_DOWN)).isEqualTo(DIRECTION_SOUTH);
         assertThat(Direction.convertKeyEventToDirection(KeyEvent.VK_LEFT)).isEqualTo(DIRECTION_WEST);
@@ -77,10 +77,10 @@ public class DirectionTest implements WithAssertions {
     }
 
     @Test
-    public void getlabelShouldReturnTheAppropriateLabel() throws Exception {
-        assertThat(getlabel(DIRECTION_NORTH).orElse("no_name")).isEqualTo("north");
-        assertThat(getlabel(DIRECTION_SOUTH).orElse("no_name")).isEqualTo("south");
-        assertThat(getlabel(DIRECTION_WEST).orElse("no_name")).isEqualTo("west");
-        assertThat(getlabel(DIRECTION_EAST).orElse("no_name")).isEqualTo("east");
+    void getLabelShouldReturnTheAppropriateLabel() {
+        assertThat(getLabel(DIRECTION_NORTH).orElse("no_name")).isEqualTo("north");
+        assertThat(getLabel(DIRECTION_SOUTH).orElse("no_name")).isEqualTo("south");
+        assertThat(getLabel(DIRECTION_WEST).orElse("no_name")).isEqualTo("west");
+        assertThat(getLabel(DIRECTION_EAST).orElse("no_name")).isEqualTo("east");
     }
 }

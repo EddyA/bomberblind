@@ -8,11 +8,11 @@ import java.util.BitSet;
  */
 public class MapPointStatus {
 
-    private final int INDEX_STATUS_IS_AVAILABLE = 0;
-    private final int INDEX_STATUS_IS_PATHWAY = 1;
-    private final int INDEX_STATUS_IS_MUTABLE = 2;
-    private final int INDEX_STATUS_IS_ENTRANCE = 3;
-    private final int INDEX_STATUS_IS_EXIT = 4;
+    private static final int INDEX_STATUS_IS_AVAILABLE = 0;
+    private static final int INDEX_STATUS_IS_PATHWAY = 1;
+    private static final int INDEX_STATUS_IS_MUTABLE = 2;
+    private static final int INDEX_STATUS_IS_ENTRANCE = 3;
+    private static final int INDEX_STATUS_IS_EXIT = 4;
 
     private final BitSet bitSet = new BitSet(5); // status as bitset.
 

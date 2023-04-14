@@ -10,9 +10,9 @@ import java.util.Optional;
 public class App extends JFrame {
 
     private int screenWidth;
-    private final static int DEFAULT_SCREEN_WIDTH = 1024;
+    private static final  int DEFAULT_SCREEN_WIDTH = 1280;
     private int screenHeight;
-    private final static int DEFAULT_SCREEN_HEIGHT = 768;
+    private static final int DEFAULT_SCREEN_HEIGHT = 800;
 
     private App(GraphicsDevice graphicsDevice) {
         super(graphicsDevice.getDefaultConfiguration());
@@ -33,7 +33,7 @@ public class App extends JFrame {
             System.out.println("- set screen mode ...");
             this.setTitle("Bomberblind (eddy.albert@gmail.com)");
             this.setIconImage(ImageIO.read(App.class.getResource("/images/icon.gif")));
-            if (!fullscreenResolution.isPresent() || // is the screen format supported by the software?
+            if (fullscreenResolution.isEmpty() || // is the screen format supported by the software?
                     !ScreenMode.setFullscreenMode(graphicsDevice, // is the screen format supported by the hardware?
                             this,
                             screenWidth,
@@ -44,7 +44,7 @@ public class App extends JFrame {
                 ScreenMode.setWindowMode(this, screenWidth, screenHeight);
             }
             System.out.println("- create and set JPanel ...");
-            GameJpanel gameJpanel = new GameJpanel(screenWidth, screenHeight);
+            GameJPanel gameJpanel = new GameJPanel(screenWidth, screenHeight);
             this.setContentPane(gameJpanel);
 
             System.out.println("- run.");

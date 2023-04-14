@@ -1,23 +1,23 @@
 package utils;
 
 import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.time.Instant;
 
 import static org.mockito.Mockito.mock;
 
-public class TimerTest implements WithAssertions{
+class TimerTest implements WithAssertions{
 
     @Test
-    public void getElapsedTimeWithoutStartingShouldReturnZero() throws Exception {
+    void getElapsedTimeWithoutStartingShouldReturnZero() {
         Timer timer = new Timer();
         assertThat(timer.getElapsedTime()).isEqualTo(0);
     }
 
     @Test
-    public void getElapsedTimeStartingButNotStoppingShouldReturnTheExecptedValue() throws Exception {
+    void getElapsedTimeStartingButNotStoppingShouldReturnTheExpectedValue() {
         Timer timer = new Timer();
 
         // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.
@@ -36,7 +36,7 @@ public class TimerTest implements WithAssertions{
     }
 
     @Test
-    public void getElapsedTimeStartingAndStoppingShouldReturnTheExecptedValue() throws Exception {
+    void getElapsedTimeStartingAndStoppingShouldReturnTheExecptedValue() {
         Timer timer = new Timer();
 
         // mock CurrentTimeSupplier class to set currentTimeMillis to 1000ms.

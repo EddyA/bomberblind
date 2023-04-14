@@ -1,8 +1,9 @@
 package sprite.settled;
 
+import java.awt.Image;
+import lombok.Getter;
+import lombok.Setter;
 import sprite.SpriteType;
-
-import java.awt.*;
 
 /**
  * Abstract class of a timed sprites.
@@ -10,7 +11,9 @@ import java.awt.*;
  */
 public abstract class TimedSettled extends LoopedSettled {
 
+    @Getter
     private final int durationTime; // duration the sprite must loop (in ms).
+    @Setter
     private long startTs; // start timestamp.
 
     /**
@@ -40,14 +43,6 @@ public abstract class TimedSettled extends LoopedSettled {
                 0);
         this.durationTime = durationTime;
         this.startTs = currentTimeSupplier.get().toEpochMilli(); // start the sprite.
-    }
-
-    public int getDurationTime() {
-        return durationTime;
-    }
-
-    public void setStartTs(long startTs) {
-        this.startTs = startTs;
     }
 
     @Override

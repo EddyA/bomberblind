@@ -1,51 +1,40 @@
 package ai;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import lombok.experimental.UtilityClass;
 import map.MapPoint;
 import utils.Tuple2;
 
-import java.util.*;
-
 /**
- * A class to find a path between two points.
- * The algorithm used is A* (https://en.wikipedia.org/wiki/A*_search_algorithm)
+ * A class to find a path between two points. The algorithm used is A* (<a
+ * href="https://en.wikipedia.org/wiki/A">...</a>*_search_algorithm)
  */
+@UtilityClass
 public class PathFinding {
 
     /**
      * A simple point.
+     *
+     * @param x abscissa.
+     * @param y ordinate.
      */
-    public static class Point {
-        private final int x; // abscissa.
-        private final int y; // ordinate.
-
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
-        }
+    public record Point(int x, int y) {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             Point point = (Point) o;
-
             return x == point.x && y == point.y;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = x;
-            result = 31 * result + y;
-            return result;
         }
     }
 
@@ -63,25 +52,25 @@ public class PathFinding {
                                           int mapHeight,
                                           Point point) {
         Set<Point> res = new HashSet<>();
-        if ((point.getX() - 1 >= 0) &&
-                (mapPointMatrix[point.getY()][point.getX() - 1].isPathway() ||
-                        mapPointMatrix[point.getY()][point.getX() - 1].isMutable())) {
-            res.add(new Point(point.getX() - 1, point.getY()));
+        if ((point.x() - 1 >= 0) &&
+            (mapPointMatrix[point.y()][point.x() - 1].isPathway() ||
+                mapPointMatrix[point.y()][point.x() - 1].isMutable())) {
+            res.add(new Point(point.x() - 1, point.y()));
         }
-        if ((point.getX() + 1 < mapWidth) &&
-                (mapPointMatrix[point.getY()][point.getX() + 1].isPathway() ||
-                        mapPointMatrix[point.getY()][point.getX() + 1].isMutable())) {
-            res.add(new Point(point.getX() + 1, point.getY()));
+        if ((point.x() + 1 < mapWidth) &&
+            (mapPointMatrix[point.y()][point.x() + 1].isPathway() ||
+                mapPointMatrix[point.y()][point.x() + 1].isMutable())) {
+            res.add(new Point(point.x() + 1, point.y()));
         }
-        if ((point.getY() - 1 >= 0) &&
-                (mapPointMatrix[point.getY() - 1][point.getX()].isPathway() ||
-                        mapPointMatrix[point.getY() - 1][point.getX()].isMutable())) {
-            res.add(new Point(point.getX(), point.getY() - 1));
+        if ((point.y() - 1 >= 0) &&
+            (mapPointMatrix[point.y() - 1][point.x()].isPathway() ||
+                mapPointMatrix[point.y() - 1][point.x()].isMutable())) {
+            res.add(new Point(point.x(), point.y() - 1));
         }
-        if ((point.getY() + 1 < mapHeight) &&
-                (mapPointMatrix[point.getY() + 1][point.getX()].isPathway() ||
-                        mapPointMatrix[point.getY() + 1][point.getX()].isMutable())) {
-            res.add(new Point(point.getX(), point.getY() + 1));
+        if ((point.y() + 1 < mapHeight) &&
+            (mapPointMatrix[point.y() + 1][point.x()].isPathway() ||
+                mapPointMatrix[point.y() + 1][point.x()].isMutable())) {
+            res.add(new Point(point.x(), point.y() + 1));
         }
         return res;
     }
@@ -94,8 +83,8 @@ public class PathFinding {
      * @return the square of the euclidean distance between the two points
      */
     public static int computeDistance(Point firstPoint, Point secondPoint) {
-        return (firstPoint.getY() - secondPoint.getY()) * (firstPoint.getY() - secondPoint.getY()) +
-                (firstPoint.getX() - secondPoint.getX()) * (firstPoint.getX() - secondPoint.getX());
+        return (firstPoint.y() - secondPoint.y()) * (firstPoint.y() - secondPoint.y()) +
+            (firstPoint.x() - secondPoint.x()) * (firstPoint.x() - secondPoint.x());
     }
 
     /**
@@ -105,9 +94,9 @@ public class PathFinding {
      * @param scores the map of point scores
      * @return the point of a list having the lowest fScore
      */
-    public static Point getPointWithLowestFScore(LinkedList<Point> list,
+    public static Point getPointWithLowestFScore(List<Point> list,
                                                  Map<Point, Tuple2<Integer, Integer>> scores) {
-        Point res = list.getFirst();
+        Point res = list.get(0);
         int lowestFScore = scores.get(res).getSecond();
         for (Point point : list) {
             if (scores.get(point).getSecond() < lowestFScore) {
@@ -141,7 +130,7 @@ public class PathFinding {
 
     /**
      * Look for a path between two points.
-     * The algorithm used is A* (https://en.wikipedia.org/wiki/A*_search_algorithm)
+     * The algorithm used is A* (<a href="https://en.wikipedia.org/wiki/A">...</a>*_search_algorithm)
      *
      * @param mapPointMatrix the map (represented by its matrix of MapPoint)
      * @param mapWidth       the map width

@@ -8,15 +8,15 @@ import java.io.IOException;
 
 public class BonusHeartState {
 
-    private final BonusHeart spyedBonusHeart;
+    private final BonusHeart spiedBonusHeart;
 
     public BonusHeartState() throws IOException {
         ImagesLoader.fillImagesMatrix();
         BonusHeart bonusHeart = new BonusHeart(0, 0);
-        spyedBonusHeart = Mockito.spy(bonusHeart);
+        spiedBonusHeart = Mockito.spy(bonusHeart);
     }
 
     BonusHeart getBonusHeart() {
-        return spyedBonusHeart;
+        return spiedBonusHeart;
     }
 }

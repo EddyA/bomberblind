@@ -1,10 +1,10 @@
-package spriteList.ctrl;
+package spritelist.ctrl;
 
 import images.ImagesLoader;
 import map.MapPoint;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sprite.Sprite;
 import sprite.SpriteType;
 import sprite.nomad.*;
@@ -16,15 +16,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class AddingMethodsTest implements WithAssertions {
+class AddingMethodsTest implements WithAssertions {
 
-    @Before
-    public void fillImagesMatrix() throws IOException {
+    @BeforeEach
+    void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
     }
 
     @Test
-    public void addBombShouldNotAddTheBomb() throws Exception {
+    void addBombShouldNotAddTheBomb() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         int mapWidth = 10;
         int mapHeight = 8;
@@ -56,7 +56,7 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addBombShouldAddTheBombToTheListOfSpriteAndUpdateTheCaseStatus() throws Exception {
+    void addBombShouldAddTheBombToTheListOfSpriteAndUpdateTheCaseStatus() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         int mapWidth = 10;
         int mapHeight = 8;
@@ -82,7 +82,7 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addBomberShouldAddTheBomberToTheListOfSprite() throws Exception {
+    void addBomberShouldAddTheBomberToTheListOfSprite() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         Bomber bomber = new BlueBomber(1, 2);
         AddingMethods.addBomber(spriteList, bomber);
@@ -92,7 +92,7 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addBonusShouldNotAddTheBonus() throws Exception {
+    void addBonusShouldNotAddTheBonus() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         int mapWidth = 10;
         int mapHeight = 8;
@@ -124,7 +124,7 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addBonusShouldAddTheBonusToTheListOfSpriteAndUpdateTheCaseStatus() throws Exception {
+    void addBonusShouldAddTheBonusToTheListOfSpriteAndUpdateTheCaseStatus() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         int mapWidth = 10;
         int mapHeight = 8;
@@ -149,7 +149,7 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addBreakingEnemyShouldAddTheEnemyToTheListOfSprite() throws Exception {
+    void addBreakingEnemyShouldAddTheEnemyToTheListOfSprite() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(1, 2);
         AddingMethods.addBreakingEnemy(spriteList, redSpearSoldier);
@@ -159,7 +159,7 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void checkMapPointAndAddBonusShouldAddBonusAndSetTheRelativeCase() throws Exception {
+    void checkMapPointAndAddBonusShouldAddBonusAndSetTheRelativeCase() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         int mapWidth = 4;
         int mapHeight = 4;
@@ -195,7 +195,7 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addFlameShouldNotAddAFlameAndReturnFalse() throws Exception {
+    void addFlameShouldNotAddAFlameAndReturnFalse() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         int mapWidth = 10;
         int mapHeight = 8;
@@ -220,7 +220,7 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addFlameShouldAddAFlameToTheListOfSpriteAndReturnTrue() throws Exception {
+    void addFlameShouldAddAFlameToTheListOfSpriteAndReturnTrue() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         int mapWidth = 10;
         int mapHeight = 8;
@@ -244,7 +244,7 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addFlameShouldAddAFlameToTheListOfSpriteAndReturnFalse() throws Exception {
+    void addFlameShouldAddAFlameToTheListOfSpriteAndReturnFalse() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         int mapWidth = 10;
         int mapHeight = 8;
@@ -270,7 +270,7 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addFlamesShouldAddAFlameAllAround() throws Exception {
+    void addFlamesShouldAddAFlameAllAround() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         int mapWidth = 10;
         int mapHeight = 8;
@@ -346,7 +346,7 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addFlamesShouldAddAFlameAndNotPropagateThemFromMutableCases() throws Exception {
+    void addFlamesShouldAddAFlameAndNotPropagateThemFromMutableCases() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         int mapWidth = 10;
         int mapHeight = 8;
@@ -427,7 +427,7 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addFlamesShouldAddAFlameAndStopByMutableCases() throws Exception {
+    void addFlamesShouldAddAFlameAndStopByMutableCases() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         int mapWidth = 10;
         int mapHeight = 8;
@@ -504,7 +504,7 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addFlameEndShouldAddAFlameEnd() throws Exception {
+    void addFlameEndShouldAddAFlameEnd() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
 
         // add sprite.
@@ -516,7 +516,7 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addFlyingNomadShouldAddTheFlyingNomadToTheList() throws Exception {
+    void addFlyingNomadShouldAddTheFlyingNomadToTheList() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
 
         // add sprite.
@@ -528,7 +528,7 @@ public class AddingMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void addWalkingEnemyShouldAddTheEnemyToTheListOfSprite() throws Exception {
+    void addWalkingEnemyShouldAddTheEnemyToTheListOfSprite() {
         LinkedList<Sprite> spriteList = new LinkedList<>();
         Zora zora = new Zora(1, 2);
         AddingMethods.addWalkingEnemy(spriteList, zora);

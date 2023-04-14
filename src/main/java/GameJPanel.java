@@ -11,9 +11,9 @@ import sprite.nomad.BlueBomber;
 import sprite.nomad.Bomber;
 import sprite.settled.BonusType;
 import sprite.settled.Sparkle;
-import spriteList.SpriteList;
-import spriteList.SpritesProperties;
-import spriteList.SpritesSetting;
+import spritelist.SpriteList;
+import spritelist.SpritesProperties;
+import spritelist.SpritesSetting;
 import utils.Timer;
 import utils.TopBar;
 import utils.Tuple2;
@@ -29,19 +29,19 @@ import java.util.List;
 
 import static images.ImagesLoader.IMAGE_SIZE;
 import static map.ctrl.NomadMethods.isNomadCrossingExit;
-import static spriteList.ctrl.AddingMethods.addBomber;
-import static spriteList.ctrl.AddingMethods.addSparkle;
-import static spriteList.ctrl.GenerationMethods.placeAGroupOfBird;
+import static spritelist.ctrl.AddingMethods.addBomber;
+import static spritelist.ctrl.AddingMethods.addSparkle;
+import static spritelist.ctrl.GenerationMethods.placeAGroupOfBird;
 import static utils.Direction.DIRECTION_EAST;
 
-public class GameJpanel extends JPanel implements Runnable, KeyListener {
+public class GameJPanel extends JPanel implements Runnable, KeyListener {
 
-    private final static int MAX_NB_MAP_GENERATION = 20; // max number of try to generate the map.
+    private static final int MAX_NB_MAP_GENERATION = 20; // max number of try to generate the map.
 
-    private Map map;
-    private Bomber bomber;
-    private SpriteList spriteList;
-    private List<Long> pressedKeyList;
+    private final Map map;
+    private final Bomber bomber;
+    private final SpriteList spriteList;
+    private final List<Long> pressedKeyList;
 
     private final Timer timer = new Timer();
     private GameStatus gameStatus;
@@ -50,7 +50,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
     private int xMapStartPosOnScreen;
     private int yMapStartPosOnScreen;
 
-    public GameJpanel(int screenWidth, int screenHeight) throws IOException, InvalidPropertiesException,
+    public GameJPanel(int screenWidth, int screenHeight) throws IOException, InvalidPropertiesException,
             InvalidConfigurationException, CannotCreateMapElementException, CannotFindPathFromEntranceToExitException {
 
         // create the map.
@@ -69,7 +69,7 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                 if (nbTry++ >= MAX_NB_MAP_GENERATION) {
                     throw new CannotFindPathFromEntranceToExitException("not able to generate a viable map (i.e. with a "
                             + "passable path between the entrance and the exit) despite a certain number of generations ("
-                            + String.valueOf(MAX_NB_MAP_GENERATION) + "): the proportion of immutable patterns/obstacles "
+                            + MAX_NB_MAP_GENERATION + "): the proportion of immutable patterns/obstacles "
                             + "must be to high, please check the relative map.properties.");
                 } else {
                     map.resetMap();
@@ -105,27 +105,27 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
         setFocusable(true);
         addKeyListener(this);
 
-        Thread T = new Thread(this);
-        T.start();
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
     /**
      * Update the ZeldaMap start position on screen function of the Bomber map position.
      */
     private void updateMapStartPosOnScreen() {
-        if (bomber.getxMap() < getWidth() / 2) {
+        if (bomber.getXMap() < getWidth() / 2) {
             xMapStartPosOnScreen = 0;
-        } else if (bomber.getxMap() > (map.getMapWidth() * IMAGE_SIZE) - (getWidth() / 2)) {
+        } else if (bomber.getXMap() > (map.getMapWidth() * IMAGE_SIZE) - (getWidth() / 2)) {
             xMapStartPosOnScreen = (map.getMapWidth() * IMAGE_SIZE) - getWidth();
         } else {
-            xMapStartPosOnScreen = bomber.getxMap() - (getWidth() / 2);
+            xMapStartPosOnScreen = bomber.getXMap() - (getWidth() / 2);
         }
-        if (bomber.getyMap() < getHeight() / 2) {
+        if (bomber.getYMap() < getHeight() / 2) {
             yMapStartPosOnScreen = 0;
-        } else if (bomber.getyMap() > (map.getMapHeight() * IMAGE_SIZE) - (getHeight() / 2)) {
+        } else if (bomber.getYMap() > (map.getMapHeight() * IMAGE_SIZE) - (getHeight() / 2)) {
             yMapStartPosOnScreen = (map.getMapHeight() * IMAGE_SIZE) - getHeight();
         } else {
-            yMapStartPosOnScreen = bomber.getyMap() - (getHeight() / 2);
+            yMapStartPosOnScreen = bomber.getYMap() - (getHeight() / 2);
         }
     }
 
@@ -192,8 +192,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                             isNomadCrossingExit(map.getMapPointMatrix(),
                                     map.getMapWidth(),
                                     map.getMapHeight(),
-                                    bomber.getxMap(),
-                                    bomber.getyMap())) {
+                                    bomber.getXMap(),
+                                    bomber.getYMap())) {
                         timer.stop();
                         gameStatus = GameStatus.STATUS_GAME_WIN;
 
@@ -209,8 +209,8 @@ public class GameJpanel extends JPanel implements Runnable, KeyListener {
                             (o1.getSpriteType() == SpriteType.TYPE_SPRITE_FLYING_NOMAD ||
                                     o2.getSpriteType() == SpriteType.TYPE_SPRITE_FLYING_NOMAD)) {
                         return o1.getSpriteType() == SpriteType.TYPE_SPRITE_FLYING_NOMAD ? 1 : -1;
-                    } else if (o1.getyMap() != o2.getyMap()) {
-                        return o1.getyMap() > o2.getyMap() ? 1 : -1;
+                    } else if (o1.getYMap() != o2.getYMap()) {
+                        return o1.getYMap() > o2.getYMap() ? 1 : -1;
                     } else {
                         return 0;
                     }

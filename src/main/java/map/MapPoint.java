@@ -1,36 +1,56 @@
 package map;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.util.Random;
 import images.ImagesLoader;
+import lombok.Getter;
+import lombok.Setter;
 import sprite.settled.BonusType;
 import utils.CurrentTimeSupplier;
-
-import java.awt.*;
-import java.util.Random;
-
 
 /**
  * A point of the map.
  */
 public class MapPoint {
+
+    private static final Random R = new Random();
     protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
+    @Getter
     private final int rowIdx;
+    @Getter
     private final int colIdx;
 
     private final MapPointStatus mapPointStatus = new MapPointStatus();
 
+    @Getter
+    @Setter
     private Image image;
 
+    @Getter
     private Image[] images; // array of images for animation.
     private int nbImages; // number of images of the animation.
+    @Setter
     private int curImageIdx; // current image index of the animation.
+    @Getter
+    @Setter
     private int refreshTime; // refresh time of the animation (in ms).
+    @Setter
     private long lastRefreshTs; // last refresh timestamp.
 
+    @Getter
+    @Setter
     private boolean isBombing; // is bombed (bomb on case)?
+    @Getter
+    @Setter
     private int nbFlames; // number of flames on that case (can be multiple because of crossing explosions).
 
+    @Getter
+    @Setter
     private BonusType attachedBonus; // attached bonus.
+    @Getter
+    @Setter
     private boolean isBonusing; // the bonus has been revealed.
 
     public MapPoint(int rowIdx, int colIdx) {
@@ -38,14 +58,6 @@ public class MapPoint {
         this.colIdx = colIdx;
         this.mapPointStatus.setAvailable(true);
         this.attachedBonus = null;
-    }
-
-    public int getRowIdx() {
-        return rowIdx;
-    }
-
-    public int getColIdx() {
-        return colIdx;
     }
 
     public boolean isAvailable() {
@@ -88,46 +100,6 @@ public class MapPoint {
         mapPointStatus.setExit(exit);
     }
 
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
-    }
-
-    public Image[] getImages() {
-        return images;
-    }
-
-    public void setCurImageIdx(int curImageIdx) {
-        this.curImageIdx = curImageIdx;
-    }
-
-    public int getRefreshTime() {
-        return refreshTime;
-    }
-
-    public void setRefreshTime(int refreshTime) {
-        this.refreshTime = refreshTime;
-    }
-
-    public void setLastRefreshTs(long lastRefreshTs) {
-        this.lastRefreshTs = lastRefreshTs;
-    }
-
-    public boolean isBombing() {
-        return isBombing;
-    }
-
-    public void setBombing(boolean bombing) {
-        isBombing = bombing;
-    }
-
-    public void setNbFlames(int nbFlames) {
-        this.nbFlames = nbFlames;
-    }
-
     public void addFlame() {
         this.nbFlames++;
     }
@@ -140,26 +112,10 @@ public class MapPoint {
         return nbFlames > 0;
     }
 
-    public BonusType getAttachedBonus() {
-        return attachedBonus;
-    }
-
-    public void setAttachedBonus(BonusType attachedBonus) {
-        this.attachedBonus = attachedBonus;
-    }
-
-    public boolean isBonusing() {
-        return isBonusing;
-    }
-
-    public void setBonusing(boolean bonusing) {
-        isBonusing = bonusing;
-    }
-
     public void setImages(Image[] images, int nbImages) {
         this.images = images;
         this.nbImages = nbImages;
-        this.curImageIdx = new Random().nextInt(nbImages);
+        this.curImageIdx = R.nextInt(nbImages);
     }
 
     /**

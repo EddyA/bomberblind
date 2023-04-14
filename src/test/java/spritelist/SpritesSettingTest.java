@@ -1,15 +1,17 @@
-package spriteList;
+package spritelist;
 
+import java.io.IOException;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import exceptions.InvalidConfigurationException;
 
-public class SpritesSettingTest implements WithAssertions {
+class SpritesSettingTest implements WithAssertions {
 
     @SuppressWarnings("FieldCanBeLocal")
     private final String TEST_SPRITES_PROPERTIES_FILE = "/test.zelda.sprites.properties";
 
     @Test
-    public void rMapSettingShouldLoadExpectedValues() throws Exception {
+    void rMapSettingShouldLoadExpectedValues() throws IOException, InvalidConfigurationException {
         SpritesProperties spritesProperties = new SpritesProperties(TEST_SPRITES_PROPERTIES_FILE);
         spritesProperties.loadProperties();
         spritesProperties.checkProperties();

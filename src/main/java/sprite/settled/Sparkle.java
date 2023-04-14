@@ -5,8 +5,8 @@ import sprite.SpriteType;
 
 public class Sparkle extends LoopedSettled {
 
-    public final static int REFRESH_TIME = 100;
-    public final static int NB_TIMES = 0; // never stop.
+    public static final int REFRESH_TIME = 100;
+    public static final int NB_TIMES = 0; // never stop.
 
     /**
      * Create a sparkle.
@@ -19,13 +19,13 @@ public class Sparkle extends LoopedSettled {
         // and then, set the coordinates in pixels.
 
         super(0,
-                0,
-                SpriteType.TYPE_SPRITE_SPARKLE,
-                REFRESH_TIME,
-                ImagesLoader.imagesMatrix[ImagesLoader.sparkleMatrixRowIdx],
-                ImagesLoader.NB_SPARKLE_FRAME,
-                NB_TIMES);
-        this.setxMap(xMap);
-        this.setyMap(yMap);
+            0,
+            SpriteType.TYPE_SPRITE_SPARKLE,
+            REFRESH_TIME,
+            ImagesLoader.imagesMatrix[ImagesLoader.sparkleMatrixRowIdx],
+            ImagesLoader.NB_SPARKLE_FRAME,
+            NB_TIMES);
+        this.setXMap(xMap);
+        this.setYMap(yMap);
     }
 }

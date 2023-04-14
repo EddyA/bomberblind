@@ -1,31 +1,29 @@
 package sprite.settled;
 
 import java.io.IOException;
-
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import images.ImagesLoader;
+import io.cucumber.java.Before;
 import sprite.SpriteType;
 import utils.Tools;
 
-public class BombTest implements WithAssertions {
+class BombTest implements WithAssertions {
 
     @Before
-    public void fillImagesMatrix() throws IOException {
+    void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
     }
 
     @Test
-    public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
+    void constructorShouldSetMembersWithTheExpectedValues() {
         Bomb bomb = new Bomb(5, 4, 3);
 
         // check members value.
         assertThat(bomb.getRowIdx()).isEqualTo(5);
         assertThat(bomb.getColIdx()).isEqualTo(4);
-        assertThat(bomb.getxMap()).isEqualTo(Tools.getCaseCentreAbscissa(4));
-        assertThat(bomb.getyMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
+        assertThat(bomb.getXMap()).isEqualTo(Tools.getCaseCentreAbscissa(4));
+        assertThat(bomb.getYMap()).isEqualTo(Tools.getCaseBottomOrdinate(5));
         assertThat(bomb.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_BOMB);
         assertThat(bomb.getRefreshTime()).isEqualTo(Bomb.REFRESH_TIME);
         assertThat(bomb.getImages()).isEqualTo(ImagesLoader.imagesMatrix[ImagesLoader.bombMatrixRowIdx]);
@@ -34,7 +32,7 @@ public class BombTest implements WithAssertions {
     }
 
     @Test
-    public void accessorsShouldReturnTheExpectedValues() throws Exception {
+    void accessorsShouldReturnTheExpectedValues() {
 
         // set by the constructor.
         Bomb bomb = new Bomb(5, 4, 3);

@@ -1,41 +1,62 @@
 package sprite.nomad;
 
+import java.awt.Image;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import exceptions.SpriteActionException;
+import lombok.Getter;
+import lombok.Setter;
 import sprite.SpriteAction;
+import static sprite.SpriteAction.ACTION_DYING;
+import static sprite.SpriteAction.ACTION_WAITING;
+import static sprite.SpriteAction.ACTION_WALKING;
+import static sprite.SpriteAction.ACTION_WINING;
 import sprite.SpriteType;
 import sprite.settled.Bomb;
 import sprite.settled.BonusBundle;
 import sprite.settled.BonusType;
-
-import java.awt.*;
-import java.util.LinkedList;
-import java.util.ListIterator;
-import java.util.Map;
-
-import static sprite.SpriteAction.*;
 
 /**
  * Abstract class of a bomber.
  */
 public abstract class Bomber extends Nomad {
 
-    public final static int DEFAULT_ACTING_TIME = 10;
+    public static final int DEFAULT_ACTING_TIME = 10;
 
+    @Getter
     private final Image[] deathImages;
+    @Getter
     private final int nbDeathFrame;
+    @Getter
     private final Image[] waitImages;
+    @Getter
     private final int nbWaitFrame;
+    @Getter
     private final Image[] walkBackImages;
+    @Getter
     private final Image[] walkFrontImages;
+    @Getter
     private final Image[] walkLeftImages;
+    @Getter
     private final Image[] walkRightImages;
+    @Getter
     private final int nbWalkFrame;
+    @Getter
     private final Image[] winImages;
+    @Getter
     private final int nbWinFrame;
 
+    @Getter
+    @Setter
     private int initialXMap; // initial abscissa on map.
+    @Getter
+    @Setter
     private int initialYMap; // initial ordinate on map.
 
-    private final LinkedList<Bomb> droppedBombs; // array of dropped bombs.
+    @Getter
+    private final List<Bomb> droppedBombs; // array of dropped bombs.
 
     private final BonusBundle bundleBonus; // handle bonus.
 
@@ -58,27 +79,27 @@ public abstract class Bomber extends Nomad {
      * @param refreshTime       the sprite refresh time (i.e. defining the sprite speed in term of image/sec)
      * @param invincibilityTime the sprite invincibility time
      */
-    public Bomber(int xMap,
-                  int yMap,
-                  Image[] deathImages,
-                  int nbDeathFrame,
-                  Image[] waitImages,
-                  int nbWaitFrame,
-                  Image[] walkBackImages,
-                  Image[] walkFrontImages,
-                  Image[] walkLeftImages,
-                  Image[] walkRightImages,
-                  int nbWalkFrame,
-                  Image[] winImages,
-                  int nbWinFrame,
-                  int refreshTime,
-                  int invincibilityTime) {
+    protected Bomber(int xMap,
+                     int yMap,
+                     Image[] deathImages,
+                     int nbDeathFrame,
+                     Image[] waitImages,
+                     int nbWaitFrame,
+                     Image[] walkBackImages,
+                     Image[] walkFrontImages,
+                     Image[] walkLeftImages,
+                     Image[] walkRightImages,
+                     int nbWalkFrame,
+                     Image[] winImages,
+                     int nbWinFrame,
+                     int refreshTime,
+                     int invincibilityTime) {
         super(xMap,
-                yMap,
-                SpriteType.TYPE_SPRITE_BOMBER,
-                DEFAULT_ACTING_TIME,
-                refreshTime,
-                invincibilityTime);
+            yMap,
+            SpriteType.TYPE_SPRITE_BOMBER,
+            DEFAULT_ACTING_TIME,
+            refreshTime,
+            invincibilityTime);
         this.deathImages = deathImages;
         this.nbDeathFrame = nbDeathFrame;
         this.waitImages = waitImages;
@@ -96,70 +117,6 @@ public abstract class Bomber extends Nomad {
         droppedBombs = new LinkedList<>();
         bundleBonus = new BonusBundle();
         init();
-    }
-
-    public Image[] getDeathImages() {
-        return deathImages;
-    }
-
-    public int getNbDeathFrame() {
-        return nbDeathFrame;
-    }
-
-    public Image[] getWaitImages() {
-        return waitImages;
-    }
-
-    public int getNbWaitFrame() {
-        return nbWaitFrame;
-    }
-
-    public Image[] getWalkBackImages() {
-        return walkBackImages;
-    }
-
-    public Image[] getWalkFrontImages() {
-        return walkFrontImages;
-    }
-
-    public Image[] getWalkLeftImages() {
-        return walkLeftImages;
-    }
-
-    public Image[] getWalkRightImages() {
-        return walkRightImages;
-    }
-
-    public int getNbWalkFrame() {
-        return nbWalkFrame;
-    }
-
-    public Image[] getWinImages() {
-        return winImages;
-    }
-
-    public int getNbWinFrame() {
-        return nbWinFrame;
-    }
-
-    public int getInitialXMap() {
-        return initialXMap;
-    }
-
-    public void setInitialXMap(int initialXMap) {
-        this.initialXMap = initialXMap;
-    }
-
-    public int getInitialYMap() {
-        return initialYMap;
-    }
-
-    public void setInitialYMap(int initialYMap) {
-        this.initialYMap = initialYMap;
-    }
-
-    public LinkedList<Bomb> getDroppedBombs() {
-        return droppedBombs;
     }
 
     public void dropBomb(Bomb bomb) {
@@ -242,16 +199,16 @@ public abstract class Bomber extends Nomad {
     @Override
     public boolean isActionAllowed(SpriteAction spriteAction) {
         return !(spriteAction != ACTION_WAITING &&
-                spriteAction != ACTION_WALKING &&
-                spriteAction != ACTION_WINING &&
-                spriteAction != ACTION_DYING);
+            spriteAction != ACTION_WALKING &&
+            spriteAction != ACTION_WINING &&
+            spriteAction != ACTION_DYING);
     }
 
     @Override
     public boolean hasActionChanged() {
         if (!curSpriteAction.equals(lastSpriteAction) || // either the action has changed
-                (curSpriteAction.equals(ACTION_WALKING) && // or (is walking
-                        !curDirection.equals(lastDirection))) { // and the direction has changed).
+            (curSpriteAction.equals(ACTION_WALKING) && // or (is walking
+                !curDirection.equals(lastDirection))) { // and the direction has changed).
             lastSpriteAction = curSpriteAction;
             lastDirection = curDirection;
             lastRefreshTs = currentTimeSupplier.get().toEpochMilli();
@@ -263,46 +220,39 @@ public abstract class Bomber extends Nomad {
     @Override
     public void updateSprite() {
         switch (curSpriteAction) {
-            case ACTION_DYING: {
+            case ACTION_DYING -> {
                 images = deathImages;
                 nbImages = nbDeathFrame;
-                break;
             }
-            case ACTION_WAITING: {
+            case ACTION_WAITING -> {
                 images = waitImages;
                 nbImages = nbWaitFrame;
-                break;
             }
-            case ACTION_WALKING: {
+            case ACTION_WALKING -> {
                 switch (curDirection) {
-                    case DIRECTION_NORTH: {
+                    case DIRECTION_NORTH -> {
                         images = walkBackImages;
                         nbImages = nbWalkFrame;
-                        break;
                     }
-                    case DIRECTION_SOUTH: {
+                    case DIRECTION_SOUTH -> {
                         images = walkFrontImages;
                         nbImages = nbWalkFrame;
-                        break;
                     }
-                    case DIRECTION_WEST: {
+                    case DIRECTION_WEST -> {
                         images = walkLeftImages;
                         nbImages = nbWalkFrame;
-                        break;
                     }
-                    case DIRECTION_EAST: {
+                    case DIRECTION_EAST -> {
                         images = walkRightImages;
                         nbImages = nbWalkFrame;
-                        break;
                     }
                 }
-                break;
             }
-            case ACTION_WINING: {
+            case ACTION_WINING -> {
                 images = winImages;
                 nbImages = nbWinFrame;
-                break;
             }
+            default -> throw new SpriteActionException(curSpriteAction, this.getClass());
         }
     }
 }

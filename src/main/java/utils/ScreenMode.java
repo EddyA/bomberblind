@@ -5,18 +5,20 @@ import java.awt.*;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Optional;
+import lombok.experimental.UtilityClass;
 
 /**
  * This class computeFullscreenResolution the screen resolution according to the screen format.
  */
+@UtilityClass
 public class ScreenMode {
 
     // the different supported screen format
-    private final static double SCREEN_FORMAT_4_3;
-    private final static double SCREEN_FORMAT_16_9;
-    private final static double SCREEN_FORMAT_16_10;
+    private static final  double SCREEN_FORMAT_4_3;
+    private static final double SCREEN_FORMAT_16_9;
+    private static final double SCREEN_FORMAT_16_10;
 
-    private final static DecimalFormat decimalFormat;
+    private static final DecimalFormat decimalFormat;
 
     static {
         decimalFormat = new DecimalFormat("#.##");

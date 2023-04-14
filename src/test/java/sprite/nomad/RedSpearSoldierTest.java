@@ -2,24 +2,24 @@ package sprite.nomad;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sprite.SpriteType;
 
 import java.io.IOException;
 
-public class RedSpearSoldierTest implements WithAssertions {
+class RedSpearSoldierTest implements WithAssertions {
 
-    @Before
-    public void fillImagesMatrix() throws IOException {
+    @BeforeEach
+    void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
     }
 
     @Test
-    public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
+    void constructorShouldSetMembersWithTheExpectedValues() {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
-        assertThat(redSpearSoldier.getxMap()).isEqualTo(15);
-        assertThat(redSpearSoldier.getyMap()).isEqualTo(30);
+        assertThat(redSpearSoldier.getXMap()).isEqualTo(15);
+        assertThat(redSpearSoldier.getYMap()).isEqualTo(30);
         assertThat(redSpearSoldier.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_BREAKING_ENEMY);
 
         // - dying values.

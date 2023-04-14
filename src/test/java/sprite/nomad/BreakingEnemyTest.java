@@ -2,8 +2,8 @@ package sprite.nomad;
 
 import images.ImagesLoader;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sprite.SpriteType;
 import utils.Direction;
 
@@ -11,18 +11,18 @@ import java.io.IOException;
 
 import static sprite.SpriteAction.*;
 
-public class BreakingEnemyTest implements WithAssertions {
+class BreakingEnemyTest implements WithAssertions {
 
-    @Before
-    public void fillImagesMatrix() throws IOException {
+    @BeforeEach
+    void fillImagesMatrix() throws IOException {
         ImagesLoader.fillImagesMatrix();
     }
 
     @Test
-    public void constructorShouldSetMembersWithTheExpectedValues() throws Exception {
+    void constructorShouldSetMembersWithTheExpectedValues() {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
-        assertThat(redSpearSoldier.getxMap()).isEqualTo(15);
-        assertThat(redSpearSoldier.getyMap()).isEqualTo(30);
+        assertThat(redSpearSoldier.getXMap()).isEqualTo(15);
+        assertThat(redSpearSoldier.getYMap()).isEqualTo(30);
         assertThat(redSpearSoldier.getSpriteType()).isEqualTo(SpriteType.TYPE_SPRITE_BREAKING_ENEMY);
 
         // - dying values.
@@ -50,7 +50,7 @@ public class BreakingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void isBreakingSpriteFinishedWithACurActionDifferentOfBreakingShouldReturnFalse() throws Exception {
+    void isBreakingSpriteFinishedWithACurActionDifferentOfBreakingShouldReturnFalse() {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
         redSpearSoldier.setCurSpriteAction(ACTION_DYING);
         assertThat(redSpearSoldier.isBreakingSpriteFinished()).isFalse();
@@ -59,7 +59,7 @@ public class BreakingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void isBreakingSpriteFinishedWithCurActionIsBreakingButNotFinishedShouldReturnFalse() throws Exception {
+    void isBreakingSpriteFinishedWithCurActionIsBreakingButNotFinishedShouldReturnFalse() {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
         redSpearSoldier.setCurSpriteAction(ACTION_BREAKING);
         redSpearSoldier.setPaintedAtLeastOneTime(false);
@@ -67,7 +67,7 @@ public class BreakingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void isBreakingSpriteFinishedWithCurActionIsBreakingAndFinishedShouldReturnTrue() throws Exception {
+    void isBreakingSpriteFinishedWithCurActionIsBreakingAndFinishedShouldReturnTrue() {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
         redSpearSoldier.setCurSpriteAction(ACTION_BREAKING);
         redSpearSoldier.setPaintedAtLeastOneTime(true);
@@ -75,7 +75,7 @@ public class BreakingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void isActionAllowedShouldReturnTrue() throws Exception {
+    void isActionAllowedShouldReturnTrue() {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
         assertThat(redSpearSoldier.isActionAllowed(ACTION_BREAKING)).isTrue();
         assertThat(redSpearSoldier.isActionAllowed(ACTION_DYING)).isTrue();
@@ -83,7 +83,7 @@ public class BreakingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void isActionAllowedShouldReturnFalse() throws Exception {
+    void isActionAllowedShouldReturnFalse() {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
         assertThat(redSpearSoldier.isActionAllowed(ACTION_FLYING)).isFalse();
         assertThat(redSpearSoldier.isActionAllowed(ACTION_WAITING)).isFalse();
@@ -91,7 +91,7 @@ public class BreakingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void hasActionChangedWithTheSameActionShouldReturnFalse() {
+    void hasActionChangedWithTheSameActionShouldReturnFalse() {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
         // set test.
@@ -103,7 +103,7 @@ public class BreakingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void hasActionChangedAndWalkingToTheSameDirectionShouldReturnFalse() {
+    void hasActionChangedAndWalkingToTheSameDirectionShouldReturnFalse() {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
         // set test.
@@ -117,7 +117,7 @@ public class BreakingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void hasActionChangedAndBreakingToTheSameDirectionShouldReturnFalse() {
+    void hasActionChangedAndBreakingToTheSameDirectionShouldReturnFalse() {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
         // set test.
@@ -131,7 +131,7 @@ public class BreakingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void hasActionChangedWithADifferentActionShouldReturnTrue() throws Exception {
+    void hasActionChangedWithADifferentActionShouldReturnTrue() {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
         // set test.
@@ -143,7 +143,7 @@ public class BreakingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void hasActionChangedWalkingToADifferentDirectionShouldReturnTrue() throws Exception {
+    void hasActionChangedWalkingToADifferentDirectionShouldReturnTrue() {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
         // set test.
@@ -157,7 +157,7 @@ public class BreakingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void hasActionChangedBreakingToADifferentDirectionShouldReturnTrue() throws Exception {
+    void hasActionChangedBreakingToADifferentDirectionShouldReturnTrue() {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
         // set test.
@@ -171,7 +171,7 @@ public class BreakingEnemyTest implements WithAssertions {
     }
 
     @Test
-    public void updateSpriteShouldSetTheExpectedMember() throws Exception {
+    void updateSpriteShouldSetTheExpectedMember() {
         RedSpearSoldier redSpearSoldier = new RedSpearSoldier(15, 30);
 
         // dying.

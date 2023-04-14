@@ -1,12 +1,12 @@
 package map;
 
 import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class MapPointStatusTest implements WithAssertions {
+class MapPointStatusTest implements WithAssertions {
 
     @Test
-    public void constructorShoudSetAllBitsToSet() throws Exception {
+    void constructorShouldSetAllBitsToSet() {
         MapPointStatus mapPointStatus = new MapPointStatus();
 
         // check.
@@ -18,7 +18,7 @@ public class MapPointStatusTest implements WithAssertions {
     }
 
     @Test
-    public void setAvailableShoudSetTheExpectedBit() throws Exception {
+    void setAvailableShouldSetTheExpectedBit() {
         MapPointStatus mapPointStatus = new MapPointStatus();
         mapPointStatus.setAvailable(true);
 
@@ -31,7 +31,7 @@ public class MapPointStatusTest implements WithAssertions {
     }
 
     @Test
-    public void setPathwayShoudSetTheExpectedBit() throws Exception {
+    void setPathwayShouldSetTheExpectedBit() {
         MapPointStatus mapPointStatus = new MapPointStatus();
         mapPointStatus.setPathway(true);
 
@@ -44,7 +44,7 @@ public class MapPointStatusTest implements WithAssertions {
     }
 
     @Test
-    public void setMutableShoudSetTheExpectedBit() throws Exception {
+    void setMutableShouldSetTheExpectedBit() {
         MapPointStatus mapPointStatus = new MapPointStatus();
         mapPointStatus.setMutable(true);
 
@@ -57,7 +57,7 @@ public class MapPointStatusTest implements WithAssertions {
     }
 
     @Test
-    public void setEntranceShoudSetTheExpectedBit() throws Exception {
+    void setEntranceShouldSetTheExpectedBit() {
         MapPointStatus mapPointStatus = new MapPointStatus();
         mapPointStatus.setEntrance(true);
 
@@ -70,7 +70,7 @@ public class MapPointStatusTest implements WithAssertions {
     }
 
     @Test
-    public void setExitShoudSetTheExpectedBit() throws Exception {
+    void setExitShouldSetTheExpectedBit() {
         MapPointStatus mapPointStatus = new MapPointStatus();
         mapPointStatus.setExit(true);
 

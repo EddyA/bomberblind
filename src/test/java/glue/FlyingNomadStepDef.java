@@ -1,9 +1,9 @@
 package glue;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Then;
 import org.assertj.core.api.WithAssertions;
 import org.mockito.Mockito;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
 import utils.Direction;
 
 import static images.ImagesLoader.IMAGE_SIZE;
@@ -46,23 +46,23 @@ public class FlyingNomadStepDef implements WithAssertions {
 
     @And("^the flying nomad is out of the map from the north limit")
     public void the_flying_nomad_is_out_of_the_map_from_the_north_limit() {
-        flyingNomadState.getFlyingNomad().setyMap(-flyingNomadState.getFlyingNomadHeight() - 1);
+        flyingNomadState.getFlyingNomad().setYMap(-flyingNomadState.getFlyingNomadHeight() - 1);
     }
 
     @And("^the flying nomad is out of the map from the south limit")
     public void the_flying_nomad_is_out_of_the_map_from_the_south_limit() {
-        flyingNomadState.getFlyingNomad().setyMap(mapPointMatrixState.getMapHeight() * IMAGE_SIZE
+        flyingNomadState.getFlyingNomad().setYMap(mapPointMatrixState.getMapHeight() * IMAGE_SIZE
                 + flyingNomadState.getFlyingNomadHeight() + 1);
     }
 
     @And("^the flying nomad is out of the map from the west limit")
     public void the_flying_nomad_is_out_of_the_map_from_the_west_limit() {
-        flyingNomadState.getFlyingNomad().setxMap(-flyingNomadState.getFlyingNomadWidth() - 1);
+        flyingNomadState.getFlyingNomad().setXMap(-flyingNomadState.getFlyingNomadWidth() - 1);
     }
 
     @And("^the flying nomad is out of the map from the east limit")
     public void the_flying_nomad_is_out_of_the_map_from_the_east_limit() {
-        flyingNomadState.getFlyingNomad().setxMap(mapPointMatrixState.getMapWidth() * IMAGE_SIZE
+        flyingNomadState.getFlyingNomad().setXMap(mapPointMatrixState.getMapWidth() * IMAGE_SIZE
                 + flyingNomadState.getFlyingNomadHeight());
     }
 
@@ -74,25 +74,25 @@ public class FlyingNomadStepDef implements WithAssertions {
     @Then("^the flying nomad should move north$")
     public void the_flying_nomad_should_move_north() {
         assertThat(flyingNomadState.getFlyingNomad().getLastCoordinatesOnMap().getSecond())
-                .isEqualTo(flyingNomadState.getFlyingNomad().getyMap() + 1);
+                .isEqualTo(flyingNomadState.getFlyingNomad().getYMap() + 1);
     }
 
     @Then("^the flying nomad should move south$")
     public void the_flying_nomad_should_move_south() {
         assertThat(flyingNomadState.getFlyingNomad().getLastCoordinatesOnMap().getSecond())
-                .isEqualTo(flyingNomadState.getFlyingNomad().getyMap() - 1);
+                .isEqualTo(flyingNomadState.getFlyingNomad().getYMap() - 1);
     }
 
     @Then("^the flying nomad should move west$")
     public void the_flying_nomad_should_move_west() {
         assertThat(flyingNomadState.getFlyingNomad().getLastCoordinatesOnMap().getFirst())
-                .isEqualTo(flyingNomadState.getFlyingNomad().getxMap() + 1);
+                .isEqualTo(flyingNomadState.getFlyingNomad().getXMap() + 1);
     }
 
     @Then("^the flying nomad should move east$")
     public void the_flying_nomad_should_move_east() {
         assertThat(flyingNomadState.getFlyingNomad().getLastCoordinatesOnMap().getFirst())
-                .isEqualTo(flyingNomadState.getFlyingNomad().getxMap() - 1);
+                .isEqualTo(flyingNomadState.getFlyingNomad().getXMap() - 1);
     }
 
     @Then("^the flying nomad should die$")

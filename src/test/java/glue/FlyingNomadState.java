@@ -10,20 +10,20 @@ import java.io.IOException;
 
 public class FlyingNomadState {
 
-    private final WhiteBird spyedWhiteBird;
+    private final WhiteBird spiedWhiteBird;
     private boolean shouldBeRemoved;
 
     public FlyingNomadState() throws IOException {
         ImagesLoader.fillImagesMatrix();
         WhiteBird whiteBird = new WhiteBird(0, 0, Direction.DIRECTION_NORTH, 0);
-        spyedWhiteBird = Mockito.spy(whiteBird);
+        spiedWhiteBird = Mockito.spy(whiteBird);
 
         // avoid the time constraint to make action.
-        Mockito.when(spyedWhiteBird.isTimeToAct()).thenReturn(true);
+        Mockito.when(spiedWhiteBird.isTimeToAct()).thenReturn(true);
     }
 
     public FlyingNomad getFlyingNomad() {
-        return spyedWhiteBird;
+        return spiedWhiteBird;
     }
 
     public int getFlyingNomadWidth() {

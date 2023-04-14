@@ -2,6 +2,7 @@ package map.ctrl;
 
 import exceptions.CannotCreateMapElementException;
 import exceptions.CannotPlaceBonusOnMapException;
+import lombok.experimental.UtilityClass;
 import map.MapPattern;
 import map.MapPoint;
 import sprite.settled.BonusType;
@@ -14,7 +15,10 @@ import java.util.Random;
 import static map.ctrl.PatternMethods.*;
 import static map.ctrl.SingleMethods.*;
 
+@UtilityClass
 public class GenerationMethods {
+
+    private static final Random R = new Random();
 
     /**
      * Randomly place the entrance and exit elements on map.
@@ -46,14 +50,14 @@ public class GenerationMethods {
             throws CannotCreateMapElementException {
 
         // check map properties (mapWidth and hMargin).
-        if (mapWidth / 2 - patterns.getFirst().getWidth() - hMargin <= 0) {
+        if (mapWidth / 2 - patterns.getFirst().width() - hMargin <= 0) {
             throw new CannotCreateMapElementException("not able to generate random colIdx when placing the entrance/exit: "
                     + "the map width is too small or the horizontal margin too high according to the entrance/exit width.");
         }
         try {
             // entrance.
             int ySpEntrance = generateRandomRowIdx(mapHeight, northEdgeHeight, southEdgeHeight,
-                    patterns.getFirst().getHeight(), vMargin);
+                    patterns.getFirst().height(), vMargin);
             placePatternOnMapAndSecurePerimeter(mapPointMatrix,
                     mapWidth,
                     mapHeight,
@@ -65,9 +69,9 @@ public class GenerationMethods {
                     perDynamicSinglePathway);
 
             // exit.
-            int xSpExit = mapWidth - hMargin - patterns.getSecond().getWidth();
+            int xSpExit = mapWidth - hMargin - patterns.getSecond().width();
             int ySpExit = generateRandomRowIdx(mapHeight, northEdgeHeight, southEdgeHeight,
-                    patterns.getSecond().getHeight(), vMargin);
+                    patterns.getSecond().height(), vMargin);
             placePatternOnMapAndSecurePerimeter(mapPointMatrix,
                     mapWidth,
                     mapHeight,
@@ -106,7 +110,7 @@ public class GenerationMethods {
                                                     int mapHeight,
                                                     int northEdgeHeight,
                                                     int southEdgeHeight,
-                                                    ArrayList<Tuple2<MapPattern, Integer>> patterns,
+                                                    List<Tuple2<MapPattern, Integer>> patterns,
                                                     int maxNbTry)
             throws CannotCreateMapElementException {
         for (Tuple2<MapPattern, Integer> pattern : patterns) {
@@ -114,16 +118,16 @@ public class GenerationMethods {
                 for (int eltIdx = 0; eltIdx < pattern.getSecond(); eltIdx++) {
                     int nbTry = 0;
                     while (true) {
-                        int xSpElt = generateRandomColIdx(mapWidth, 0, 0, pattern.getFirst().getWidth(), 0);
+                        int xSpElt = generateRandomColIdx(mapWidth, 0, 0, pattern.getFirst().width(), 0);
                         int ySpElt = generateRandomRowIdx(mapHeight, northEdgeHeight, southEdgeHeight,
-                                pattern.getFirst().getHeight(), 0);
+                                pattern.getFirst().height(), 0);
                         if (!placePatternOnMap(mapPointMatrix, mapWidth, mapHeight, pattern.getFirst(), ySpElt, xSpElt)) {
                             if (nbTry < maxNbTry) {
                                 nbTry++;
                             } else {
                                 throw new CannotCreateMapElementException("not able to place a complex element based on pattern '" +
-                                        pattern.getFirst().getName() + "', despite a certain number of tries (" +
-                                        String.valueOf(maxNbTry) + "): no more room on the map to place it.");
+                                        pattern.getFirst().name() + "', despite a certain number of tries (" +
+                                        maxNbTry + "): no more room on the map to place it.");
                             }
                         } else {
                             break;
@@ -132,7 +136,7 @@ public class GenerationMethods {
                 }
             } catch (IllegalArgumentException e) {
                 throw new CannotCreateMapElementException("not able to place a complex element based on pattern '"
-                        + pattern.getFirst().getName() + "': the map size can be too small or the margins " +
+                        + pattern.getFirst().name() + "': the map size can be too small or the margins " +
                         "too high according to the relative pattern size and the north/south edge heights.");
             }
         }
@@ -171,7 +175,6 @@ public class GenerationMethods {
         int nbEmptyPt = emptyPtList.size();
 
         // place single elements.
-        Random R = new Random();
         for (int i = 0; i < nbEmptyPt; i++) {
 
             int randomPercent = Math.abs(R.nextInt(100)); // randomly choose a single element.
@@ -224,7 +227,6 @@ public class GenerationMethods {
         }
 
         // place bonus.
-        Random R = new Random();
         for (int i = 0; i < nbBonusBomb + nbBonusFlame + nbBonusHeart + nbBonusRoller; i++) {
 
             // compute the bonus to place.
@@ -240,9 +242,9 @@ public class GenerationMethods {
             }
 
             // place the bonus.
-            if (mutableCases.size() <= 0) {
+            if (mutableCases.isEmpty()) {
                 throw new CannotPlaceBonusOnMapException("not able to place bonus '"
-                        + BonusType.getlabel(bonusToPlace).orElse("no_name")
+                        + BonusType.getLabel(bonusToPlace).orElse("no_name")
                         + "' on map, no more available mutable.");
             }
             int ptIdx = Math.abs(R.nextInt(mutableCases.size())); // randomly choose a single mutable obstacle.

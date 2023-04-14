@@ -8,8 +8,8 @@ import sprite.SpriteType;
  */
 public class Flame extends TimedSettled {
 
-    public final static int REFRESH_TIME = 100;
-    public final static int DURATION_TIME = 1500;
+    public static final int REFRESH_TIME = 100;
+    public static final int DURATION_TIME = 1500;
 
     /**
      * Create a flame.
@@ -19,11 +19,11 @@ public class Flame extends TimedSettled {
      */
     public Flame(int rowIdx, int colIdx) {
         super(rowIdx,
-                colIdx,
-                SpriteType.TYPE_SPRITE_FLAME,
-                REFRESH_TIME,
-                ImagesLoader.imagesMatrix[ImagesLoader.flameMatrixRowIdx],
-                ImagesLoader.NB_FLAME_FRAME,
-                DURATION_TIME);
+            colIdx,
+            SpriteType.TYPE_SPRITE_FLAME,
+            REFRESH_TIME,
+            ImagesLoader.imagesMatrix[ImagesLoader.flameMatrixRowIdx],
+            ImagesLoader.NB_FLAME_FRAME,
+            DURATION_TIME);
     }
 }

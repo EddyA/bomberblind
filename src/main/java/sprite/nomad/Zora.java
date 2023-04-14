@@ -7,10 +7,10 @@ import images.ImagesLoader;
  */
 public class Zora extends WalkingEnemy {
 
-    public final static int ACTING_TIME = 15;
+    public static final int ACTING_TIME = 15;
 
-    public final static int DEATH_REFRESH_TIME = 100;
-    public final static int WALK_REFRESH_TIME = 100;
+    public static final int DEATH_REFRESH_TIME = 100;
+    public static final int WALK_REFRESH_TIME = 100;
 
     /**
      * Create a zora.

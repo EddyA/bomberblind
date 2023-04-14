@@ -8,17 +8,17 @@ import images.ImagesLoader;
 import sprite.settled.Bomb;
 
 public class BombState {
-    private final Bomb spyedBomb;
+    private final Bomb spiedBomb;
     private boolean shouldBeRemoved;
 
     public BombState() throws IOException {
         ImagesLoader.fillImagesMatrix();
         Bomb bomb = new Bomb(0, 0, 0);
-        spyedBomb = Mockito.spy(bomb);
+        spiedBomb = Mockito.spy(bomb);
     }
 
     Bomb getBomb() {
-        return spyedBomb;
+        return spiedBomb;
     }
 
     boolean isShouldBeRemoved() {

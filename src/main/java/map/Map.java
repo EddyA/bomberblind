@@ -1,12 +1,13 @@
 package map;
 
+import java.awt.Graphics2D;
 import exceptions.CannotCreateMapElementException;
 import exceptions.CannotFindPathFromEntranceToExitException;
 import images.ImagesLoader;
+import lombok.Getter;
 import utils.Tuple2;
 
-import java.awt.*;
-
+@Getter
 public abstract class Map {
 
     // map information.
@@ -18,7 +19,7 @@ public abstract class Map {
     private final int screenWidth; // width of the screen (expressed in pixel).
     private final int screenHeight; // height of the screen (expressed in pixel).
 
-    public Map(MapSettings mapSettings, int screenWidth, int screenHeight) {
+    protected Map(MapSettings mapSettings, int screenWidth, int screenHeight) {
         this.mapWidth = mapSettings.getMapWidth();
         this.mapHeight = mapSettings.getMapHeight();
         this.mapPointMatrix = new MapPoint[mapHeight][mapWidth];
@@ -29,26 +30,6 @@ public abstract class Map {
         }
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-    }
-
-    public MapPoint[][] getMapPointMatrix() {
-        return mapPointMatrix;
-    }
-
-    public int getMapWidth() {
-        return mapWidth;
-    }
-
-    public int getMapHeight() {
-        return mapHeight;
-    }
-
-    public int getScreenWidth() {
-        return screenWidth;
-    }
-
-    public int getScreenHeight() {
-        return screenHeight;
     }
 
     /**

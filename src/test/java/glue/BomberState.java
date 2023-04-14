@@ -10,17 +10,17 @@ import sprite.nomad.Bomber;
 
 public class BomberState {
 
-    private final BlueBomber spyedBlueBomber;
+    private final BlueBomber spiedBlueBomber;
     private boolean shouldBeRemoved;
 
     public BomberState() throws IOException {
         ImagesLoader.fillImagesMatrix();
         BlueBomber blueBomber = new BlueBomber(0, 0);
-        spyedBlueBomber = Mockito.spy(blueBomber);
+        spiedBlueBomber = Mockito.spy(blueBomber);
     }
 
     Bomber getBomber() {
-        return spyedBlueBomber;
+        return spiedBlueBomber;
     }
 
     boolean isShouldBeRemoved() {

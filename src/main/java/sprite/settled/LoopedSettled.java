@@ -1,13 +1,13 @@
 package sprite.settled;
 
+import java.awt.Image;
+import lombok.Getter;
+import lombok.Setter;
 import sprite.Sprite;
 import sprite.SpriteType;
-import utils.Tools;
-
-import java.awt.*;
-
 import static sprite.settled.LoopedSettled.Status.STATUS_ALIVE;
 import static sprite.settled.LoopedSettled.Status.STATUS_ENDED;
+import utils.Tools;
 
 /**
  * Abstract class of a looped sprites.
@@ -21,49 +21,23 @@ public abstract class LoopedSettled extends Sprite {
     public enum Status {
         STATUS_ALIVE, STATUS_ENDED
     }
+
+    @Getter
+    @Setter
     protected Status status = STATUS_ALIVE; // current status of the sprite.
 
+    @Getter
+    @Setter
     protected int rowIdx; // map row index of the sprite.
+    @Getter
+    @Setter
     protected int colIdx; // map column index of the sprite.
 
+    @Getter
     private final int nbTimes; // number of times the sprite should be painted.
+    @Getter
+    @Setter
     protected int loopIdx; // number of times the sprite has looped.
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public int getRowIdx() {
-        return rowIdx;
-    }
-
-    public void setRowIdx(int rowIdx) {
-        this.rowIdx = rowIdx;
-    }
-
-    public int getColIdx() {
-        return colIdx;
-    }
-
-    public void setColIdx(int colIdx) {
-        this.colIdx = colIdx;
-    }
-
-    public int getNbTimes() {
-        return nbTimes;
-    }
-
-    public int getLoopIdx() {
-        return loopIdx;
-    }
-
-    public void setLoopIdx(int loopIdx) {
-        this.loopIdx = loopIdx;
-    }
 
     /**
      * Create a settled sprite.
@@ -76,13 +50,13 @@ public abstract class LoopedSettled extends Sprite {
      * @param nbImages    the number of images composing the sprite
      * @param nbTimes     the max number of times the sprite must loop
      */
-    public LoopedSettled(int rowIdx,
-                         int colIdx,
-                         SpriteType spriteType,
-                         int refreshTime,
-                         Image[] images,
-                         int nbImages,
-                         int nbTimes) {
+    protected LoopedSettled(int rowIdx,
+                            int colIdx,
+                            SpriteType spriteType,
+                            int refreshTime,
+                            Image[] images,
+                            int nbImages,
+                            int nbTimes) {
         super(Tools.getCaseCentreAbscissa(colIdx), Tools.getCaseBottomOrdinate(rowIdx), spriteType, refreshTime);
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;

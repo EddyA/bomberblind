@@ -1,32 +1,36 @@
 package utils.text;
 
-
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.geom.RoundRectangle2D;
-
-import static utils.Configuration.*;
+import lombok.experimental.UtilityClass;
+import static utils.Configuration.ORNAMENT_ARC_SIZE;
+import static utils.Configuration.ORNAMENT_COLOR;
+import static utils.Configuration.ORNAMENT_PADDING_SIZE;
 import static utils.text.SkinnedLine.computeLineAbscissaToCenterItOnScreen;
-import static utils.text.SkinnedText.*;
+import static utils.text.SkinnedText.computeTextHeight;
+import static utils.text.SkinnedText.computeTextOrdinateToCenterItOnScreen;
+import static utils.text.SkinnedText.computeTextWidth;
 
 /**
  * This class allows painting a text using skinned ascii, adding a background.
  */
+@UtilityClass
 public class SkinnedTextWithBG {
 
-    public final static String TEXT_NEW = "WELCOME!\n\n" +
-            "Reach the exit an press (Q) to complete the stage\n\n" +
-            "Press (B) to put bombs\n" +
-            "Press (ENTER) to start the stage\n" +
-            "Press (ESC) to quit the game\n\n" +
-            "GOOD LUCK!";
+    public static final String TEXT_NEW = "WELCOME!\n\n" +
+        "Reach the exit an press (Q) to complete the stage\n\n" +
+        "Press (B) to put bombs\n" +
+        "Press (ENTER) to start the stage\n" +
+        "Press (ESC) to quit the game\n\n" +
+        "GOOD LUCK!";
 
-    public final static String TEXT_WIN = "STAGE COMPLETE\n\n" +
-            "Thank you for playing!\n\n" +
-            "(Press ESC to exit)";
+    public static final String TEXT_WIN = "STAGE COMPLETE\n\n" +
+        "Thank you for playing!\n\n" +
+        "(Press ESC to exit)";
 
-    public final static String TEXT_GAME_OVER = "GAME OVER\n\n" +
-            "Thank you for playing!\n\n" +
-            "(Press ESC to exit)";
+    public static final String TEXT_GAME_OVER = "GAME OVER\n\n" +
+        "Thank you for playing!\n\n" +
+        "(Press ESC to exit)";
 
     /**
      * Paint a centered text using skinned ascii, with an ornament.

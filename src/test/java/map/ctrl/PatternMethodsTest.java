@@ -4,21 +4,21 @@ import exceptions.CannotCreateMapElementException;
 import images.ImagesLoader;
 import map.MapPattern;
 import map.MapPoint;
-import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
 
 import java.awt.*;
 import java.io.IOException;
 
+import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.Test;
 import static map.ctrl.PatternMethods.*;
 
-public class PatternMethodsTest implements WithAssertions {
+class PatternMethodsTest implements WithAssertions {
 
     private final int MAP_WIDTH = 20;
     private final int MAP_HEIGHT = 10;
 
     @Test
-    public void placeNorthEdgeOnMapShouldThrowExpectedException() throws Exception {
+    void placeNorthEdgeOnMapShouldThrowExpectedException() {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -32,7 +32,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void placeSouthEdgeOnMapShouldThrowExpectedException() throws Exception {
+    void placeSouthEdgeOnMapShouldThrowExpectedException() {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -46,7 +46,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void placePatternOnMapAndSecurePerimeterShouldThrowExpectedException() throws Exception {
+    void placePatternOnMapAndSecurePerimeterShouldThrowExpectedException() {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -55,20 +55,20 @@ public class PatternMethodsTest implements WithAssertions {
         }
         MapPattern mapPattern = new MapPattern(new Image[15], 3, 2, false, false, false, false, "castle");
         assertThatThrownBy(() -> placePatternOnMapAndSecurePerimeter(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, mapPattern,
-                MAP_HEIGHT - mapPattern.getHeight() + 1, 0, false, 0, 0))
+                MAP_HEIGHT - mapPattern.height() + 1, 0, false, 0, 0))
                 .isInstanceOf(CannotCreateMapElementException.class)
                 .hasMessage("not able to create an element at rowIdx=9, colIdx=0.");
     }
 
     @Test
-    public void isPatternCrossingMapLimitShouldReturnExpectedValue() {
+    void isPatternCrossingMapLimitShouldReturnExpectedValue() {
         MapPattern mapPattern = new MapPattern(new Image[6], 2, 3, false, false, false, false, "myPattern");
 
         // tests.
         for (int colIdx = -1; colIdx <= MAP_WIDTH + 1; colIdx++) {
             for (int rowIdx = -1; rowIdx <= MAP_HEIGHT + 1; rowIdx++) {
-                if (colIdx < 0 || colIdx + mapPattern.getWidth() > MAP_WIDTH ||
-                        rowIdx < 0 || rowIdx + mapPattern.getHeight() > MAP_HEIGHT) {
+                if (colIdx < 0 || colIdx + mapPattern.width() > MAP_WIDTH ||
+                        rowIdx < 0 || rowIdx + mapPattern.height() > MAP_HEIGHT) {
                     assertThat(PatternMethods.isPatternCrossingMapLimit(MAP_WIDTH, MAP_HEIGHT, mapPattern, rowIdx,
                             colIdx)).isTrue();
                 } else {
@@ -80,7 +80,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void isPatternCrossingNotAvailableCaseShouldReturnExpectedValue() {
+    void isPatternCrossingNotAvailableCaseShouldReturnExpectedValue() {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -93,10 +93,10 @@ public class PatternMethodsTest implements WithAssertions {
         MapPattern mapPattern = new MapPattern(new Image[6], 2, 3, false, false, false, false, "myPattern");
 
         // tests.
-        for (int colIdx = 0; colIdx < MAP_WIDTH - mapPattern.getWidth(); colIdx++) {
-            for (int rowIdx = 0; rowIdx < MAP_HEIGHT - mapPattern.getHeight(); rowIdx++) {
-                if (colIdx > notAvCaseColIdx - mapPattern.getWidth() && colIdx <= notAvCaseColIdx &&
-                        rowIdx > notAvCaseRowIdx - mapPattern.getHeight() && rowIdx <= notAvCaseRowIdx) {
+        for (int colIdx = 0; colIdx < MAP_WIDTH - mapPattern.width(); colIdx++) {
+            for (int rowIdx = 0; rowIdx < MAP_HEIGHT - mapPattern.height(); rowIdx++) {
+                if (colIdx > notAvCaseColIdx - mapPattern.width() && colIdx <= notAvCaseColIdx &&
+                        rowIdx > notAvCaseRowIdx - mapPattern.height() && rowIdx <= notAvCaseRowIdx) {
                     assertThat(PatternMethods.isPatternCrossingNotAvailableCase(mapPointMatrix, mapPattern, rowIdx,
                             colIdx)).isTrue();
                 } else {
@@ -108,7 +108,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void placePatternOnMapShouldReturnExpectedValue() {
+    void placePatternOnMapShouldReturnExpectedValue() {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -122,10 +122,10 @@ public class PatternMethodsTest implements WithAssertions {
         // test.
         assertThat(PatternMethods.placePatternOnMap(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, mapPattern, startRowIdx,
                 startColIdx)).isTrue();
-        for (int colIdx = 0; colIdx < MAP_WIDTH - mapPattern.getWidth(); colIdx++) {
-            for (int rowIdx = 0; rowIdx < MAP_HEIGHT - mapPattern.getHeight(); rowIdx++) {
-                if (colIdx >= startColIdx && colIdx < startColIdx + mapPattern.getWidth() &&
-                        rowIdx >= startRowIdx && rowIdx < startRowIdx + mapPattern.getHeight()) {
+        for (int colIdx = 0; colIdx < MAP_WIDTH - mapPattern.width(); colIdx++) {
+            for (int rowIdx = 0; rowIdx < MAP_HEIGHT - mapPattern.height(); rowIdx++) {
+                if (colIdx >= startColIdx && colIdx < startColIdx + mapPattern.width() &&
+                        rowIdx >= startRowIdx && rowIdx < startRowIdx + mapPattern.height()) {
                     assertThat(mapPointMatrix[rowIdx][colIdx].isAvailable()).isFalse();
                 } else {
                     assertThat(mapPointMatrix[rowIdx][colIdx].isAvailable()).isTrue();
@@ -135,7 +135,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void securePerimeterShouldReturnExpectedValue() throws IOException {
+    void securePerimeterShouldReturnExpectedValue() throws IOException {
         ImagesLoader.fillImagesMatrix(); // fill images to avoid a nullPointerException when putting a static mutable.
 
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
@@ -155,10 +155,10 @@ public class PatternMethodsTest implements WithAssertions {
         PatternMethods.securePerimeter(mapPointMatrix, MAP_WIDTH, MAP_HEIGHT, mapPattern, startRowIdx, startColIdx, false, 0, 0);
 
         // test.
-        for (int colIdx = 0; colIdx < MAP_WIDTH - mapPattern.getWidth(); colIdx++) {
-            for (int rowIdx = 0; rowIdx < MAP_HEIGHT - mapPattern.getHeight(); rowIdx++) {
-                if (colIdx >= startColIdx - 1 && colIdx <= startColIdx + mapPattern.getWidth() &&
-                        rowIdx >= startRowIdx && rowIdx <= startRowIdx + mapPattern.getHeight()) {
+        for (int colIdx = 0; colIdx < MAP_WIDTH - mapPattern.width(); colIdx++) {
+            for (int rowIdx = 0; rowIdx < MAP_HEIGHT - mapPattern.height(); rowIdx++) {
+                if (colIdx >= startColIdx - 1 && colIdx <= startColIdx + mapPattern.width() &&
+                        rowIdx >= startRowIdx && rowIdx <= startRowIdx + mapPattern.height()) {
                     assertThat(mapPointMatrix[rowIdx][colIdx].isAvailable()).isFalse();
                 } else {
                     assertThat(mapPointMatrix[rowIdx][colIdx].isAvailable()).isTrue();
@@ -168,7 +168,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void generateRandomRowIdxShouldReturnExpectedValue() {
+    void generateRandomRowIdxShouldReturnExpectedValue() {
         assertThat(generateRandomRowIdx(10, 1, 1, 4, 2)).isEqualTo(3);
         for (int i = 0; i < 100000; i++) {
             assertThat(generateRandomRowIdx(100, 1, 1, 4, 2)).isBetween(3, 92);
@@ -176,14 +176,14 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void generateRandomRowIdxShouldThrowExpectedException() {
+    void generateRandomRowIdxShouldThrowExpectedException() {
         assertThatThrownBy(() -> generateRandomRowIdx(8, 1, 1, 4, 2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("bound must be positive");
     }
 
     @Test
-    public void generateRandomColIdxShouldReturnExpectedValue() {
+    void generateRandomColIdxShouldReturnExpectedValue() {
         assertThat(generateRandomColIdx(10, 1, 1, 4, 2)).isEqualTo(3);
         for (int i = 0; i < 100000; i++) {
             assertThat(generateRandomColIdx(100, 1, 1, 4, 2)).isBetween(3, 92);
@@ -191,7 +191,7 @@ public class PatternMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void generateRandomColIdxShouldThrowExpectedException() {
+    void generateRandomColIdxShouldThrowExpectedException() {
         assertThatThrownBy(() -> generateRandomColIdx(8, 1, 1, 4, 2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("bound must be positive");

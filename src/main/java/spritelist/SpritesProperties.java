@@ -1,72 +1,67 @@
-package spriteList;
-
-import com.google.common.base.Preconditions;
-import exceptions.InvalidConfigurationException;
+package spritelist;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
-
+import exceptions.InvalidConfigurationException;
+import lombok.Getter;
 import static utils.Tools.isNullOrValidInteger;
 
 /**
  * Open, read and check a sprites map properties file.
  */
-
 public class SpritesProperties {
 
-    public final static String SPRITES_ENEMY_ZORA = "sprite.enemy.zora";
-    public final static String SPRITES_ENEMY_GREEN_SOLDIER = "sprite.enemy.green.soldier";
-    public final static String SPRITES_ENEMY_RED_SPEAR_SOLDIER = "sprite.enemy.red.spear.soldier";
+    public static final String SPRITES_ENEMY_ZORA = "sprite.enemy.zora";
+    public static final String SPRITES_ENEMY_GREEN_SOLDIER = "sprite.enemy.green.soldier";
+    public static final String SPRITES_ENEMY_RED_SPEAR_SOLDIER = "sprite.enemy.red.spear.soldier";
 
-    public final static String SPRITES_BIRDS_ARRIVAL_TIME_INTERVAL = "sprite.birds.arrival.time.interval";
+    public static final String SPRITES_BIRDS_ARRIVAL_TIME_INTERVAL = "sprite.birds.arrival.time.interval";
 
     private final String propertiesFile;
+
+    @Getter
     private final Properties properties = new Properties();
 
     public SpritesProperties(String propertiesFile) {
         this.propertiesFile = propertiesFile;
     }
 
-    public int getSpritesEnemyzora() {
-        String property_value = properties.getProperty(SPRITES_ENEMY_ZORA);
-        if (property_value != null) {
-            return Integer.parseInt(property_value);
+    public int getSpritesEnemyZora() {
+        String propertyValue = properties.getProperty(SPRITES_ENEMY_ZORA);
+        if (propertyValue != null) {
+            return Integer.parseInt(propertyValue);
         } else {
             return 0;
         }
     }
 
     public int getSpritesEnemyGreenSoldier() {
-        String property_value = properties.getProperty(SPRITES_ENEMY_GREEN_SOLDIER);
-        if (property_value != null) {
-            return Integer.parseInt(property_value);
+        String propertyValue = properties.getProperty(SPRITES_ENEMY_GREEN_SOLDIER);
+        if (propertyValue != null) {
+            return Integer.parseInt(propertyValue);
         } else {
             return 0;
         }
     }
 
     public int getSpritesEnemyRedSpearSoldier() {
-        String property_value = properties.getProperty(SPRITES_ENEMY_RED_SPEAR_SOLDIER);
-        if (property_value != null) {
-            return Integer.parseInt(property_value);
+        String propertyValue = properties.getProperty(SPRITES_ENEMY_RED_SPEAR_SOLDIER);
+        if (propertyValue != null) {
+            return Integer.parseInt(propertyValue);
         } else {
             return 0;
         }
     }
 
     public int getSpritesBirdsArrivalTimeInterval() {
-        String property_value = properties.getProperty(SPRITES_BIRDS_ARRIVAL_TIME_INTERVAL);
-        if (property_value != null) {
-            return Integer.parseInt(property_value);
+        String propertyValue = properties.getProperty(SPRITES_BIRDS_ARRIVAL_TIME_INTERVAL);
+        if (propertyValue != null) {
+            return Integer.parseInt(propertyValue);
         } else {
             return 0;
         }
-    }
-
-    public Properties getProperties() {
-        return properties;
     }
 
     /**
@@ -79,14 +74,14 @@ public class SpritesProperties {
      */
     public SpritesProperties loadProperties()
             throws IllegalArgumentException, IOException, InvalidConfigurationException {
-        Preconditions.checkArgument((propertiesFile != null) &&
-                !propertiesFile.isEmpty(), "sprites properties file not set.");
+        assert ((propertiesFile != null) && !propertiesFile.isEmpty()) : "sprites properties file not set.";
         URL configurationFile = SpritesProperties.class.getResource(propertiesFile);
         if (configurationFile == null) {
             throw new InvalidConfigurationException("'" + propertiesFile + "' file not found.");
         }
-        InputStream inputStream = configurationFile.openStream();
-        properties.load(inputStream);
+        try (InputStream inputStream = configurationFile.openStream()) {
+            properties.load(inputStream);
+        }
         return this;
     }
 

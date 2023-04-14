@@ -1,31 +1,39 @@
 package sprite.nomad;
 
+import java.awt.Image;
+import java.util.Random;
+import exceptions.SpriteActionException;
+import lombok.Getter;
 import sprite.SpriteAction;
+import static sprite.SpriteAction.ACTION_DYING;
+import static sprite.SpriteAction.ACTION_FLYING;
 import sprite.SpriteType;
 import utils.Direction;
 import utils.Tuple2;
-
-import java.awt.*;
-import java.util.Random;
-
-import static sprite.SpriteAction.ACTION_DYING;
-import static sprite.SpriteAction.ACTION_FLYING;
 
 /**
  * Abstract class of a flying nomad.
  */
 public abstract class FlyingNomad extends Nomad {
 
+    @Getter
     private final Image[] flyBackImages;
+    @Getter
     private final Image[] flyFrontImages;
+    @Getter
     private final Image[] flyLeftImages;
+    @Getter
     private final Image[] flyRightImages;
+    @Getter
     private final int nbFlyFrame;
 
+    @Getter
     private final int deviation; // the number of iterations before shifting to the orthogonal direction.
+    @Getter
     private int moveIdx; // number of times the sprite has moved.
 
-    private Tuple2<Integer, Integer> lastCoordinatesOnMap; // test purpose.
+    @Getter
+    private final Tuple2<Integer, Integer> lastCoordinatesOnMap; // test purpose.
 
     /**
      * Create a flying figure..
@@ -42,17 +50,17 @@ public abstract class FlyingNomad extends Nomad {
      * @param refreshTime the sprite refresh time (i.e. defining the sprite speed in term of image/sec)
      * @param actingTime the sprite acting time (i.e. defining the sprite speed in term of action/sec)
      */
-    public FlyingNomad(int xMap,
-            int yMap,
-            Image[] flyBackImages,
-            Image[] flyFrontImages,
-            Image[] flyLeftImages,
-            Image[] flyRightImages,
-            int nbFlyFrame,
-            Direction direction,
-            int deviation,
-            int refreshTime,
-            int actingTime) {
+    protected FlyingNomad(int xMap,
+                          int yMap,
+                          Image[] flyBackImages,
+                          Image[] flyFrontImages,
+                          Image[] flyLeftImages,
+                          Image[] flyRightImages,
+                          int nbFlyFrame,
+                          Direction direction,
+                          int deviation,
+                          int refreshTime,
+                          int actingTime) {
         super(xMap, yMap, SpriteType.TYPE_SPRITE_FLYING_NOMAD, refreshTime, actingTime, 0);
         this.flyBackImages = flyBackImages;
         this.flyFrontImages = flyFrontImages;
@@ -72,38 +80,6 @@ public abstract class FlyingNomad extends Nomad {
         lastDirection = direction;
     }
 
-    public Image[] getFlyBackImages() {
-        return flyBackImages;
-    }
-
-    public Image[] getFlyFrontImages() {
-        return flyFrontImages;
-    }
-
-    public Image[] getFlyLeftImages() {
-        return flyLeftImages;
-    }
-
-    public Image[] getFlyRightImages() {
-        return flyRightImages;
-    }
-
-    public int getNbFlyFrame() {
-        return nbFlyFrame;
-    }
-
-    public int getDeviation() {
-        return deviation;
-    }
-
-    public int getMoveIdx() {
-        return moveIdx;
-    }
-
-    public Tuple2<Integer, Integer> getLastCoordinatesOnMap() {
-        return lastCoordinatesOnMap;
-    }
-
     /**
      * Compute the next position of the sprite.
      */
@@ -111,49 +87,45 @@ public abstract class FlyingNomad extends Nomad {
         lastCoordinatesOnMap.setFirst(xMap);
         lastCoordinatesOnMap.setSecond(yMap);
         switch (curDirection) {
-            case DIRECTION_NORTH: {
+            case DIRECTION_NORTH -> {
                 yMap--;
                 if ((deviation != 0) && (moveIdx % deviation == 0)) {
                     if (deviation < 0) {
                         xMap--;
-                    } else if (deviation > 0) {
+                    } else {
                         xMap++;
                     }
                 }
-                break;
             }
-            case DIRECTION_SOUTH: {
+            case DIRECTION_SOUTH -> {
                 yMap++;
                 if ((deviation != 0) && (moveIdx % deviation == 0)) {
                     if (deviation < 0) {
                         xMap--;
-                    } else if (deviation > 0) {
+                    } else {
                         xMap++;
                     }
                 }
-                break;
             }
-            case DIRECTION_WEST: {
+            case DIRECTION_WEST -> {
                 xMap--;
                 if ((deviation != 0) && (moveIdx % deviation == 0)) {
                     if (deviation < 0) {
                         yMap--;
-                    } else if (deviation > 0) {
+                    } else {
                         yMap++;
                     }
                 }
-                break;
             }
-            case DIRECTION_EAST: {
+            case DIRECTION_EAST -> {
                 xMap++;
                 if ((deviation != 0) && (moveIdx % deviation == 0)) {
                     if (deviation < 0) {
                         yMap--;
-                    } else if (deviation > 0) {
+                    } else {
                         yMap++;
                     }
                 }
-                break;
             }
         }
         moveIdx++;
@@ -178,38 +150,33 @@ public abstract class FlyingNomad extends Nomad {
     }
 
     @Override
-    public void updateSprite() {
+    public void updateSprite() throws SpriteActionException {
         switch (curSpriteAction) {
-            case ACTION_DYING: {
+            case ACTION_DYING -> {
                 images = null;
                 nbImages = 0;
-                break;
             }
-            case ACTION_FLYING: {
+            case ACTION_FLYING -> {
                 switch (curDirection) {
-                    case DIRECTION_NORTH: {
+                    case DIRECTION_NORTH -> {
                         images = flyBackImages;
                         nbImages = nbFlyFrame;
-                        break;
                     }
-                    case DIRECTION_SOUTH: {
+                    case DIRECTION_SOUTH -> {
                         images = flyFrontImages;
                         nbImages = nbFlyFrame;
-                        break;
                     }
-                    case DIRECTION_WEST: {
+                    case DIRECTION_WEST -> {
                         images = flyLeftImages;
                         nbImages = nbFlyFrame;
-                        break;
                     }
-                    case DIRECTION_EAST: {
+                    case DIRECTION_EAST -> {
                         images = flyRightImages;
                         nbImages = nbFlyFrame;
-                        break;
                     }
                 }
-                break;
             }
+            default -> throw new SpriteActionException(curSpriteAction, this.getClass());
         }
     }
 

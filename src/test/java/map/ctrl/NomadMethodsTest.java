@@ -1,25 +1,27 @@
 package map.ctrl;
 
-import map.MapPoint;
-import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
-import utils.Direction;
-
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.Test;
 import static images.ImagesLoader.IMAGE_SIZE;
+import map.MapPoint;
 import static map.ctrl.NomadMethods.isNomadBlockedOffByMutableObstacle;
-import static utils.Direction.*;
+import utils.Direction;
+import static utils.Direction.DIRECTION_EAST;
+import static utils.Direction.DIRECTION_NORTH;
+import static utils.Direction.DIRECTION_SOUTH;
+import static utils.Direction.DIRECTION_WEST;
+import static utils.Direction.convertKeyEventToDirection;
 
-public class NomadMethodsTest implements WithAssertions {
+class NomadMethodsTest implements WithAssertions {
 
     private final int MAP_WIDTH = 20;
     private final int MAP_HEIGHT = 10;
 
     @Test
-    public void isNomadCrossingMapLimitShouldReturnExpectedValue() throws Exception {
+    void isNomadCrossingMapLimitShouldReturnExpectedValue() {
         
         /*
         compute the nomad limits according to the map dimensions.
@@ -50,7 +52,7 @@ public class NomadMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void isNomadCrossingObstacleShouldReturnExpectedValue() throws Exception {
+    void isNomadCrossingObstacleShouldReturnExpectedValue() {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -100,7 +102,7 @@ public class NomadMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void isNomadCrossingMutableShouldReturnExpectedValue() throws Exception {
+    void isNomadCrossingMutableShouldReturnExpectedValue() {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -150,7 +152,7 @@ public class NomadMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void isNomadBlockedOffByMutableShouldReturnExpectedValue() throws Exception {
+    void isNomadBlockedOffByMutableShouldReturnExpectedValue() {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -220,7 +222,7 @@ public class NomadMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void isNomadCrossingExitShouldReturnExpectedValue() throws Exception {
+    void isNomadCrossingExitShouldReturnExpectedValue() {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -264,7 +266,7 @@ public class NomadMethodsTest implements WithAssertions {
     }
 
     @Test
-    public void isNomadBurningShouldReturnExpectedValue() throws Exception {
+    void isNomadBurningShouldReturnExpectedValue() {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {
@@ -313,9 +315,8 @@ public class NomadMethodsTest implements WithAssertions {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Test
-    public void isNomadCrossingBombShouldReturnExpectedValue() throws Exception {
+    void isNomadCrossingBombShouldReturnExpectedValue() {
         MapPoint[][] mapPointMatrix = new MapPoint[MAP_HEIGHT][MAP_WIDTH];
         for (int rowIdx = 0; rowIdx < MAP_HEIGHT; rowIdx++) {
             for (int colIdx = 0; colIdx < MAP_WIDTH; colIdx++) {

@@ -1,24 +1,32 @@
 package map.zelda;
 
+import java.util.ArrayList;
+import java.util.Set;
 import ai.PathFinding;
 import exceptions.CannotCreateMapElementException;
 import exceptions.CannotFindPathFromEntranceToExitException;
 import exceptions.CannotPlaceBonusOnMapException;
+import static images.ImagesLoader.IMAGE_SIZE;
 import map.Map;
 import map.MapPattern;
 import map.MapPoint;
 import map.ctrl.GenerationMethods;
-import utils.Tuple2;
-
-import java.util.ArrayList;
-import java.util.Set;
-
-import static images.ImagesLoader.IMAGE_SIZE;
 import static map.ctrl.PatternMethods.placeNorthEdgeOnMap;
 import static map.ctrl.PatternMethods.placeSouthEdgeOnMap;
-import static map.zelda.ZeldaMapPatterns.*;
+import static map.zelda.ZeldaMapPatterns.castle;
+import static map.zelda.ZeldaMapPatterns.edge;
+import static map.zelda.ZeldaMapPatterns.greenTree;
+import static map.zelda.ZeldaMapPatterns.orchad;
+import static map.zelda.ZeldaMapPatterns.pathway;
+import static map.zelda.ZeldaMapPatterns.redTree;
+import static map.zelda.ZeldaMapPatterns.statue;
+import static map.zelda.ZeldaMapPatterns.trough;
+import static map.zelda.ZeldaMapPatterns.trunk;
+import static map.zelda.ZeldaMapPatterns.yellowTree;
+import utils.Tuple2;
 
 public class ZeldaMap extends Map {
+
     private final ZeldaMapSetting zeldaMapSetting;
     private MapPoint entranceStartPoint; // entrance start point (north/west MapPoint).
     private MapPoint exitStartPoint; // castle start point (north/west MapPoint).
@@ -43,8 +51,8 @@ public class ZeldaMap extends Map {
                         zeldaMapSetting.getMapWidth(),
                         zeldaMapSetting.getMapHeight(),
                         zeldaMapSetting.getHorizontalMargin(),
-                        greenTree.getHeight(),
-                        edge.getHeight(),
+                        greenTree.height(),
+                        edge.height(),
                         zeldaMapSetting.getVerticalMargin(),
                         entranceAndExitPatterns,
                         zeldaMapSetting.getPerDecoratedSinglePathway(),
@@ -54,20 +62,19 @@ public class ZeldaMap extends Map {
 
         try {
             // place complex elements.
-            ArrayList<Tuple2<MapPattern, Integer>> complexEltPatterns = new ArrayList<Tuple2<MapPattern, Integer>>() {{
-                add(new Tuple2<>(orchad, zeldaMapSetting.getNbOrchard()));
-                add(new Tuple2<>(trough, zeldaMapSetting.getNbTrough()));
-                add(new Tuple2<>(greenTree, zeldaMapSetting.getNbGreenTree()));
-                add(new Tuple2<>(redTree, zeldaMapSetting.getNbRedTree()));
-                add(new Tuple2<>(yellowTree, zeldaMapSetting.getNbYellowTree()));
-                add(new Tuple2<>(pathway, zeldaMapSetting.getNbPathway()));
-                add(new Tuple2<>(statue, zeldaMapSetting.getNbStatue()));
-            }};
+            ArrayList<Tuple2<MapPattern, Integer>> complexEltPatterns = new ArrayList<>();
+            complexEltPatterns.add(new Tuple2<>(orchad, zeldaMapSetting.getNbOrchard()));
+            complexEltPatterns.add(new Tuple2<>(trough, zeldaMapSetting.getNbTrough()));
+            complexEltPatterns.add(new Tuple2<>(greenTree, zeldaMapSetting.getNbGreenTree()));
+            complexEltPatterns.add(new Tuple2<>(redTree, zeldaMapSetting.getNbRedTree()));
+            complexEltPatterns.add(new Tuple2<>(yellowTree, zeldaMapSetting.getNbYellowTree()));
+            complexEltPatterns.add(new Tuple2<>(pathway, zeldaMapSetting.getNbPathway()));
+            complexEltPatterns.add(new Tuple2<>(statue, zeldaMapSetting.getNbStatue()));
             GenerationMethods.randomlyPlaceComplexElements(mapPointMatrix,
                     zeldaMapSetting.getMapWidth(),
                     zeldaMapSetting.getMapHeight(),
-                    greenTree.getHeight(),
-                    edge.getHeight(),
+                    greenTree.height(),
+                    edge.height(),
                     complexEltPatterns,
                     maxNbTry);
         } catch (CannotCreateMapElementException e) {
@@ -103,7 +110,7 @@ public class ZeldaMap extends Map {
                         zeldaMapSetting.getMapHeight(),
                         new PathFinding.Point(entranceStartPoint.getColIdx(), entranceStartPoint.getRowIdx()),
                         new PathFinding.Point(exitStartPoint.getColIdx(), exitStartPoint.getRowIdx() - 1));
-        if (!res.getFirst()) {
+        if (Boolean.FALSE.equals(res.getFirst())) {
             throw new CannotFindPathFromEntranceToExitException("not able to find a path between entrance and exit: "
                     + "the proportion of immutable patterns/obstacles must be to high, please check the relative "
                     + "properties file.");
@@ -115,9 +122,9 @@ public class ZeldaMap extends Map {
 
         // compute the initial bomber position in order to be in front of the entrance door.
         int xBbManOnMap = entranceStartPoint.getColIdx() * IMAGE_SIZE +
-                (castle.getWidth() * IMAGE_SIZE / 2);
+                (castle.width() * IMAGE_SIZE / 2);
         int yBbManOnMap = entranceStartPoint.getRowIdx() * IMAGE_SIZE +
-                (castle.getHeight() * IMAGE_SIZE) + (IMAGE_SIZE / 2);
+                (castle.height() * IMAGE_SIZE) + (IMAGE_SIZE / 2);
         return new Tuple2<>(xBbManOnMap, yBbManOnMap);
     }
 
@@ -126,9 +133,9 @@ public class ZeldaMap extends Map {
 
         // compute the best position to print exit sign (e.g. sparkle).
         int xBbManOnMap = exitStartPoint.getColIdx() * IMAGE_SIZE +
-                (trunk.getWidth() * IMAGE_SIZE / 2);
+                (trunk.width() * IMAGE_SIZE / 2);
         int yBbManOnMap = exitStartPoint.getRowIdx() * IMAGE_SIZE +
-                (trunk.getHeight() * IMAGE_SIZE) / 2;
+                (trunk.height() * IMAGE_SIZE) / 2;
         return new Tuple2<>(xBbManOnMap, yBbManOnMap);
     }
 }

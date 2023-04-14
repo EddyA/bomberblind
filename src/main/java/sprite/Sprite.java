@@ -1,5 +1,8 @@
 package sprite;
 
+import exceptions.SpriteActionException;
+import lombok.Getter;
+import lombok.Setter;
 import utils.CurrentTimeSupplier;
 
 import java.awt.*;
@@ -8,19 +11,37 @@ import java.awt.*;
  * Abstract class of a sprite.
  */
 public abstract class Sprite {
+
+    @Setter
     protected CurrentTimeSupplier currentTimeSupplier = new CurrentTimeSupplier();
 
+    @Getter
+    @Setter
     protected int xMap; // abscissa on map.
+    @Getter
+    @Setter
     protected int yMap; // ordinate on map.
+    @Getter
+    @Setter
     private SpriteType spriteType; // type of sprite.
 
+    @Getter
+    @Setter
     protected Image[] images; // array of images of the sprite.
+    @Getter
+    @Setter
     protected int nbImages; // number of images of the sprite.
 
+    @Getter
+    @Setter
     protected int curImageIdx; // current image index of the sprite.
+    @Getter
+    @Setter
     protected Image curImage; // current image of the sprite.
 
+    @Getter
     protected int refreshTime; // refresh time (in ms).
+    @Setter
     protected long lastRefreshTs; // last refresh timestamp.
 
     /**
@@ -31,7 +52,7 @@ public abstract class Sprite {
      * @param spriteType  the sprite's type
      * @param refreshTime the sprite refreshTime (i.e. fps)
      */
-    public Sprite(int xMap,
+    protected Sprite(int xMap,
                   int yMap,
                   SpriteType spriteType,
                   int refreshTime) {
@@ -39,74 +60,6 @@ public abstract class Sprite {
         this.yMap = yMap;
         this.spriteType = spriteType;
         this.refreshTime = refreshTime;
-    }
-
-    public void setCurrentTimeSupplier(CurrentTimeSupplier currentTimeSupplier) {
-        this.currentTimeSupplier = currentTimeSupplier;
-    }
-
-    public int getxMap() {
-        return xMap;
-    }
-
-    public void setxMap(int xMap) {
-        this.xMap = xMap;
-    }
-
-    public int getyMap() {
-        return yMap;
-    }
-
-    public void setyMap(int yMap) {
-        this.yMap = yMap;
-    }
-
-    public SpriteType getSpriteType() {
-        return spriteType;
-    }
-
-    public void setSpriteType(SpriteType spriteType) {
-        this.spriteType = spriteType;
-    }
-
-    public Image[] getImages() {
-        return images;
-    }
-
-    public void setImages(Image[] images) {
-        this.images = images;
-    }
-
-    public int getNbImages() {
-        return nbImages;
-    }
-
-    public void setNbImages(int nbImages) {
-        this.nbImages = nbImages;
-    }
-
-    public int getCurImageIdx() {
-        return curImageIdx;
-    }
-
-    public void setCurImageIdx(int curImageIdx) {
-        this.curImageIdx = curImageIdx;
-    }
-
-    public Image getCurImage() {
-        return curImage;
-    }
-
-    public void setCurImage(Image curImage) {
-        this.curImage = curImage;
-    }
-
-    public int getRefreshTime() {
-        return refreshTime;
-    }
-
-    public void setLastRefreshTs(long lastRefreshTs) {
-        this.lastRefreshTs = lastRefreshTs;
     }
 
     /**
@@ -127,7 +80,7 @@ public abstract class Sprite {
     /**
      * Update the sprite image.
      */
-    public abstract void updateImage();
+    public abstract void updateImage() throws SpriteActionException;
 
     /**
      * @return true if the sprite is finished, false otherwise.
